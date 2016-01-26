@@ -1,0 +1,18 @@
+{
+  "name": "opds-browser",
+  "version": "0.0.1",
+  "description": "OPDS browser",
+  "main": "src/index.js",
+  "dependencies": {
+    "react": "^0.14.6",
+    "react-dom": "^0.14.6"
+  },
+  "devDependencies": {
+    "typescript": "^1.7.5"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "NYPL",
+  "license": "ISC"
+}

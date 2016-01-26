@@ -1,0 +1,13 @@
+{
+  "version": "1.7.5",
+  "compilerOptions": {
+    "module": "es6",
+    "target": "es5",
+    "outDir": "dist",
+    "jsx": "react"
+  },
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
+}
