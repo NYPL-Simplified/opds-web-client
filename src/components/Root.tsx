@@ -1,7 +1,7 @@
 import * as React from 'react';
-import Feed from './Feed';
+import FeedComponent from './Feed';
 
-export default class Root extends React.Component<any, any> {  
+export default class RootComponent extends React.Component<any, any> {  
   constructor(props: RootProps) {
     super(props);
   }
@@ -9,7 +9,7 @@ export default class Root extends React.Component<any, any> {
   render() : JSX.Element {    
     return (
       <div id="opdsBrowserRoot">
-        <Feed {...this.props.feed} />
+        <FeedComponent {...this.props.feed} />
       </div>
     );
   }

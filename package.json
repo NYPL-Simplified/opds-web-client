@@ -3,16 +3,31 @@
   "version": "0.0.1",
   "description": "OPDS browser",
   "main": "src/index.js",
-  "dependencies": {
-    "react": "^0.14.6",
-    "react-dom": "^0.14.6"
-  },
-  "devDependencies": {
-    "typescript": "^1.7.5"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NYPL-Simplified/opds-browser.git"
   },
   "author": "NYPL",
-  "license": "ISC"
+  "license": "ISC",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server --devtool eval --progress --history-api-fallback --colors --hot --content-base build --port 8090 --config webpack.dev.config"
+  },
+  "dependencies": {
+    "immutable": "^3.7.6",
+    "lodash": "^4.0.1",
+    "react": "^0.14.6",
+    "react-dom": "^0.14.6",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "babel": "^6.3.26",
+    "babel-loader": "^6.2.1",
+    "babel-preset-es2015": "^6.3.13",
+    "react-hot-loader": "^1.3.0",
+    "ts-loader": "^0.8.0",
+    "typescript": "^1.7.5",
+    "webpack": "^1.12.12",
+    "webpack-dev-server": "^1.14.1"
+  }
 }
