@@ -2,7 +2,6 @@ import * as React from 'react';
 import Entry from './Entry';
 import Collection from './Collection';
 import * as Immutable from 'immutable';
-import { keys } from 'lodash';
 
 export default class Feed extends React.Component<FeedProps, any> {  
   constructor(props: FeedProps) {
@@ -26,7 +25,7 @@ export default class Feed extends React.Component<FeedProps, any> {
           <h1 style={{ margin: 0 }}>{this.props.title}</h1>
         </div>
 
-        { keys(entryCollections).map(title => 
+        { Object.keys(entryCollections).map(title => 
             <Collection key={title} title={title} {...entryCollections[title]} />
         ) } 
 
@@ -37,8 +36,9 @@ export default class Feed extends React.Component<FeedProps, any> {
     );
   }
   
-  getEntryCollections(entries: EntryModel[] = []): [Object, EntryModel[]] {
+  getEntryCollections(entries: EntryModel[] = []): [EntryCollections, EntryModel[]] {
     let entriesWithoutCollections: EntryModel[] = [];
+    let emptyEntryCollections: EntryCollections = {};
 
     let entryCollections = entries.reduce((result, entry) => {
       if (entry.collection) {
@@ -54,7 +54,7 @@ export default class Feed extends React.Component<FeedProps, any> {
       }
       
       return result;
-    }, {});
+    }, emptyEntryCollections);
        
     return [entryCollections, entriesWithoutCollections];
   }

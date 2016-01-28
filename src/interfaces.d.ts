@@ -1,5 +1,3 @@
-declare enum EntryType {Book}
-
 interface CollectionModel {
   title: string,
   url: string,
@@ -13,7 +11,7 @@ interface CollectionProps extends CollectionModel {
 interface EntryModel {
   id: string,
   title: string,
-  type: EntryType,
+  type: string,
   author: string,
   summary?: string,
   updated: string,
@@ -31,7 +29,7 @@ interface EntryProps extends EntryModel {
   key: string,
 }
 
-declare type EntryCollections = Immutable.Map<string, { url: string, entries: EntryModel[] }>;
+declare type EntryCollections = { [index: string]: { url: string, entries: EntryModel[] } };
 
 interface FeedModel {
   id: string,
