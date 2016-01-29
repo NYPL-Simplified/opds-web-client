@@ -10,8 +10,9 @@
   "author": "NYPL",
   "license": "ISC",
   "scripts": {
-    "test": "tsc --outDir lib/ && jest",
-    "dev": "webpack-dev-server --devtool eval --progress --history-api-fallback --colors --hot --content-base build --port 8090 --config webpack.dev.config"
+    "test": "tsc && jest",
+    "dev": "webpack-dev-server --devtool eval --progress --history-api-fallback --colors --hot --content-base build --port 8090 --config webpack.dev.config",
+    "prepublish": "tsd install"
   },
   "dependencies": {
     "lodash": "^4.0.1",
