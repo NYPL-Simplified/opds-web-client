@@ -9,7 +9,7 @@ export default class Collection extends React.Component<any, any> {
   }
 
   render() : JSX.Element {
-    let feedTopStyle = { 
+    let collectionTopStyle = { 
       padding: "10px", 
       backgroundColor: "#eee", 
       borderBottom: "1px solid #ccc", 
@@ -18,16 +18,16 @@ export default class Collection extends React.Component<any, any> {
     };
             
     return (
-      <div className="opdsFeed" style={{ fontFamily: "Arial, sans-serif" }}>
-        <div className="opdsFeedTop" style={feedTopStyle}>
+      <div className="collection" style={{ fontFamily: "Arial, sans-serif" }}>
+        <div className="collectionTop" style={collectionTopStyle}>
           <h1 style={{ margin: 0 }}>{this.props.title}</h1>
         </div>
 
-        { this.props.lanes.map(lane => 
+        { this.props.lanes && this.props.lanes.map(lane => 
             <Lane key={lane.title} {...lane} />
         ) } 
 
-        { this.props.books.map(book =>
+        { this.props.books && this.props.books.map(book =>
             <Book key={book.id} {...book} />
           ) }
       </div>
