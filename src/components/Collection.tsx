@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Book from './Book';
 import Lane from './Lane';
-import * as Immutable from 'immutable';
 
 export default class Collection extends React.Component<any, any> {  
   constructor(props: any) {

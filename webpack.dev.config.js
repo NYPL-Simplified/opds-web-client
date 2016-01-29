@@ -20,20 +20,12 @@ var config = {
     new webpack.DefinePlugin({ "process.env": JSON.stringify(process.env)})
   ],
   module: {
-    // preLoaders: [
-    //   {
-    //     test: /\.tsx?$/,
-    //     exclude: [/node_modules/],
-    //     loader: 'source-map'
-    //   }
-    // ],
     loaders: [
       { 
         test: /\.tsx?$/,
         exclude: [/node_modules/],
         loaders: [
           'react-hot', 
-          'babel?presets[]=es2015',
           'ts-loader'
         ] 
       },

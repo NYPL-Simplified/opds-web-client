@@ -1,13 +1,14 @@
 {
   "version": "1.7.5",
   "compilerOptions": {
-    "module": "es6",
-    "target": "es6",
-    "outDir": "dist",
+    "module": "commonjs",
+    "target": "es5",
+    "outDir": "lib",
+    "rootDir": "src",
     "jsx": "react"
   },
   "exclude": [
-    "dist",
+    "lib",
     "node_modules"
   ]
 }

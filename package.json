@@ -10,24 +10,15 @@
   "author": "NYPL",
   "license": "ISC",
   "scripts": {
-    "test": "tsc --outDir dist/ && jest",
+    "test": "tsc --outDir lib/ && jest",
     "dev": "webpack-dev-server --devtool eval --progress --history-api-fallback --colors --hot --content-base build --port 8090 --config webpack.dev.config"
   },
   "dependencies": {
-    "immutable": "^3.7.6",
     "lodash": "^4.0.1",
-    "opds-feed-parser": "0.0.1",
     "react": "^0.14.6",
-    "react-dom": "^0.14.6",
-    "request": "^2.69.0"
+    "react-dom": "^0.14.6"
   },
   "devDependencies": {
-    "babel": "^6.3.26",
-    "babel-jest": "^6.0.1",
-    "babel-loader": "^6.2.1",
-    "babel-plugin-add-module-exports": "^0.1.2",
-    "babel-preset-es2015": "^6.3.13",
-    "babel-preset-react": "^6.3.13",
     "jest": "^0.1.40",
     "jest-cli": "^0.8.2",
     "react-addons-test-utils": "^0.14.6",
@@ -38,8 +29,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "jest": {
-    "rootDir": "./dist",
-    "scriptPreprocessor": "../node_modules/babel-jest",
+    "rootDir": "./lib",
     "testFileExtensions": [ "js", "jsx" ],
     "moduleFileExtensions": [ "js", "jsx" ],
     "unmockedModulePathPatterns": [
