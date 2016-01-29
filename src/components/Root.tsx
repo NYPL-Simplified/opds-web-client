@@ -1,15 +1,15 @@
 import * as React from 'react';
-import FeedComponent from './Feed';
+import Collection from './Collection';
 
 export default class RootComponent extends React.Component<any, any> {  
-  constructor(props: RootProps) {
+  constructor(props: any) {
     super(props);
   }
 
   render() : JSX.Element {    
     return (
       <div id="opdsBrowserRoot">
-        <FeedComponent {...this.props.feed} />
+        <Collection {...this.props} />
       </div>
     );
   }

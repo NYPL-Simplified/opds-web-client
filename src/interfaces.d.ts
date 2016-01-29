@@ -1,47 +1,19 @@
-interface CollectionModel {
-  title: string,
-  url: string,
-}
-
-interface CollectionProps extends CollectionModel {  
-  key: string,
-  entries: EntryModel[],
-}
-
-interface EntryModel {
+interface Book {
   id: string,
   title: string,
-  type: string,
   author: string,
-  summary?: string,
-  updated: string,
+  summary: string,
   imageUrl: string,
-  infoUrl?: string,
-  language: string,
-  publisher: string,
-  collection?: CollectionModel,
-  // status: string,
-  // copiesAvailable: number,
-  // copiesTotal: number,
+  publisher: string
 }
 
-interface EntryProps extends EntryModel {  
-  key: string,
-}
-
-declare type EntryCollections = { [index: string]: { url: string, entries: EntryModel[] } };
-
-interface FeedModel {
-  id: string,
+interface Lane {
   title: string,
-  updated: string,
-  link: string,
-  entries: Array<EntryModel>,
+  books: Book[],
 }
 
-interface FeedProps extends FeedModel {
-}
-
-interface RootProps {
-  feed: FeedProps,
+interface Collection {
+  title: string,
+  lanes: Lane[],
+  books: Book[],
 }

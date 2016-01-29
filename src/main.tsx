@@ -4,12 +4,11 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Root from './components/Root';
-import { Map } from 'immutable';
 
-import testFeedData from '../__tests__/testFeedData';
-Object.freeze(testFeedData);
+import testCollectionData from './testCollectionData';
+Object.freeze(testCollectionData);
 
 ReactDOM.render(
-  <Root {...testFeedData} />,
+  <Root {...testCollectionData} />,
   document.getElementById("opds-browser")
 );

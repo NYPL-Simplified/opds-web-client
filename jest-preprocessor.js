@@ -7,6 +7,8 @@ module.exports = {
         src,
         {
           module: tsc.ModuleKind.CommonJS,
+          // module: tsc.ModuleKind.ES6,
+          // target: tsc.ScriptTarget.ES6,
           jsx: tsc.JsxEmit.React
         },
         path,

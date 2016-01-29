@@ -32,9 +32,9 @@ var config = {
         test: /\.tsx?$/,
         exclude: [/node_modules/],
         loaders: [
-          'react-hot', 
+          'react-hot',
           'babel?presets[]=es2015',
-          'ts-loader' 
+          'ts-loader'
         ] 
       },
     ],

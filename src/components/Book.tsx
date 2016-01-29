@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-export default class Entry extends React.Component<EntryProps, any> {  
-  constructor(props: EntryProps) {
+export default class Book extends React.Component<any, any> {  
+  constructor(props: any) {
     super(props);
   }
 
