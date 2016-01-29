@@ -16,7 +16,7 @@
   "dependencies": {
     "immutable": "^3.7.6",
     "lodash": "^4.0.1",
-    "opds-parser": "git@github.com:NYPL-Simplified/opds-parser.git#initial-version",
+    "opds-feed-parser": "0.0.1",
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
     "request": "^2.69.0"
