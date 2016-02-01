@@ -13,6 +13,7 @@ interface Lane {
 }
 
 interface Collection {
+  id: string,
   title: string,
   lanes: Lane[],
   books: Book[],

@@ -9,13 +9,12 @@ var config = {
     ],
   },
   output: {
-    path: './dist',
     filename: 'opds-browser.js',
     publicPath: 'http://localhost:8090/dist',
     library: 'OPDSBrowser',
     libraryTarget: 'umd'
   },
-  devtool: 'source-map',
+  devtool: 'eval',
   plugins: [
     new webpack.DefinePlugin({ "process.env": JSON.stringify(process.env)})
   ],

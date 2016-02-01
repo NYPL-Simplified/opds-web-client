@@ -2,22 +2,21 @@
   "name": "opds-browser",
   "version": "0.0.1",
   "description": "OPDS browser",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/NYPL-Simplified/opds-browser.git"
   },
   "author": "NYPL",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "scripts": {
     "test": "tsc && jest",
     "dev": "npm run dev-serve | npm run dev-build",
     "dev-serve": "NODE_ENV=development node server/index.js",
-    "dev-build": "webpack-dev-server --devtool eval --progress --history-api-fallback --colors --hot --content-base build --port 8090 --config webpack.dev.config",
-    "prepublish": "tsd install"
+    "dev-build": "webpack-dev-server --progress --history-api-fallback --hot --content-base build --port 8090 --config webpack.dev.config",
+    "prepublish": "tsd install && tsc"
   },
   "dependencies": {
-    "lodash": "^4.0.1",
     "react": "^0.14.6",
     "react-dom": "^0.14.6"
   },

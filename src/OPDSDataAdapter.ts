@@ -1,11 +1,19 @@
-import { pick, assign } from 'lodash';
-
-export function entryToBook(entry: any): Book {
-  return <Book>pick(entry, ['id', 'title', 'author', 'summary', 'imageUrl', 'publisher']);
+function entryToBook(entry: any): Book {
+  return <Book>{
+    id: entry.id,
+    title: entry.title,
+    author: entry.author,
+    summary: entry.summary,
+    imageUrl: entry.imageUrl,
+    publisher: entry.publisher     
+  };
 }
   
 export function feedToCollection(feed: any): Collection {
-  let collection = pick(feed, ['id', 'title']);
+  let collection = <Collection>{
+    id: feed.id,
+    title: feed.title
+  }
   let books: Book[] = [];
   let lanes: Lane[] = [];
   let laneTitles = [];
@@ -20,7 +28,7 @@ export function feedToCollection(feed: any): Collection {
       if (laneIndex[title]) {
         laneIndex[title].books.push(book);
       } else {
-        laneIndex[title] = { url, books: [book] };
+        laneIndex[title] = { title, url, books: [book] };
         laneTitles.push(title);
       }
     } else {
@@ -29,9 +37,12 @@ export function feedToCollection(feed: any): Collection {
   });
   
   lanes = laneTitles.reduce((result, title) => {
-    result.push(assign({}, laneIndex[title], { title }));
+    result.push(laneIndex[title]);
     return result;   
   }, lanes);
   
-  return <Collection>assign(collection, { lanes, books });
+  collection.lanes = lanes;
+  collection.books = books;
+  
+  return collection;
 }
