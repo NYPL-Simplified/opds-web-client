@@ -11,7 +11,9 @@
   "license": "ISC",
   "scripts": {
     "test": "tsc && jest",
-    "dev": "webpack-dev-server --devtool eval --progress --history-api-fallback --colors --hot --content-base build --port 8090 --config webpack.dev.config",
+    "dev": "npm run dev-serve | npm run dev-build",
+    "dev-serve": "NODE_ENV=development node server/index.js",
+    "dev-build": "webpack-dev-server --devtool eval --progress --history-api-fallback --colors --hot --content-base build --port 8090 --config webpack.dev.config",
     "prepublish": "tsd install"
   },
   "dependencies": {
