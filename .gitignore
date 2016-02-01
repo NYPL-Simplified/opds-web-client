@@ -1,0 +1,8 @@
+# Dependency directory
+node_modules
+
+# Compiled JS directory
+lib
+
+# TypeScript definitions
+typings
