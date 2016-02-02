@@ -18,7 +18,8 @@
   },
   "dependencies": {
     "react": "^0.14.6",
-    "react-dom": "^0.14.6"
+    "react-dom": "^0.14.6",
+    "opds-feed-parser": "0.0.3"
   },
   "devDependencies": {
     "jest": "^0.1.40",
