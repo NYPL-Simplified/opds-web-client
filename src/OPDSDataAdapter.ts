@@ -1,10 +1,18 @@
+import { OPDSArtworkLink, OPDSCatalogRootLink } from "opds-feed-parser";
+
 function entryToBook(entry: any): Book {
+  let authors = entry.authors.map((author) => {
+    return author.name;
+  });
+  let artworkLinks = entry.links.filter((link) => {
+    return (link instanceof OPDSArtworkLink);
+  });
   return <Book>{
     id: entry.id,
     title: entry.title,
-    author: entry.author,
+    authors: authors,
     summary: entry.summary,
-    imageUrl: entry.imageUrl,
+    imageUrl: artworkLinks[0].href,
     publisher: entry.publisher     
   };
 }
@@ -21,7 +29,6 @@ export function feedToCollection(feed: any): Collection {
     
   feed.entries.forEach(entry => {
     let book = entryToBook(entry);
-
     if (entry.collection) {
       let { title, url } = entry.collection;
       
@@ -32,7 +39,7 @@ export function feedToCollection(feed: any): Collection {
         laneTitles.push(title);
       }
     } else {
-      books.push(entry);
+      books.push(book);
     }      
   });
   

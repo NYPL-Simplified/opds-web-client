@@ -1,7 +1,7 @@
 interface Book {
   id: string,
   title: string,
-  author: string,
+  authors: string[],
   summary: string,
   imageUrl: string,
   publisher: string

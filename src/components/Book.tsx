@@ -10,6 +10,7 @@ export default class Book extends React.Component<any, any> {
       <div className="opdsEntry" style={{ float: "left", textAlign: "center", marginRight: "10px" }}>
         <img src={this.props.imageUrl} style={{ height: "200px" }} />
         <div className="opdsEntryTitle">{this.props.title}</div>
+        <div className="opdsEntryAuthors">{this.props.authors.join(", ")}</div>
       </div>
     );
   }
