@@ -6,3 +6,6 @@ lib
 
 # TypeScript definitions
 typings
+
+# Temporary files
+*~

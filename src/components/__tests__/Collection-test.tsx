@@ -9,7 +9,7 @@ import * as TestUtils from 'react-addons-test-utils';
 import Collection from '../Collection';
 import Lane from '../Lane';
 import Book from '../Book';
-import collectionData from '../../collectionData';
+import collectionData from './collectionData';
 
 describe('Collection', () => {
   it('shows the collection title', () => {
