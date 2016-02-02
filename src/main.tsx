@@ -16,7 +16,6 @@ httpRequest.onreadystatechange = () => {
       let promise = parser.parse(response);
       promise.then((opdsFeed) => {
         let collectionData = feedToCollection(opdsFeed);
-
         ReactDOM.render(
           <Root {...collectionData} />,
           document.getElementById("opds-browser")
@@ -25,6 +24,12 @@ httpRequest.onreadystatechange = () => {
     }
   }
 }
-httpRequest.open('GET', "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/main.xml")
-httpRequest.send();
+//httpRequest.open('GET', "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/main.xml")
+//httpRequest.open('GET', "http://oacontent.alpha.librarysimplified.org")
+
+httpRequest.open('POST', "/proxy", true);
+httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+//httpRequest.send("url=http:\/\/oacontent.alpha.librarysimplified.org/preload");
+httpRequest.send("url=https:\/\/circulation.librarysimplified.org/feed/eng/English%20-%20Best%20Sellers?order=author");
+//httpRequest.send("url=http:\/\/feedbooks.github.io/opds-test-catalog/catalog/acquisition/main.xml");
 
