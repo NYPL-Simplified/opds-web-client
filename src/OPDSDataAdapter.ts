@@ -7,12 +7,17 @@ function entryToBook(entry: any): Book {
   let artworkLinks = entry.links.filter((link) => {
     return (link instanceof OPDSArtworkLink);
   });
+
+  let imageUrl;
+  if (artworkLinks.length > 0) {
+    imageUrl = artworkLinks[0].href;
+  }
   return <Book>{
     id: entry.id,
     title: entry.title,
     authors: authors,
     summary: entry.summary,
-    imageUrl: artworkLinks[0].href,
+    imageUrl: imageUrl,
     publisher: entry.publisher     
   };
 }
