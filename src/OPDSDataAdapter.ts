@@ -1,4 +1,4 @@
-import { OPDSArtworkLink, OPDSCatalogRootLink } from "opds-feed-parser";
+import { OPDSArtworkLink } from "opds-feed-parser";
 import * as url from 'url';
 
 function entryToBook(entry: any, feedUrl: string): Book {
