@@ -16,7 +16,8 @@ export default class Collection extends React.Component<any, any> {
       textAlign: "center",
       position: "fixed",
       width: "100%",
-      height: "50px"
+      height: "50px",
+      top: "0"
     };
             
     return (
