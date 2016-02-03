@@ -1,6 +1,7 @@
 import { OPDSArtworkLink, OPDSCatalogRootLink } from "opds-feed-parser";
+import * as url from 'url';
 
-function entryToBook(entry: any): Book {
+function entryToBook(entry: any, feedUrl: string): Book {
   let authors = entry.authors.map((author) => {
     return author.name;
   });
@@ -10,7 +11,7 @@ function entryToBook(entry: any): Book {
 
   let imageUrl;
   if (artworkLinks.length > 0) {
-    imageUrl = artworkLinks[0].href;
+    imageUrl = url.resolve(feedUrl, artworkLinks[0].href);
   }
   return <Book>{
     id: entry.id,
@@ -22,7 +23,7 @@ function entryToBook(entry: any): Book {
   };
 }
   
-export function feedToCollection(feed: any): Collection {
+export function feedToCollection(feed: any, feedUrl: string): Collection {
   let collection = <Collection>{
     id: feed.id,
     title: feed.title
@@ -33,7 +34,7 @@ export function feedToCollection(feed: any): Collection {
   let laneIndex = [];
     
   feed.entries.forEach(entry => {
-    let book = entryToBook(entry);
+    let book = entryToBook(entry, feedUrl);
     if (entry.collection) {
       let { title, url } = entry.collection;
       
