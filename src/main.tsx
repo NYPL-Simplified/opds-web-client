@@ -30,8 +30,6 @@ httpRequest.onreadystatechange = () => {
     }
   }
 }
-//httpRequest.open('GET', "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/main.xml")
-//httpRequest.open('GET', "http://oacontent.alpha.librarysimplified.org")
 
 httpRequest.open('POST', "/proxy", true);
 httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
