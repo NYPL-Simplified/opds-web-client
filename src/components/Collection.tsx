@@ -13,7 +13,10 @@ export default class Collection extends React.Component<any, any> {
       backgroundColor: "#eee", 
       borderBottom: "1px solid #ccc", 
       marginBottom: "10px",
-      textAlign: "center"
+      textAlign: "center",
+      position: "fixed",
+      width: "100%",
+      height: "50px"
     };
             
     return (
@@ -22,13 +25,15 @@ export default class Collection extends React.Component<any, any> {
           <h1 style={{ margin: 0 }}>{this.props.title}</h1>
         </div>
 
-        { this.props.lanes && this.props.lanes.map(lane => 
-            <Lane key={lane.title} {...lane} />
-        ) } 
+        <div className="collectionBody" style={{ paddingTop: "100px", height: "100%"  }}>
+          { this.props.lanes && this.props.lanes.map(lane => 
+              <Lane key={lane.title} {...lane} />
+          ) } 
 
-        { this.props.books && this.props.books.map(book =>
-            <Book key={book.id} {...book} />
+          { this.props.books && this.props.books.map(book =>
+              <Book key={book.id} {...book} />
           ) }
+        </div>
       </div>
     );
   }
