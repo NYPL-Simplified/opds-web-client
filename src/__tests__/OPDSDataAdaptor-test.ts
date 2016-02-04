@@ -1,6 +1,6 @@
 jest.dontMock('../OPDSDataAdapter');
 
-import { OPDSArtworkLink } from "opds-feed-parser";
+import { OPDSArtworkLink, OPDSCollectionLink } from "opds-feed-parser";
 import { feedToCollection } from '../OPDSDataAdapter';
 
 let artworkUrl = 'https://dlotdqc6pnwqb.cloudfront.net/3M/crrmnr9/cover.jpg';

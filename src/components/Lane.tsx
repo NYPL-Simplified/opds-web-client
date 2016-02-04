@@ -1,19 +1,21 @@
-import * as React from 'react';
-import Book from './Book';
+import * as React from "react";
+import LaneBook from "./LaneBook";
 
-export default class Lane extends React.Component<any, any> {  
+export default class Lane extends React.Component<LaneProps, any> {  
   constructor(props: any) {
     super(props);
   }
 
   render() : JSX.Element {
     return (
-      <div className="opdsLane">
-        <h2>{this.props.title}</h2>
+      <div className="lane">
+        <h2 style={{ clear: "both", paddingTop: "20px" }}>{this.props.title}</h2>
 
-        { this.props.books.map(book => 
-          <Book key={book.id} {...book} />
-        ) }
+        <div className="laneBooks" style={{ height: "250px", width: "100%", whiteSpace: "nowrap", overflowX: "scroll" }}>
+          { this.props.books && this.props.books.map(book => 
+            <LaneBook key={book.id} {...book} />
+          ) }
+        </div>
       </div>
     )
   }

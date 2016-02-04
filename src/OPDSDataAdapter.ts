@@ -1,7 +1,7 @@
-import { OPDSArtworkLink } from "opds-feed-parser";
+import { OPDSArtworkLink, OPDSCollectionLink } from "opds-feed-parser";
 import * as url from 'url';
 
-function entryToBook(entry: any, feedUrl: string): Book {
+function entryToBook(entry: any, feedUrl: string): BookProps {
   let authors = entry.authors.map((author) => {
     return author.name;
   });
@@ -13,7 +13,7 @@ function entryToBook(entry: any, feedUrl: string): Book {
   if (artworkLinks.length > 0) {
     imageUrl = url.resolve(feedUrl, artworkLinks[0].href);
   }
-  return <Book>{
+  return <BookProps>{
     id: entry.id,
     title: entry.title,
     authors: authors,
@@ -23,20 +23,21 @@ function entryToBook(entry: any, feedUrl: string): Book {
   };
 }
   
-export function feedToCollection(feed: any, feedUrl: string): Collection {
-  let collection = <Collection>{
+export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
+  let collection = <CollectionProps>{
     id: feed.id,
     title: feed.title
   }
-  let books: Book[] = [];
-  let lanes: Lane[] = [];
+  let books: BookProps[] = [];
+  let lanes: LaneProps[] = [];
   let laneTitles = [];
   let laneIndex = [];
     
   feed.entries.forEach(entry => {
     let book = entryToBook(entry, feedUrl);
-    if (entry.collection) {
-      let { title, url } = entry.collection;
+    let collection: OPDSCollectionLink = entry.links.find(link => link instanceof OPDSCollectionLink); 
+    if (collection) {
+      let { title, href } = collection;
       
       if (laneIndex[title]) {
         laneIndex[title].books.push(book);
