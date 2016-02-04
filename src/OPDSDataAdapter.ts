@@ -1,4 +1,4 @@
-import { OPDSArtworkLink } from "opds-feed-parser";
+import { OPDSArtworkLink, AcquisitionFeed } from "opds-feed-parser";
 import * as url from 'url';
 
 function entryToBook(entry: any, feedUrl: string): Book {
@@ -22,31 +22,50 @@ function entryToBook(entry: any, feedUrl: string): Book {
     publisher: entry.publisher     
   };
 }
-  
+
+function entryToLink(entry: any, feedUrl: string): Link {
+  let href: string;
+  let links = entry.links;
+  if (links.length > 0) {
+     href = url.resolve(feedUrl, links[0].href);
+  }
+  return <Link>{
+    id: entry.id,
+    title: entry.title,
+    href: href
+  };
+}
+
 export function feedToCollection(feed: any, feedUrl: string): Collection {
   let collection = <Collection>{
     id: feed.id,
     title: feed.title
   }
   let books: Book[] = [];
+  let links: Link[] = [];
   let lanes: Lane[] = [];
   let laneTitles = [];
   let laneIndex = [];
     
   feed.entries.forEach(entry => {
-    let book = entryToBook(entry, feedUrl);
-    if (entry.collection) {
-      let { title, url } = entry.collection;
-      
-      if (laneIndex[title]) {
-        laneIndex[title].books.push(book);
+    if (feed instanceof AcquisitionFeed) {
+      let book = entryToBook(entry, feedUrl);
+      if (entry.collection) {
+        let { title, url } = entry.collection;
+
+        if (laneIndex[title]) {
+          laneIndex[title].books.push(book);
+        } else {
+          laneIndex[title] = { title, url, books: [book] };
+          laneTitles.push(title);
+        }
       } else {
-        laneIndex[title] = { title, url, books: [book] };
-        laneTitles.push(title);
+        books.push(book);
       }
     } else {
-      books.push(book);
-    }      
+      let link = entryToLink(entry, feedUrl);
+      links.push(link);
+    }
   });
   
   lanes = laneTitles.reduce((result, title) => {
@@ -55,6 +74,7 @@ export function feedToCollection(feed: any, feedUrl: string): Collection {
   }, lanes);
   
   collection.lanes = lanes;
+  collection.links = links;
   collection.books = books;
   
   return collection;
