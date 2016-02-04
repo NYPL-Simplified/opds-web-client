@@ -3,7 +3,7 @@ import * as React from 'react';
 export default class Book extends React.Component<BookProps, any> {  
   render() : JSX.Element {
     let bookStyle = {
-      whiteSpace: "normal", // overrides laneBooks style
+      whiteSpace: "normal", // overrides Lane's laneBooks style
       marginRight: "10px",
       marginBottom: "10px",
       overflow: "hidden",
