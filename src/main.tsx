@@ -1,5 +1,3 @@
-/// <reference path='../typings/tsd.d.ts'/>
-
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import Root from './components/Root';
