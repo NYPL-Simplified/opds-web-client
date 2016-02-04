@@ -3,8 +3,11 @@ jest.dontMock('../OPDSDataAdapter');
 import { OPDSArtworkLink } from "opds-feed-parser";
 import { feedToCollection } from '../OPDSDataAdapter';
 
+let artworkUrl = 'https://dlotdqc6pnwqb.cloudfront.net/3M/crrmnr9/cover.jpg';
+
 let artworkLink = new OPDSArtworkLink({
-  href: 'https://dlotdqc6pnwqb.cloudfront.net/3M/crrmnr9/cover.jpg',
+  href: artworkUrl,
+  rel: 'http://opds-spec.org/image',
   type: '',
   title: ''
 });
@@ -33,6 +36,6 @@ describe('OPDSDataAdapter', () => {
     expect(book.authors[1]).toEqual(entry.authors[1].name);
     expect(book.publisher).toEqual(entry.publisher);
     expect(book.summary).toEqual(entry.summary);
-    expect(book.imageUrl).toEqual(entry.links[0].href);
+    expect(book.imageUrl).toEqual(artworkUrl);
   });
 });
