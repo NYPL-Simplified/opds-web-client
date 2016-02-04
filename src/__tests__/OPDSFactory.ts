@@ -9,36 +9,36 @@ import {
 } from "opds-feed-parser";
 
 /*
-Utilities for mocking output from opds-feed-parser.
+Utilities for obtaining instances of classes from opds-feed-parser.
 Most of the constructor arguments use the class as their type,
 so casting arguments to the class lets us avoid including
 required arguments for properties we aren't testing.
 */
 
-export function mockArtworkLink(props: any): OPDSArtworkLink {
+export function artworkLink(props: any): OPDSArtworkLink {
   return new OPDSArtworkLink(<OPDSArtworkLink>props);
 }
 
-export function mockEntry(props: any): OPDSEntry {
+export function entry(props: any): OPDSEntry {
   return new OPDSEntry(<OPDSEntry>props);
 }
 
-export function mockAcquisitionFeed(props: any): AcquisitionFeed {
+export function acquisitionFeed(props: any): AcquisitionFeed {
   return new AcquisitionFeed(<AcquisitionFeed>props);
 }
 
-export function mockLink(props: any): OPDSLink {
+export function link(props: any): OPDSLink {
   return new OPDSLink(<OPDSLink>props);
 }
 
-export function mockNavigationFeed(props: any): NavigationFeed {
+export function navigationFeed(props: any): NavigationFeed {
   return new NavigationFeed(<NavigationFeed>props);
 }
 
-export function mockContributor(props: any): Contributor {
+export function contributor(props: any): Contributor {
   return new Contributor(<Contributor>props);
 }
 
-export function mockSummary(props: any): Summary {
+export function summary(props: any): Summary {
   return new Summary(<Summary>props);
 }
