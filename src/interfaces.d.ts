@@ -8,6 +8,12 @@ interface BookProps {
   key?: any
 }
 
+interface LinkProps {
+  id: string,
+  title: string,
+  href: string
+}
+
 interface LaneProps {
   title: string,
   url: string,
@@ -20,4 +26,5 @@ interface CollectionProps {
   title: string,
   lanes: LaneProps[],
   books: BookProps[],
+  links: LinkProps[]
 }

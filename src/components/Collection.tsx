@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Book from './Book';
+import Link from './Link';
 import Lane from './Lane';
 
 export default class Collection extends React.Component<CollectionProps, any> {  
@@ -34,6 +35,10 @@ export default class Collection extends React.Component<CollectionProps, any> {
           { this.props.books && this.props.books.map(book =>
               <Book key={book.id} {...book} />
           ) }
+
+          { this.props.links && this.props.links.map(link =>
+              <Link key={link.id} {...link} />
+          )}
         </div>
       </div>
     );

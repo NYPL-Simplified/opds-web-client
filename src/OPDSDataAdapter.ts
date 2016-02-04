@@ -1,4 +1,4 @@
-import { OPDSArtworkLink, OPDSCollectionLink } from "opds-feed-parser";
+import { OPDSArtworkLink, AcquisitionFeed, OPDSCollectionLink } from "opds-feed-parser";
 import * as url from 'url';
 
 function entryToBook(entry: any, feedUrl: string): BookProps {
@@ -22,32 +22,51 @@ function entryToBook(entry: any, feedUrl: string): BookProps {
     publisher: entry.publisher     
   };
 }
-  
+
+function entryToLink(entry: any, feedUrl: string): LinkProps {
+  let href: string;
+  let links = entry.links;
+  if (links.length > 0) {
+     href = url.resolve(feedUrl, links[0].href);
+  }
+  return <LinkProps>{
+    id: entry.id,
+    title: entry.title,
+    href: href
+  };
+}
+
 export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
   let collection = <CollectionProps>{
     id: feed.id,
     title: feed.title
   }
   let books: BookProps[] = [];
+  let links: LinkProps[] = [];
   let lanes: LaneProps[] = [];
   let laneTitles = [];
   let laneIndex = [];
     
   feed.entries.forEach(entry => {
-    let book = entryToBook(entry, feedUrl);
-    let collection: OPDSCollectionLink = entry.links.find(link => link instanceof OPDSCollectionLink); 
-    if (collection) {
-      let { title, href } = collection;
-      
-      if (laneIndex[title]) {
-        laneIndex[title].books.push(book);
+    if (feed instanceof AcquisitionFeed) {
+      let book = entryToBook(entry, feedUrl);
+      let collectionLink: OPDSCollectionLink = entry.links.find(link => link instanceof OPDSCollectionLink); 
+      if (collectionLink) {
+        let { title, href } = collectionLink;
+
+        if (laneIndex[title]) {
+          laneIndex[title].books.push(book);
+        } else {
+          laneIndex[title] = { title, url: href, books: [book] };
+          laneTitles.push(title);
+        }
       } else {
-        laneIndex[title] = { title, url, books: [book] };
-        laneTitles.push(title);
+        books.push(book);
       }
     } else {
-      books.push(book);
-    }      
+      let link = entryToLink(entry, feedUrl);
+      links.push(link);
+    }
   });
   
   lanes = laneTitles.reduce((result, title) => {
@@ -56,6 +75,7 @@ export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
   }, lanes);
   
   collection.lanes = lanes;
+  collection.links = links;
   collection.books = books;
   
   return collection;
