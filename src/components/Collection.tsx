@@ -3,7 +3,7 @@ import Book from './Book';
 import Link from './Link';
 import Lane from './Lane';
 
-export default class Collection extends React.Component<any, any> {  
+export default class Collection extends React.Component<CollectionProps, any> {  
   constructor(props: any) {
     super(props);
   }
@@ -27,7 +27,7 @@ export default class Collection extends React.Component<any, any> {
           <h1 style={{ margin: 0 }}>{this.props.title}</h1>
         </div>
 
-        <div className="collectionBody" style={{ paddingTop: "100px", height: "100%", margin: "15px"  }}>
+        <div className="collectionBody" style={{ paddingTop: "60px", height: "100%", margin: "15px"  }}>
           { this.props.lanes && this.props.lanes.map(lane => 
               <Lane key={lane.title} {...lane} />
           ) } 

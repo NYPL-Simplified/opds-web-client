@@ -1,6 +1,7 @@
 jest.dontMock('../OPDSDataAdapter');
-jest.dontMock('./MockOPDS');
+jest.dontMock('./OPDSFactory');
 
+import { OPDSArtworkLink, OPDSCollectionLink } from "opds-feed-parser";
 import * as factory from "./OPDSFactory";
 import { feedToCollection } from '../OPDSDataAdapter';
 
@@ -23,6 +24,7 @@ describe('OPDSDataAdapter', () => {
     });
 
     let acquisitionFeed = factory.acquisitionFeed({
+      id: "some id",
       entries: [entry],
     });
 
@@ -50,6 +52,7 @@ describe('OPDSDataAdapter', () => {
     });
 
     let navigationFeed = factory.navigationFeed({
+      id: "some id",
       entries: [linkEntry],
     });
 

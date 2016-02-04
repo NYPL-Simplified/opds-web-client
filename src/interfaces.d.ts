@@ -1,27 +1,30 @@
-interface Book {
+interface BookProps {
   id: string,
   title: string,
   authors: string[],
   summary: string,
   imageUrl: string,
-  publisher: string
+  publisher: string,
+  key?: any
 }
 
-interface Link {
+interface LinkProps {
   id: string,
   title: string,
   href: string
 }
 
-interface Lane {
+interface LaneProps {
   title: string,
-  books: Book[],
+  url: string,
+  books: BookProps[],
+  key?: any
 }
 
-interface Collection {
+interface CollectionProps {
   id: string,
   title: string,
-  lanes: Lane[],
-  links: Link[],
-  books: Book[],
+  lanes: LaneProps[],
+  books: BookProps[],
+  links: LinkProps[]
 }
