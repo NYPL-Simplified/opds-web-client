@@ -1,1 +1,3 @@
-import './main';
+import OPDSBrowser from './main';
+
+export = OPDSBrowser;

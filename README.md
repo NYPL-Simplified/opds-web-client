@@ -1,6 +1,14 @@
 # opds-browser
 JavaScript OPDS feed browser
 
+## Usage
+```
+new OPDSBrowser(config, elementId);
+```
+
+### Config Options
+- startUrl: initial url of an OPDS feed to load. Default: undefined (allow user to enter URL)
+
 
 ## License
 
