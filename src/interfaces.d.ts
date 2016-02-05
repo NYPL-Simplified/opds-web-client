@@ -39,6 +39,7 @@ interface State {
 }
 
 interface RootProps extends State {
-  startUrl: string,
-  dispatch?: any
+  startUrl?: string,
+  dispatch?: any,
+  fetchUrl?: (url: string) => void
 }

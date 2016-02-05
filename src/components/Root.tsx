@@ -4,21 +4,21 @@ import { fetchCollection } from '../actions';
 import Collection from './Collection';
 import UrlForm from './UrlForm';
 
-class Root extends React.Component<RootProps, any> {
-  render() : JSX.Element {    
-    let fetchUrl = (url) => this.props.dispatch(fetchCollection(url));
-
+export class Root extends React.Component<RootProps, any> {
+  render() : JSX.Element {
     return (
-      <div id="browser">
-        { this.props.collectionData && <Collection {...this.props.collectionData} fetchUrl={fetchUrl} /> }
-        { !this.props.collectionData && <UrlForm fetchUrl={fetchUrl} /> }
+      <div className="browser">
+        { this.props.collectionData ?
+          <Collection {...this.props.collectionData} fetchUrl={this.props.fetchUrl} /> :
+          <UrlForm fetchUrl={this.props.fetchUrl} />
+        }
       </div>
     );
   }
-  
-  componentDidMount() {
+
+  componentWillMount() {
     if (this.props.startUrl) {
-      this.props.dispatch(fetchCollection(this.props.startUrl));
+      this.props.fetchUrl(this.props.startUrl);
     }
   }
 }
@@ -30,6 +30,15 @@ const mapStateToProps = (state) => {
   }
 };
 
-const ConnectedRoot = connect(mapStateToProps)(Root);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchUrl: (url) => dispatch(fetchCollection(url))
+  }
+}
+
+const ConnectedRoot = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Root);
 
 export default ConnectedRoot;
