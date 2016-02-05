@@ -29,7 +29,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
 
         <div className="collectionBody" style={{ paddingTop: "60px", height: "100%", margin: "15px"  }}>
           { this.props.lanes && this.props.lanes.map(lane => 
-              <Lane key={lane.title} {...lane} />
+              <Lane key={lane.title} {...lane} fetchUrl={this.props.fetchUrl} />
           ) } 
 
           { this.props.books && this.props.books.map(book =>
@@ -37,7 +37,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
           ) }
 
           { this.props.links && this.props.links.map(link =>
-              <Link key={link.id} {...link} />
+              <Link key={link.id} {...link} fetchUrl={this.props.fetchUrl} />
           )}
         </div>
       </div>

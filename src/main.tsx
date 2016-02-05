@@ -1,35 +1,29 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { createStore, applyMiddleware } from 'redux';
+let thunk: any = require('redux-thunk');
+import reducers from './reducers/index';
+import { Provider } from 'react-redux';
 import Root from './components/Root';
 import OPDSParser = require("opds-feed-parser");
 import { feedToCollection } from "./OPDSDataAdapter";
 
-let parser = new OPDSParser.default();
+let store = createStore(
+  reducers,
+  applyMiddleware(thunk)
+);
 
-//let feedUrl = "http:\/\/oacontent.alpha.librarysimplified.org/preload";
-//let feedUrl = "http:\/\/oacontent.alpha.librarysimplified.org";
-// let feedUrl = "https:\/\/circulation.librarysimplified.org/feed/eng/English%20-%20Best%20Sellers?order=author";
-let feedUrl = "https:\/\/circulation.librarysimplified.org";
-// let feedUrl = "http:\/\/feedbooks.github.io/opds-test-catalog/catalog/root.xml";
+// let startUrl = "http:\/\/oacontent.alpha.librarysimplified.org/preload";
+// let startUrl = "http:\/\/oacontent.alpha.librarysimplified.org";
+// let startUrl = "https:\/\/circulation.librarysimplified.org/feed/eng/English%20-%20Best%20Sellers?order=author";
+let startUrl = "https:\/\/circulation.librarysimplified.org";
+// let startUrl = "http:\/\/feedbooks.github.io/opds-test-catalog/catalog/root.xml";
 
-var httpRequest = new XMLHttpRequest();
-httpRequest.onreadystatechange = () => {
-  if (httpRequest.readyState === XMLHttpRequest.DONE) {
-    if (httpRequest.status === 200) {
-      let response = httpRequest.responseText;
-      let promise = parser.parse(response);
-      promise.then((opdsFeed) => {
-        let collectionData = feedToCollection(opdsFeed, feedUrl);
-        ReactDOM.render(
-          <Root {...collectionData} />,
-          document.getElementById("opds-browser")
-        );
-      });
-    }
-  }
-}
+let props = { startUrl };
 
-httpRequest.open('POST', "/proxy", true);
-httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-httpRequest.send("url=" + feedUrl);
-
+ReactDOM.render(
+  <Provider store={store}>
+    <Root {...props} />
+  </Provider>,
+  document.getElementById("opds-browser")
+);

@@ -71,7 +71,7 @@ export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
   
   lanes = laneTitles.reduce((result, title) => {
     result.push(laneIndex[title]);
-    return result;   
+    return result;
   }, lanes);
   
   collection.lanes = lanes;
