@@ -1,10 +1,6 @@
 import * as React from 'react';
 
-export default class Link extends React.Component<any, any> {
-  constructor(props: any) {
-    super(props);
-  }
-
+export default class Link extends React.Component<LinkProps, any> {
   render(): JSX.Element {
     let linkStyle = {
       textAlign: "center",
@@ -17,7 +13,9 @@ export default class Link extends React.Component<any, any> {
 
     return (
       <div className="link" style={ linkStyle }>
-        <a href={this.props.href}>{this.props.title}</a>
+        <a href="#" onClick={() => this.props.fetchUrl(this.props.href)}>
+          {this.props.title}
+        </a>
       </div>
     );
   }

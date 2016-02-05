@@ -11,14 +11,17 @@ interface BookProps {
 interface LinkProps {
   id: string,
   title: string,
-  href: string
+  href: string,
+  key?: string,
+  fetchUrl?: (url: string) => void
 }
 
 interface LaneProps {
   title: string,
   url: string,
   books: BookProps[],
-  key?: any
+  key?: any,
+  fetchUrl?: (url: string) => void
 }
 
 interface CollectionProps {
@@ -26,5 +29,16 @@ interface CollectionProps {
   title: string,
   lanes: LaneProps[],
   books: BookProps[],
-  links: LinkProps[]
+  links: LinkProps[],
+  fetchUrl?: (url: string) => void
+}
+
+interface State {
+  collectionData?: CollectionProps,
+  collectionUrl?: string
+}
+
+interface RootProps extends State {
+  startUrl: string,
+  dispatch?: any
 }

@@ -19,7 +19,6 @@ describe('Link', () => {
     );
 
     let linkElement = TestUtils.findRenderedDOMComponentWithTag(renderedLink, 'a');
-    expect(linkElement.getAttribute('href')).toEqual(link.href);
     expect(linkElement.textContent).toEqual(link.title);
   });
 });
