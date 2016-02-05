@@ -8,23 +8,20 @@ import Root from './components/Root';
 import OPDSParser = require("opds-feed-parser");
 import { feedToCollection } from "./OPDSDataAdapter";
 
-let store = createStore(
-  reducers,
-  applyMiddleware(thunk)
-);
+export default class OPDSBrowser {
+  constructor(config: any, elementId: string) {
+    let store = createStore(
+      reducers,
+      applyMiddleware(thunk)
+    );
 
-// let startUrl = "http:\/\/oacontent.alpha.librarysimplified.org/preload";
-// let startUrl = "http:\/\/oacontent.alpha.librarysimplified.org";
-// let startUrl = "https:\/\/circulation.librarysimplified.org/feed/eng/English%20-%20Best%20Sellers?order=author";
-// let startUrl = "https:\/\/circulation.librarysimplified.org";
-// let startUrl = "http:\/\/feedbooks.github.io/opds-test-catalog/catalog/root.xml";
-let startUrl;
+    let props = { startUrl: config.startUrl };
 
-let props = { startUrl };
-
-ReactDOM.render(
-  <Provider store={store}>
-    <Root {...props} />
-  </Provider>,
-  document.getElementById("opds-browser")
-);
+    ReactDOM.render(
+      <Provider store={store}>
+        <Root {...props} />
+      </Provider>,
+      document.getElementById(elementId)
+    );    
+  }
+}
