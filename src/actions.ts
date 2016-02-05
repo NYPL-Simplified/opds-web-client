@@ -8,8 +8,8 @@ export function fetchCollection(url: string) {
     dispatch(requestCollection(url));
     console.log("fetching url: ", url)
 
-    return fetchOPDSData(url, (response) => {
-      dispatch(loadCollection(response, url));
+    return fetchOPDSData(url, (data) => {
+      dispatch(loadCollection(data, url));
     });
   }
 }
