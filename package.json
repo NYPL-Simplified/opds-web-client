@@ -39,6 +39,7 @@
   },
   "jest": {
     "rootDir": "./lib",
+    "testRunner": "../node_modules/jest-cli/src/testRunners/jasmine/jasmine2.js",
     "testFileExtensions": [
       "js",
       "jsx"

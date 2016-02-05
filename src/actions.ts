@@ -14,9 +14,10 @@ export function fetchCollection(url: string) {
   }
 }
 
-function requestCollection(url: string) {
+export function requestCollection(url: string) {
   return { type: REQUEST_COLLECTION, url };
 }
-function loadCollection(data: CollectionProps, url: string) {
+
+export function loadCollection(data: CollectionProps, url?: string) {
   return { type: LOAD_COLLECTION, data, url };
 }
