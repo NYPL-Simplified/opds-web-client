@@ -11,7 +11,7 @@ class Root extends React.Component<RootProps, any> {
     return (
       <div id="browser">
         { this.props.collectionData && <Collection {...this.props.collectionData} fetchUrl={fetchUrl} /> }
-        { !this.props.collectionData && <UrlForm /> }
+        { !this.props.collectionData && <UrlForm fetchUrl={fetchUrl} /> }
       </div>
     );
   }

@@ -16,8 +16,9 @@ let store = createStore(
 // let startUrl = "http:\/\/oacontent.alpha.librarysimplified.org/preload";
 // let startUrl = "http:\/\/oacontent.alpha.librarysimplified.org";
 // let startUrl = "https:\/\/circulation.librarysimplified.org/feed/eng/English%20-%20Best%20Sellers?order=author";
-let startUrl = "https:\/\/circulation.librarysimplified.org";
+// let startUrl = "https:\/\/circulation.librarysimplified.org";
 // let startUrl = "http:\/\/feedbooks.github.io/opds-test-catalog/catalog/root.xml";
+let startUrl;
 
 let props = { startUrl };
 
