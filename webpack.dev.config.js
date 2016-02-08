@@ -1,6 +1,7 @@
 /* global process */
 var webpack = require('webpack');
 
+
 var config = {
   entry: {
     app: [

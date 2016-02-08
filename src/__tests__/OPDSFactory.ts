@@ -1,5 +1,6 @@
 import {
   OPDSArtworkLink,
+  OPDSFacetLink,
   OPDSLink,
   Contributor,
   Summary,
@@ -17,6 +18,10 @@ required arguments for properties we aren't testing.
 
 export function artworkLink(props: any): OPDSArtworkLink {
   return new OPDSArtworkLink(<OPDSArtworkLink>props);
+}
+
+export function facetLink(props: any): OPDSFacetLink {
+  return new OPDSFacetLink(<OPDSFacetLink>props);
 }
 
 export function entry(props: any): OPDSEntry {

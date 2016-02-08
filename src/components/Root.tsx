@@ -6,8 +6,21 @@ import UrlForm from './UrlForm';
 
 export class Root extends React.Component<RootProps, any> {
   render() : JSX.Element {
+    let loadingStyle = {
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      marginTop: "-10px",
+      marginLeft: "-10px",
+      padding: "30px",
+      backgroundColor: "#bbb"
+    };
+
     return (
       <div className="browser">
+        { this.props.isFetching && <h1 className="loading" style={loadingStyle}>LOADING</h1>
+        }
+
         { this.props.collectionData ?
           <Collection {...this.props.collectionData} fetchUrl={this.props.fetchUrl} /> :
           <UrlForm fetchUrl={this.props.fetchUrl} />
@@ -26,7 +39,8 @@ export class Root extends React.Component<RootProps, any> {
 const mapStateToProps = (state) => {
   return {
     collectionData: state.collection.data,
-    collectionUrl: state.collection.url
+    collectionUrl: state.collection.url,
+    isFetching: state.collection.isFetching
   }
 };
 
