@@ -7,11 +7,12 @@ export const LOAD_COLLECTION = "LOAD_COLLECTION";
 export function fetchCollection(url: string) {
   return function(dispatch) {
     dispatch(fetchCollectionRequest(url));
-    console.log("fetching url: ", url)
-
-    return fetchOPDSData(url).then((data: CollectionProps) => {
-      dispatch(fetchCollectionSuccess());
-      dispatch(loadCollection(data, url));
+    return new Promise((resolve, reject) => {
+      fetchOPDSData(url).then((data: CollectionProps) => {
+        dispatch(fetchCollectionSuccess());
+        dispatch(loadCollection(data, url));
+        resolve(data);
+      });
     });
   }
 }
