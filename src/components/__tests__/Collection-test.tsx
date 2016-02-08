@@ -2,6 +2,7 @@ jest.dontMock('../Collection');
 jest.dontMock('../Lane');
 jest.dontMock('../Book');
 jest.dontMock('../LaneBook');
+jest.dontMock('../FacetGroup');
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -11,6 +12,7 @@ import Collection from '../Collection';
 import Lane from '../Lane';
 import Book from '../Book';
 import LaneBook from '../LaneBook';
+import FacetGroup from '../FacetGroup';
 import { groupedCollectionData, ungroupedCollectionData } from './collectionData';
 
 describe('Collection', () => {
@@ -79,6 +81,29 @@ describe('Collection', () => {
       let bookTitles = books.map(book => book.props.title);
       expect(bookTitles).toEqual(collectionData.books.map(book => book.title));
     });
+  });
+
+  describe('collection without facetGroups', () => {
+    it('shows facet groups', () => {
+      let collectionData = {
+        id: "test collection",
+        title: "title",
+        books: [],
+        lanes: [],
+        links: [],
+        facetGroups: [{
+          label: 'group',
+          facets: []
+        }]
+      };
+
+      let collection = TestUtils.renderIntoDocument(
+        <Collection {...collectionData} />
+      );
+      let facetGroups: FacetGroup[] = TestUtils.scryRenderedComponentsWithType(collection, FacetGroup);
+      expect(facetGroups.length).toEqual(1);
+    });
+
   });
 
 });

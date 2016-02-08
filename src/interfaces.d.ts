@@ -24,18 +24,35 @@ interface LaneProps {
   fetchUrl?: (url: string) => void
 }
 
+interface FacetProps {
+  label: string,
+  href: string,
+  active: boolean,
+  key?: any,
+  fetchUrl?: (url: string) => void
+}
+
+interface FacetGroupProps {
+  label: string,
+  facets: FacetProps[],
+  key?: any,
+  fetchUrl?: (url: string) => void
+}
+
 interface CollectionProps {
   id: string,
   title: string,
   lanes: LaneProps[],
   books: BookProps[],
   links: LinkProps[],
+  facetGroups?: FacetGroupProps[];
   fetchUrl?: (url: string) => void
 }
 
 interface State {
   collectionData?: CollectionProps,
-  collectionUrl?: string
+  collectionUrl?: string,
+  isFetching?: boolean
 }
 
 interface RootProps extends State {

@@ -43,4 +43,13 @@ describe('Root', () => {
     expect(fetchUrl.mock.calls.length).toBe(1);
     expect(fetchUrl.mock.calls[0][0]).toBe(startUrl);
   });
+
+  it('shows loading message', () => {
+    let root = TestUtils.renderIntoDocument(
+      <Root isFetching={true} />
+    );
+
+    let loading = TestUtils.findRenderedDOMComponentWithClass(root, 'loading');
+    expect(loading.textContent).toBeTruthy;
+  });
 });

@@ -2,6 +2,7 @@ import * as React from 'react';
 import Book from './Book';
 import Link from './Link';
 import Lane from './Lane';
+import FacetGroup from './FacetGroup';
 
 export default class Collection extends React.Component<CollectionProps, any> {  
   constructor(props: any) {
@@ -9,25 +10,56 @@ export default class Collection extends React.Component<CollectionProps, any> {
   }
 
   render() : JSX.Element {
+    let padding = 10;
+    let headerHeight = 50;
+    let leftPanelWidth = 190;
+
     let collectionTopStyle = { 
-      padding: "10px", 
+      padding: `${padding}px`,
       backgroundColor: "#eee", 
       borderBottom: "1px solid #ccc", 
-      marginBottom: "10px",
+      marginBottom: `${padding}px`,
       textAlign: "center",
       position: "fixed",
       width: "100%",
-      height: "50px",
+      height: `${headerHeight}px`,
       top: "0"
     };
-            
+
+    let collectionBodyStyle: any = {
+      paddingTop: `${headerHeight + padding}px`,
+      height: "100%",
+      marginTop: `${padding + 5}px`
+    };
+
+    if (this.props.facetGroups && this.props.facetGroups.length) {
+      collectionBodyStyle.marginLeft = `${leftPanelWidth + padding}px`;
+    }
+
+    let leftPanelStyle = {
+      paddingTop: `${headerHeight + padding}px`,
+      width: `${leftPanelWidth}px`,
+      position: "fixed",
+      left: "0"    
+    };
+
+
     return (
       <div className="collection" style={{ fontFamily: "Arial, sans-serif" }}>
         <div className="collectionTop" style={collectionTopStyle}>
           <h1 style={{ margin: 0 }}>{this.props.title}</h1>
         </div>
 
-        <div className="collectionBody" style={{ paddingTop: "60px", height: "100%", margin: "15px"  }}>
+        {this.props.facetGroups && this.props.facetGroups.length && (
+          <div className="facetGroups" style={leftPanelStyle}>
+            { this.props.facetGroups.map(facetGroup =>
+                <FacetGroup key={facetGroup.label} {...facetGroup} fetchUrl={this.props.fetchUrl} />
+            )}
+          </div>
+        )}
+
+        <div className="collectionBody" style={collectionBodyStyle}>
+
           { this.props.lanes && this.props.lanes.map(lane => 
               <Lane key={lane.title} {...lane} fetchUrl={this.props.fetchUrl} />
           ) } 
