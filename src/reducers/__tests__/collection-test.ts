@@ -7,33 +7,33 @@ import * as TestUtils from "react-addons-test-utils";
 
 import reducer from "../collection";
 import {
-  requestCollection, loadCollection,
+  fetchCollectionRequest, loadCollection,
 } from "../../actions";
 
 describe("collection reducer", () => {
   let initState = {
     url: null,
     data: null,
-    isLoading: false
+    isFetching: false
   };
 
   let currentState = {
     url: "some url",
     data: { foo: "bar" },
-    isLoading: false
+    isFetching: false
   };
 
   it("should return the initial state", () => {
     expect(reducer(undefined, {})).toEqual(initState);
   });
 
-  it("should handle REQUEST_COLLECTION", () => {
-    let action = requestCollection("some other url");
+  it("should handle FETCH_COLLECTION_REQUEST", () => {
+    let action = fetchCollectionRequest("some other url");
 
     expect(reducer(currentState, action)).toEqual({
       url: "some other url",
       data: currentState.data,
-      isLoading: true
+      isFetching: true
     });
   });
 
@@ -50,7 +50,7 @@ describe("collection reducer", () => {
     expect(reducer(currentState, action)).toEqual({
       url: "some other url",
       data: data,
-      isLoading: false
+      isFetching: false
     });
   });
 });

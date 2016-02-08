@@ -1,24 +1,27 @@
 const initialState = {
   url: null,
   data: null,
-  isLoading: false
+  isFetching: false
 };
 
 const collection = (state = initialState, action) => {
   switch (action.type) {
-    case 'REQUEST_COLLECTION':
-      return {
+    case "FETCH_COLLECTION_REQUEST":
+      return Object.assign({}, state, {
         url: action.url,
-        data: state.data,
-        isLoading: true        
-      };
+        isFetching: true
+      });
 
-    case 'LOAD_COLLECTION':
-      return {
-        url: action.url,
+    case "FETCH_COLLECTION_SUCCESS":
+      return Object.assign({}, state, {
+        isFetching: false
+      });
+
+    case "LOAD_COLLECTION":
+      return Object.assign({}, state, {
         data: action.data,
-        isLoading: false
-      };
+        url: action.url ? action.url : state.url
+      });
 
     default:
       return state;
