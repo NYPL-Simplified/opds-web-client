@@ -22,15 +22,15 @@ describe("UrlForm", () => {
 
   it("fetches the url", () => {
     let fetchUrl = jest.genMockFunction();
-    let form = TestUtils.renderIntoDocument(
+    let urlForm = TestUtils.renderIntoDocument(
       <UrlForm fetchUrl={fetchUrl} />
     );
 
-    let input = TestUtils.findRenderedDOMComponentWithTag(form, "input");
-    let button = TestUtils.findRenderedDOMComponentWithTag(form, "button");
+    let form = TestUtils.findRenderedDOMComponentWithTag(urlForm, "form");
+    let input = TestUtils.findRenderedDOMComponentWithTag(urlForm, "input");
 
     input["value"] = "some url";
-    TestUtils.Simulate.click(button);
+    TestUtils.Simulate.submit(form);
 
     expect(fetchUrl.mock.calls.length).toEqual(1);
     expect(fetchUrl.mock.calls[0][0]).toEqual("some url");
