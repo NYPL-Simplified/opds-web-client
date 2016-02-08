@@ -22,8 +22,7 @@
     "react-dom": "^0.14.6",
     "react-redux": "^4.3.0",
     "redux": "^3.2.1",
-    "redux-thunk": "^1.0.3",
-    "whatwg-fetch": "^0.11.0"
+    "redux-thunk": "^1.0.3"
   },
   "devDependencies": {
     "body-parser": "^1.14.2",
