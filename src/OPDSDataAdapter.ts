@@ -1,4 +1,4 @@
-import { OPDSArtworkLink, AcquisitionFeed, OPDSCollectionLink } from "opds-feed-parser";
+import { OPDSArtworkLink, AcquisitionFeed, OPDSCollectionLink, OPDSFacetLink } from "opds-feed-parser";
 import * as url from 'url';
 
 function entryToBook(entry: any, feedUrl: string): BookProps {
@@ -46,6 +46,7 @@ export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
   let lanes: LaneProps[] = [];
   let laneTitles = [];
   let laneIndex = [];
+  let facetGroups: FacetGroupProps[] = [];
     
   feed.entries.forEach(entry => {
     if (feed instanceof AcquisitionFeed) {
@@ -68,15 +69,47 @@ export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
       links.push(link);
     }
   });
-  
+
   lanes = laneTitles.reduce((result, title) => {
     result.push(laneIndex[title]);
     return result;
   }, lanes);
-  
+
+
+  let facetLinks = [];
+  if (feed.links) {
+    facetLinks = feed.links.filter(link => {
+      return (link instanceof OPDSFacetLink);
+    });
+  }
+
+  facetGroups = facetLinks.reduce((result, link) => {
+    let groupLabel = link.facetGroup;
+    let label = link.title;
+    let href = link.href;
+    let active = link.activeFacet;
+    let facet = { label, href, active };
+    let newResult = [];
+    let foundGroup = false;
+    result.forEach(group => {
+      if (group.label === groupLabel) {
+        let facets = group.facets.concat(facet);
+        newResult.push({ label: groupLabel, facets });
+        foundGroup = true;
+      } else {
+        newResult.push(group);
+      }
+    });
+    if (!foundGroup) {
+      let facets = [facet];
+      newResult.push({ label: groupLabel, facets });
+    }
+    return newResult;
+  }, []);
+
   collection.lanes = lanes;
   collection.links = links;
   collection.books = books;
-  
+  collection.facetGroups = facetGroups;
   return collection;
 }

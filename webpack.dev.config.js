@@ -1,6 +1,7 @@
 /* global process */
 var webpack = require('webpack');
 
+
 var config = {
   entry: {
     app: [
@@ -27,7 +28,7 @@ var config = {
           'react-hot', 
           'ts-loader'
         ] 
-      },
+      }
     ],
     noParse:[]
   },

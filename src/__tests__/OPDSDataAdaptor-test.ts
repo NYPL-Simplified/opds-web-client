@@ -1,7 +1,7 @@
 jest.dontMock('../OPDSDataAdapter');
 jest.dontMock('./OPDSFactory');
 
-import { OPDSArtworkLink, OPDSCollectionLink } from "opds-feed-parser";
+import { OPDSArtworkLink, OPDSCollectionLink, OPDSFacetLink } from "opds-feed-parser";
 import * as factory from "./OPDSFactory";
 import { feedToCollection } from '../OPDSDataAdapter';
 
@@ -63,5 +63,30 @@ describe('OPDSDataAdapter', () => {
     expect(link.title).toEqual(linkEntry.title);
     expect(link.href).toEqual(navigationLink.href);
     expect(link.title).toEqual(linkEntry.title);
+  });
+
+  it('extracts facet groups', () => {
+    let facetLink = factory.facetLink({
+      href: 'href',
+      title: 'title',
+      facetGroup: 'group',
+      activeFacet: true
+    });
+
+    let acquisitionFeed = factory.acquisitionFeed({
+      id: "some id",
+      entries: [],
+      links: [facetLink],
+    });
+
+    let collection = feedToCollection(acquisitionFeed, '');
+    expect(collection.facetGroups.length).toEqual(1);
+    let group = collection.facetGroups[0];
+    expect(group.label).toEqual('group');
+    expect(group.facets.length).toEqual(1);
+    let facet = group.facets[0];
+    expect(facet.label).toEqual('title');
+    expect(facet.active).toBeTruthy;
+    expect(facet.href).toEqual('href');
   });
 });

@@ -24,5 +24,5 @@ export default function fetchData(url, callback) {
 
   httpRequest.open('POST', "/proxy", true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  httpRequest.send("url=" + url);
+  httpRequest.send("url=" + encodeURIComponent(url));
 }

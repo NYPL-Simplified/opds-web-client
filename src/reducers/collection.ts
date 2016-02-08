@@ -1,7 +1,7 @@
 const initialState = {
   url: null,
   data: null,
-  isLoading: false
+  isFetching: false
 };
 
 const collection = (state = initialState, action) => {
@@ -10,14 +10,14 @@ const collection = (state = initialState, action) => {
       return {
         url: action.url,
         data: state.data,
-        isLoading: true        
+        isFetching: true
       };
 
     case 'LOAD_COLLECTION':
       return {
         url: action.url,
         data: action.data,
-        isLoading: false
+        isFetching: false
       };
 
     default:
