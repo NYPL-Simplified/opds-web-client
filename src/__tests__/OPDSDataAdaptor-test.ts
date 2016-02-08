@@ -66,27 +66,56 @@ describe('OPDSDataAdapter', () => {
   });
 
   it('extracts facet groups', () => {
-    let facetLink = factory.facetLink({
-      href: 'href',
-      title: 'title',
-      facetGroup: 'group',
-      activeFacet: true
-    });
+    let facetLinks = [
+      factory.facetLink({
+        href: 'href 1',
+        title: 'title 1',
+        facetGroup: 'group A',
+        activeFacet: true
+      }),
+      factory.facetLink({
+        href: 'href 2',
+        title: 'title 2',
+        facetGroup: 'group B',
+        activeFacet: false
+      }),
+      factory.facetLink({
+        href: 'href 3',
+        title: 'title 3',
+        facetGroup: 'group A'
+      })
+    ];;
 
     let acquisitionFeed = factory.acquisitionFeed({
       id: "some id",
       entries: [],
-      links: [facetLink],
+      links: facetLinks,
     });
 
     let collection = feedToCollection(acquisitionFeed, '');
-    expect(collection.facetGroups.length).toEqual(1);
-    let group = collection.facetGroups[0];
-    expect(group.label).toEqual('group');
-    expect(group.facets.length).toEqual(1);
-    let facet = group.facets[0];
-    expect(facet.label).toEqual('title');
-    expect(facet.active).toBeTruthy;
-    expect(facet.href).toEqual('href');
+    expect(collection.facetGroups.length).toEqual(2);
+
+    let groupA = collection.facetGroups[0];
+    expect(groupA.label).toEqual('group A');
+    expect(groupA.facets.length).toEqual(2);
+
+    let groupB = collection.facetGroups[1];
+    expect(groupB.label).toEqual('group B');
+    expect(groupB.facets.length).toEqual(1);
+
+    let facet1 = groupA.facets[0];
+    expect(facet1.label).toEqual('title 1');
+    expect(facet1.active).toBeTruthy;
+    expect(facet1.href).toEqual('href 1');
+
+    let facet2 = groupB.facets[0];
+    expect(facet2.label).toEqual('title 2');
+    expect(facet2.active).toBeFalsy;
+    expect(facet2.href).toEqual('href 2');
+
+    let facet3 = groupA.facets[1];
+    expect(facet3.label).toEqual('title 3');
+    expect(facet3.active).toBeFalsy;
+    expect(facet3.href).toEqual('href 3');
   });
 });
