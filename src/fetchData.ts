@@ -1,29 +1,23 @@
 import { feedToCollection } from "./OPDSDataAdapter";
 import OPDSParser from "opds-feed-parser";
-import * as request from "request";
 
-export function fetchOPDSData(feedUrl, callback) {
+export function fetchOPDSData(feedUrl) {
   let parser = new OPDSParser;
-  fetchData(feedUrl, (response) => {
-    parser.parse(response).then((opdsFeed) => {
-      let collectionData = feedToCollection(opdsFeed, feedUrl);
-      callback(collectionData);
+
+  return new Promise((resolve, reject) => {
+    fetch("/proxy", {
+      method: "post",
+      headers: {
+        "Content-type": "application/x-www-form-urlencoded"
+      },
+      body: "url=" + feedUrl
+    }).then(response => response.text()).then(body => {
+      parser.parse(body).then((opdsFeed) => {
+        let collectionData = feedToCollection(opdsFeed, feedUrl);
+        resolve(collectionData);
+      });
+    }).catch(err => {
+      reject(err);
     });
   });
-}
-
-export default function fetchData(url, callback) {
-  let httpRequest = new XMLHttpRequest();
-
-  httpRequest.onreadystatechange = () => {
-    if (httpRequest.readyState === XMLHttpRequest.DONE) {
-      if (httpRequest.status === 200) {
-        return callback(httpRequest.responseText);
-      }
-    }
-  }
-
-  httpRequest.open('POST', "/proxy", true);
-  httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  httpRequest.send("url=" + url);
 }

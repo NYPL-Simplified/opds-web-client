@@ -20,14 +20,14 @@ var config = {
   ],
   module: {
     loaders: [
-      { 
+      {
         test: /\.tsx?$/,
         exclude: [/node_modules/],
         loaders: [
-          'react-hot', 
+          'react-hot',
           'ts-loader'
-        ] 
-      },
+        ]
+      }
     ],
     noParse:[]
   },

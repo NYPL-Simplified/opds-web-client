@@ -9,7 +9,7 @@ export function fetchCollection(url: string) {
     dispatch(fetchCollectionRequest(url));
     console.log("fetching url: ", url)
 
-    return fetchOPDSData(url, (data) => {
+    return fetchOPDSData(url).then((data: CollectionProps) => {
       dispatch(fetchCollectionSuccess());
       dispatch(loadCollection(data, url));
     });
