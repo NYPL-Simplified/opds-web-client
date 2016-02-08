@@ -43,3 +43,7 @@ interface RootProps extends State {
   dispatch?: any,
   fetchUrl?: (url: string) => void
 }
+
+interface UrlFormProps {
+  fetchUrl?: (url: string) => void
+}
