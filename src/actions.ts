@@ -26,7 +26,7 @@ export function fetchSearchDescription(url: string) {
   return function(dispatch) {
     return new Promise((resolve, reject) => {
       fetchSearchDescriptionData(url).then((data: SearchProps) => {
-        dispatch(loadSearchDescription(data, url));
+        dispatch(loadSearchDescription(data));
         resolve(data);
       }).catch(err => reject(err));
     });
@@ -49,6 +49,6 @@ export function loadCollection(data: CollectionProps, url?: string) {
   return { type: LOAD_COLLECTION, data, url };
 }
 
-export function loadSearchDescription(data: SearchProps, url?: string) {
-  return { type: LOAD_SEARCH_DESCRIPTION, data, url };
+export function loadSearchDescription(data: SearchProps) {
+  return { type: LOAD_SEARCH_DESCRIPTION, data };
 }

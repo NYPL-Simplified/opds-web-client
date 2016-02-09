@@ -60,7 +60,7 @@ describe("collection reducer", () => {
       shortName: "s",
       template: (s) => s + " template"
     };
-    let action = loadSearchDescription({ data }, "url");
+    let action = loadSearchDescription({ data });
 
     let newState = reducer(currentState, action);
     expect(newState.data.search).toBeTruthy;
