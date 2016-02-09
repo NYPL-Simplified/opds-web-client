@@ -1,10 +1,11 @@
-import { fetchOPDSData } from "./fetchData";
+import { fetchOPDSData, fetchSearchDescriptionData } from "./fetchData";
 
 export const FETCH_COLLECTION_REQUEST = "FETCH_COLLECTION_REQUEST";
 export const FETCH_COLLECTION_SUCCESS = "FETCH_COLLECTION_SUCCESS";
 export const FETCH_COLLECTION_FAILURE = "FETCH_COLLECTION_FAILURE";
 export const LOAD_COLLECTION = "LOAD_COLLECTION";
 export const CLEAR_COLLECTION = "CLEAR_COLLECTION";
+export const LOAD_SEARCH_DESCRIPTION = "LOAD_SEARCH_DESCRIPTION";
 
 export function fetchCollection(url: string) {
   return function(dispatch) {
@@ -20,6 +21,17 @@ export function fetchCollection(url: string) {
       });
     });
   }
+}
+
+export function fetchSearchDescription(url: string) {
+  return function(dispatch) {
+    return new Promise((resolve, reject) => {
+      fetchSearchDescriptionData(url).then((data: SearchProps) => {
+        dispatch(loadSearchDescription(data));
+        resolve(data);
+      }).catch(err => reject(err));
+    });
+  };
 }
 
 export function fetchCollectionRequest(url: string) {
@@ -40,4 +52,8 @@ export function loadCollection(data: CollectionProps, url?: string) {
 
 export function clearCollection() {
   return { type: CLEAR_COLLECTION };
+}
+
+export function loadSearchDescription(data: SearchProps) {
+  return { type: LOAD_SEARCH_DESCRIPTION, data };
 }

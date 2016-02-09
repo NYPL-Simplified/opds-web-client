@@ -68,19 +68,19 @@ describe('OPDSDataAdapter', () => {
   it('extracts facet groups', () => {
     let facetLinks = [
       factory.facetLink({
-        href: 'href 1',
+        href: 'href1',
         title: 'title 1',
         facetGroup: 'group A',
         activeFacet: true
       }),
       factory.facetLink({
-        href: 'href 2',
+        href: 'href2',
         title: 'title 2',
         facetGroup: 'group B',
         activeFacet: false
       }),
       factory.facetLink({
-        href: 'href 3',
+        href: 'href3',
         title: 'title 3',
         facetGroup: 'group A'
       })
@@ -106,16 +106,32 @@ describe('OPDSDataAdapter', () => {
     let facet1 = groupA.facets[0];
     expect(facet1.label).toEqual('title 1');
     expect(facet1.active).toBeTruthy;
-    expect(facet1.href).toEqual('href 1');
+    expect(facet1.href).toEqual('href1');
 
     let facet2 = groupB.facets[0];
     expect(facet2.label).toEqual('title 2');
     expect(facet2.active).toBeFalsy;
-    expect(facet2.href).toEqual('href 2');
+    expect(facet2.href).toEqual('href2');
 
     let facet3 = groupA.facets[1];
     expect(facet3.label).toEqual('title 3');
     expect(facet3.active).toBeFalsy;
-    expect(facet3.href).toEqual('href 3');
+    expect(facet3.href).toEqual('href3');
+  });
+
+  it('extracts search link', () => {
+    let searchLink = factory.searchLink({
+      href: 'href',
+    });
+
+    let navigationFeed = factory.navigationFeed({
+      id: "some id",
+      entries: [],
+      links: [searchLink],
+    });
+
+    let collection = feedToCollection(navigationFeed, '');
+    expect(collection.search).toBeTruthy;
+    expect(collection.search.url).toEqual("href");
   });
 });

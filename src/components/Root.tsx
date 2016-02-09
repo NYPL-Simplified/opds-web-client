@@ -1,6 +1,10 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { fetchCollection, clearCollection } from "../actions";
+import {
+  fetchCollection,
+  clearCollection,
+  fetchSearchDescription
+} from "../actions";
 import Collection from "./Collection";
 import UrlForm from "./UrlForm";
 
@@ -21,11 +25,13 @@ export class Root extends React.Component<RootProps, any> {
 
     return (
       <div className="browser">
-        { this.props.isFetching && <h1 className="loading" style={loadingStyle}>LOADING</h1>
-        }
+        { this.props.isFetching && <h1 className="loading" style={loadingStyle}>LOADING</h1> }
 
         { this.props.collectionData ?
-          <Collection {...this.props.collectionData} fetchCollection={this.props.fetchCollection} /> :
+          <Collection
+            {...this.props.collectionData}
+            fetchCollection={this.props.fetchCollection}
+            fetchSearchDescription={this.props.fetchSearchDescription} /> :
           this.props.isFetching ? null : <UrlForm fetchCollection={this.props.fetchCollection} />
         }
       </div>
@@ -54,7 +60,8 @@ const mapDispatchToProps = (dispatch) => {
     },
     clearCollection: () => {
       dispatch(clearCollection());
-    }
+    },
+    fetchSearchDescription: (url) => dispatch(fetchSearchDescription(url))
   }
 }
 

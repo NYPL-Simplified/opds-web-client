@@ -3,6 +3,7 @@ import Book from './Book';
 import Link from './Link';
 import Lane from './Lane';
 import FacetGroup from './FacetGroup';
+import Search from './Search';
 
 export default class Collection extends React.Component<CollectionProps, any> {
   render() : JSX.Element {
@@ -45,6 +46,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
       <div className="collection" style={{ fontFamily: "Arial, sans-serif" }}>
         <div className="collectionTop" style={collectionTopStyle}>
           <h1 style={{ margin: 0 }}>{this.props.title}</h1>
+          { this.props.search && <Search {...this.props.search} fetchSearchDescription={this.props.fetchSearchDescription} fetchUrl={this.props.fetchUrl} /> }
         </div>
 
         {this.props.facetGroups && this.props.facetGroups.length && (

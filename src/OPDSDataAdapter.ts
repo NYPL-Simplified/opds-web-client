@@ -1,4 +1,10 @@
-import { OPDSArtworkLink, AcquisitionFeed, OPDSCollectionLink, OPDSFacetLink } from "opds-feed-parser";
+import {
+  OPDSArtworkLink,
+  AcquisitionFeed,
+  OPDSCollectionLink,
+  OPDSFacetLink,
+  SearchLink
+} from "opds-feed-parser";
 import * as url from 'url';
 
 function entryToBook(entry: any, feedUrl: string): BookProps {
@@ -47,6 +53,7 @@ export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
   let laneTitles = [];
   let laneIndex = [];
   let facetGroups: FacetGroupProps[] = [];
+  let search: SearchProps;
     
   feed.entries.forEach(entry => {
     if (feed instanceof AcquisitionFeed) {
@@ -58,7 +65,7 @@ export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
         if (laneIndex[title]) {
           laneIndex[title].books.push(book);
         } else {
-          laneIndex[title] = { title, url: href, books: [book] };
+          laneIndex[title] = { title, url: url.resolve(feedUrl, href), books: [book] };
           laneTitles.push(title);
         }
       } else {
@@ -81,12 +88,19 @@ export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
     facetLinks = feed.links.filter(link => {
       return (link instanceof OPDSFacetLink);
     });
+
+    let searchLink = feed.links.find(link => {
+      return (link instanceof SearchLink);
+    });
+    if (searchLink) {
+      search = {url: url.resolve(feedUrl, searchLink.href)};
+    }
   }
 
   facetGroups = facetLinks.reduce((result, link) => {
     let groupLabel = link.facetGroup;
     let label = link.title;
-    let href = link.href;
+    let href = url.resolve(feedUrl, link.href);
     let active = link.activeFacet;
     let facet = { label, href, active };
     let newResult = [];
@@ -111,5 +125,6 @@ export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
   collection.links = links;
   collection.books = books;
   collection.facetGroups = facetGroups;
+  collection.search = search;
   return collection;
 }

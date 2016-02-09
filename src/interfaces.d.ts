@@ -39,13 +39,26 @@ interface FacetGroupProps extends FetchCollectionProps {
   key?: any
 }
 
+interface SearchProps {
+  url?: string,
+  data?: {
+    description: string,
+    shortName: string,
+    template: (searchTerms: string) => string
+  },
+  fetchSearchDescription?: (url: string) => void,
+  fetchUrl?: (url: string) => void
+}
+
 interface CollectionProps extends FetchCollectionProps {
   id: string,
   title: string,
   lanes: LaneProps[],
   books: BookProps[],
   links: LinkProps[],
-  facetGroups?: FacetGroupProps[]
+  facetGroups?: FacetGroupProps[],
+  search?: SearchProps,
+  fetchSearchDescription?: (url: string) => void
 }
 
 interface State {
@@ -59,7 +72,8 @@ interface RootProps extends State, FetchCollectionProps {
   onFetch?: (url: string) => any,
   dispatch?: any,
   clearCollection?: () => void,
-  ref?: any
+  ref?: any,
+  fetchSearchDescription?: (url: string) => void
 }
 
 interface UrlFormProps extends FetchCollectionProps {
