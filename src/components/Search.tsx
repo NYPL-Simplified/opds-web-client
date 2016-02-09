@@ -20,9 +20,16 @@ export default class Search extends React.Component<SearchProps, any> {
     }
   }
 
+  componentWillUpdate(props) {
+    if (props.url) {
+      props.fetchSearchDescription(props.url);
+    }
+  }
+
   onSubmit(event) {
     let searchTerms = this.refs["input"]["value"];
     let url = this.props.data.template(searchTerms);
     this.props.fetchCollection(url);
+    event.preventDefault();
   }
 }

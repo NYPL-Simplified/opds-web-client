@@ -41,7 +41,6 @@ export default class Collection extends React.Component<CollectionProps, any> {
       left: "0"
     };
 
-
     return (
       <div className="collection" style={{ fontFamily: "Arial, sans-serif" }}>
         <div className="collectionTop" style={collectionTopStyle}>

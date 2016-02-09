@@ -46,8 +46,7 @@ interface SearchProps extends FetchCollectionProps {
     shortName: string,
     template: (searchTerms: string) => string
   },
-  fetchSearchDescription?: (url: string) => void,
-  fetchUrl?: (url: string) => void
+  fetchSearchDescription?: (url: string) => void
 }
 
 interface CollectionProps extends FetchCollectionProps {

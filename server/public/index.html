@@ -18,7 +18,6 @@
       };
 
       window.onpopstate = function(event) {
-        console.log("popping state:", event.state);
         if (event.state && event.state.collectionUrl) {
           browser.loadUrl(event.state.collectionUrl, false);
         } else {

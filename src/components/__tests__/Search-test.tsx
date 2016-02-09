@@ -38,14 +38,14 @@ describe("Search", () => {
   });
 
   it("fetches the search feed", () => {
-    let fetchUrl = jest.genMockFunction();
+    let fetchCollection = jest.genMockFunction();
     let searchData = {
       data: {
         description: "description",
         shortName: "shortName",
         template: (s) => s + " template"
       },
-      fetchUrl: fetchUrl
+      fetchCollection: fetchCollection
     };
     let search = TestUtils.renderIntoDocument(
       <Search {...searchData} />
@@ -58,7 +58,7 @@ describe("Search", () => {
     input["value"] = "test";
     TestUtils.Simulate.submit(form);
 
-    expect(fetchUrl.mock.calls.length).toEqual(1);
-    expect(fetchUrl.mock.calls[0][0]).toEqual("test template");
+    expect(fetchCollection.mock.calls.length).toEqual(1);
+    expect(fetchCollection.mock.calls[0][0]).toEqual("test template");
   });
 });
