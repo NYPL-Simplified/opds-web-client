@@ -41,7 +41,7 @@ describe("Lane", () => {
       <Lane {...laneProps} />
     );
 
-    let books = TestUtils.scryRenderedDOMComponentsWithTag(lane, Book);
+    let books = TestUtils.scryRenderedComponentsWithType(lane, Book);
     expect(books.length).toBe(books.length);
   });
 });
