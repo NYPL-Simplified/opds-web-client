@@ -12,6 +12,7 @@ const collection = (state = initialState, action) => {
         isFetching: true
       });
 
+    case "FETCH_COLLECTION_FAILURE":
     case "FETCH_COLLECTION_SUCCESS":
       return Object.assign({}, state, {
         isFetching: false

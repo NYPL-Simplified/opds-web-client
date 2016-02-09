@@ -2,6 +2,7 @@ import { fetchOPDSData } from "./fetchData";
 
 export const FETCH_COLLECTION_REQUEST = "FETCH_COLLECTION_REQUEST";
 export const FETCH_COLLECTION_SUCCESS = "FETCH_COLLECTION_SUCCESS";
+export const FETCH_COLLECTION_FAILURE = "FETCH_COLLECTION_FAILURE";
 export const LOAD_COLLECTION = "LOAD_COLLECTION";
 
 export function fetchCollection(url: string) {
@@ -12,7 +13,10 @@ export function fetchCollection(url: string) {
         dispatch(loadCollection(data, url));
         dispatch(fetchCollectionSuccess());
         resolve(data);
-      }).catch(err => reject(err));
+      }).catch(err => {
+        dispatch(fetchCollectionFailure(err));
+        reject(err);
+      });
     });
   }
 }
@@ -23,6 +27,10 @@ export function fetchCollectionRequest(url: string) {
 
 export function fetchCollectionSuccess() {
   return { type: FETCH_COLLECTION_SUCCESS };
+}
+
+export function fetchCollectionFailure(message?: string) {
+  return { type: FETCH_COLLECTION_FAILURE, message };
 }
 
 export function loadCollection(data: CollectionProps, url?: string) {
