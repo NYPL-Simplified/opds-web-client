@@ -15,22 +15,28 @@
       var getParameterByName = function(name) {
         var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
         return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
-      }
-
-      var browser = new OPDSBrowser({
-        startUrl: getParameterByName("url"),
-        onFetch: function(url) {
-          window.history.pushState({ collectionUrl: url }, url, "?url=" + url);
-        }
-      }, "opds-browser");
+      };
 
       window.onpopstate = function(event) {
+        console.log("popping state:", event.state);
         if (event.state && event.state.collectionUrl) {
           browser.loadUrl(event.state.collectionUrl, false);
         } else {
           browser.clearUrl();
         }
       };
+
+      var startUrl = getParameterByName("url");
+      var browser = new OPDSBrowser({
+        startUrl: startUrl,
+        onFetch: function(url) {
+          window.history.pushState({ collectionUrl: url }, url, "?url=" + url);
+        }
+      }, "opds-browser");
+
+      if (startUrl) {
+        window.history.replaceState({ collectionUrl: startUrl }, startUrl, "?url=" + startUrl);
+      }
     </script>
   </body>
 </html>
