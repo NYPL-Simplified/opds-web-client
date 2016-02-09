@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { fetchCollection, clearCollection } from "../actions";
 import Collection from "./Collection";
 import UrlForm from "./UrlForm";
-import * as queryString from "query-string";
 
 export class Root extends React.Component<RootProps, any> {
   render() : JSX.Element {
@@ -35,7 +34,7 @@ export class Root extends React.Component<RootProps, any> {
 
   componentWillMount() {
     if (this.props.startUrl) {
-      this.props.fetchCollection(this.props.startUrl);
+      this.props.fetchCollection(this.props.startUrl, false);
     }
 
     window.onpopstate = event => {
@@ -45,16 +44,6 @@ export class Root extends React.Component<RootProps, any> {
         this.props.clearCollection();
       }
     };
-
-    this.parseQueryString();
-  }
-
-  parseQueryString() {
-    let params = queryString.parse(window.location.search);
-
-    if (params.url) {
-      this.props.fetchCollection(params.url);
-    }
   }
 }
 
