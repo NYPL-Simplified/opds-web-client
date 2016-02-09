@@ -39,7 +39,7 @@ interface FacetGroupProps extends FetchCollectionProps {
   key?: any
 }
 
-interface SearchProps {
+interface SearchProps extends FetchCollectionProps {
   url?: string,
   data?: {
     description: string,

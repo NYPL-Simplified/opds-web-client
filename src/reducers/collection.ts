@@ -28,6 +28,7 @@ const collection = (state = initialState, action) => {
       return Object.assign({}, state, {
         data: null,
         url: null
+      });
 
     case "LOAD_SEARCH_DESCRIPTION":
       return Object.assign({}, state, {

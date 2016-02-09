@@ -46,7 +46,12 @@ export default class Collection extends React.Component<CollectionProps, any> {
       <div className="collection" style={{ fontFamily: "Arial, sans-serif" }}>
         <div className="collectionTop" style={collectionTopStyle}>
           <h1 style={{ margin: 0 }}>{this.props.title}</h1>
-          { this.props.search && <Search {...this.props.search} fetchSearchDescription={this.props.fetchSearchDescription} fetchUrl={this.props.fetchUrl} /> }
+          { this.props.search &&
+            <Search
+              {...this.props.search}
+              fetchSearchDescription={this.props.fetchSearchDescription}
+              fetchCollection={this.props.fetchCollection} />
+          }
         </div>
 
         {this.props.facetGroups && this.props.facetGroups.length && (
