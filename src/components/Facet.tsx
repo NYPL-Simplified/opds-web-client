@@ -1,4 +1,5 @@
 import * as React from 'react';
+import CollectionLink from "./CollectionLink";
 
 export default class Facet extends React.Component<FacetProps, any> {
   render() : JSX.Element {
@@ -11,9 +12,7 @@ export default class Facet extends React.Component<FacetProps, any> {
 
     return (
       <div style={facetStyle}>
-        <a onClick={() => this.props.fetchUrl(this.props.href)}>
-          {this.props.label}
-        </a>
+        <CollectionLink text={this.props.label} url={this.props.href} fetchCollection={this.props.fetchCollection} />
       </div>
     );
   }

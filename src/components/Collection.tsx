@@ -4,20 +4,16 @@ import Link from './Link';
 import Lane from './Lane';
 import FacetGroup from './FacetGroup';
 
-export default class Collection extends React.Component<CollectionProps, any> {  
-  constructor(props: any) {
-    super(props);
-  }
-
+export default class Collection extends React.Component<CollectionProps, any> {
   render() : JSX.Element {
     let padding = 10;
     let headerHeight = 50;
     let leftPanelWidth = 190;
 
-    let collectionTopStyle = { 
+    let collectionTopStyle = {
       padding: `${padding}px`,
-      backgroundColor: "#eee", 
-      borderBottom: "1px solid #ccc", 
+      backgroundColor: "#eee",
+      borderBottom: "1px solid #ccc",
       marginBottom: `${padding}px`,
       textAlign: "center",
       position: "fixed",
@@ -27,6 +23,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
     };
 
     let collectionBodyStyle: any = {
+      padding: `${padding}px`,
       paddingTop: `${headerHeight + padding}px`,
       height: "100%",
       marginTop: `${padding + 5}px`
@@ -40,7 +37,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
       paddingTop: `${headerHeight + padding}px`,
       width: `${leftPanelWidth}px`,
       position: "fixed",
-      left: "0"    
+      left: "0"
     };
 
 
@@ -53,23 +50,23 @@ export default class Collection extends React.Component<CollectionProps, any> {
         {this.props.facetGroups && this.props.facetGroups.length && (
           <div className="facetGroups" style={leftPanelStyle}>
             { this.props.facetGroups.map(facetGroup =>
-                <FacetGroup key={facetGroup.label} {...facetGroup} fetchUrl={this.props.fetchUrl} />
+                <FacetGroup key={facetGroup.label} {...facetGroup} fetchCollection={this.props.fetchCollection} />
             )}
           </div>
         )}
 
         <div className="collectionBody" style={collectionBodyStyle}>
 
-          { this.props.lanes && this.props.lanes.map(lane => 
-              <Lane key={lane.title} {...lane} fetchUrl={this.props.fetchUrl} />
-          ) } 
+          { this.props.lanes && this.props.lanes.map(lane =>
+              <Lane key={lane.title} {...lane} fetchCollection={this.props.fetchCollection} />
+          ) }
 
           { this.props.books && this.props.books.map(book =>
               <Book key={book.id} {...book} />
           ) }
 
           { this.props.links && this.props.links.map(link =>
-              <Link key={link.id} {...link} fetchUrl={this.props.fetchUrl} />
+              <Link key={link.id} {...link} fetchCollection={this.props.fetchCollection} />
           )}
         </div>
       </div>

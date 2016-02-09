@@ -1,4 +1,5 @@
 jest.dontMock('../Link');
+jest.dontMock('../CollectionLink');
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
