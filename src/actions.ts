@@ -9,10 +9,10 @@ export function fetchCollection(url: string) {
     dispatch(fetchCollectionRequest(url));
     return new Promise((resolve, reject) => {
       fetchOPDSData(url).then((data: CollectionProps) => {
-        dispatch(fetchCollectionSuccess());
         dispatch(loadCollection(data, url));
+        dispatch(fetchCollectionSuccess());
         resolve(data);
-      });
+      }).catch(err => reject(err));
     });
   }
 }

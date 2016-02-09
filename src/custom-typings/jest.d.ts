@@ -1,9 +1,10 @@
-// Compiled using typings@0.6.6
-// Source: https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/86dbea8fc37d9473fee465da4f0a21bea4f8cbd9/jest/jest.d.ts
-// Type definitions for Jest 0.1.18
-// Project: http://facebook.github.io/jest/
-// Definitions by: Asana <https://asana.com>
-// Definitions: https://github.com/borisyankov/DefinitelyTyped
+// Modified type definitions for Jest 0.1.18
+//
+// * Altered it() to allow Jasmine 2's done() as a second parameter
+// * Removed all other unused definitions
+// * Replaced various types with "any" for greater flexibility
+//
+// Original definitions: https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/86dbea8fc37d9473fee465da4f0a21bea4f8cbd9/jest/jest.d.ts
 
 
 declare function afterEach(fn: any): void;
