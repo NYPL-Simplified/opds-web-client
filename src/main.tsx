@@ -7,22 +7,32 @@ import { Provider } from 'react-redux';
 import Root from './components/Root';
 import OPDSParser = require("opds-feed-parser");
 import { feedToCollection } from "./OPDSDataAdapter";
-import * as queryString from "query-string";
 
 export default class OPDSBrowser {
+  root: any;
+
   constructor(config: any, elementId: string) {
     let store = createStore(
       reducers,
       applyMiddleware(thunk)
     );
 
-    let startUrl = queryString.parse(window.location.search).url || config.startUrl;
-
     ReactDOM.render(
       <Provider store={store}>
-        <Root startUrl={startUrl} />
+        <Root
+          ref={(c) => this.root = c}
+          startUrl={config.startUrl}
+          onFetch={config.onFetch} />
       </Provider>,
       document.getElementById(elementId)
     );
+  }
+
+  loadUrl(url: string, useCallback: boolean = true) {
+    this.root.getWrappedInstance().props.fetchCollection(url, useCallback);
+  }
+
+  clearUrl() {
+    this.root.getWrappedInstance().props.clearCollection();
   }
 }

@@ -56,8 +56,10 @@ interface State {
 
 interface RootProps extends State, FetchCollectionProps {
   startUrl?: string,
+  onFetch?: (url: string) => any,
   dispatch?: any,
-  clearCollection?: () => void
+  clearCollection?: () => void,
+  ref?: any
 }
 
 interface UrlFormProps extends FetchCollectionProps {

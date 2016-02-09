@@ -5,14 +5,32 @@
     <title>OPDS Browser</title>
     <script src="http://localhost:8090/webpack-dev-server.js"></script>
     <style>
-      body { margin: 0; }      
+      body { margin: 0; }
     </style>
   </head>
   <body>
     <div id="opds-browser"></div>
     <script src="http://localhost:8090/dist/opds-browser.js"></script>
     <script>
-      var browser = new OPDSBrowser({}, "opds-browser");
+      var getParameterByName = function(name) {
+        var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+        return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+      }
+
+      var browser = new OPDSBrowser({
+        startUrl: getParameterByName("url"),
+        onFetch: function(url) {
+          window.history.pushState({ collectionUrl: url }, url, "?url=" + url);
+        }
+      }, "opds-browser");
+
+      window.onpopstate = function(event) {
+        if (event.state && event.state.collectionUrl) {
+          browser.loadUrl(event.state.collectionUrl, false);
+        } else {
+          browser.clearUrl();
+        }
+      };
     </script>
   </body>
 </html>

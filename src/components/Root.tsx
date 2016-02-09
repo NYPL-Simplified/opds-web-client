@@ -36,14 +36,6 @@ export class Root extends React.Component<RootProps, any> {
     if (this.props.startUrl) {
       this.props.fetchCollection(this.props.startUrl, false);
     }
-
-    window.onpopstate = event => {
-      if (event.state && event.state.collectionUrl) {
-        this.props.fetchCollection(event.state.collectionUrl, false);
-      } else {
-        this.props.clearCollection();
-      }
-    };
   }
 }
 
@@ -57,12 +49,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchCollection: (url, push: boolean = true) => {
+    fetchCollection: (url: string) => {
       dispatch(fetchCollection(url));
-
-      if (push) {
-        window.history.pushState({ collectionUrl: url }, url, "?url=" + url);
-      }
     },
     clearCollection: () => {
       dispatch(clearCollection());
@@ -70,9 +58,24 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+  return Object.assign({}, ownProps, stateProps, dispatchProps, {
+    fetchCollection: (url: string, useHandler: boolean = true) => {
+      dispatchProps.fetchCollection(url);
+
+      if (useHandler && ownProps.onFetch) {
+        ownProps.onFetch(url);
+      }
+    }
+  });
+};
+
+let connectOptions = { withRef: true, pure: true };
 const ConnectedRoot = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
+  mergeProps,
+  connectOptions
 )(Root);
 
 export default ConnectedRoot;
