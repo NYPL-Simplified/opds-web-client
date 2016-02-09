@@ -1,5 +1,6 @@
 import { feedToCollection } from './OPDSDataAdapter';
 import OPDSParser from 'opds-feed-parser';
+import OpenSearchDescriptionParser from './OpenSearchDescriptionParser';
 
 export function fetchOPDSData(feedUrl) {
   let parser = new OPDSParser;
@@ -15,6 +16,18 @@ export function fetchOPDSData(feedUrl) {
     }).catch(err => {
       reject(err);
     });
+  });
+}
+
+export function fetchSearchDescriptionData(searchDescriptionUrl) {
+  let parser = new OpenSearchDescriptionParser;
+
+  return new Promise((resolve, reject) => {
+    fetchData(searchDescriptionUrl).then((response: string) => {
+      parser.parse(response, searchDescriptionUrl).then((openSearchDescription) => {
+        resolve({data: openSearchDescription});
+      }).catch(err => reject(err));
+    }).catch(err => reject(err));
   });
 }
 

@@ -7,7 +7,7 @@ import * as TestUtils from "react-addons-test-utils";
 
 import reducer from "../collection";
 import {
-  fetchCollectionRequest, loadCollection,
+  fetchCollectionRequest, loadCollection, loadSearchDescription
 } from "../../actions";
 
 describe("collection reducer", () => {
@@ -52,5 +52,20 @@ describe("collection reducer", () => {
       data: data,
       isFetching: false
     });
+  });
+
+  it("should handle LOAD_SEARCH_DESCRIPTION", () => {
+    let data = {
+      description: "d",
+      shortName: "s",
+      template: (s) => s + " template"
+    };
+    let action = loadSearchDescription({ data }, "url");
+
+    let newState = reducer(currentState, action);
+    expect(newState.data.search).toBeTruthy;
+    expect(newState.data.search.data.description).toEqual("d");
+    expect(newState.data.search.data.shortName).toEqual("s");
+    expect(newState.data.search.data.template("test")).toEqual("test template");
   });
 });
