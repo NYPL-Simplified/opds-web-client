@@ -1,6 +1,7 @@
 import {
   OPDSArtworkLink,
   OPDSFacetLink,
+  SearchLink,
   OPDSLink,
   Contributor,
   Summary,
@@ -22,6 +23,10 @@ export function artworkLink(props: any): OPDSArtworkLink {
 
 export function facetLink(props: any): OPDSFacetLink {
   return new OPDSFacetLink(<OPDSFacetLink>props);
+}
+
+export function searchLink(props: any): SearchLink {
+  return new SearchLink(<SearchLink>props);
 }
 
 export function entry(props: any): OPDSEntry {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux'
-import { fetchCollection } from '../actions';
+import { fetchCollection, fetchSearchDescription } from '../actions';
 import Collection from './Collection';
 import UrlForm from './UrlForm';
 
@@ -18,11 +18,10 @@ export class Root extends React.Component<RootProps, any> {
 
     return (
       <div className="browser">
-        { this.props.isFetching && <h1 className="loading" style={loadingStyle}>LOADING</h1>
-        }
+        { this.props.isFetching && <h1 className="loading" style={loadingStyle}>LOADING</h1> }
 
         { this.props.collectionData ?
-          <Collection {...this.props.collectionData} fetchUrl={this.props.fetchUrl} /> :
+          <Collection {...this.props.collectionData} fetchUrl={this.props.fetchUrl} fetchSearchDescription={this.props.fetchSearchDescription} /> :
           <UrlForm fetchUrl={this.props.fetchUrl} />
         }
       </div>
@@ -46,7 +45,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchUrl: (url) => dispatch(fetchCollection(url))
+    fetchUrl: (url) => dispatch(fetchCollection(url)),
+    fetchSearchDescription: (url) => dispatch(fetchSearchDescription(url))
   }
 }
 

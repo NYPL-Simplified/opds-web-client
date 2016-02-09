@@ -16,10 +16,12 @@ jest.setMock("../fetchData", mockFetchData);
 
 import {
   fetchCollection,
+  fetchSearchDescription,
   FETCH_COLLECTION_REQUEST,
   FETCH_COLLECTION_SUCCESS,
   FETCH_COLLECTION_FAILURE,
-  LOAD_COLLECTION
+  LOAD_COLLECTION,
+  LOAD_SEARCH_DESCRIPTION
 } from "../actions";
 
 describe("actions", () => {
@@ -50,6 +52,20 @@ describe("actions", () => {
         expect(err).toBe("test error");
         done();
       });
+    });
+  });
+
+  describe("fetchSearchDescription", () => {
+    it("dispatches load", (done) => {
+      let dispatch = jest.genMockFunction();
+      mockFetchData.resolve = true;
+
+      fetchSearchDescription("http://example.com/search")(dispatch).then(data => {
+        expect(dispatch.mock.calls.length).toBe(1);
+        expect(dispatch.mock.calls[0][0].type).toBe(LOAD_SEARCH_DESCRIPTION);
+        expect(data).toBe("test data");
+        done();
+      }).catch(done);
     });
   });
 });
