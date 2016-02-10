@@ -33,6 +33,10 @@ export default class ErrorMessage extends React.Component<ErrorMessageProps, any
   }
 
   maxWordLength() {
+    if (typeof this.props.message !== "string") {
+      return 0;
+    }
+
     let words = this.props.message.split("/\s/");
 
     if (words.length > 0) {
