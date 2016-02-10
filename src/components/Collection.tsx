@@ -27,7 +27,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
       padding: `${padding}px`,
       paddingTop: `${headerHeight + padding}px`,
       height: "100%",
-      marginTop: `${padding + 5}px`
+      marginTop: `${padding + 5}px`,
     };
 
     if (this.props.facetGroups && this.props.facetGroups.length) {
@@ -39,6 +39,12 @@ export default class Collection extends React.Component<CollectionProps, any> {
       width: `${leftPanelWidth}px`,
       position: "fixed",
       left: "0"
+    };
+
+    let loadingNextPageStyle = {
+      clear: "both",
+      height: "50px",
+      textAlign: "center"
     };
 
     return (
@@ -74,8 +80,25 @@ export default class Collection extends React.Component<CollectionProps, any> {
           { this.props.links && this.props.links.map(link =>
               <Link key={link.id} {...link} fetchCollection={this.props.fetchCollection} />
           )}
+
+          { this.props.isFetchingPage && <div className="loadingNextPage" style={loadingNextPageStyle}>Loading next page...</div> }
         </div>
       </div>
     );
+  }
+
+  componentDidMount() {
+    window.addEventListener("scroll", this.handleScroll.bind(this));
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll.bind(this));
+  }
+
+  handleScroll() {
+    let atBottom = ((document.body.scrollTop + window.innerHeight) >= document.body.scrollHeight);
+    if (atBottom && !this.props.isFetchingPage && this.props.nextPageUrl) {
+      this.props.fetchPage(this.props.nextPageUrl);
+    }
   }
 }

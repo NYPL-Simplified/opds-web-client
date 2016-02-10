@@ -30,6 +30,31 @@ const collection = (state = initialState, action) => {
         url: action.url ? action.url : state.url
       });
 
+    case "FETCH_PAGE_REQUEST":
+      return Object.assign({}, state, {
+        pageUrl: action.url,
+        isFetchingPage: true
+      });
+
+    case "FETCH_PAGE_SUCCESS":
+      return Object.assign({}, state, {
+        isFetchingPage: false
+      });
+
+    case "FETCH_PAGE_FAILURE":
+      return Object.assign({}, state, {
+        isFetchingPage: false,
+        error: action.message
+      });
+
+    case "LOAD_PAGE":
+      return Object.assign({}, state, {
+        data: Object.assign({}, state.data, {
+          books: Object.assign([], state.data.books).concat(action.data.books),
+          nextPageUrl: action.data.nextPageUrl
+        })
+      });
+
     case "CLEAR_COLLECTION":
       return Object.assign({}, state, {
         data: null,

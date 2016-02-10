@@ -137,4 +137,21 @@ describe("OPDSDataAdapter", () => {
     expect(collection.search).toBeTruthy;
     expect(collection.search.url).toEqual("href");
   });
+
+  it("extracts next page url", () => {
+    let nextLink = factory.link({
+      href: "href",
+      rel: "next"
+    });
+
+    let acquisitionFeed = factory.acquisitionFeed({
+      id: "some id",
+      entries: [],
+      links: [nextLink],
+    });
+
+    let collection = feedToCollection(acquisitionFeed, "");
+    expect(collection.nextPageUrl).toBeTruthy;
+    expect(collection.nextPageUrl).toEqual("href");
+  });
 });
