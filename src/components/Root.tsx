@@ -4,8 +4,11 @@ import {
   fetchCollection,
   clearCollection,
   fetchSearchDescription,
-  closeError
+  closeError,
+  showBookDetails,
+  hideBookDetails
 } from "../actions";
+import BookDetails from "./BookDetails";
 import LoadingIndicator from "./LoadingIndicator";
 import ErrorMessage from "./ErrorMessage";
 import Collection from "./Collection";
@@ -15,6 +18,7 @@ export class Root extends React.Component<RootProps, any> {
   render(): JSX.Element {
     return (
       <div className="browser">
+        { this.props.book && <BookDetails {...this.props.book} hideBookDetails={this.props.hideBookDetails} /> }
         { this.props.isFetching && <LoadingIndicator /> }
         { this.props.error && <ErrorMessage message={this.props.error} closeError={this.props.closeError} /> }
 
@@ -22,7 +26,8 @@ export class Root extends React.Component<RootProps, any> {
           <Collection
             {...this.props.collectionData}
             fetchCollection={this.props.fetchCollection}
-            fetchSearchDescription={this.props.fetchSearchDescription} /> :
+            fetchSearchDescription={this.props.fetchSearchDescription}
+            showBookDetails={this.props.showBookDetails} /> :
           this.props.isFetching ? null : <UrlForm fetchCollection={this.props.fetchCollection} url={this.props.collectionUrl} />
         }
       </div>
@@ -38,11 +43,13 @@ export class Root extends React.Component<RootProps, any> {
 }
 
 const mapStateToProps = (state) => {
+  console.log(state.book);
   return {
     collectionData: state.collection.data,
     collectionUrl: state.collection.url,
     isFetching: state.collection.isFetching,
-    error: state.collection.error
+    error: state.collection.error,
+    book: state.book
   };
 };
 
@@ -51,7 +58,9 @@ const mapDispatchToProps = (dispatch) => {
     fetchCollection: (url: string) => dispatch(fetchCollection(url)),
     clearCollection: () => dispatch(clearCollection()),
     fetchSearchDescription: (url: string) => dispatch(fetchSearchDescription(url)),
-    closeError: () => dispatch(closeError())
+    closeError: () => dispatch(closeError()),
+    showBookDetails: (book: BookProps) => dispatch(showBookDetails(book)),
+    hideBookDetails: () => dispatch(hideBookDetails())
   };
 };
 

@@ -7,6 +7,8 @@ export const LOAD_COLLECTION = "LOAD_COLLECTION";
 export const CLEAR_COLLECTION = "CLEAR_COLLECTION";
 export const LOAD_SEARCH_DESCRIPTION = "LOAD_SEARCH_DESCRIPTION";
 export const CLOSE_ERROR = "CLOSE_ERROR";
+export const SHOW_BOOK_DETAILS = "SHOW_BOOK_DETAILS";
+export const HIDE_BOOK_DETAILS = "HIDE_BOOK_DETAILS";
 
 export function fetchCollection(url: string) {
   return function(dispatch) {
@@ -61,4 +63,12 @@ export function loadSearchDescription(data: SearchProps) {
 
 export function closeError() {
   return { type: CLOSE_ERROR };
+}
+
+export function showBookDetails(book: BookProps) {
+  return { type: SHOW_BOOK_DETAILS, book };
+}
+
+export function hideBookDetails() {
+  return { type: HIDE_BOOK_DETAILS };
 }

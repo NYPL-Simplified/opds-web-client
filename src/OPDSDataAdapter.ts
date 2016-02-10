@@ -31,7 +31,8 @@ function entryToBook(entry: any, feedUrl: string): BookProps {
     authors: authors,
     summary: entry.summary,
     imageUrl: imageUrl,
-    publisher: entry.publisher
+    publisher: entry.publisher,
+    published: entry.published
   };
 }
 

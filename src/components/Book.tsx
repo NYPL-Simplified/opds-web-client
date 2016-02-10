@@ -1,4 +1,5 @@
 import * as React from "react";
+import BookLink from "./BookLink";
 
 export default class Book extends React.Component<BookProps, any> {
   render(): JSX.Element {
@@ -34,7 +35,9 @@ export default class Book extends React.Component<BookProps, any> {
 
     return (
       <div className="book" style={ bookStyle }>
-        <img src={this.props.imageUrl} style={ bookCoverStyle } />
+        <BookLink book={this.props} showBookDetails={this.props.showBookDetails}>
+          <img src={this.props.imageUrl} style={bookCoverStyle} />
+        </BookLink>
         <div className="bookInfo" style={ bookInfoStyle }>
           <div className="bookTitle" style={ bookTitleStyle }>{this.props.title}</div>
           <div className="bookAuthors">{this.props.authors.join(", ")}</div>

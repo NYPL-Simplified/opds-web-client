@@ -64,7 +64,11 @@ export default class Collection extends React.Component<CollectionProps, any> {
         <div className="collectionBody" style={collectionBodyStyle}>
 
           { this.props.lanes && this.props.lanes.map(lane =>
-              <Lane key={lane.title} {...lane} fetchCollection={this.props.fetchCollection} />
+              <Lane
+                key={lane.title}
+                {...lane}
+                fetchCollection={this.props.fetchCollection}
+                showBookDetails={this.props.showBookDetails} />
           ) }
 
           { this.props.books && this.props.books.map(book =>

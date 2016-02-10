@@ -18,7 +18,7 @@ import { groupedCollectionData, ungroupedCollectionData } from "./collectionData
 describe("Collection", () => {
   describe("collection with lanes", () => {
     let collectionData: CollectionProps = groupedCollectionData;
-    let collection: Collection;
+    let collection;
 
     beforeEach(() => {
       collection = TestUtils.renderIntoDocument(
@@ -53,7 +53,7 @@ describe("Collection", () => {
 
   describe("collection without lanes", () => {
     let collectionData = ungroupedCollectionData;
-    let collection: Collection;
+    let collection;
 
     beforeEach(() => {
       collection = TestUtils.renderIntoDocument(
