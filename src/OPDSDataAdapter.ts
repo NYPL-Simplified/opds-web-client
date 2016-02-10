@@ -27,7 +27,7 @@ function entryToBook(entry: any, feedUrl: string): BookProps {
   }
 
   // until OPDSParser parses dcterms:publisher...
-  let publisher = entry.unparsed["dcterms:publisher"] ? entry.unparsed["dcterms:publisher"][0]["_"] : null;
+  let publisher = entry.unparsed && entry.unparsed["dcterms:publisher"] ? entry.unparsed["dcterms:publisher"][0]["_"] : null;
   let published = formatDate(entry.published);
 
   return <BookProps>{

@@ -1,5 +1,6 @@
 jest.dontMock("../Book");  // because LaneBook inherits Book
 jest.dontMock("../LaneBook");
+jest.dontMock("../BookLink");
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";

@@ -39,7 +39,7 @@ describe("OPDSDataAdapter", () => {
     expect(book.authors.length).toEqual(2);
     expect(book.authors[0]).toEqual(entry.authors[0].name);
     expect(book.authors[1]).toEqual(entry.authors[1].name);
-    expect(book.summary).toEqual(entry.summary);
+    expect(book.summary).toEqual(entry.summary.content);
     expect(book.imageUrl).toEqual(thumbImageLink.href);
   });
 
