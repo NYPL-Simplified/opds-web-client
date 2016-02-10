@@ -22,6 +22,14 @@ export default class BookDetails extends React.Component<BookProps, any> {
           onClick={() => this.props.hideBookDetails()}
           style={{ position: "fixed", zIndex: 10, top: "0", bottom: "0", width: "100%", backgroundColor: "rgba(128, 128, 128, 0.8)" }}></div>
         <div className="bookDetails" style={bookDetailsStyle}>
+          <div style={{ float: "right" }}>
+            <a href="javascript:void(0)"
+              className="bookDetailsCloseButton"
+              style={{ fontSize: "1em" }}
+              onClick={() => this.props.hideBookDetails()}>
+              Close
+            </a>
+          </div>
           <div className="bookImage" style={{ width: "150px", float: "left", textAlign: "right" }}>
             <img src={this.props.imageUrl} style={{ height: "150px" }}/>
           </div>
@@ -38,11 +46,6 @@ export default class BookDetails extends React.Component<BookProps, any> {
             className="bookDetailsSummary"
             style={{ marginTop: "1em", marginBottom: "1em", paddingTop: "1em", borderTop: "1px solid #ccc" }}
             dangerouslySetInnerHTML={{ __html: this.props.summary }}></div>
-          <button
-            className="bookDetailsCloseButton"
-            onClick={() => this.props.hideBookDetails()}>
-            Close
-          </button>
         </div>
       </div>
     );
