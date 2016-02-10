@@ -82,6 +82,5 @@ interface CollectionLinkProps {
   text: string,
   url: string,
   className?: string,
-  children?: any,
   fetchCollection: (url: string, push?: boolean) => void
 }
