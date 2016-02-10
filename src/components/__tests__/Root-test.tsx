@@ -1,4 +1,6 @@
 jest.dontMock("../Root");
+jest.dontMock("../LoadingIndicator");
+jest.dontMock("../ErrorMessage");
 jest.dontMock("../Collection");
 jest.dontMock("../UrlForm");
 
@@ -51,5 +53,14 @@ describe("Root", () => {
 
     let loading = TestUtils.findRenderedDOMComponentWithClass(root, "loading");
     expect(loading.textContent).toBeTruthy;
+  });
+
+  it("shows error message", () => {
+    let root = TestUtils.renderIntoDocument(
+      <Root error={"test error"} />
+    );
+
+    let error = TestUtils.findRenderedDOMComponentWithClass(root, "error");
+    expect(error.textContent).toContain("test error");
   });
 });

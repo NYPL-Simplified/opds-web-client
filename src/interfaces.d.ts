@@ -64,6 +64,7 @@ interface State {
   collectionData?: CollectionProps;
   collectionUrl?: string;
   isFetching?: boolean;
+  error?: string;
 }
 
 interface RootProps extends State, FetchCollectionProps {
@@ -73,9 +74,11 @@ interface RootProps extends State, FetchCollectionProps {
   clearCollection?: () => void;
   ref?: any;
   fetchSearchDescription?: (url: string) => void;
+  closeError?: () => void;
 }
 
 interface UrlFormProps extends FetchCollectionProps {
+  url?: string;
 }
 
 interface CollectionLinkProps {
@@ -83,4 +86,9 @@ interface CollectionLinkProps {
   url: string;
   className?: string;
   fetchCollection: (url: string, push?: boolean) => void;
+}
+
+interface ErrorMessageProps {
+  message: string;
+  closeError: () => void;
 }
