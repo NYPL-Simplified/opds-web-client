@@ -11,7 +11,7 @@ export default class UrlForm extends React.Component<UrlFormProps, any> {
             name="url"
             type="text"
             style={{ width: "600px", fontSize: "1.2em", padding: "0.5em" }}
-            value={this.props.url} />
+            defaultValue={this.props.url} />
           &nbsp;
           <button type="submit" style={{ fontSize: "1.2em", padding: "0.5em" }}>Load</button>
         </form>
