@@ -2,14 +2,14 @@ import * as React from "react";
 
 export default class ErrorMessage extends React.Component<ErrorMessageProps, any> {
   render(): JSX.Element {
-    let loadingWidth = Math.max(400, this.maxWordLength() * 5);
+    let errorWidth = Math.max(400, this.maxWordLength() * 5);
     let errorStyle = {
       position: "fixed",
       top: "50%",
       left: "50%",
-      width: `${loadingWidth}px`,
+      width: `${errorWidth}px`,
       marginTop: "-100px",
-      marginLeft: `-${loadingWidth / 2}px`,
+      marginLeft: `-${errorWidth / 2}px`,
       padding: "30px",
       backgroundColor: "#bbb",
       textAlign: "center",
