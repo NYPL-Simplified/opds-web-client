@@ -1,13 +1,13 @@
-jest.dontMock('../Facet');
-jest.dontMock('../CollectionLink');
+jest.dontMock("../Facet");
+jest.dontMock("../CollectionLink");
 
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import * as TestUtils from 'react-addons-test-utils';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import * as TestUtils from "react-addons-test-utils";
 
-import Facet from '../Facet';
+import Facet from "../Facet";
 
-describe('Facet', () => {
+describe("Facet", () => {
   it("shows facet link", () => {
     let facet = {
       label: "Available now",
@@ -19,7 +19,7 @@ describe('Facet', () => {
       <Facet {...facet} />
     );
 
-    let link = TestUtils.findRenderedDOMComponentWithTag(renderedFacet, 'a');
+    let link = TestUtils.findRenderedDOMComponentWithTag(renderedFacet, "a");
     expect(link.textContent).toEqual(facet.label);
   });
 
@@ -36,10 +36,10 @@ describe('Facet', () => {
       <Facet {...facet} />
     );
 
-    let link = TestUtils.findRenderedDOMComponentWithTag(renderedFacet, 'a');
+    let link = TestUtils.findRenderedDOMComponentWithTag(renderedFacet, "a");
     TestUtils.Simulate.click(link);
 
     expect(fetchCollection.mock.calls.length).toEqual(1);
-    expect(fetchCollection.mock.calls[0][0]).toEqual('href');
+    expect(fetchCollection.mock.calls[0][0]).toEqual("href");
   });
 });

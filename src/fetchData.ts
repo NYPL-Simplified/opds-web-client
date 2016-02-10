@@ -43,7 +43,7 @@ export default function fetchData(url) {
           reject("Could not fetch data: " + url);
         }
       }
-    }
+    };
 
     httpRequest.open("POST", "/proxy", true);
     httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import CollectionLink from "./CollectionLink";
 
 export default class Link extends React.Component<LinkProps, any> {
