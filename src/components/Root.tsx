@@ -43,7 +43,6 @@ export class Root extends React.Component<RootProps, any> {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state.book);
   return {
     collectionData: state.collection.data,
     collectionUrl: state.collection.url,

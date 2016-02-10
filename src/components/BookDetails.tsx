@@ -7,34 +7,43 @@ export default class BookDetails extends React.Component<BookProps, any> {
       top: "50%",
       left: "50%",
       width: "800px",
-      marginTop: "-100px",
+      marginTop: "-200px",
       marginLeft: "-400px",
       padding: "30px",
       backgroundColor: "#fff",
-      fontFamily: "Arial, Helvetica, sans-serif"
-    };
-
-    let imageStyle = {
-      float: "left",
-      height: "150px"
+      fontFamily: "Arial, Helvetica, sans-serif",
+      zIndex: 20
     };
 
     return (
-      <div className="bookDetails" style={bookDetailsStyle}>
-        <img src={this.props.imageUrl} style={imageStyle}/>
-        <div className="bookDetailsTop" style={{ float: "left", marginLeft: "1em" }}>
-          <h1 className="bookDetailsTitle" style={{ margin: 0 }}>{this.props.title}</h1>
-          <div className="bookDetailsAuthor" style={{ marginTop: "0.5em" }}>{this.props.authors}</div>
-          <br />
-          Published: {this.props.published}<br />
-          Publisher: {this.props.publisher}<br />
+      <div>
+        <div
+          className="bookDetailsScreen"
+          onClick={() => this.props.hideBookDetails()}
+          style={{ position: "fixed", zIndex: 10, top: "0", bottom: "0", width: "100%", backgroundColor: "rgba(128, 128, 128, 0.8)" }}></div>
+        <div className="bookDetails" style={bookDetailsStyle}>
+          <div className="bookImage" style={{ width: "150px", float: "left", textAlign: "right" }}>
+            <img src={this.props.imageUrl} style={{ height: "150px" }}/>
+          </div>
+          <div className="bookDetailsTop" style={{ marginLeft: "1em", width: "550px", float: "left", height: "150px" }}>
+            <h1 className="bookDetailsTitle" style={{ margin: 0 }}>{this.props.title}</h1>
+            <div className="bookDetailsAuthor" style={{ marginTop: "0.5em", fontSize: "1.2em" }}>{this.props.authors}</div>
+            <div style={{ marginTop: "2em", color: "#888", fontSize: "0.9em" }}>
+              Published: {this.props.published}<br />
+              Publisher: {this.props.publisher}
+            </div>
+          </div>
+          <div style={{ clear: "both" }}></div>
+          <div
+            className="bookDetailsSummary"
+            style={{ marginTop: "1em", marginBottom: "1em", paddingTop: "1em", borderTop: "1px solid #ccc" }}
+            dangerouslySetInnerHTML={{ __html: this.props.summary }}></div>
+          <button
+            className="bookDetailsCloseButton"
+            onClick={() => this.props.hideBookDetails()}>
+            Close
+          </button>
         </div>
-        <div style={{ clear: "both" }}></div>
-        <button
-          className="bookDetailsCloseButton"
-          onClick={() => this.props.hideBookDetails()}>
-          Close
-        </button>
       </div>
     );
   }
