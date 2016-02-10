@@ -40,6 +40,6 @@ const collection = (state = initialState, action) => {
     default:
       return state;
   }
-}
+};
 
 export default collection;
