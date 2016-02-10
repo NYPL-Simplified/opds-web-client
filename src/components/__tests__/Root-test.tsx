@@ -1,4 +1,5 @@
 jest.dontMock("../Root");
+jest.dontMock("../LoadingIndicator");
 jest.dontMock("../Collection");
 jest.dontMock("../UrlForm");
 
