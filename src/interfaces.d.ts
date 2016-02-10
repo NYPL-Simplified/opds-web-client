@@ -1,3 +1,7 @@
+interface FetchCollectionProps {
+  fetchCollection?: (url: string, push?: boolean) => void
+}
+
 interface BookProps {
   id: string,
   title: string,
@@ -8,49 +12,44 @@ interface BookProps {
   key?: any
 }
 
-interface LinkProps {
+interface LinkProps extends FetchCollectionProps {
   id: string,
   title: string,
   href: string,
-  key?: string,
-  fetchUrl?: (url: string) => void
+  key?: string
 }
 
-interface LaneProps {
+interface LaneProps extends FetchCollectionProps {
   title: string,
   url: string,
   books: BookProps[],
-  key?: any,
-  fetchUrl?: (url: string) => void
+  key?: any
 }
 
-interface FacetProps {
+interface FacetProps extends FetchCollectionProps {
   label: string,
   href: string,
   active: boolean,
-  key?: any,
-  fetchUrl?: (url: string) => void
+  key?: any
 }
 
-interface FacetGroupProps {
+interface FacetGroupProps extends FetchCollectionProps {
   label: string,
   facets: FacetProps[],
-  key?: any,
-  fetchUrl?: (url: string) => void
+  key?: any
 }
 
-interface SearchProps {
+interface SearchProps extends FetchCollectionProps {
   url?: string,
   data?: {
     description: string,
     shortName: string,
     template: (searchTerms: string) => string
   },
-  fetchSearchDescription?: (url: string) => void,
-  fetchUrl?: (url: string) => void
+  fetchSearchDescription?: (url: string) => void
 }
 
-interface CollectionProps {
+interface CollectionProps extends FetchCollectionProps {
   id: string,
   title: string,
   lanes: LaneProps[],
@@ -58,7 +57,6 @@ interface CollectionProps {
   links: LinkProps[],
   facetGroups?: FacetGroupProps[],
   search?: SearchProps,
-  fetchUrl?: (url: string) => void,
   fetchSearchDescription?: (url: string) => void
 }
 
@@ -68,13 +66,21 @@ interface State {
   isFetching?: boolean
 }
 
-interface RootProps extends State {
+interface RootProps extends State, FetchCollectionProps {
   startUrl?: string,
+  onFetch?: (url: string) => any,
   dispatch?: any,
-  fetchUrl?: (url: string) => void,
+  clearCollection?: () => void,
+  ref?: any,
   fetchSearchDescription?: (url: string) => void
 }
 
-interface UrlFormProps {
-  fetchUrl?: (url: string) => void
+interface UrlFormProps extends FetchCollectionProps {
+}
+
+interface CollectionLinkProps {
+  text: string,
+  url: string,
+  className?: string,
+  fetchCollection: (url: string, push?: boolean) => void
 }

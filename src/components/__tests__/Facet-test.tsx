@@ -1,4 +1,5 @@
 jest.dontMock('../Facet');
+jest.dontMock('../CollectionLink');
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -23,12 +24,12 @@ describe('Facet', () => {
   });
 
   it("is clickable to navigate to facet", () => {
-    let fetchUrl = jest.genMockFunction();
+    let fetchCollection = jest.genMockFunction();
     let facet = {
       label: "Available now",
       href: "href",
       active: true,
-      fetchUrl: fetchUrl
+      fetchCollection: fetchCollection
     };
 
     let renderedFacet = TestUtils.renderIntoDocument(
@@ -38,7 +39,7 @@ describe('Facet', () => {
     let link = TestUtils.findRenderedDOMComponentWithTag(renderedFacet, 'a');
     TestUtils.Simulate.click(link);
 
-    expect(fetchUrl.mock.calls.length).toEqual(1);
-    expect(fetchUrl.mock.calls[0][0]).toEqual('href');
+    expect(fetchCollection.mock.calls.length).toEqual(1);
+    expect(fetchCollection.mock.calls[0][0]).toEqual('href');
   });
 });

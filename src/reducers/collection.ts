@@ -24,6 +24,12 @@ const collection = (state = initialState, action) => {
         url: action.url ? action.url : state.url
       });
 
+    case "CLEAR_COLLECTION":
+      return Object.assign({}, state, {
+        data: null,
+        url: null
+      });
+
     case "LOAD_SEARCH_DESCRIPTION":
       return Object.assign({}, state, {
         data: Object.assign({}, state.data, {

@@ -8,9 +8,9 @@ import UrlForm from "../UrlForm";
 
 describe("UrlForm", () => {
   it("shows the form", () => {
-    let fetchUrl = jest.genMockFunction();
+    let fetchCollection = jest.genMockFunction();
     let form = TestUtils.renderIntoDocument(
-      <UrlForm fetchUrl={fetchUrl} />
+      <UrlForm fetchCollection={fetchCollection} />
     );
 
     let input = TestUtils.findRenderedDOMComponentWithTag(form, "input");
@@ -21,9 +21,9 @@ describe("UrlForm", () => {
   });
 
   it("fetches the url", () => {
-    let fetchUrl = jest.genMockFunction();
+    let fetchCollection = jest.genMockFunction();
     let urlForm = TestUtils.renderIntoDocument(
-      <UrlForm fetchUrl={fetchUrl} />
+      <UrlForm fetchCollection={fetchCollection} />
     );
 
     let form = TestUtils.findRenderedDOMComponentWithTag(urlForm, "form");
@@ -32,7 +32,7 @@ describe("UrlForm", () => {
     input["value"] = "some url";
     TestUtils.Simulate.submit(form);
 
-    expect(fetchUrl.mock.calls.length).toEqual(1);
-    expect(fetchUrl.mock.calls[0][0]).toEqual("some url");
+    expect(fetchCollection.mock.calls.length).toEqual(1);
+    expect(fetchCollection.mock.calls[0][0]).toEqual("some url");
   });
 });

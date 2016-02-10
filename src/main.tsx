@@ -9,19 +9,30 @@ import OPDSParser = require("opds-feed-parser");
 import { feedToCollection } from "./OPDSDataAdapter";
 
 export default class OPDSBrowser {
+  root: any;
+
   constructor(config: any, elementId: string) {
     let store = createStore(
       reducers,
       applyMiddleware(thunk)
     );
 
-    let props = { startUrl: config.startUrl };
-
     ReactDOM.render(
       <Provider store={store}>
-        <Root {...props} />
+        <Root
+          ref={(c) => this.root = c}
+          startUrl={config.startUrl}
+          onFetch={config.onFetch} />
       </Provider>,
       document.getElementById(elementId)
-    );    
+    );
+  }
+
+  loadUrl(url: string, skipOnFetch: boolean = false) {
+    this.root.getWrappedInstance().props.fetchCollection(url, skipOnFetch);
+  }
+
+  clearUrl() {
+    this.root.getWrappedInstance().props.clearCollection();
   }
 }
