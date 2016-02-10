@@ -20,7 +20,7 @@ export function fetchCollection(url: string) {
         reject(err);
       });
     });
-  }
+  };
 }
 
 export function fetchSearchDescription(url: string) {

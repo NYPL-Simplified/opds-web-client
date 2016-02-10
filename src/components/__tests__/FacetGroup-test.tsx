@@ -1,13 +1,13 @@
-jest.dontMock('../FacetGroup');
+jest.dontMock("../FacetGroup");
 
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import * as TestUtils from 'react-addons-test-utils';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import * as TestUtils from "react-addons-test-utils";
 
-import FacetGroup from '../FacetGroup';
-import Facet from '../Facet';
+import FacetGroup from "../FacetGroup";
+import Facet from "../Facet";
 
-describe('FacetGroup', () => {
+describe("FacetGroup", () => {
   it("shows facet group label", () => {
     let facetGroup = {
       label: "Availability",
@@ -18,7 +18,7 @@ describe('FacetGroup', () => {
       <FacetGroup {...facetGroup} />
     );
 
-    let label = TestUtils.findRenderedDOMComponentWithClass(renderedFacetGroup, 'facet-group-label');
+    let label = TestUtils.findRenderedDOMComponentWithClass(renderedFacetGroup, "facet-group-label");
     expect(label.textContent).toEqual(facetGroup.label + ":");
   });
 

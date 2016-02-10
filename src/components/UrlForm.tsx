@@ -1,7 +1,7 @@
-import * as React from 'react';
+import * as React from "react";
 
 export default class UrlForm extends React.Component<UrlFormProps, any> {
-  render() : JSX.Element {
+  render(): JSX.Element {
     return (
       <div id="urlForm" style={{ textAlign: "center", marginTop: "100px" }}>
         <h1>Remote Data URL:</h1>

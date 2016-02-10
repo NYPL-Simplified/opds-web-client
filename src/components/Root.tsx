@@ -9,7 +9,7 @@ import Collection from "./Collection";
 import UrlForm from "./UrlForm";
 
 export class Root extends React.Component<RootProps, any> {
-  render() : JSX.Element {
+  render(): JSX.Element {
     let loadingWidth = 200;
     let loadingStyle = {
       position: "absolute",
@@ -17,7 +17,7 @@ export class Root extends React.Component<RootProps, any> {
       left: "50%",
       width: `${loadingWidth}px`,
       marginTop: "-10px",
-      marginLeft: `-${loadingWidth/2}px`,
+      marginLeft: `-${loadingWidth / 2}px`,
       padding: "30px",
       backgroundColor: "#bbb",
       textAlign: "center"
@@ -51,7 +51,7 @@ const mapStateToProps = (state) => {
     collectionData: state.collection.data,
     collectionUrl: state.collection.url,
     isFetching: state.collection.isFetching
-  }
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -63,8 +63,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(clearCollection());
     },
     fetchSearchDescription: (url) => dispatch(fetchSearchDescription(url))
-  }
-}
+  };
+};
 
 // define new fetchCollection here so that it can call onFetch from component props
 const mergeProps = (stateProps, dispatchProps, componentProps) => {

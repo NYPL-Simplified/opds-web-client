@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 
 export default class Search extends React.Component<SearchProps, any> {
   render(): JSX.Element {

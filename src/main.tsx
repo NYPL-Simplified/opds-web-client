@@ -1,10 +1,10 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { createStore, applyMiddleware } from 'redux';
-let thunk: any = require('redux-thunk');
-import reducers from './reducers/index';
-import { Provider } from 'react-redux';
-import Root from './components/Root';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import { createStore, applyMiddleware } from "redux";
+let thunk: any = require("redux-thunk");
+import reducers from "./reducers/index";
+import { Provider } from "react-redux";
+import Root from "./components/Root";
 import OPDSParser = require("opds-feed-parser");
 import { feedToCollection } from "./OPDSDataAdapter";
 

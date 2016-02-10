@@ -1,7 +1,7 @@
-import * as React from 'react';
+import * as React from "react";
 
-export default class Book extends React.Component<BookProps, any> {  
-  render() : JSX.Element {
+export default class Book extends React.Component<BookProps, any> {
+  render(): JSX.Element {
     let bookStyle = {
       whiteSpace: "normal", // overrides Lane's laneBooks style
       marginRight: "10px",
@@ -9,15 +9,15 @@ export default class Book extends React.Component<BookProps, any> {
       overflow: "hidden",
       height: "200px",
       float: "left",
-      textAlign: "center"        
+      textAlign: "center"
     };
-    
+
     let bookCoverStyle = {
       width: "150px",
       height: "200px",
       float: "left"
     };
-    
+
     let bookInfoStyle = {
       width: "160px",
       textAlign: "left",
@@ -25,11 +25,11 @@ export default class Book extends React.Component<BookProps, any> {
       marginLeft: "5px",
       float: "left"
     };
-    
+
     let bookTitleStyle = {
       fontSize: "1.2em",
-      fontWeight: "bold", 
-      marginBottom: "5px"      
+      fontWeight: "bold",
+      marginBottom: "5px"
     };
 
     return (
@@ -37,7 +37,7 @@ export default class Book extends React.Component<BookProps, any> {
         <img src={this.props.imageUrl} style={ bookCoverStyle } />
         <div className="bookInfo" style={ bookInfoStyle }>
           <div className="bookTitle" style={ bookTitleStyle }>{this.props.title}</div>
-          <div className="bookAuthors">{this.props.authors.join(", ")}</div> 
+          <div className="bookAuthors">{this.props.authors.join(", ")}</div>
         </div>
       </div>
     );

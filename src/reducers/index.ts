@@ -1,5 +1,5 @@
-import { combineReducers } from 'redux';
-import collection from './collection';
+import { combineReducers } from "redux";
+import collection from "./collection";
 
 const reducers = combineReducers({
   collection

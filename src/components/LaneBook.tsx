@@ -1,14 +1,14 @@
 import * as React from "react";
 import Book from "./Book";
 
-export default class LaneBook extends Book {  
-  render() : JSX.Element {
+export default class LaneBook extends Book {
+  render(): JSX.Element {
     let bookStyle = {
       whiteSpace: "normal", // overrides laneBooks style
       marginRight: "10px",
       marginBottom: "10px",
       overflow: "hidden",
-      display: "inline-block", 
+      display: "inline-block",
       height: "240px"
     };
 
@@ -16,12 +16,12 @@ export default class LaneBook extends Book {
       width: "150px",
       height: "200px",
     };
-    
+
     let bookInfoStyle = {
       clear: "left",
       width: "150px",
       textAlign: "center"
-    }
+    };
 
     return (
       <div className="book laneBook" style={ bookStyle }>

@@ -1,12 +1,12 @@
-import * as React from 'react';
-import Book from './Book';
-import Link from './Link';
-import Lane from './Lane';
-import FacetGroup from './FacetGroup';
-import Search from './Search';
+import * as React from "react";
+import Book from "./Book";
+import Link from "./Link";
+import Lane from "./Lane";
+import FacetGroup from "./FacetGroup";
+import Search from "./Search";
 
 export default class Collection extends React.Component<CollectionProps, any> {
-  render() : JSX.Element {
+  render(): JSX.Element {
     let padding = 10;
     let headerHeight = 50;
     let leftPanelWidth = 190;

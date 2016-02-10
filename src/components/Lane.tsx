@@ -3,7 +3,7 @@ import LaneBook from "./LaneBook";
 import CollectionLink from "./CollectionLink";
 
 export default class Lane extends React.Component<LaneProps, any> {
-  render() : JSX.Element {
+  render(): JSX.Element {
     let laneBooksStyle = {
       height: "260px",
       width: "100%",

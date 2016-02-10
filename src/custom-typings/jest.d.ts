@@ -19,13 +19,13 @@ declare function xit(name: string, fn: any): void;
 declare function expect(actual: any): any;
 
 interface NodeRequire {
-    requireActual(moduleName: string): any;
+  requireActual(moduleName: string): any;
 }
 
-declare module jest {
-    function autoMockOff(): void;
-    function dontMock(moduleName: string): void;
-    function genMockFunction(): any;
-    function mock(moduleName: string): void;
-    function setMock(moduleName: string, fn: any): void;
+declare namespace jest {
+  function autoMockOff(): void;
+  function dontMock(moduleName: string): void;
+  function genMockFunction(): any;
+  function mock(moduleName: string): void;
+  function setMock(moduleName: string, fn: any): void;
 }

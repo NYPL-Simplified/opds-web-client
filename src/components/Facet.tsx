@@ -1,8 +1,8 @@
-import * as React from 'react';
+import * as React from "react";
 import CollectionLink from "./CollectionLink";
 
 export default class Facet extends React.Component<FacetProps, any> {
-  render() : JSX.Element {
+  render(): JSX.Element {
     let facetStyle: any = {
       cursor: "pointer"
     };

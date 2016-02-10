@@ -1,22 +1,22 @@
-jest.dontMock('../Collection');
-jest.dontMock('../Lane');
-jest.dontMock('../Book');
-jest.dontMock('../LaneBook');
-jest.dontMock('../FacetGroup');
+jest.dontMock("../Collection");
+jest.dontMock("../Lane");
+jest.dontMock("../Book");
+jest.dontMock("../LaneBook");
+jest.dontMock("../FacetGroup");
 
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import * as TestUtils from 'react-addons-test-utils';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import * as TestUtils from "react-addons-test-utils";
 
-import Collection from '../Collection';
-import Lane from '../Lane';
-import Book from '../Book';
-import LaneBook from '../LaneBook';
-import FacetGroup from '../FacetGroup';
-import { groupedCollectionData, ungroupedCollectionData } from './collectionData';
+import Collection from "../Collection";
+import Lane from "../Lane";
+import Book from "../Book";
+import LaneBook from "../LaneBook";
+import FacetGroup from "../FacetGroup";
+import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 
-describe('Collection', () => {
-  describe('collection with lanes', () => {
+describe("Collection", () => {
+  describe("collection with lanes", () => {
     let collectionData: CollectionProps = groupedCollectionData;
     let collection: Collection;
 
@@ -26,12 +26,12 @@ describe('Collection', () => {
       );
     });
 
-    it('shows the collection title', () => {
+    it("shows the collection title", () => {
       let titleElement = TestUtils.findRenderedDOMComponentWithTag(collection, "h1");
       expect(titleElement.textContent).toEqual(collectionData.title);
     });
 
-    it('shows books', () => {
+    it("shows books", () => {
       let books = TestUtils.scryRenderedComponentsWithType(collection, Book);
       let bookCount = collectionData.lanes.reduce((count, lane) => {
         return count + lane.books.length;
@@ -39,19 +39,19 @@ describe('Collection', () => {
       expect(books.length).toEqual(bookCount);
     });
 
-    it('shows lanes in order', () => {
+    it("shows lanes in order", () => {
       let lanes = TestUtils.scryRenderedComponentsWithType(collection, Lane);
       expect(lanes.length).toEqual(collectionData.lanes.length);
     });
 
-    it('shows lanes in order', () => {
+    it("shows lanes in order", () => {
       let lanes = TestUtils.scryRenderedComponentsWithType(collection, Lane);
       let laneTitles = lanes.map(lane => lane.props.title);
       expect(laneTitles).toEqual(collectionData.lanes.map(lane => lane.title));
     });
   });
 
-  describe('collection without lanes', () => {
+  describe("collection without lanes", () => {
     let collectionData = ungroupedCollectionData;
     let collection: Collection;
 
@@ -61,7 +61,7 @@ describe('Collection', () => {
       );
     });
 
-    it('shows books', () => {
+    it("shows books", () => {
       let collection = TestUtils.renderIntoDocument(
         <Collection {...collectionData} />
       );
@@ -73,7 +73,7 @@ describe('Collection', () => {
       expect(books.length).toEqual(bookCount);
     });
 
-    it('shows books in order', () => {
+    it("shows books in order", () => {
       let collection = TestUtils.renderIntoDocument(
         <Collection {...collectionData} />
       );
@@ -83,8 +83,8 @@ describe('Collection', () => {
     });
   });
 
-  describe('collection without facetGroups', () => {
-    it('shows facet groups', () => {
+  describe("collection without facetGroups", () => {
+    it("shows facet groups", () => {
       let collectionData = {
         id: "test collection",
         title: "title",
@@ -92,7 +92,7 @@ describe('Collection', () => {
         lanes: [],
         links: [],
         facetGroups: [{
-          label: 'group',
+          label: "group",
           facets: []
         }]
       };

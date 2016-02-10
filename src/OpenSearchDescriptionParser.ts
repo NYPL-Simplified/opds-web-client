@@ -1,5 +1,5 @@
-import * as xml2js from 'xml2js';
-import * as url from 'url';
+import * as xml2js from "xml2js";
+import * as url from "url";
 
 let xmlParser = new xml2js.Parser({xmlns: true});
 
@@ -13,8 +13,8 @@ export default class OpenSearchDescriptionParser {
           if (result.OpenSearchDescription) {
             let root = result.OpenSearchDescription;
             let description = root["Description"][0]["_"];
-            let shortName = root["ShortName"][0]["_"]
-            let templateString = root["Url"][0]["$"].template.value
+            let shortName = root["ShortName"][0]["_"];
+            let templateString = root["Url"][0]["$"].template.value;
             let template = (s: string) => {
               return url.resolve(descriptionUrl, templateString.replace("{searchTerms}", s));
             };
