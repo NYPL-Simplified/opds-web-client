@@ -8,6 +8,7 @@ new OPDSBrowser(config, elementId);
 
 ### Config Options
 - startUrl: initial url of an OPDS feed to load. Default: undefined (allow user to enter URL)
+- onFetch(url): function to be called when a new feed url is requested, not including the initial startUrl request. This function could, for example, update the browser's url using pushState. Default: undefined
 
 
 ## License
