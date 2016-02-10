@@ -7,7 +7,9 @@ import * as TestUtils from "react-addons-test-utils";
 
 import reducer from "../collection";
 import {
-  fetchCollectionRequest, loadCollection, loadSearchDescription
+  fetchCollectionRequest, fetchCollectionSuccess,
+  loadCollection, clearCollection,
+  loadSearchDescription
 } from "../../actions";
 
 describe("collection reducer", () => {
@@ -23,18 +25,33 @@ describe("collection reducer", () => {
     isFetching: false
   };
 
+  let fetchingState = {
+    url: "some url",
+    data: { foo: "bar "},
+    isFetching: true
+  };
+
   it("should return the initial state", () => {
     expect(reducer(undefined, {})).toEqual(initState);
   });
 
   it("should handle FETCH_COLLECTION_REQUEST", () => {
     let action = fetchCollectionRequest("some other url");
-
-    expect(reducer(currentState, action)).toEqual({
-      url: "some other url",
-      data: currentState.data,
+    let newState = Object.assign({}, currentState, {
+      url: action.url,
       isFetching: true
     });
+
+    expect(reducer(currentState, action)).toEqual(newState);
+  });
+
+  it("should handle FETCH_COLLECTION_SUCCESS", () => {
+    let action = fetchCollectionSuccess();
+    let newState = Object.assign({}, fetchingState, {
+      isFetching: false
+    });
+
+    expect(reducer(fetchingState, action)).toEqual(newState);
   });
 
   it("should handle LOAD_COLLECTION", () => {
@@ -46,12 +63,22 @@ describe("collection reducer", () => {
       links: []
     };
     let action = loadCollection(data, "some other url");
-
-    expect(reducer(currentState, action)).toEqual({
+    let newState = Object.assign({}, currentState, {
       url: "some other url",
-      data: data,
-      isFetching: false
+      data: data
     });
+
+    expect(reducer(currentState, action)).toEqual(newState);
+  });
+
+  it("should handle CLEAR_COLLECTION", () => {
+    let action = clearCollection();
+    let newState = Object.assign({}, currentState, {
+      url: null,
+      data: null
+    });
+
+    expect(reducer(currentState, action)).toEqual(newState);
   });
 
   it("should handle LOAD_SEARCH_DESCRIPTION", () => {

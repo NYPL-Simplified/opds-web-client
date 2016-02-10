@@ -19,7 +19,9 @@
 
       window.onpopstate = function(event) {
         if (event.state && event.state.collectionUrl) {
-          browser.loadUrl(event.state.collectionUrl, false);
+          // call loadUrl with skipOnFetch = true
+          // so that state isn't pushed every time it's popped
+          browser.loadUrl(event.state.collectionUrl, true);
         } else {
           browser.clearUrl();
         }
@@ -34,6 +36,7 @@
       }, "opds-browser");
 
       if (startUrl) {
+        // give history state of initial load a collectionUrl for later use by onpopstate
         window.history.replaceState({ collectionUrl: startUrl }, startUrl, "?url=" + startUrl);
       }
     </script>

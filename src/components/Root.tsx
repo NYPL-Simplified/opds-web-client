@@ -40,7 +40,8 @@ export class Root extends React.Component<RootProps, any> {
 
   componentWillMount() {
     if (this.props.startUrl) {
-      this.props.fetchCollection(this.props.startUrl, false);
+      // skip onFetch, which is not meant for initial fetch
+      this.props.fetchCollection(this.props.startUrl, true);
     }
   }
 }
@@ -65,13 +66,14 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  return Object.assign({}, ownProps, stateProps, dispatchProps, {
-    fetchCollection: (url: string, useHandler: boolean = true) => {
+// define new fetchCollection here so that it can call onFetch from component props
+const mergeProps = (stateProps, dispatchProps, componentProps) => {
+  return Object.assign({}, componentProps, stateProps, dispatchProps, {
+    fetchCollection: (url: string, skipOnFetch: boolean = false) => {
       dispatchProps.fetchCollection(url);
 
-      if (useHandler && ownProps.onFetch) {
-        ownProps.onFetch(url);
+      if (!skipOnFetch && componentProps.onFetch) {
+        componentProps.onFetch(url);
       }
     }
   });

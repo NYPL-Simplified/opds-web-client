@@ -79,7 +79,9 @@ interface UrlFormProps extends FetchCollectionProps {
 }
 
 interface CollectionLinkProps {
-  title: string,
+  text: string,
   url: string,
+  className?: string,
+  children?: any,
   fetchCollection: (url: string, push?: boolean) => void
 }

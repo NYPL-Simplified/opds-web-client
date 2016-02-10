@@ -37,9 +37,9 @@ describe("CollectionLink", () => {
     expect(fetchCollection.mock.calls[0][0]).toBe(linkProps.url);
   });
 
-  it("does not fetch the url if clicked with alt, ctrl, or cmd key", () => {
+  it("does not fetch the url if clicked with alt, ctrl, cmd, or shift key", () => {
     let link = TestUtils.findRenderedDOMComponentWithTag(collectionLink, "a");
-    ["altKey", "ctrlKey", "metaKey"].forEach(key => {
+    ["altKey", "ctrlKey", "metaKey", "shiftKey"].forEach(key => {
       TestUtils.Simulate.click(link, { [key]: true });
       expect(fetchCollection.mock.calls.length).toBe(0);
     });

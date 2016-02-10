@@ -28,8 +28,8 @@ export default class OPDSBrowser {
     );
   }
 
-  loadUrl(url: string, useCallback: boolean = true) {
-    this.root.getWrappedInstance().props.fetchCollection(url, useCallback);
+  loadUrl(url: string, skipOnFetch: boolean = false) {
+    this.root.getWrappedInstance().props.fetchCollection(url, skipOnFetch);
   }
 
   clearUrl() {
