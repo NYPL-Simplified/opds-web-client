@@ -3,9 +3,11 @@ import { connect } from "react-redux";
 import {
   fetchCollection,
   clearCollection,
-  fetchSearchDescription
+  fetchSearchDescription,
+  closeError
 } from "../actions";
 import LoadingIndicator from "./LoadingIndicator";
+import ErrorMessage from "./ErrorMessage";
 import Collection from "./Collection";
 import UrlForm from "./UrlForm";
 
@@ -14,13 +16,14 @@ export class Root extends React.Component<RootProps, any> {
     return (
       <div className="browser">
         { this.props.isFetching && <LoadingIndicator /> }
+        { this.props.error && <ErrorMessage message={this.props.error} closeError={this.props.closeError} /> }
 
         { this.props.collectionData ?
           <Collection
             {...this.props.collectionData}
             fetchCollection={this.props.fetchCollection}
             fetchSearchDescription={this.props.fetchSearchDescription} /> :
-          this.props.isFetching ? null : <UrlForm fetchCollection={this.props.fetchCollection} />
+          this.props.isFetching ? null : <UrlForm fetchCollection={this.props.fetchCollection} url={this.props.collectionUrl} />
         }
       </div>
     );
@@ -38,19 +41,17 @@ const mapStateToProps = (state) => {
   return {
     collectionData: state.collection.data,
     collectionUrl: state.collection.url,
-    isFetching: state.collection.isFetching
+    isFetching: state.collection.isFetching,
+    error: state.collection.error
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchCollection: (url: string) => {
-      dispatch(fetchCollection(url));
-    },
-    clearCollection: () => {
-      dispatch(clearCollection());
-    },
-    fetchSearchDescription: (url) => dispatch(fetchSearchDescription(url))
+    fetchCollection: (url: string) => dispatch(fetchCollection(url)),
+    clearCollection: () => dispatch(clearCollection()),
+    fetchSearchDescription: (url: string) => dispatch(fetchSearchDescription(url)),
+    closeError: () => dispatch(closeError())
   };
 };
 

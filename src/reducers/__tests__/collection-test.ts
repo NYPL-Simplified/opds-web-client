@@ -7,28 +7,42 @@ import * as TestUtils from "react-addons-test-utils";
 
 import reducer from "../collection";
 import {
-  fetchCollectionRequest, fetchCollectionSuccess,
-  loadCollection, clearCollection,
-  loadSearchDescription
+  fetchCollectionRequest,
+  fetchCollectionSuccess,
+  fetchCollectionFailure,
+  loadCollection,
+  clearCollection,
+  loadSearchDescription,
+  closeError
 } from "../../actions";
 
 describe("collection reducer", () => {
   let initState = {
     url: null,
     data: null,
-    isFetching: false
+    isFetching: false,
+    error: null
   };
 
   let currentState = {
     url: "some url",
     data: { foo: "bar" },
-    isFetching: false
+    isFetching: false,
+    error: null
   };
 
   let fetchingState = {
     url: "some url",
     data: { foo: "bar "},
-    isFetching: true
+    isFetching: true,
+    error: null
+  };
+
+  let errorState = {
+    url: "some url",
+    data: null,
+    isFetching: false,
+    error: "test error"
   };
 
   it("should return the initial state", () => {
@@ -49,6 +63,16 @@ describe("collection reducer", () => {
     let action = fetchCollectionSuccess();
     let newState = Object.assign({}, fetchingState, {
       isFetching: false
+    });
+
+    expect(reducer(fetchingState, action)).toEqual(newState);
+  });
+
+  it("should handle FETCH_COLLECTION_FAILURE", () => {
+    let action = fetchCollectionFailure("test error");
+    let newState = Object.assign({}, fetchingState, {
+      isFetching: false,
+      error: "test error"
     });
 
     expect(reducer(fetchingState, action)).toEqual(newState);
@@ -94,5 +118,14 @@ describe("collection reducer", () => {
     expect(newState.data.search.data.description).toEqual("d");
     expect(newState.data.search.data.shortName).toEqual("s");
     expect(newState.data.search.data.template("test")).toEqual("test template");
+  });
+
+  it("should handle CLOSE_ERROR", () => {
+    let action = closeError();
+    let newState = Object.assign({}, errorState, {
+      error: null
+    });
+
+    expect(reducer(errorState, action)).toEqual(newState);
   });
 });

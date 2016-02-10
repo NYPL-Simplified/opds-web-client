@@ -6,6 +6,7 @@ export const FETCH_COLLECTION_FAILURE = "FETCH_COLLECTION_FAILURE";
 export const LOAD_COLLECTION = "LOAD_COLLECTION";
 export const CLEAR_COLLECTION = "CLEAR_COLLECTION";
 export const LOAD_SEARCH_DESCRIPTION = "LOAD_SEARCH_DESCRIPTION";
+export const CLOSE_ERROR = "CLOSE_ERROR";
 
 export function fetchCollection(url: string) {
   return function(dispatch) {
@@ -56,4 +57,8 @@ export function clearCollection() {
 
 export function loadSearchDescription(data: SearchProps) {
   return { type: LOAD_SEARCH_DESCRIPTION, data };
+}
+
+export function closeError() {
+  return { type: CLOSE_ERROR };
 }

@@ -1,7 +1,8 @@
 const initialState = {
   url: null,
   data: null,
-  isFetching: false
+  isFetching: false,
+  error: null
 };
 
 const collection = (state = initialState, action) => {
@@ -12,10 +13,15 @@ const collection = (state = initialState, action) => {
         isFetching: true
       });
 
-    case "FETCH_COLLECTION_FAILURE":
     case "FETCH_COLLECTION_SUCCESS":
       return Object.assign({}, state, {
         isFetching: false
+      });
+
+    case "FETCH_COLLECTION_FAILURE":
+      return Object.assign({}, state, {
+        isFetching: false,
+        error: action.message
       });
 
     case "LOAD_COLLECTION":
@@ -35,6 +41,11 @@ const collection = (state = initialState, action) => {
         data: Object.assign({}, state.data, {
           search: action.data
         })
+      });
+
+    case "CLOSE_ERROR":
+      return Object.assign({}, state, {
+        error: null
       });
 
     default:
