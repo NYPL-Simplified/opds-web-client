@@ -10,7 +10,7 @@
   "author": "NYPL",
   "license": "Apache-2.0",
   "scripts": {
-    "test": "tsc && jest",
+    "test": "tslint -c tslint.json src/*.ts src/*.tsx src/**/*.ts src/**/*.tsx src/**/**/*.ts src/**/**/*.tsx && tsc && jest",
     "dev": "npm run dev-serve | npm run dev-build",
     "dev-serve": "NODE_ENV=development node server/index.js",
     "dev-build": "webpack-dev-server --progress --history-api-fallback --hot --content-base build --port 8090 --config webpack.dev.config",
