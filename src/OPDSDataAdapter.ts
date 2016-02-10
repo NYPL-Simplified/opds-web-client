@@ -48,6 +48,16 @@ function entryToLink(entry: any, feedUrl: string): LinkProps {
   };
 }
 
+function dedupeBooks(books: BookProps[]): BookProps[] {
+  // using Map because it preserves key order
+  let bookIndex = books.reduce((index, book) => {
+    index.set(book.id, book);
+    return index;
+  }, new Map<any, BookProps>());
+
+  return Array.from(bookIndex.values());
+}
+
 export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
   let collection = <CollectionProps>{
     id: feed.id,
@@ -72,6 +82,7 @@ export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
           laneIndex[title].books.push(book);
         } else {
           laneIndex[title] = { title, url: url.resolve(feedUrl, href), books: [book] };
+          // use array of titles to preserve lane order
           laneTitles.push(title);
         }
       } else {
@@ -84,10 +95,11 @@ export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
   });
 
   lanes = laneTitles.reduce((result, title) => {
-    result.push(laneIndex[title]);
+    let lane = laneIndex[title];
+    lane.books = dedupeBooks(lane.books);
+    result.push(lane);
     return result;
   }, lanes);
-
 
   let facetLinks = [];
   if (feed.links) {
@@ -129,7 +141,7 @@ export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
 
   collection.lanes = lanes;
   collection.links = links;
-  collection.books = books;
+  collection.books = dedupeBooks(books);
   collection.facetGroups = facetGroups;
   collection.search = search;
   Object.freeze(collection);
