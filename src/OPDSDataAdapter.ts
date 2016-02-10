@@ -15,9 +15,15 @@ function entryToBook(entry: any, feedUrl: string): BookProps {
     return (link instanceof OPDSArtworkLink);
   });
 
-  let imageUrl;
+  let imageUrl, imageThumbLink;
   if (artworkLinks.length > 0) {
-    imageUrl = url.resolve(feedUrl, artworkLinks[0].href);
+    imageThumbLink = artworkLinks.find(link => link.rel === "http://opds-spec.org/image/thumbnail");
+    if (imageThumbLink) {
+      imageUrl = url.resolve(feedUrl, imageThumbLink.href);
+    } else {
+      console.log("WARNING: using possibly large image for " + entry.title);
+      imageUrl = url.resolve(feedUrl, artworkLinks[0].href);
+    }
   }
   return <BookProps>{
     id: entry.id,
@@ -126,5 +132,6 @@ export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
   collection.books = books;
   collection.facetGroups = facetGroups;
   collection.search = search;
+  Object.freeze(collection);
   return collection;
 }
