@@ -27,7 +27,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
       padding: `${padding}px`,
       paddingTop: `${headerHeight + padding}px`,
       height: "100%",
-      marginTop: `${padding + 5}px`,
+      marginTop: `${padding + 5}px`
     };
 
     if (this.props.facetGroups && this.props.facetGroups.length) {
