@@ -1,6 +1,6 @@
-import { feedToCollection } from './OPDSDataAdapter';
-import OPDSParser from 'opds-feed-parser';
-import OpenSearchDescriptionParser from './OpenSearchDescriptionParser';
+import { feedToCollection } from "./OPDSDataAdapter";
+import OPDSParser from "opds-feed-parser";
+import OpenSearchDescriptionParser from "./OpenSearchDescriptionParser";
 
 export function fetchOPDSData(feedUrl) {
   let parser = new OPDSParser;
@@ -45,7 +45,7 @@ export default function fetchData(url) {
       }
     }
 
-    httpRequest.open('POST', "/proxy", true);
+    httpRequest.open("POST", "/proxy", true);
     httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     httpRequest.send("url=" + encodeURIComponent(url));
   });

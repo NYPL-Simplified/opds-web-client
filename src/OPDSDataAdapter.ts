@@ -5,7 +5,7 @@ import {
   OPDSFacetLink,
   SearchLink
 } from "opds-feed-parser";
-import * as url from 'url';
+import * as url from "url";
 
 function entryToBook(entry: any, feedUrl: string): BookProps {
   let authors = entry.authors.map((author) => {
@@ -25,7 +25,7 @@ function entryToBook(entry: any, feedUrl: string): BookProps {
     authors: authors,
     summary: entry.summary,
     imageUrl: imageUrl,
-    publisher: entry.publisher     
+    publisher: entry.publisher
   };
 }
 
@@ -46,7 +46,7 @@ export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
   let collection = <CollectionProps>{
     id: feed.id,
     title: feed.title
-  }
+  };
   let books: BookProps[] = [];
   let links: LinkProps[] = [];
   let lanes: LaneProps[] = [];
@@ -54,11 +54,11 @@ export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
   let laneIndex = [];
   let facetGroups: FacetGroupProps[] = [];
   let search: SearchProps;
-    
+
   feed.entries.forEach(entry => {
     if (feed instanceof AcquisitionFeed) {
       let book = entryToBook(entry, feedUrl);
-      let collectionLink: OPDSCollectionLink = entry.links.find(link => link instanceof OPDSCollectionLink); 
+      let collectionLink: OPDSCollectionLink = entry.links.find(link => link instanceof OPDSCollectionLink);
       if (collectionLink) {
         let { title, href } = collectionLink;
 
