@@ -46,6 +46,7 @@ describe("OPDSDataAdapter", () => {
     expect(book.authors[0]).toEqual(entry.authors[0].name);
     expect(book.authors[1]).toEqual(entry.authors[1].name);
     expect(book.summary).toEqual(sanitizeHtml(entry.summary.content));
+    expect(book.summary).toContain("Many men and women are going to die for that book.");
     expect(book.summary).not.toContain("script");
     expect(book.summary).not.toContain("danger");
     expect(book.imageUrl).toEqual(thumbImageLink.href);
