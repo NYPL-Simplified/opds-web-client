@@ -2,6 +2,8 @@ jest.dontMock("../Collection");
 jest.dontMock("../Lane");
 jest.dontMock("../Book");
 jest.dontMock("../LaneBook");
+jest.dontMock("../Link");
+jest.dontMock("../CollectionLink");
 jest.dontMock("../FacetGroup");
 
 import * as React from "react";
@@ -87,6 +89,7 @@ describe("Collection", () => {
     it("shows facet groups", () => {
       let collectionData = {
         id: "test collection",
+        url: "test url",
         title: "title",
         books: [],
         lanes: [],

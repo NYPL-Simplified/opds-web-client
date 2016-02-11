@@ -1,3 +1,6 @@
+interface BaseProps extends __React.HTMLProps<any> {
+}
+
 interface FetchCollectionProps {
   fetchCollection?: (url: string, push?: boolean) => void;
 }
@@ -5,6 +8,7 @@ interface FetchCollectionProps {
 interface BookActionProps {
   showBookDetails?: (book: BookProps) => void;
   hideBookDetails?: () => void;
+  collectionUrl?: string;
 }
 
 interface BookProps extends BookActionProps {
@@ -16,13 +20,7 @@ interface BookProps extends BookActionProps {
   publisher: string;
   published?: string;
   key?: any;
-}
-
-interface LinkProps extends FetchCollectionProps {
-  id: string;
-  title: string;
-  href: string;
-  key?: string;
+  url?: string;
 }
 
 interface LaneProps extends FetchCollectionProps, BookActionProps {
@@ -57,6 +55,7 @@ interface SearchProps extends FetchCollectionProps {
 
 interface CollectionProps extends FetchCollectionProps, BookActionProps {
   id: string;
+  url: string;
   title: string;
   lanes: LaneProps[];
   books: BookProps[];
@@ -88,22 +87,30 @@ interface UrlFormProps extends FetchCollectionProps {
   url?: string;
 }
 
-interface CollectionLinkProps {
-  text: string;
-  url: string;
-  className?: string;
-  fetchCollection: (url: string, push?: boolean) => void;
+interface Link {
+  id: string;
+  title: string;
+  href: string;
+  key?: string;
 }
 
-interface BookLinkProps {
-  book: BookProps;
-  showBookDetails: (book: BookProps) => void;
-  className?: string;
-  children?: any;
-  text?: string;
+interface LinkProps extends BaseProps {
+  text?: string; // optional because link can have child elements instead of text
+  url: string;
+}
+
+interface CollectionLinkProps extends LinkProps, FetchCollectionProps {
+  id?: string;
+}
+
+interface BookLinkProps extends LinkProps, BookActionProps {
+  book?: BookProps;
 }
 
 interface ErrorMessageProps {
   message: string;
   closeError: () => void;
+}
+
+interface BaseProps extends __React.HTMLProps<any> {
 }

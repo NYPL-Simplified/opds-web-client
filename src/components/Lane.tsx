@@ -27,6 +27,7 @@ export default class Lane extends React.Component<LaneProps, any> {
             <LaneBook
               key={book.id}
               {...book}
+              collectionUrl={this.props.url}
               showBookDetails={this.props.showBookDetails} />
           ) }
         </div>

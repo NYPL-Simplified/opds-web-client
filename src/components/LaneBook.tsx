@@ -1,6 +1,6 @@
 import * as React from "react";
 import Book from "./Book";
-import BookLink from "./BookLink";
+import BookPreviewLink from "./BookPreviewLink";
 
 export default class LaneBook extends Book {
   render(): JSX.Element {
@@ -26,9 +26,13 @@ export default class LaneBook extends Book {
 
     return (
       <div className="book laneBook" style={ bookStyle }>
-        <BookLink book={this.props} showBookDetails={this.props.showBookDetails}>
+        <BookPreviewLink
+          url={this.props.url}
+          collectionUrl={this.props.collectionUrl}
+          book={this.props}
+          showBookDetails={this.props.showBookDetails}>
           <img src={this.props.imageUrl} style={bookCoverStyle} />
-        </BookLink>
+        </BookPreviewLink>
         <div className="bookInfo" style={ bookInfoStyle }>
           <div className="bookTitle">{this.props.title}</div>
         </div>

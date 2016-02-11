@@ -1,5 +1,6 @@
 jest.dontMock("../Book");
-jest.dontMock("../BookLink");
+jest.dontMock("../Link");
+jest.dontMock("../BookPreviewLink");
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";

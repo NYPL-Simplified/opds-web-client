@@ -63,9 +63,8 @@ describe("OPDSDataAdapter", () => {
     expect(collection.links.length).toEqual(1);
     let link = collection.links[0];
     expect(link.id).toEqual(linkEntry.id);
-    expect(link.title).toEqual(linkEntry.title);
-    expect(link.href).toEqual(navigationLink.href);
-    expect(link.title).toEqual(linkEntry.title);
+    expect(link.text).toEqual(linkEntry.title);
+    expect(link.url).toEqual(navigationLink.href);
   });
 
   it("extracts facet groups", () => {

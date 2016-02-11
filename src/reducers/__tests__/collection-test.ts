@@ -81,6 +81,7 @@ describe("collection reducer", () => {
   it("should handle LOAD_COLLECTION", () => {
     let data = {
       id: "some id",
+      url: "some url",
       title: "some title",
       lanes: [],
       books: [],

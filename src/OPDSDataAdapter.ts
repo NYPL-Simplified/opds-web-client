@@ -3,7 +3,8 @@ import {
   AcquisitionFeed,
   OPDSCollectionLink,
   OPDSFacetLink,
-  SearchLink
+  SearchLink,
+  CompleteEntryLink
 } from "opds-feed-parser";
 import * as url from "url";
 
@@ -11,11 +12,11 @@ function entryToBook(entry: any, feedUrl: string): BookProps {
   let authors = entry.authors.map((author) => {
     return author.name;
   });
+
+  let imageUrl, imageThumbLink;
   let artworkLinks = entry.links.filter((link) => {
     return (link instanceof OPDSArtworkLink);
   });
-
-  let imageUrl, imageThumbLink;
   if (artworkLinks.length > 0) {
     imageThumbLink = artworkLinks.find(link => link.rel === "http://opds-spec.org/image/thumbnail");
     if (imageThumbLink) {
@@ -24,6 +25,12 @@ function entryToBook(entry: any, feedUrl: string): BookProps {
       console.log("WARNING: using possibly large image for " + entry.title);
       imageUrl = url.resolve(feedUrl, artworkLinks[0].href);
     }
+  }
+
+  let detailUrl;
+  let detailLink = entry.links.find(link => link instanceof CompleteEntryLink);
+  if (detailLink) {
+    detailUrl = detailLink.href;
   }
 
   // until OPDSParser parses dcterms:publisher...
@@ -37,7 +44,8 @@ function entryToBook(entry: any, feedUrl: string): BookProps {
     summary: entry.summary.content,
     imageUrl: imageUrl,
     publisher: publisher,
-    published: published
+    published: published,
+    url: detailUrl
   };
 }
 
@@ -47,10 +55,10 @@ function entryToLink(entry: any, feedUrl: string): LinkProps {
   if (links.length > 0) {
      href = url.resolve(feedUrl, links[0].href);
   }
-  return <LinkProps>{
+  return <CollectionLinkProps>{
     id: entry.id,
-    title: entry.title,
-    href: href
+    text: entry.title,
+    url: href
   };
 }
 
@@ -84,7 +92,8 @@ function formatDate(inputDate: string): string {
 export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
   let collection = <CollectionProps>{
     id: feed.id,
-    title: feed.title
+    title: feed.title,
+    url: feedUrl
   };
   let books: BookProps[] = [];
   let links: LinkProps[] = [];
@@ -93,6 +102,7 @@ export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
   let laneIndex = [];
   let facetGroups: FacetGroupProps[] = [];
   let search: SearchProps;
+  let selfUrl: string;
 
   feed.entries.forEach(entry => {
     if (feed instanceof AcquisitionFeed) {
