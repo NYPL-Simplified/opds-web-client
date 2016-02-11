@@ -31,13 +31,13 @@
       var browser = new OPDSBrowser({
         startUrl: startUrl,
         onFetch: function(url) {
-          window.history.pushState({ collectionUrl: url }, url, "?url=" + url);
+          window.history.pushState({ collectionUrl: url }, url, "?url=" + encodeURIComponent(url));
         }
       }, "opds-browser");
 
       if (startUrl) {
         // give history state of initial load a collectionUrl for later use by onpopstate
-        window.history.replaceState({ collectionUrl: startUrl }, startUrl, "?url=" + startUrl);
+        window.history.replaceState({ collectionUrl: startUrl }, startUrl, "?url=" + encodeURIComponent(startUrl));
       }
     </script>
   </body>
