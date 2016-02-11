@@ -30,12 +30,13 @@ export default class LaneBook extends Book {
           url={this.props.url}
           collectionUrl={this.props.collectionUrl}
           book={this.props}
-          showBookDetails={this.props.showBookDetails}>
+          showBookDetails={this.props.showBookDetails}
+          style={{ color: "black", textDecoration: "none" }}>
           <img src={this.props.imageUrl} style={bookCoverStyle} />
+          <div className="bookInfo" style={ bookInfoStyle }>
+            <div className="bookTitle">{this.props.title}</div>
+          </div>
         </BookPreviewLink>
-        <div className="bookInfo" style={ bookInfoStyle }>
-          <div className="bookTitle">{this.props.title}</div>
-        </div>
       </div>
     );
   }

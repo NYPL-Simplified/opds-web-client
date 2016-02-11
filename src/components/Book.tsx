@@ -39,13 +39,14 @@ export default class Book extends React.Component<BookProps, any> {
           url={this.props.url}
           collectionUrl={this.props.collectionUrl}
           book={this.props}
-          showBookDetails={this.props.showBookDetails}>
+          showBookDetails={this.props.showBookDetails}
+          style={{ color: "black", textDecoration: "none" }}>
           <img src={this.props.imageUrl} style={bookCoverStyle} />
+          <div className="bookInfo" style={ bookInfoStyle }>
+            <div className="bookTitle" style={ bookTitleStyle }>{this.props.title}</div>
+            <div className="bookAuthors">{this.props.authors.join(", ")}</div>
+          </div>
         </BookPreviewLink>
-        <div className="bookInfo" style={ bookInfoStyle }>
-          <div className="bookTitle" style={ bookTitleStyle }>{this.props.title}</div>
-          <div className="bookAuthors">{this.props.authors.join(", ")}</div>
-        </div>
       </div>
     );
   }
