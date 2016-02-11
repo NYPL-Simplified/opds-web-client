@@ -4,10 +4,9 @@ export default class BookDetails extends React.Component<BookProps, any> {
   render(): JSX.Element {
     let bookDetailsStyle = {
       position: "fixed",
-      top: "50%",
+      top: "200px",
       left: "50%",
       width: "800px",
-      marginTop: "-200px",
       marginLeft: "-400px",
       padding: "30px",
       backgroundColor: "#fff",
@@ -24,9 +23,9 @@ export default class BookDetails extends React.Component<BookProps, any> {
         <div className="bookDetails" style={bookDetailsStyle}>
           <div style={{ float: "right" }}>
             <a href="javascript:void(0)"
-              className="bookDetailsCloseButton"
+              className="bookDetailsCloseLink"
               style={{ fontSize: "1em" }}
-              onClick={() => this.props.hideBookDetails()}>
+              onClick={this.props.hideBookDetails}>
               Close
             </a>
           </div>
@@ -35,10 +34,10 @@ export default class BookDetails extends React.Component<BookProps, any> {
           </div>
           <div className="bookDetailsTop" style={{ marginLeft: "1em", width: "550px", float: "left", height: "150px" }}>
             <h1 className="bookDetailsTitle" style={{ margin: 0 }}>{this.props.title}</h1>
-            <div className="bookDetailsAuthor" style={{ marginTop: "0.5em", fontSize: "1.2em" }}>{this.props.authors}</div>
+            <h2 className="bookDetailsAuthors" style={{ marginTop: "0.5em", fontSize: "1.2em" }}>{this.props.authors.join(", ")}</h2>
             <div style={{ marginTop: "2em", color: "#888", fontSize: "0.9em" }}>
-              Published: {this.props.published}<br />
-              Publisher: {this.props.publisher}
+              <div className="bookDetailsPublished">Published: {this.props.published}</div>
+              <div className="bookDetailsPublisher">Publisher: {this.props.publisher}</div>
             </div>
           </div>
           <div style={{ clear: "both" }}></div>
