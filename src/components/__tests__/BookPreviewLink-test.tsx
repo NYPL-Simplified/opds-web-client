@@ -17,7 +17,7 @@ let book = {
   publisher: "Penguin Publishing Group"
 };
 
-let linkProps: BookLinkProps = {
+let linkProps: BookPreviewLinkProps = {
   text: "test text",
   url: "http://circulation.librarysimplified.org/works/3M/crrmnr9",
   collectionUrl: "http://example.com/feed",

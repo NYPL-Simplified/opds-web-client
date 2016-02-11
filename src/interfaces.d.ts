@@ -107,8 +107,9 @@ interface CollectionLinkProps extends LinkProps, FetchCollectionProps {
   id?: string;
 }
 
-interface BookLinkProps extends LinkProps, BookActionProps {
+interface BookPreviewLinkProps extends LinkProps, BookActionProps {
   book?: BookProps;
+  collectionUrl: string;
 }
 
 interface ErrorMessageProps {
