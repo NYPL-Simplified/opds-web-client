@@ -1,5 +1,4 @@
 jest.dontMock("../Link");
-jest.dontMock("../CollectionLink");
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -7,19 +6,35 @@ import * as TestUtils from "react-addons-test-utils";
 
 import Link from "../Link";
 
-let link = {
-  id: "root.xml",
-  title: "First Acquisition feed",
-  href: "acquisition/main.xml"
+let linkProps = {
+  text: "test text",
+  url: "http://example.com"
 };
 
 describe("Link", () => {
-  it("shows the link", () => {
-    let renderedLink = TestUtils.renderIntoDocument(
-      <Link {...link} />
+  it("calls processClick() when clicked", () => {
+    let mockProcessClick = jest.genMockFunction();
+
+    class SpecificLink extends Link<any> {
+      href() {
+        return "test href";
+      }
+
+      processClick() {
+        mockProcessClick(this.props.url);
+      }
+    }
+
+    let link = TestUtils.renderIntoDocument(
+      <SpecificLink {...linkProps} />
     );
 
-    let linkElement = TestUtils.findRenderedDOMComponentWithTag(renderedLink, "a");
-    expect(linkElement.textContent).toEqual(link.title);
+    let element = TestUtils.findRenderedDOMComponentWithTag(link, "a");
+    TestUtils.Simulate.click(element);
+
+    expect(mockProcessClick.mock.calls.length).toBe(1);
+    expect(mockProcessClick.mock.calls[0][0]).toBe("http://example.com");
+    expect(element.getAttribute("href")).toBe("test href");
+    expect(element.textContent).toBe("test text");
   });
 });

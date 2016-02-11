@@ -1,6 +1,6 @@
 import * as React from "react";
 import Book from "./Book";
-import Link from "./Link";
+import CollectionLink from "./CollectionLink";
 import Lane from "./Lane";
 import FacetGroup from "./FacetGroup";
 import Search from "./Search";
@@ -41,6 +41,16 @@ export default class Collection extends React.Component<CollectionProps, any> {
       left: "0"
     };
 
+    let linkStyle = {
+      textAlign: "center",
+      backgroundColor: "#ddd",
+      margin: "25px",
+      padding: "10px",
+      overflow: "hidden",
+      fontSize: "500%",
+      display: "block"
+    };
+
     let loadingNextPageStyle = {
       clear: "both",
       height: "50px",
@@ -70,16 +80,34 @@ export default class Collection extends React.Component<CollectionProps, any> {
         <div className="collectionBody" style={collectionBodyStyle}>
 
           { this.props.lanes && this.props.lanes.map(lane =>
-              <Lane key={lane.title} {...lane} fetchCollection={this.props.fetchCollection} />
+              <Lane
+                key={lane.title}
+                {...lane}
+                fetchCollection={this.props.fetchCollection}
+                collectionUrl={this.props.url}
+                showBookDetails={this.props.showBookDetails} />
           ) }
 
           { this.props.books && this.props.books.map(book =>
-              <Book key={book.id} {...book} />
+              <Book
+                key={book.id}
+                {...book}
+                collectionUrl={this.props.url}
+                showBookDetails={this.props.showBookDetails} />
           ) }
 
-          { this.props.links && this.props.links.map(link =>
-              <Link key={link.id} {...link} fetchCollection={this.props.fetchCollection} />
-          )}
+          { this.props.links &&
+            <ul style={{ padding: 0, listStyleType: "none" }}>
+            { this.props.links.map(link =>
+              <li key={link.id}>
+                <CollectionLink
+                  text={link.text}
+                  url={link.url}
+                  fetchCollection={this.props.fetchCollection}
+                  style={linkStyle} />
+              </li>) }
+            </ul>
+          }
 
           { this.props.isFetchingPage && <div className="loadingNextPage" style={loadingNextPageStyle}>Loading next page...</div> }
         </div>

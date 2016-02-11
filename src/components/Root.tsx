@@ -5,8 +5,11 @@ import {
   fetchPage,
   clearCollection,
   fetchSearchDescription,
-  closeError
+  closeError,
+  showBookDetails,
+  hideBookDetails
 } from "../actions";
+import BookDetails from "./BookDetails";
 import LoadingIndicator from "./LoadingIndicator";
 import ErrorMessage from "./ErrorMessage";
 import Collection from "./Collection";
@@ -16,6 +19,7 @@ export class Root extends React.Component<RootProps, any> {
   render(): JSX.Element {
     return (
       <div className="browser">
+        { this.props.book && <BookDetails {...this.props.book} hideBookDetails={this.props.hideBookDetails} /> }
         { this.props.isFetching && <LoadingIndicator /> }
         { this.props.error && <ErrorMessage message={this.props.error} closeError={this.props.closeError} /> }
 
@@ -25,7 +29,8 @@ export class Root extends React.Component<RootProps, any> {
             fetchCollection={this.props.fetchCollection}
             fetchPage={this.props.fetchPage}
             isFetchingPage={this.props.isFetchingPage}
-            fetchSearchDescription={this.props.fetchSearchDescription} /> :
+            fetchSearchDescription={this.props.fetchSearchDescription}
+            showBookDetails={this.props.showBookDetails} /> :
           this.props.isFetching ? null : <UrlForm fetchCollection={this.props.fetchCollection} url={this.props.collectionUrl} />
         }
       </div>
@@ -46,7 +51,8 @@ const mapStateToProps = (state) => {
     collectionUrl: state.collection.url,
     isFetching: state.collection.isFetching,
     isFetchingPage: state.collection.isFetchingPage,
-    error: state.collection.error
+    error: state.collection.error,
+    book: state.book
   };
 };
 
@@ -56,7 +62,9 @@ const mapDispatchToProps = (dispatch) => {
     fetchPage: (url: string) => dispatch(fetchPage(url)),
     clearCollection: () => dispatch(clearCollection()),
     fetchSearchDescription: (url: string) => dispatch(fetchSearchDescription(url)),
-    closeError: () => dispatch(closeError())
+    closeError: () => dispatch(closeError()),
+    showBookDetails: (book: BookProps) => dispatch(showBookDetails(book)),
+    hideBookDetails: () => dispatch(hideBookDetails())
   };
 };
 

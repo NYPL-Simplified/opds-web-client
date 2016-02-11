@@ -93,6 +93,7 @@ describe("collection reducer", () => {
   it("should handle LOAD_COLLECTION", () => {
     let data = {
       id: "some id",
+      url: "some url",
       title: "some title",
       lanes: [],
       books: [],
@@ -139,6 +140,7 @@ describe("collection reducer", () => {
   it("should handle LOAD_PAGE", () => {
     let data = {
       id: "some id",
+      url: "test url",
       title: "some title",
       lanes: [],
       books: [{

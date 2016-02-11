@@ -24,7 +24,11 @@ export default class Lane extends React.Component<LaneProps, any> {
 
         <div className="laneBooks" style={laneBooksStyle}>
           { this.props.books && this.props.books.map(book =>
-            <LaneBook key={book.id} {...book} />
+            <LaneBook
+              key={book.id}
+              {...book}
+              collectionUrl={this.props.url}
+              showBookDetails={this.props.showBookDetails} />
           ) }
         </div>
       </div>

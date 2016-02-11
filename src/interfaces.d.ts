@@ -1,26 +1,30 @@
+interface BaseProps extends __React.HTMLProps<any> {
+}
+
 interface FetchCollectionProps {
   fetchCollection?: (url: string, push?: boolean) => void;
   fetchPage?: (url: string) => void;
 }
 
-interface BookProps {
+interface BookActionProps {
+  showBookDetails?: (book: BookProps) => void;
+  hideBookDetails?: () => void;
+  collectionUrl?: string;
+}
+
+interface BookProps extends BookActionProps {
   id: string;
   title: string;
   authors: string[];
   summary: string;
   imageUrl: string;
   publisher: string;
+  published?: string;
   key?: any;
+  url?: string;
 }
 
-interface LinkProps extends FetchCollectionProps {
-  id: string;
-  title: string;
-  href: string;
-  key?: string;
-}
-
-interface LaneProps extends FetchCollectionProps {
+interface LaneProps extends FetchCollectionProps, BookActionProps {
   title: string;
   url: string;
   books: BookProps[];
@@ -50,8 +54,9 @@ interface SearchProps extends FetchCollectionProps {
   fetchSearchDescription?: (url: string) => void;
 }
 
-interface CollectionProps extends FetchCollectionProps {
+interface CollectionProps extends FetchCollectionProps, BookActionProps {
   id: string;
+  url: string;
   title: string;
   lanes: LaneProps[];
   books: BookProps[];
@@ -68,10 +73,11 @@ interface State {
   collectionUrl?: string;
   isFetching?: boolean;
   error?: string;
+  book?: BookProps;
   isFetchingPage?: boolean;
 }
 
-interface RootProps extends State, FetchCollectionProps {
+interface RootProps extends State, FetchCollectionProps, BookActionProps {
   startUrl?: string;
   onFetch?: (url: string) => any;
   dispatch?: any;
@@ -85,11 +91,25 @@ interface UrlFormProps extends FetchCollectionProps {
   url?: string;
 }
 
-interface CollectionLinkProps {
-  text: string;
+interface Link {
+  id: string;
+  title: string;
+  href: string;
+  key?: string;
+}
+
+interface LinkProps extends BaseProps {
+  text?: string; // optional because link can have child elements instead of text
   url: string;
-  className?: string;
-  fetchCollection: (url: string, push?: boolean) => void;
+}
+
+interface CollectionLinkProps extends LinkProps, FetchCollectionProps {
+  id?: string;
+}
+
+interface BookPreviewLinkProps extends LinkProps, BookActionProps {
+  book?: BookProps;
+  collectionUrl: string;
 }
 
 interface ErrorMessageProps {
