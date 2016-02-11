@@ -7,6 +7,7 @@ import {
   CompleteEntryLink
 } from "opds-feed-parser";
 import * as url from "url";
+const sanitizeHtml = require("sanitize-html");
 
 function entryToBook(entry: any, feedUrl: string): BookProps {
   let authors = entry.authors.map((author) => {
@@ -41,7 +42,7 @@ function entryToBook(entry: any, feedUrl: string): BookProps {
     id: entry.id,
     title: entry.title,
     authors: authors,
-    summary: entry.summary.content,
+    summary: sanitizeHtml(entry.summary.content),
     imageUrl: imageUrl,
     publisher: publisher,
     published: published,
@@ -102,7 +103,6 @@ export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
   let laneIndex = [];
   let facetGroups: FacetGroupProps[] = [];
   let search: SearchProps;
-  let selfUrl: string;
   let nextPageUrl: string;
 
   feed.entries.forEach(entry => {

@@ -28,6 +28,10 @@ var config = {
           'react-hot',
           'ts-loader'
         ]
+      },
+      {
+        test: /\.json$/,
+        loaders: ['json-loader']
       }
     ],
     noParse:[]

@@ -115,6 +115,3 @@ interface ErrorMessageProps {
   message: string;
   closeError: () => void;
 }
-
-interface BaseProps extends __React.HTMLProps<any> {
-}
