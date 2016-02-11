@@ -3,6 +3,7 @@ interface BaseProps extends __React.HTMLProps<any> {
 
 interface FetchCollectionProps {
   fetchCollection?: (url: string, push?: boolean) => void;
+  fetchPage?: (url: string) => void;
 }
 
 interface BookActionProps {
@@ -62,6 +63,8 @@ interface CollectionProps extends FetchCollectionProps, BookActionProps {
   links: LinkProps[];
   facetGroups?: FacetGroupProps[];
   search?: SearchProps;
+  nextPageUrl?: string;
+  isFetchingPage?: boolean;
   fetchSearchDescription?: (url: string) => void;
 }
 
@@ -71,6 +74,7 @@ interface State {
   isFetching?: boolean;
   error?: string;
   book?: BookProps;
+  isFetchingPage?: boolean;
 }
 
 interface RootProps extends State, FetchCollectionProps, BookActionProps {

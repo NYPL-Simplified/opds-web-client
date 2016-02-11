@@ -51,6 +51,12 @@ export default class Collection extends React.Component<CollectionProps, any> {
       display: "block"
     };
 
+    let loadingNextPageStyle = {
+      clear: "both",
+      height: "50px",
+      textAlign: "center"
+    };
+
     return (
       <div className="collection" style={{ fontFamily: "Arial, sans-serif" }}>
         <div className="collectionTop" style={collectionTopStyle}>
@@ -102,8 +108,25 @@ export default class Collection extends React.Component<CollectionProps, any> {
               </li>) }
             </ul>
           }
+
+          { this.props.isFetchingPage && <div className="loadingNextPage" style={loadingNextPageStyle}>Loading next page...</div> }
         </div>
       </div>
     );
+  }
+
+  componentDidMount() {
+    window.addEventListener("scroll", this.handleScroll.bind(this));
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll.bind(this));
+  }
+
+  handleScroll() {
+    let atBottom = ((document.body.scrollTop + window.innerHeight) >= document.body.scrollHeight);
+    if (atBottom && !this.props.isFetchingPage && this.props.nextPageUrl) {
+      this.props.fetchPage(this.props.nextPageUrl);
+    }
   }
 }

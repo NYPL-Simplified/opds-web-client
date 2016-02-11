@@ -109,4 +109,51 @@ describe("Collection", () => {
 
   });
 
+  describe("collection with next page", () => {
+    it("fetches next page on scroll to bottom", () => {
+      let fetchPage = jest.genMockFunction();
+      let collectionData = {
+        id: "test collection",
+        url: "test url",
+        title: "title",
+        books: [],
+        lanes: [],
+        links: [],
+        nextPageUrl: "next",
+        fetchPage: fetchPage
+      };
+
+      let collection = TestUtils.renderIntoDocument(
+        <Collection {...collectionData} />
+      );
+
+      document.body.scrollTop = 1000;
+      document.body.scrollHeight = 1;
+      window.dispatchEvent(new (window as any).UIEvent("scroll", {detail: 0}));
+
+      expect(fetchPage.mock.calls.length).toEqual(1);
+      expect(fetchPage.mock.calls[0][0]).toEqual("next");
+    });
+
+    it("shows loading indicator for next page", () => {
+      let collectionData = {
+        id: "test collection",
+        url: "test url",
+        title: "title",
+        books: [],
+        lanes: [],
+        links: [],
+        isFetchingPage: true
+      };
+
+      let collection = TestUtils.renderIntoDocument(
+        <Collection {...collectionData} />
+      );
+
+      let loading = TestUtils.findRenderedDOMComponentWithClass(collection, "loadingNextPage");
+      expect(loading.textContent).toContain("Loading");
+    });
+  });
+
 });
+

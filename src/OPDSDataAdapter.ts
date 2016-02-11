@@ -103,6 +103,7 @@ export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
   let facetGroups: FacetGroupProps[] = [];
   let search: SearchProps;
   let selfUrl: string;
+  let nextPageUrl: string;
 
   feed.entries.forEach(entry => {
     if (feed instanceof AcquisitionFeed) {
@@ -146,6 +147,13 @@ export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
     if (searchLink) {
       search = {url: url.resolve(feedUrl, searchLink.href)};
     }
+
+    let nextPageLink = feed.links.find(link => {
+      return (link.rel === "next");
+    });
+    if (nextPageLink) {
+      nextPageUrl = url.resolve(feedUrl, nextPageLink.href);
+    }
   }
 
   facetGroups = facetLinks.reduce((result, link) => {
@@ -177,6 +185,7 @@ export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
   collection.books = dedupeBooks(books);
   collection.facetGroups = facetGroups;
   collection.search = search;
+  collection.nextPageUrl = nextPageUrl;
   Object.freeze(collection);
   return collection;
 }

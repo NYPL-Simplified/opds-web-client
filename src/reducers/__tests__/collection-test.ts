@@ -11,6 +11,10 @@ import {
   fetchCollectionSuccess,
   fetchCollectionFailure,
   loadCollection,
+  fetchPageRequest,
+  fetchPageSuccess,
+  fetchPageFailure,
+  loadPage,
   clearCollection,
   loadSearchDescription,
   closeError
@@ -35,6 +39,14 @@ describe("collection reducer", () => {
     url: "some url",
     data: { foo: "bar "},
     isFetching: true,
+    error: null
+  };
+
+  let fetchingPageState = {
+    url: "some url",
+    data: { foo: "bar ", books: []},
+    isFetching: false,
+    isFetchingPage: true,
     error: null
   };
 
@@ -94,6 +106,63 @@ describe("collection reducer", () => {
     });
 
     expect(reducer(currentState, action)).toEqual(newState);
+  });
+
+  it("should handle FETCH_PAGE_REQUEST", () => {
+    let action = fetchPageRequest("some other url");
+    let newState = Object.assign({}, currentState, {
+      pageUrl: "some other url",
+      isFetchingPage: true
+    });
+
+    expect(reducer(currentState, action)).toEqual(newState);
+  });
+
+  it("should handle FETCH_PAGE_SUCCESS", () => {
+    let action = fetchPageSuccess();
+    let newState = Object.assign({}, fetchingPageState, {
+      isFetchingPage: false
+    });
+
+    expect(reducer(fetchingPageState, action)).toEqual(newState);
+  });
+
+  it("should handle FETCH_PAGE_FAILURE", () => {
+    let action = fetchPageFailure("test error");
+    let newState = Object.assign({}, fetchingPageState, {
+      isFetchingPage: false,
+      error: "test error"
+    });
+
+    expect(reducer(fetchingPageState, action)).toEqual(newState);
+  });
+
+  it("should handle LOAD_PAGE", () => {
+    let data = {
+      id: "some id",
+      url: "test url",
+      title: "some title",
+      lanes: [],
+      books: [{
+        id: "new book",
+        title: "new title",
+        authors: [],
+        summary: "new summary",
+        imageUrl: "",
+        publisher: ""
+      }],
+      links: [],
+      nextPageUrl: "next"
+    };
+    let action = loadPage(data);
+    let newState = Object.assign({}, fetchingPageState, {
+      data: Object.assign({}, fetchingPageState.data, {
+        books: data.books,
+        nextPageUrl: "next"
+      })
+    });
+
+    expect(reducer(fetchingPageState, action)).toEqual(newState);
   });
 
   it("should handle CLEAR_COLLECTION", () => {
