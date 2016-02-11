@@ -2,6 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import {
   fetchCollection,
+  fetchPage,
   clearCollection,
   fetchSearchDescription,
   closeError
@@ -22,6 +23,8 @@ export class Root extends React.Component<RootProps, any> {
           <Collection
             {...this.props.collectionData}
             fetchCollection={this.props.fetchCollection}
+            fetchPage={this.props.fetchPage}
+            isFetchingPage={this.props.isFetchingPage}
             fetchSearchDescription={this.props.fetchSearchDescription} /> :
           this.props.isFetching ? null : <UrlForm fetchCollection={this.props.fetchCollection} url={this.props.collectionUrl} />
         }
@@ -42,6 +45,7 @@ const mapStateToProps = (state) => {
     collectionData: state.collection.data,
     collectionUrl: state.collection.url,
     isFetching: state.collection.isFetching,
+    isFetchingPage: state.collection.isFetchingPage,
     error: state.collection.error
   };
 };
@@ -49,6 +53,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchCollection: (url: string) => dispatch(fetchCollection(url)),
+    fetchPage: (url: string) => dispatch(fetchPage(url)),
     clearCollection: () => dispatch(clearCollection()),
     fetchSearchDescription: (url: string) => dispatch(fetchSearchDescription(url)),
     closeError: () => dispatch(closeError())

@@ -1,5 +1,6 @@
 interface FetchCollectionProps {
   fetchCollection?: (url: string, push?: boolean) => void;
+  fetchPage?: (url: string) => void;
 }
 
 interface BookProps {
@@ -57,6 +58,8 @@ interface CollectionProps extends FetchCollectionProps {
   links: LinkProps[];
   facetGroups?: FacetGroupProps[];
   search?: SearchProps;
+  nextPageUrl?: string;
+  isFetchingPage?: boolean;
   fetchSearchDescription?: (url: string) => void;
 }
 
@@ -65,6 +68,7 @@ interface State {
   collectionUrl?: string;
   isFetching?: boolean;
   error?: string;
+  isFetchingPage?: boolean;
 }
 
 interface RootProps extends State, FetchCollectionProps {
