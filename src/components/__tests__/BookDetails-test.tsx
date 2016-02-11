@@ -58,4 +58,10 @@ describe("BookDetails", () => {
     TestUtils.Simulate.click(link);
     expect(hideBookDetails.mock.calls.length).toBe(1);
   });
+
+  it("hides when background screen is clicked", () => {
+    let screen = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookDetailsScreen");
+    TestUtils.Simulate.click(screen);
+    expect(hideBookDetails.mock.calls.length).toBe(1);
+  });
 });
