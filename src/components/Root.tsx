@@ -24,6 +24,7 @@ export class Root extends React.Component<RootProps, any> {
             {...this.props.collectionData}
             fetchCollection={this.props.fetchCollection}
             fetchPage={this.props.fetchPage}
+            isFetching={this.props.isFetching}
             isFetchingPage={this.props.isFetchingPage}
             fetchSearchDescription={this.props.fetchSearchDescription} /> :
           this.props.isFetching ? null : <UrlForm fetchCollection={this.props.fetchCollection} url={this.props.collectionUrl} />

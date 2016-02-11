@@ -59,6 +59,7 @@ interface CollectionProps extends FetchCollectionProps {
   facetGroups?: FacetGroupProps[];
   search?: SearchProps;
   nextPageUrl?: string;
+  isFetching?: boolean;
   isFetchingPage?: boolean;
   fetchSearchDescription?: (url: string) => void;
 }

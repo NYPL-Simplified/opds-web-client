@@ -87,6 +87,12 @@ export default class Collection extends React.Component<CollectionProps, any> {
     );
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.isFetching && !nextProps.isFetching) {
+       document.body.scrollTop = 0;
+    }
+  }
+
   componentDidMount() {
     window.addEventListener("scroll", this.handleScroll.bind(this));
   }
