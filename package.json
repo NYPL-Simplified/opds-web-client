@@ -17,7 +17,7 @@
     "prepublish": "typings install && tsc"
   },
   "dependencies": {
-    "opds-feed-parser": "^0.0.7",
+    "opds-feed-parser": "^0.0.8",
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
     "react-redux": "^4.3.0",
