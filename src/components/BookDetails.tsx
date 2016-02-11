@@ -14,12 +14,21 @@ export default class BookDetails extends React.Component<BookProps, any> {
       zIndex: 20
     };
 
+    let screenStyle = {
+      position: "fixed",
+      zIndex: 10,
+      top: "0",
+      bottom: "0",
+      width: "100%",
+      backgroundColor: "rgba(128, 128, 128, 0.8)"
+    };
+
     return (
       <div>
         <div
           className="bookDetailsScreen"
           onClick={() => this.props.hideBookDetails()}
-          style={{ position: "fixed", zIndex: 10, top: "0", bottom: "0", width: "100%", backgroundColor: "rgba(128, 128, 128, 0.8)" }}></div>
+          style={screenStyle}></div>
         <div className="bookDetails" style={bookDetailsStyle}>
           <div style={{ float: "right" }}>
             <a href="javascript:void(0)"
