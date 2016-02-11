@@ -152,7 +152,7 @@ describe("collection reducer", () => {
       links: [],
       nextPageUrl: "next"
     };
-    let action = loadPage(data, "some other url");
+    let action = loadPage(data);
     let newState = Object.assign({}, fetchingPageState, {
       data: Object.assign({}, fetchingPageState.data, {
         books: data.books,

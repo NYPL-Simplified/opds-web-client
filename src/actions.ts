@@ -36,7 +36,7 @@ export function fetchPage(url: string) {
     dispatch(fetchPageRequest(url));
     return new Promise((resolve, reject) => {
       fetchOPDSData(url).then((data: CollectionProps) => {
-        dispatch(loadPage(data, url));
+        dispatch(loadPage(data));
         dispatch(fetchPageSuccess());
         resolve(data);
       }).catch(err => {
@@ -86,8 +86,8 @@ export function fetchPageFailure(message?: string) {
   return { type: FETCH_PAGE_FAILURE, message };
 }
 
-export function loadPage(data: CollectionProps, url?: string) {
-  return { type: LOAD_PAGE, data, url };
+export function loadPage(data: CollectionProps) {
+  return { type: LOAD_PAGE, data };
 }
 
 export function clearCollection() {
