@@ -9,6 +9,7 @@ let groupedCollectionData: CollectionProps = {
       books: [
         {
           id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
+          url: "http://circulation.librarysimplified.org/works/3M/crrmnr9",
           title: "The Mayan Secrets",
           authors: [
             "Clive Cussler",
@@ -20,6 +21,7 @@ let groupedCollectionData: CollectionProps = {
         },
         {
           id: "urn:librarysimplified.org/terms/id/Overdrive%20ID/97ecd436-6416-4317-835c-aea13836ea5b",
+          url: "http://circulation.librarysimplified.org/works/Overdrive/97ecd436-6416-4317-835c-aea13836ea5b",
           title: "So B. It",
           authors: [
             "Sarah Weeks"
@@ -30,6 +32,7 @@ let groupedCollectionData: CollectionProps = {
         },
         {
           id: "urn:librarysimplified.org/terms/id/Overdrive%20ID/59c938ed-9e93-42a9-a0a6-70ea8b7e28e4",
+          url: "http://circulation.librarysimplified.org/works/Overdrive/59c938ed-9e93-42a9-a0a6-70ea8b7e28e4",
           title: "A Spy Among Friends",
           authors: [
             "Ben Macintyre"

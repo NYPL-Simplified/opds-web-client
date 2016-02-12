@@ -98,11 +98,30 @@ describe("Root", () => {
 
     it("calls onNavigate when fetching collection", () => {
       let collectionLink = TestUtils.scryRenderedDOMComponentsWithClass(rootInstance, "laneTitle")[0];
-      let collectionUrl = decodeURIComponent(collectionLink.getAttribute("href").split("?collection=")[1]);
+      let collectionUrl = decodeURIComponent(collectionLink.getAttribute("href").split("collection=")[1]);
       TestUtils.Simulate.click(collectionLink);
 
       expect(onNavigate.mock.calls.length).toBe(1);
       expect(onNavigate.mock.calls[0][0]).toBe(collectionUrl);
+    });
+
+    it("calls onNavigate when showing or hiding a book", () => {
+      let bookLink =  TestUtils.scryRenderedDOMComponentsWithClass(rootInstance, "laneBookLink")[0];
+      let url = bookLink.getAttribute("href");
+      let parts = url.slice(1).split("&");
+      let collectionUrl = decodeURIComponent(parts[0].split("=")[1]);
+      let bookUrl = decodeURIComponent(parts[1].split("=")[1]);
+      TestUtils.Simulate.click(bookLink);
+      let closeLink = TestUtils.findRenderedDOMComponentWithClass(rootInstance, "bookDetailsCloseLink");
+      TestUtils.Simulate.click(closeLink);
+
+      expect(onNavigate.mock.calls.length).toBe(2);
+      // can't test collectionUrl because it comes from Root's props,
+      // which only get set asynchronously from a fetch, which is too
+      // much for this test:
+      // expect(onNavigate.mock.calls[0][0]).toBe(collectionUrl);
+      expect(onNavigate.mock.calls[0][1]).toBe(bookUrl);
+      expect(onNavigate.mock.calls[1][1]).toBeFalsy;
     });
   });
 });

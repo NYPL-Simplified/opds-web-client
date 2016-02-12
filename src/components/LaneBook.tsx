@@ -27,6 +27,7 @@ export default class LaneBook extends Book {
     return (
       <div className="book laneBook" style={ bookStyle }>
         <BookPreviewLink
+          className="laneBookLink"
           url={this.props.url}
           collectionUrl={this.props.collectionUrl}
           book={this.props}

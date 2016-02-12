@@ -41,6 +41,9 @@
 
       window.onpopstate = function(event) {
         if (event.state && event.state.collection) {
+          if (!event.state.book) {
+            browser.hideBook();
+          }
           // call loadCollection with skipOnFetch = true
           // so that state isn't pushed every time it's popped
           browser.loadCollection(event.state.collection, true, event.state.book);
@@ -50,8 +53,8 @@
       };
 
       var pushHistory = function(collectionUrl, bookUrl) {
-          window.history.pushState.apply(window.history, historyArgs(collectionUrl, bookUrl));
-        };
+        window.history.pushState.apply(window.history, historyArgs(collectionUrl, bookUrl));
+      };
 
       var startCollection = getParam("collection");
       var startBook = getParam("book");

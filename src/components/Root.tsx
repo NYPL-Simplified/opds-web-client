@@ -97,7 +97,7 @@ const mergeProps = (stateProps, dispatchProps, componentProps) => {
       dispatchProps.hideBookDetails(book);
 
       if (componentProps.onNavigate) {
-        componentProps.onNavigate(stateProps.collectionUrl, book.url);
+        componentProps.onNavigate(stateProps.collectionUrl, null);
       }
     },
 

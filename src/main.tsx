@@ -29,11 +29,15 @@ export default class OPDSBrowser {
     );
   }
 
-  loadCollection(url: string, skipOnFetchCollection: boolean = false) {
-    this.root.getWrappedInstance().props.fetchCollection(url, skipOnFetchCollection);
+  loadCollection(url: string, skipOnFetchCollection: boolean = false, bookUrl?: string) {
+    this.root.getWrappedInstance().props.fetchCollection(url, skipOnFetchCollection, bookUrl);
   }
 
   clearCollection() {
     this.root.getWrappedInstance().props.clearCollection();
+  }
+
+  hideBook() {
+    this.root.getWrappedInstance().props.hideBookDetails();
   }
 }
