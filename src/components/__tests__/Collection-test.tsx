@@ -155,5 +155,45 @@ describe("Collection", () => {
     });
   });
 
+  describe("collection that scrolls", () => {
+    let collectionData = {
+      id: "test collection",
+      url: "test url",
+      title: "title",
+      books: [],
+      lanes: [],
+      links: []
+    };
+    let collection;
+    let node;
+
+    beforeEach(() => {
+      node = document.createElement("div");
+      collection = ReactDOM.render(
+        <Collection {...collectionData} isFetching={true}/>,
+        node
+      );
+      document.body.scrollTop = 1000;
+    });
+
+    it("scrolls to top when new collection fetched successfully", () => {
+      ReactDOM.render(
+        <Collection {...collectionData} isFetching={false}/>,
+        node
+      );
+
+      expect(document.body.scrollTop).toEqual(0);
+    });
+
+    it("does not scroll when there's an error", () => {
+      ReactDOM.render(
+        <Collection {...collectionData} isFetching={false} error={"error"}/>,
+        node
+      );
+
+      expect(document.body.scrollTop).toEqual(1000);
+    });
+  });
+
 });
 
