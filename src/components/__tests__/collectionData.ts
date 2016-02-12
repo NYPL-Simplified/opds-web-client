@@ -1,5 +1,6 @@
 let groupedCollectionData: CollectionProps = {
   id: "/groups/",
+  url: "http://circulation.librarysimplified.org/groups/",
   title: "All Books",
   lanes: [
     {

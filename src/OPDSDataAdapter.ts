@@ -3,19 +3,21 @@ import {
   AcquisitionFeed,
   OPDSCollectionLink,
   OPDSFacetLink,
-  SearchLink
+  SearchLink,
+  CompleteEntryLink
 } from "opds-feed-parser";
 import * as url from "url";
+const sanitizeHtml = require("sanitize-html");
 
 function entryToBook(entry: any, feedUrl: string): BookProps {
   let authors = entry.authors.map((author) => {
     return author.name;
   });
+
+  let imageUrl, imageThumbLink;
   let artworkLinks = entry.links.filter((link) => {
     return (link instanceof OPDSArtworkLink);
   });
-
-  let imageUrl, imageThumbLink;
   if (artworkLinks.length > 0) {
     imageThumbLink = artworkLinks.find(link => link.rel === "http://opds-spec.org/image/thumbnail");
     if (imageThumbLink) {
@@ -25,13 +27,26 @@ function entryToBook(entry: any, feedUrl: string): BookProps {
       imageUrl = url.resolve(feedUrl, artworkLinks[0].href);
     }
   }
+
+  let detailUrl;
+  let detailLink = entry.links.find(link => link instanceof CompleteEntryLink);
+  if (detailLink) {
+    detailUrl = detailLink.href;
+  }
+
+  // until OPDSParser parses dcterms:publisher...
+  let publisher = entry.unparsed && entry.unparsed["dcterms:publisher"] ? entry.unparsed["dcterms:publisher"][0]["_"] : null;
+  let published = formatDate(entry.published);
+
   return <BookProps>{
     id: entry.id,
     title: entry.title,
     authors: authors,
-    summary: entry.summary,
+    summary: sanitizeHtml(entry.summary.content),
     imageUrl: imageUrl,
-    publisher: entry.publisher
+    publisher: publisher,
+    published: published,
+    url: detailUrl
   };
 }
 
@@ -41,10 +56,10 @@ function entryToLink(entry: any, feedUrl: string): LinkProps {
   if (links.length > 0) {
      href = url.resolve(feedUrl, links[0].href);
   }
-  return <LinkProps>{
+  return <CollectionLinkProps>{
     id: entry.id,
-    title: entry.title,
-    href: href
+    text: entry.title,
+    url: href
   };
 }
 
@@ -58,10 +73,28 @@ function dedupeBooks(books: BookProps[]): BookProps[] {
   return Array.from(bookIndex.values());
 }
 
+function formatDate(inputDate: string): string {
+  let monthNames = [
+    "January", "February", "March",
+    "April", "May", "June", "July",
+    "August", "September", "October",
+    "November", "December"
+  ];
+
+  let date = new Date(inputDate);
+  let day = date.getDate();
+  let monthIndex = date.getMonth();
+  let month = monthNames[monthIndex];
+  let year = date.getFullYear();
+
+  return `${month} ${day}, ${year}`;
+}
+
 export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
   let collection = <CollectionProps>{
     id: feed.id,
-    title: feed.title
+    title: feed.title,
+    url: feedUrl
   };
   let books: BookProps[] = [];
   let links: LinkProps[] = [];

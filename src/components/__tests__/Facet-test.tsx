@@ -1,4 +1,5 @@
 jest.dontMock("../Facet");
+jest.dontMock("../Link");
 jest.dontMock("../CollectionLink");
 
 import * as React from "react";

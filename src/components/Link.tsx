@@ -1,21 +1,38 @@
 import * as React from "react";
-import CollectionLink from "./CollectionLink";
 
-export default class Link extends React.Component<LinkProps, any> {
+export default class Link<P extends LinkProps> extends React.Component<P, any> {
   render(): JSX.Element {
-    let linkStyle = {
-      textAlign: "center",
-      backgroundColor: "#ddd",
-      margin: "25px",
-      padding: "10px",
-      overflow: "hidden",
-      fontSize: "500%"
-    };
-
     return (
-      <div className="link" style={ linkStyle }>
-        <CollectionLink text={this.props.title} url={this.props.href} fetchCollection={this.props.fetchCollection} />
-      </div>
+      <a
+        className={this.props.className}
+        style={this.props.style}
+        href={this.href()}
+        onClick={this.handleClick.bind(this)}>
+
+        {this.props.children || this.props.text}
+
+      </a>
     );
+  }
+
+  handleClick(event) {
+    // if any of these keys are pressed, the url is opened by the browser as it pleases
+    if (event.metaKey || event.altKey || event.ctrlKey || event.shiftKey) {
+      return true;
+    } else {
+      // if not, the url is handled by handleUrl in the child component
+      this.processClick();
+      event.preventDefault();
+      return false;
+    }
+  }
+
+  href() {
+    throw "href() unimplemented!";
+    return ""; // hack to satisfy type checking
+  }
+
+  processClick() {
+    throw "handleUrl() unimplemented!";
   }
 }

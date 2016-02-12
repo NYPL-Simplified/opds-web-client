@@ -3,6 +3,8 @@ jest.dontMock("../LoadingIndicator");
 jest.dontMock("../ErrorMessage");
 jest.dontMock("../Collection");
 jest.dontMock("../UrlForm");
+jest.dontMock("../BookDetails");
+jest.dontMock("./collectionData");
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -11,6 +13,7 @@ import * as TestUtils from "react-addons-test-utils";
 import { Root } from "../Root";
 import Collection from "../Collection";
 import UrlForm from "../UrlForm";
+import BookDetails from "../BookDetails";
 import { groupedCollectionData } from "./collectionData";
 
 describe("Root", () => {
@@ -62,5 +65,16 @@ describe("Root", () => {
 
     let error = TestUtils.findRenderedDOMComponentWithClass(root, "error");
     expect(error.textContent).toContain("test error");
+  });
+
+  it("shows book detail", () => {
+    let bookData = groupedCollectionData.lanes[0].books[0];
+    let root = TestUtils.renderIntoDocument(
+      <Root book={bookData} />
+    );
+    let book = TestUtils.findRenderedDOMComponentWithClass(root, "bookDetails");
+
+    expect(book.textContent).toContain(bookData.title);
+    expect(book.textContent).toContain(bookData.authors.join(", "));
   });
 });
