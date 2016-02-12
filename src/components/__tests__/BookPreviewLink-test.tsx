@@ -21,7 +21,8 @@ let linkProps: BookPreviewLinkProps = {
   text: "test text",
   url: "http://circulation.librarysimplified.org/works/3M/crrmnr9",
   collectionUrl: "http://example.com/feed",
-  book: book
+  book: book,
+  className: "test class"
 };
 
 describe("BookPreviewLink", () => {
@@ -38,7 +39,14 @@ describe("BookPreviewLink", () => {
   it("shows the link", () => {
     let element = TestUtils.findRenderedDOMComponentWithTag(link, "a");
     expect(element.textContent).toBe(linkProps.text);
-    expect(element.getAttribute("href")).toBe("?url=" + linkProps.collectionUrl + "&book=" + linkProps.url);
+    expect(element.className).toBe(linkProps.className);
+  });
+
+  it("encodes the collection and book urls", () => {
+    let element = TestUtils.findRenderedDOMComponentWithTag(link, "a");
+    let encodedCollectionUrl = encodeURIComponent(linkProps.collectionUrl);
+    let encodedBookUrl = encodeURIComponent(linkProps.url);
+    expect(element.getAttribute("href")).toBe("?url=" + encodedCollectionUrl + "&book=" + encodedBookUrl);
   });
 
   it("shows the book preview if clicked normally", () => {
