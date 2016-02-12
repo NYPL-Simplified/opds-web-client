@@ -27,7 +27,7 @@ export default class Search extends React.Component<SearchProps, any> {
   }
 
   onSubmit(event) {
-    let searchTerms = this.refs["input"]["value"];
+    let searchTerms = encodeURIComponent(this.refs["input"]["value"]);
     let url = this.props.data.template(searchTerms);
     this.props.fetchCollection(url);
     event.preventDefault();
