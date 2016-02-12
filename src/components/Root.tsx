@@ -41,15 +41,11 @@ export class Root extends React.Component<RootProps, any> {
 
   componentWillMount() {
     if (this.props.startCollection) {
-      // skip onFetchCollection, which is not meant for initial fetch
+      // skip onNavigate, which is not meant for initial fetch
       if (this.props.startBook) {
         this.props.fetchCollection(this.props.startCollection, true, this.props.startBook);
       } else {
         this.props.fetchCollection(this.props.startCollection, true);
-      }
-    } else {
-      if (this.props.startBook) {
-        throw "TODO";
       }
     }
   }
@@ -81,13 +77,31 @@ const mapDispatchToProps = (dispatch) => {
 // define new fetchCollection here so that it can call onFetch from component props
 const mergeProps = (stateProps, dispatchProps, componentProps) => {
   return Object.assign({}, componentProps, stateProps, dispatchProps, {
-    fetchCollection: (url: string, skipOnFetchCollection: boolean = false, bookUrl?: string) => {
+    fetchCollection: (url: string, skipOnNavigate: boolean = false, bookUrl?: string) => {
       dispatchProps.fetchCollection(url, bookUrl);
 
-      if (!skipOnFetchCollection && componentProps.onFetchCollection) {
-        componentProps.onFetchCollection(url, bookUrl);
+      if (!skipOnNavigate && componentProps.onNavigate) {
+        componentProps.onNavigate(url, bookUrl);
       }
-    }
+    },
+
+    showBookDetails: (book: BookProps) => {
+      dispatchProps.showBookDetails(book);
+
+      if (componentProps.onNavigate) {
+        componentProps.onNavigate(stateProps.collectionUrl, book.url);
+      }
+    },
+
+    hideBookDetails: (book: BookProps) => {
+      dispatchProps.hideBookDetails(book);
+
+      if (componentProps.onNavigate) {
+        componentProps.onNavigate(stateProps.collectionUrl, book.url);
+      }
+    },
+
+    collectionData: componentProps.collectionData ? componentProps.collectionData : stateProps.collectionData
   });
 };
 

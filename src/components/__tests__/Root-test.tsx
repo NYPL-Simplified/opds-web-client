@@ -1,20 +1,18 @@
-jest.dontMock("../Root");
-jest.dontMock("../LoadingIndicator");
-jest.dontMock("../ErrorMessage");
-jest.dontMock("../Collection");
-jest.dontMock("../UrlForm");
-jest.dontMock("../BookDetails");
-jest.dontMock("./collectionData");
+jest.autoMockOff();
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
 
-import { Root } from "../Root";
+import ConnectedRoot, { Root } from "../Root";
 import Collection from "../Collection";
 import UrlForm from "../UrlForm";
 import BookDetails from "../BookDetails";
 import { groupedCollectionData } from "./collectionData";
+import { createStore, applyMiddleware } from "redux";
+let thunk: any = require("redux-thunk");
+import reducers from "../../reducers/index";
+import { Provider } from "react-redux";
 
 describe("Root", () => {
   it("shows a collection if props include collectionData", () => {
@@ -76,5 +74,35 @@ describe("Root", () => {
 
     expect(book.textContent).toContain(bookData.title);
     expect(book.textContent).toContain(bookData.authors.join(", "));
+  });
+
+  describe("connected to store", () => {
+    let store: Redux.Store;
+    let collectionData: CollectionProps = groupedCollectionData;
+    let onNavigate;
+    let root, rootInstance;
+
+    beforeEach(() => {
+      store = createStore(reducers, applyMiddleware(thunk));
+      onNavigate = jest.genMockFunction();
+      TestUtils.renderIntoDocument(
+        <Provider store={store}>
+          <ConnectedRoot
+            ref={(c) => root = c}
+            onNavigate={onNavigate}
+            collectionData={collectionData} />
+        </Provider>
+      );
+      rootInstance = root.getWrappedInstance();
+    });
+
+    it("calls onNavigate when fetching collection", () => {
+      let collectionLink = TestUtils.scryRenderedDOMComponentsWithClass(rootInstance, "laneTitle")[0];
+      let collectionUrl = decodeURIComponent(collectionLink.getAttribute("href").split("?collection=")[1]);
+      TestUtils.Simulate.click(collectionLink);
+
+      expect(onNavigate.mock.calls.length).toBe(1);
+      expect(onNavigate.mock.calls[0][0]).toBe(collectionUrl);
+    });
   });
 });

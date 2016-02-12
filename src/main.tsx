@@ -23,7 +23,7 @@ export default class OPDSBrowser {
           ref={(c) => this.root = c}
           startCollection={config.startCollection}
           startBook={config.startBook}
-          onFetchCollection={config.onFetchCollection} />
+          onNavigate={config.onNavigate} />
       </Provider>,
       document.getElementById(elementId)
     );

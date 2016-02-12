@@ -12,20 +12,22 @@
     <div id="opds-browser"></div>
     <script src="http://localhost:8090/dist/opds-browser.js"></script>
     <script>
-      var getParameterByName = function(name) {
+      var getParam = function(name) {
         var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
         return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
       };
 
-      var queryStringFromParams = function(params) {
-        var result = ["collection", "book"].reduce(function(str, key) {
-          if (params[key]) {
-            str += key + "=" + encodeURIComponent(params[key])
-          }
-          return str;
-        }, "");
+      var serializeParams = function(params) {
+        if (Object.keys(params).length === 0) {
+          return "";
+        }
 
-        return result ? ("?" + result) : "";
+        return "?" + Object.keys(params).reduce(function(map, key) {
+          if (params[key]) {
+            map.push(key + "=" + encodeURIComponent(params[key]));
+          }
+          return map;
+        }, []).join("&");
       };
 
       var historyArgs = function(collectionUrl, bookUrl) {
@@ -34,7 +36,7 @@
           book: bookUrl
         };
 
-        return [params, "", queryStringFromParams(params)];
+        return [params, "", serializeParams(params)];
       }
 
       window.onpopstate = function(event) {
@@ -51,13 +53,12 @@
           window.history.pushState.apply(window.history, historyArgs(collectionUrl, bookUrl));
         };
 
-      var startCollection = getParameterByName("collection");
-      var startBook = getParameterByName("book");
+      var startCollection = getParam("collection");
+      var startBook = getParam("book");
       var browser = new OPDSBrowser({
         startCollection: startCollection,
         startBook: startBook,
-        onFetchCollection: pushHistory,
-        onDisplayBook: pushHistory
+        onNavigate: pushHistory
       }, "opds-browser");
 
       if (startCollection || startBook) {
