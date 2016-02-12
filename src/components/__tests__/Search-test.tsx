@@ -61,4 +61,29 @@ describe("Search", () => {
     expect(fetchCollection.mock.calls.length).toEqual(1);
     expect(fetchCollection.mock.calls[0][0]).toEqual("test template");
   });
+
+  it("escapes search terms", () => {
+    let fetchCollection = jest.genMockFunction();
+    let searchData = {
+      data: {
+        description: "description",
+        shortName: "shortName",
+        template: (s) => s + " template"
+      },
+      fetchCollection: fetchCollection
+    };
+    let search = TestUtils.renderIntoDocument(
+      <Search {...searchData} />
+    );
+
+    let form = TestUtils.findRenderedDOMComponentWithTag(search, "form");
+    expect(form).toBeTruthy;
+
+    let input = TestUtils.findRenderedDOMComponentWithTag(search, "input");
+    input["value"] = "Indésirable";
+    TestUtils.Simulate.submit(form);
+
+    expect(fetchCollection.mock.calls.length).toEqual(1);
+    expect(fetchCollection.mock.calls[0][0]).toEqual("Ind%C3%A9sirable template");
+  });
 });
