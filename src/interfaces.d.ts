@@ -2,7 +2,7 @@ interface BaseProps extends __React.HTMLProps<any> {
 }
 
 interface FetchCollectionProps {
-  fetchCollection?: (url: string, push?: boolean) => void;
+  fetchCollection?: (url: string, skipOnFetchCollection?: boolean, bookUrl?: string) => void;
   fetchPage?: (url: string) => void;
 }
 
@@ -80,8 +80,9 @@ interface State {
 }
 
 interface RootProps extends State, FetchCollectionProps, BookActionProps {
-  startUrl?: string;
-  onFetch?: (url: string) => any;
+  startCollection?: string;
+  startBook?: string;
+  onFetchCollection?: (url: string) => any;
   dispatch?: any;
   clearCollection?: () => void;
   ref?: any;

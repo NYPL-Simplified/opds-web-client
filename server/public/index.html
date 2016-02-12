@@ -17,27 +17,51 @@
         return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
       };
 
+      var queryStringFromParams = function(params) {
+        var result = ["collection", "book"].reduce(function(str, key) {
+          if (params[key]) {
+            str += key + "=" + encodeURIComponent(params[key])
+          }
+          return str;
+        }, "");
+
+        return result ? ("?" + result) : "";
+      };
+
+      var historyArgs = function(collectionUrl, bookUrl) {
+        var params = {
+          collection: collectionUrl,
+          book: bookUrl
+        };
+
+        return [params, "", queryStringFromParams(params)];
+      }
+
       window.onpopstate = function(event) {
-        if (event.state && event.state.collectionUrl) {
-          // call loadUrl with skipOnFetch = true
+        if (event.state && event.state.collection) {
+          // call loadCollection with skipOnFetch = true
           // so that state isn't pushed every time it's popped
-          browser.loadUrl(event.state.collectionUrl, true);
+          browser.loadCollection(event.state.collection, true, event.state.book);
         } else {
-          browser.clearUrl();
+          browser.clearCollection();
         }
       };
 
-      var startUrl = getParameterByName("url");
+      var pushHistory = function(collectionUrl, bookUrl) {
+          window.history.pushState.apply(window.history, historyArgs(collectionUrl, bookUrl));
+        };
+
+      var startCollection = getParameterByName("collection");
+      var startBook = getParameterByName("book");
       var browser = new OPDSBrowser({
-        startUrl: startUrl,
-        onFetch: function(url) {
-          window.history.pushState({ collectionUrl: url }, url, "?url=" + encodeURIComponent(url));
-        }
+        startCollection: startCollection,
+        startBook: startBook,
+        onFetchCollection: pushHistory,
+        onDisplayBook: pushHistory
       }, "opds-browser");
 
-      if (startUrl) {
-        // give history state of initial load a collectionUrl for later use by onpopstate
-        window.history.replaceState({ collectionUrl: startUrl }, startUrl, "?url=" + encodeURIComponent(startUrl));
+      if (startCollection || startBook) {
+        window.history.replaceState.apply(window.history, historyArgs(startCollection, startBook));
       }
     </script>
   </body>

@@ -32,7 +32,7 @@ describe("CollectionLink", () => {
 
   it("encodes the collection url", () => {
     let link = TestUtils.findRenderedDOMComponentWithTag(collectionLink, "a");
-    expect(link.getAttribute("href")).toBe("?url=" + encodeURIComponent(linkProps.url));
+    expect(link.getAttribute("href")).toBe("?collection=" + encodeURIComponent(linkProps.url));
   });
 
   it("fetches the url if clicked normally", () => {

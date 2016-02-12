@@ -38,15 +38,15 @@ describe("Root", () => {
     expect(urlForms.length).toBe(1);
   });
 
-  it("fetches a start url", () => {
-    let startUrl = "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/blocks.xml";
+  it("fetches a collection url", () => {
+    let startCollection = "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/blocks.xml";
     let fetchCollection = jest.genMockFunction();
     let root = TestUtils.renderIntoDocument(
-      <Root startUrl={startUrl} fetchCollection={fetchCollection} />
+      <Root startCollection={startCollection} fetchCollection={fetchCollection} />
     );
 
     expect(fetchCollection.mock.calls.length).toBe(1);
-    expect(fetchCollection.mock.calls[0][0]).toBe(startUrl);
+    expect(fetchCollection.mock.calls[0][0]).toBe(startCollection);
   });
 
   it("shows loading message", () => {

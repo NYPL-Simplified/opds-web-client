@@ -9,6 +9,6 @@ export default class BookPreviewLink extends Link<BookPreviewLinkProps> {
   href() {
     let collectionUrl = encodeURIComponent(this.props.collectionUrl);
     let bookUrl = encodeURIComponent(this.props.url);
-    return `?url=${collectionUrl}&book=${bookUrl}`;
+    return `?collection=${collectionUrl}&book=${bookUrl}`;
   }
 }

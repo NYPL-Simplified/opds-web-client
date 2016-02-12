@@ -21,18 +21,19 @@ export default class OPDSBrowser {
       <Provider store={store}>
         <Root
           ref={(c) => this.root = c}
-          startUrl={config.startUrl}
-          onFetch={config.onFetch} />
+          startCollection={config.startCollection}
+          startBook={config.startBook}
+          onFetchCollection={config.onFetchCollection} />
       </Provider>,
       document.getElementById(elementId)
     );
   }
 
-  loadUrl(url: string, skipOnFetch: boolean = false) {
-    this.root.getWrappedInstance().props.fetchCollection(url, skipOnFetch);
+  loadCollection(url: string, skipOnFetchCollection: boolean = false) {
+    this.root.getWrappedInstance().props.fetchCollection(url, skipOnFetchCollection);
   }
 
-  clearUrl() {
+  clearCollection() {
     this.root.getWrappedInstance().props.clearCollection();
   }
 }

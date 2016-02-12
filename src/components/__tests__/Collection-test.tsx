@@ -69,9 +69,9 @@ describe("Collection", () => {
       );
       let books: LaneBook[] = TestUtils.scryRenderedComponentsWithType(collection, LaneBook);
       // count books in all lanes plus books directly belonging to this collection
-      let bookCount = collectionData.books.length + collectionData.lanes.reduce((count, lane) => {
+      let bookCount = collectionData.lanes.reduce((count, lane) => {
         return count + lane.books.length;
-      }, 0);
+      }, collectionData.books.length);
       expect(books.length).toEqual(bookCount);
     });
 

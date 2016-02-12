@@ -46,7 +46,7 @@ describe("BookPreviewLink", () => {
     let element = TestUtils.findRenderedDOMComponentWithTag(link, "a");
     let encodedCollectionUrl = encodeURIComponent(linkProps.collectionUrl);
     let encodedBookUrl = encodeURIComponent(linkProps.url);
-    expect(element.getAttribute("href")).toBe("?url=" + encodedCollectionUrl + "&book=" + encodedBookUrl);
+    expect(element.getAttribute("href")).toBe("?collection=" + encodedCollectionUrl + "&book=" + encodedBookUrl);
   });
 
   it("shows the book preview if clicked normally", () => {

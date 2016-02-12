@@ -40,9 +40,17 @@ export class Root extends React.Component<RootProps, any> {
   }
 
   componentWillMount() {
-    if (this.props.startUrl) {
-      // skip onFetch, which is not meant for initial fetch
-      this.props.fetchCollection(this.props.startUrl, true);
+    if (this.props.startCollection) {
+      // skip onFetchCollection, which is not meant for initial fetch
+      if (this.props.startBook) {
+        this.props.fetchCollection(this.props.startCollection, true, this.props.startBook);
+      } else {
+        this.props.fetchCollection(this.props.startCollection, true);
+      }
+    } else {
+      if (this.props.startBook) {
+        throw "TODO";
+      }
     }
   }
 }
@@ -60,7 +68,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchCollection: (url: string) => dispatch(fetchCollection(url)),
+    fetchCollection: (url: string, bookUrl?: string) => dispatch(fetchCollection(url, bookUrl)),
     fetchPage: (url: string) => dispatch(fetchPage(url)),
     clearCollection: () => dispatch(clearCollection()),
     fetchSearchDescription: (url: string) => dispatch(fetchSearchDescription(url)),
@@ -73,11 +81,11 @@ const mapDispatchToProps = (dispatch) => {
 // define new fetchCollection here so that it can call onFetch from component props
 const mergeProps = (stateProps, dispatchProps, componentProps) => {
   return Object.assign({}, componentProps, stateProps, dispatchProps, {
-    fetchCollection: (url: string, skipOnFetch: boolean = false) => {
-      dispatchProps.fetchCollection(url);
+    fetchCollection: (url: string, skipOnFetchCollection: boolean = false, bookUrl?: string) => {
+      dispatchProps.fetchCollection(url, bookUrl);
 
-      if (!skipOnFetch && componentProps.onFetch) {
-        componentProps.onFetch(url);
+      if (!skipOnFetchCollection && componentProps.onFetchCollection) {
+        componentProps.onFetchCollection(url, bookUrl);
       }
     }
   });

@@ -17,13 +17,27 @@ export const CLOSE_ERROR = "CLOSE_ERROR";
 export const SHOW_BOOK_DETAILS = "SHOW_BOOK_DETAILS";
 export const HIDE_BOOK_DETAILS = "HIDE_BOOK_DETAILS";
 
-export function fetchCollection(url: string) {
+function findBookInCollection(collection: CollectionProps, bookUrl: string) {
+  let allBooks = collection.lanes.reduce((books, lane) => {
+    return books.concat(lane.books);
+  }, collection.books);
+
+  return allBooks.find(book => book.url === bookUrl);
+}
+
+export function fetchCollection(url: string, bookUrl?: string) {
   return function(dispatch) {
     dispatch(fetchCollectionRequest(url));
     return new Promise((resolve, reject) => {
       fetchOPDSData(url).then((data: CollectionProps) => {
         dispatch(loadCollection(data, url));
         dispatch(fetchCollectionSuccess());
+        if (bookUrl) {
+          let book = findBookInCollection(data, bookUrl);
+          if (book) {
+            dispatch(showBookDetails(book));
+          }
+        }
         resolve(data);
       }).catch(err => {
         dispatch(fetchCollectionFailure(err));

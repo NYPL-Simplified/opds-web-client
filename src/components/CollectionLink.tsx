@@ -7,6 +7,6 @@ export default class CollectionLink extends Link<CollectionLinkProps> {
   }
 
   href() {
-    return "?url=" + encodeURIComponent(this.props.url);
+    return "?collection=" + encodeURIComponent(this.props.url);
   }
 }
