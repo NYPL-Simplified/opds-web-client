@@ -66,6 +66,7 @@ interface CollectionProps extends FetchCollectionProps, BookActionProps {
   nextPageUrl?: string;
   isFetching?: boolean;
   isFetchingPage?: boolean;
+  error?: string;
   fetchSearchDescription?: (url: string) => void;
 }
 
