@@ -1,11 +1,19 @@
 jest.dontMock("../actions");
 
+let testData = {
+  lanes: [],
+  books: [{
+    id: "test id",
+    url: "http://example.com/book",
+    title: "test title"
+  }]
+};
 let mockFetchData = {
   resolve: true,
   fetchOPDSData(url) {
     return new Promise((resolve, reject) => {
       if (this.resolve) {
-        resolve("test data");
+        resolve(testData);
       } else {
         reject("test error");
       }
@@ -26,22 +34,24 @@ import {
   FETCH_PAGE_SUCCESS,
   FETCH_PAGE_FAILURE,
   LOAD_PAGE,
-  LOAD_SEARCH_DESCRIPTION
+  LOAD_SEARCH_DESCRIPTION,
+  SHOW_BOOK_DETAILS
 } from "../actions";
 
 describe("actions", () => {
   describe("fetchCollection", () => {
+    let collectionUrl = "http://example.com/feed";
 
     it("dispatches request, load, and success", (done) => {
       let dispatch = jest.genMockFunction();
       mockFetchData.resolve = true;
 
-      fetchCollection("http://example.com/feed")(dispatch).then(data => {
+      fetchCollection(collectionUrl)(dispatch).then(data => {
         expect(dispatch.mock.calls.length).toBe(3);
         expect(dispatch.mock.calls[0][0].type).toBe(FETCH_COLLECTION_REQUEST);
         expect(dispatch.mock.calls[1][0].type).toBe(LOAD_COLLECTION);
         expect(dispatch.mock.calls[2][0].type).toBe(FETCH_COLLECTION_SUCCESS);
-        expect(data).toBe("test data");
+        expect(data).toBe(testData);
         done();
       });
     });
@@ -50,12 +60,35 @@ describe("actions", () => {
       let dispatch = jest.genMockFunction();
       mockFetchData.resolve = false;
 
-      fetchCollection("http://example.com/feed")(dispatch).catch(err => {
+      fetchCollection(collectionUrl)(dispatch).catch(err => {
         expect(dispatch.mock.calls.length).toBe(2);
         expect(dispatch.mock.calls[0][0].type).toBe(FETCH_COLLECTION_REQUEST);
         expect(dispatch.mock.calls[1][0].type).toBe(FETCH_COLLECTION_FAILURE);
         expect(err).toBe("test error");
         done();
+      });
+    });
+
+    it("shows a book if provided a book url from the loaded collection", () => {
+      let bookUrl = "http://example.com/book";
+      let dispatch = jest.genMockFunction();
+      mockFetchData.resolve = true;
+
+      fetchCollection(collectionUrl, bookUrl)(dispatch).catch(err => {
+        expect(dispatch.mock.calls.length).toBe(4);
+        expect(dispatch.mock.calls[3][0].type).toBe(SHOW_BOOK_DETAILS);
+        expect(dispatch.mock.calls[3][1]).toEqual(testData.books[0]);
+      });
+    });
+
+    it("does not show a book if provided a book url not in the loaded collection", () => {
+      let bookUrl = "http://example.com/notabook";
+      let dispatch = jest.genMockFunction();
+      mockFetchData.resolve = true;
+
+      fetchCollection(collectionUrl, bookUrl)(dispatch).catch(err => {
+        expect(dispatch.mock.calls.length).toBe(3);
+        expect(dispatch.mock.calls.map(args => args[0].type).find(type => type === SHOW_BOOK_DETAILS)).toBeFalsy;
       });
     });
   });
@@ -71,7 +104,7 @@ describe("actions", () => {
         expect(dispatch.mock.calls[0][0].type).toBe(FETCH_PAGE_REQUEST);
         expect(dispatch.mock.calls[1][0].type).toBe(LOAD_PAGE);
         expect(dispatch.mock.calls[2][0].type).toBe(FETCH_PAGE_SUCCESS);
-        expect(data).toBe("test data");
+        expect(data).toBe(testData);
         done();
       });
     });
@@ -98,7 +131,7 @@ describe("actions", () => {
       fetchSearchDescription("http://example.com/search")(dispatch).then(data => {
         expect(dispatch.mock.calls.length).toBe(1);
         expect(dispatch.mock.calls[0][0].type).toBe(LOAD_SEARCH_DESCRIPTION);
-        expect(data).toBe("test data");
+        expect(data).toBe(testData);
         done();
       }).catch(done);
     });

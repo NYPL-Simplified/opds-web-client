@@ -7,7 +7,8 @@ import {
   fetchSearchDescription,
   closeError,
   showBookDetails,
-  hideBookDetails
+  hideBookDetails,
+  findBookInCollection
 } from "../actions";
 import BookDetails from "./BookDetails";
 import LoadingIndicator from "./LoadingIndicator";
@@ -19,9 +20,9 @@ export class Root extends React.Component<RootProps, any> {
   render(): JSX.Element {
     return (
       <div className="browser">
-        { this.props.book && <BookDetails {...this.props.book} hideBookDetails={this.props.hideBookDetails} /> }
         { this.props.isFetching && <LoadingIndicator /> }
         { this.props.error && <ErrorMessage message={this.props.error} closeError={this.props.closeError} /> }
+        { this.props.book && <BookDetails {...this.props.book} hideBookDetails={this.props.hideBookDetails} /> }
 
         { this.props.collectionData ?
           <Collection
@@ -78,7 +79,20 @@ const mapDispatchToProps = (dispatch) => {
 const mergeProps = (stateProps, dispatchProps, componentProps) => {
   return Object.assign({}, componentProps, stateProps, dispatchProps, {
     fetchCollection: (url: string, skipOnNavigate: boolean = false, bookUrl?: string) => {
-      dispatchProps.fetchCollection(url, bookUrl);
+      // don't fetch a collection if it's already there
+      if (url === stateProps.collectionUrl) {
+        // but we still need to handle book urls
+        if (bookUrl) {
+          let book = findBookInCollection(stateProps.collectionData, bookUrl);
+          if (book) {
+            dispatchProps.showBookDetails(book);
+          }
+        } else {
+          dispatchProps.hideBookDetails();
+        }
+      } else {
+        dispatchProps.fetchCollection(url, bookUrl);
+      }
 
       if (!skipOnNavigate && componentProps.onNavigate) {
         componentProps.onNavigate(url, bookUrl);

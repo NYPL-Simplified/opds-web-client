@@ -41,9 +41,6 @@
 
       window.onpopstate = function(event) {
         if (event.state && event.state.collection) {
-          if (!event.state.book) {
-            browser.hideBook();
-          }
           // call loadCollection with skipOnFetch = true
           // so that state isn't pushed every time it's popped
           browser.loadCollection(event.state.collection, true, event.state.book);

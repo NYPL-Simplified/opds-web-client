@@ -36,8 +36,4 @@ export default class OPDSBrowser {
   clearCollection() {
     this.root.getWrappedInstance().props.clearCollection();
   }
-
-  hideBook() {
-    this.root.getWrappedInstance().props.hideBookDetails();
-  }
 }

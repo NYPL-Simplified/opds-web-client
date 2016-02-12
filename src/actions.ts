@@ -17,7 +17,7 @@ export const CLOSE_ERROR = "CLOSE_ERROR";
 export const SHOW_BOOK_DETAILS = "SHOW_BOOK_DETAILS";
 export const HIDE_BOOK_DETAILS = "HIDE_BOOK_DETAILS";
 
-function findBookInCollection(collection: CollectionProps, bookUrl: string) {
+export function findBookInCollection(collection: CollectionProps, bookUrl: string) {
   let allBooks = collection.lanes.reduce((books, lane) => {
     return books.concat(lane.books);
   }, collection.books);

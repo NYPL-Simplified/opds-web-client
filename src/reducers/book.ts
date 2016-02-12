@@ -5,6 +5,8 @@ const book = (state = initialState, action) => {
     case "SHOW_BOOK_DETAILS":
       return action.book;
 
+    case "CLEAR_COLLECTION":
+    case "LOAD_COLLECTION":
     case "HIDE_BOOK_DETAILS":
       return null;
 
