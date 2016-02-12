@@ -22,9 +22,21 @@ describe("ErrorMessage", () => {
       <ErrorMessage message="test error" closeError={closeError} />
     );
 
-    let button = TestUtils.findRenderedDOMComponentWithTag(error, "button");
+    let button = TestUtils.findRenderedDOMComponentWithClass(error, "errorCloseButton");
     TestUtils.Simulate.click(button);
 
     expect(closeError.mock.calls.length).toBe(1);
+  });
+
+  it("retries", () => {
+    let retry = jest.genMockFunction();
+    let error = TestUtils.renderIntoDocument(
+      <ErrorMessage message="test error" retry={retry} closeError={() => {}} />
+    );
+
+    let button = TestUtils.findRenderedDOMComponentWithClass(error, "retryButton");
+    TestUtils.Simulate.click(button);
+
+    expect(retry.mock.calls.length).toBe(1);
   });
 });
