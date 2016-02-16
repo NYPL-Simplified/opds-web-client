@@ -38,6 +38,12 @@ function entryToBook(entry: any, feedUrl: string): BookProps {
   let publisher = entry.unparsed && entry.unparsed["dcterms:publisher"] ? entry.unparsed["dcterms:publisher"][0]["_"] : null;
   let published = formatDate(entry.published);
 
+  let categories = entry.categories.filter((category) => {
+    return category.label;
+  }).map((category) => {
+    return category.label;
+  });
+
   return <BookProps>{
     id: entry.id,
     title: entry.title,
@@ -46,6 +52,7 @@ function entryToBook(entry: any, feedUrl: string): BookProps {
     imageUrl: imageUrl,
     publisher: publisher,
     published: published,
+    categories: categories,
     url: detailUrl
   };
 }

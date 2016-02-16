@@ -20,6 +20,7 @@ interface BookProps extends BookActionProps {
   imageUrl: string;
   publisher: string;
   published?: string;
+  categories?: string[];
   key?: any;
   url?: string;
 }

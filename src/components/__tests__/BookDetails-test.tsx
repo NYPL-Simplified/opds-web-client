@@ -52,6 +52,23 @@ describe("BookDetails", () => {
     expect(published.textContent).toEqual("Published: " + book.published);
   });
 
+  it("shows categories", () => {
+    let bookCopy = Object.assign({}, book, {
+      categories: ["category 1", "category 2"]
+    });
+    renderedBook = TestUtils.renderIntoDocument(
+      <BookDetails {...bookCopy} />
+    );
+
+    let categories = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookDetailsCategories");
+    expect(categories.textContent).toEqual("Categories: category 1, category 2");
+  });
+
+  it("doesn't show categories when there aren't any", () => {
+    let categories = TestUtils.scryRenderedDOMComponentsWithClass(renderedBook, "bookDetailsCategories");
+    expect(categories.length).toEqual(0);
+  });
+
   it("hides when close link is clicked", () => {
     let link = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookDetailsCloseLink");
     expect(link.textContent).toEqual("Close");

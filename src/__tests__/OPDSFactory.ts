@@ -5,6 +5,7 @@ import {
   OPDSLink,
   Contributor,
   Summary,
+  Category,
   OPDSEntry,
   AcquisitionFeed,
   NavigationFeed
@@ -51,4 +52,8 @@ export function contributor(props: any): Contributor {
 
 export function summary(props: any): Summary {
   return new Summary(<Summary>props);
+}
+
+export function category(props: any): Category {
+  return new Category(<Category>props);
 }
