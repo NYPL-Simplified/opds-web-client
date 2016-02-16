@@ -41,8 +41,8 @@ export function fetchPage(url: string) {
     dispatch(fetchPageRequest(url));
     return new Promise((resolve, reject) => {
       fetchOPDSData(url).then((data: CollectionData) => {
-        dispatch(loadPage(data));
         dispatch(fetchPageSuccess());
+        dispatch(loadPage(data));
         resolve(data);
       }).catch(err => {
         dispatch(fetchPageFailure(err));

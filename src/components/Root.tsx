@@ -87,7 +87,7 @@ const mergeProps = (stateProps, dispatchProps, componentProps) => {
       if (!url) {
         dispatchProps.clearCollection();
         resolve();
-      } else if (url == stateProps.collectionUrl) {
+      } else if (url === stateProps.collectionUrl) {
         resolve();
       } else {
         // only fetch collection if url has changed
@@ -116,7 +116,7 @@ const mergeProps = (stateProps, dispatchProps, componentProps) => {
       if (!url) {
         dispatchProps.clearBook();
         resolve();
-      } else if (url == stateProps.bookUrl) {
+      } else if (url === stateProps.bookUrl) {
         resolve();
       } else {
         if (stateProps.collectionData) {

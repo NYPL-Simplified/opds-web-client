@@ -7,9 +7,9 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
 
-import LaneBook from "../Book";
+import LaneBook from "../LaneBook";
 
-let book = {
+let book: BookData = {
   id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
   title: "The Mayan Secrets",
   authors: ["Clive Cussler", "Thomas Perry"],

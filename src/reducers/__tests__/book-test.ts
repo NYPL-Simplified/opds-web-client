@@ -21,8 +21,16 @@ describe("book reducer", () => {
     published: "test date",
     publisher: "test publisher"
   };
-  let initState = null;
-  let bookState = Object.assign({}, book);
+  let initState = {
+    url: null,
+    data: null,
+    isFetching: false,
+    error: null
+  };
+  let bookState = Object.assign({}, initState, {
+    url: book.url,
+    data: book
+  });
 
   it("should return the initial state", () => {
     expect(reducer(undefined, {})).toEqual(initState);

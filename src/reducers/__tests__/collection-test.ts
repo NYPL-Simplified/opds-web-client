@@ -185,9 +185,9 @@ describe("collection reducer", () => {
 
     let newState = reducer(currentState, action);
     expect(newState.data.search).toBeTruthy;
-    expect(newState.data.search.data.description).toEqual("d");
-    expect(newState.data.search.data.shortName).toEqual("s");
-    expect(newState.data.search.data.template("test")).toEqual("test template");
+    expect(newState.data.search.searchData.description).toEqual("d");
+    expect(newState.data.search.searchData.shortName).toEqual("s");
+    expect(newState.data.search.searchData.template("test")).toEqual("test template");
   });
 
   it("should handle CLOSE_ERROR", () => {

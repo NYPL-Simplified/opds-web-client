@@ -42,7 +42,7 @@ export default class Book extends React.Component<BookProps, any> {
           style={{ color: "black", textDecoration: "none" }}>
           <img src={this.props.book.imageUrl} style={bookCoverStyle} />
           <div className="bookInfo" style={ bookInfoStyle }>
-            <div className="bookTitle" style={ bookTitleStyle }>{this.props.title}</div>
+            <div className="bookTitle" style={ bookTitleStyle }>{this.props.book.title}</div>
             <div className="bookAuthors">{this.props.book.authors.join(", ")}</div>
           </div>
         </BookPreviewLink>

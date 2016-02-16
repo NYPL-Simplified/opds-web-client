@@ -23,7 +23,7 @@ describe("Root", () => {
 
     let collections = TestUtils.scryRenderedComponentsWithType(root, Collection);
     expect(collections.length).toBe(1);
-    expect(collections[0].props.title).toBe(collectionData.title);
+    expect(collections[0].props.collection.title).toBe(collectionData.title);
   });
 
 
@@ -38,13 +38,24 @@ describe("Root", () => {
 
   it("fetches a collection url", () => {
     let startCollection = "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/blocks.xml";
-    let setCollection = jest.genMockFunction();
+    let setCollectionAndBook = jest.genMockFunction();
     let root = TestUtils.renderIntoDocument(
-      <Root startCollection={startCollection} setCollection={setCollection} />
+      <Root startCollection={startCollection} setCollectionAndBook={setCollectionAndBook} />
     );
 
-    expect(setCollection.mock.calls.length).toBe(1);
-    expect(setCollection.mock.calls[0][0]).toBe(startCollection);
+    expect(setCollectionAndBook.mock.calls.length).toBe(1);
+    expect(setCollectionAndBook.mock.calls[0][0]).toBe(startCollection);
+  });
+
+  it("fetches a book url", () => {
+    let startBook = "http://example.com/book";
+    let setCollectionAndBook = jest.genMockFunction();
+    let root = TestUtils.renderIntoDocument(
+      <Root startBook={startBook} setCollectionAndBook={setCollectionAndBook} />
+    );
+
+    expect(setCollectionAndBook.mock.calls.length).toBe(1);
+    expect(setCollectionAndBook.mock.calls[0][1]).toBe(startBook);
   });
 
   it("shows loading message", () => {
@@ -68,7 +79,7 @@ describe("Root", () => {
   it("shows book detail", () => {
     let bookData = groupedCollectionData.lanes[0].books[0];
     let root = TestUtils.renderIntoDocument(
-      <Root book={bookData} />
+      <Root bookData={bookData} />
     );
     let book = TestUtils.findRenderedDOMComponentWithClass(root, "bookDetails");
 

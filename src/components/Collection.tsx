@@ -60,7 +60,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
     return (
       <div className="collection" style={{ fontFamily: "Arial, sans-serif" }}>
         <div className="collectionTop" style={collectionTopStyle}>
-          <h1 style={{ margin: 0 }}>{this.props.title}</h1>
+          <h1 style={{ margin: 0 }}>{this.props.collection.title}</h1>
           { this.props.collection.search &&
             <Search
               searchData={this.props.collection.search.searchData}

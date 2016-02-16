@@ -119,12 +119,11 @@ describe("Collection", () => {
         books: [],
         lanes: [],
         links: [],
-        nextPageUrl: "next",
-        fetchPage: fetchPage
+        nextPageUrl: "next"
       };
 
       let collection = TestUtils.renderIntoDocument(
-        <Collection collection={collectionData} />
+        <Collection collection={collectionData} fetchPage={fetchPage} />
       );
 
       document.body.scrollTop = 1000;
@@ -143,11 +142,10 @@ describe("Collection", () => {
         books: [],
         lanes: [],
         links: [],
-        isFetchingPage: true
       };
 
       let collection = TestUtils.renderIntoDocument(
-        <Collection collection={collectionData} />
+        <Collection collection={collectionData} isFetchingPage={true} />
       );
 
       let loading = TestUtils.findRenderedDOMComponentWithClass(collection, "loadingNextPage");

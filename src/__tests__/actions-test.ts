@@ -49,8 +49,8 @@ describe("actions", () => {
       fetchCollection(collectionUrl)(dispatch).then(data => {
         expect(dispatch.mock.calls.length).toBe(3);
         expect(dispatch.mock.calls[0][0].type).toBe(FETCH_COLLECTION_REQUEST);
-        expect(dispatch.mock.calls[1][0].type).toBe(LOAD_COLLECTION);
-        expect(dispatch.mock.calls[2][0].type).toBe(FETCH_COLLECTION_SUCCESS);
+        expect(dispatch.mock.calls[1][0].type).toBe(FETCH_COLLECTION_SUCCESS);
+        expect(dispatch.mock.calls[2][0].type).toBe(LOAD_COLLECTION);
         expect(data).toBe(testData);
         done();
       });
@@ -72,15 +72,15 @@ describe("actions", () => {
 
   describe("fetchPage", () => {
 
-    it("dispatches request, load, and success", (done) => {
+    it("dispatches request, success, and load", (done) => {
       let dispatch = jest.genMockFunction();
       mockFetchData.resolve = true;
 
       fetchPage("http://example.com/feed")(dispatch).then(data => {
         expect(dispatch.mock.calls.length).toBe(3);
         expect(dispatch.mock.calls[0][0].type).toBe(FETCH_PAGE_REQUEST);
-        expect(dispatch.mock.calls[1][0].type).toBe(LOAD_PAGE);
-        expect(dispatch.mock.calls[2][0].type).toBe(FETCH_PAGE_SUCCESS);
+        expect(dispatch.mock.calls[1][0].type).toBe(FETCH_PAGE_SUCCESS);
+        expect(dispatch.mock.calls[2][0].type).toBe(LOAD_PAGE);
         expect(data).toBe(testData);
         done();
       });
