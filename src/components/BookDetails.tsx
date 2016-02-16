@@ -46,7 +46,11 @@ export default class BookDetails extends React.Component<BookProps, any> {
             <h2 className="bookDetailsAuthors" style={{ marginTop: "0.5em", fontSize: "1.2em" }}>{this.props.authors.join(", ")}</h2>
             <div style={{ marginTop: "2em", color: "#888", fontSize: "0.9em" }}>
               <div className="bookDetailsPublished">Published: {this.props.published}</div>
-              <div className="bookDetailsPublisher">Publisher: {this.props.publisher}</div>
+              {
+                this.props.publisher ?
+                <div className="bookDetailsPublisher">Publisher: {this.props.publisher}</div> :
+                ""
+              }
               {
                 this.props.categories && this.props.categories.length ?
                 <div className="bookDetailsCategories">Categories: {this.props.categories.join(", ")}</div> :

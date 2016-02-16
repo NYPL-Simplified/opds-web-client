@@ -47,6 +47,18 @@ describe("BookDetails", () => {
     expect(publisher.textContent).toEqual("Publisher: " + book.publisher);
   });
 
+  it("doesn't show publisher when there isn't one", () => {
+    let bookCopy = Object.assign({}, book, {
+      publisher: null
+    });
+    renderedBook = TestUtils.renderIntoDocument(
+      <BookDetails {...bookCopy} />
+    );
+
+    let publisher = TestUtils.scryRenderedDOMComponentsWithClass(renderedBook, "bookDetailsPublisher");
+    expect(publisher.length).toEqual(0);
+  });
+
   it("shows publish date", () => {
     let published = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookDetailsPublished");
     expect(published.textContent).toEqual("Published: " + book.published);
