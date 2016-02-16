@@ -18,12 +18,12 @@ let book = {
 };
 
 describe("BookDetails", () => {
-  let renderedBook, hideBookDetails;
+  let renderedBook, clearBook;
 
   beforeEach(() => {
-    hideBookDetails = jest.genMockFunction();
+    clearBook = jest.genMockFunction();
     renderedBook = TestUtils.renderIntoDocument(
-      <BookDetails {...book} hideBookDetails={hideBookDetails} />
+      <BookDetails book={book} clearBook={clearBook} />
     );
   });
 
@@ -56,12 +56,12 @@ describe("BookDetails", () => {
     let link = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookDetailsCloseLink");
     expect(link.textContent).toEqual("Close");
     TestUtils.Simulate.click(link);
-    expect(hideBookDetails.mock.calls.length).toBe(1);
+    expect(clearBook.mock.calls.length).toBe(1);
   });
 
   it("hides when background screen is clicked", () => {
     let screen = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookDetailsScreen");
     TestUtils.Simulate.click(screen);
-    expect(hideBookDetails.mock.calls.length).toBe(1);
+    expect(clearBook.mock.calls.length).toBe(1);
   });
 });

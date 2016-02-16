@@ -3,7 +3,7 @@ import Link from "./Link";
 
 export default class BookPreviewLink extends Link<BookPreviewLinkProps> {
   processClick() {
-    this.props.showBookDetails(this.props.book);
+    this.props.setBook(this.props.book);
   }
 
   href() {

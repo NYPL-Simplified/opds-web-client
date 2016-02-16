@@ -35,7 +35,7 @@ import {
   FETCH_PAGE_FAILURE,
   LOAD_PAGE,
   LOAD_SEARCH_DESCRIPTION,
-  SHOW_BOOK_DETAILS
+  LOAD_BOOK
 } from "../actions";
 
 describe("actions", () => {
@@ -66,29 +66,6 @@ describe("actions", () => {
         expect(dispatch.mock.calls[1][0].type).toBe(FETCH_COLLECTION_FAILURE);
         expect(err).toBe("test error");
         done();
-      });
-    });
-
-    it("shows a book if provided a book url from the loaded collection", () => {
-      let bookUrl = "http://example.com/book";
-      let dispatch = jest.genMockFunction();
-      mockFetchData.resolve = true;
-
-      fetchCollection(collectionUrl, bookUrl)(dispatch).catch(err => {
-        expect(dispatch.mock.calls.length).toBe(4);
-        expect(dispatch.mock.calls[3][0].type).toBe(SHOW_BOOK_DETAILS);
-        expect(dispatch.mock.calls[3][1]).toEqual(testData.books[0]);
-      });
-    });
-
-    it("does not show a book if provided a book url not in the loaded collection", () => {
-      let bookUrl = "http://example.com/notabook";
-      let dispatch = jest.genMockFunction();
-      mockFetchData.resolve = true;
-
-      fetchCollection(collectionUrl, bookUrl)(dispatch).catch(err => {
-        expect(dispatch.mock.calls.length).toBe(3);
-        expect(dispatch.mock.calls.map(args => args[0].type).find(type => type === SHOW_BOOK_DETAILS)).toBeFalsy;
       });
     });
   });

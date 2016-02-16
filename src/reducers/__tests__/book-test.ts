@@ -7,12 +7,13 @@ import * as TestUtils from "react-addons-test-utils";
 
 import reducer from "../book";
 import {
-  showBookDetails, hideBookDetails
+  loadBook, clearBook
 } from "../../actions";
 
 describe("book reducer", () => {
   let book = {
     id: "test id",
+    url: "test url",
     title: "test title",
     authors: ["test author"],
     summary: "test summary",
@@ -27,13 +28,13 @@ describe("book reducer", () => {
     expect(reducer(undefined, {})).toEqual(initState);
   });
 
-  it("should handle SHOW_BOOK_DETAILS", () => {
-    let action = showBookDetails(book);
+  it("should handle LOAD_BOOK", () => {
+    let action = loadBook(book, book.url);
     expect(reducer(initState, action)).toEqual(bookState);
   });
 
-  it("should handle HIDE_BOOK_DETAILS", () => {
-    let action = hideBookDetails();
+  it("should handle CLEAR_BOOK", () => {
+    let action = clearBook();
     expect(reducer(bookState, action)).toEqual(initState);
   });
 });

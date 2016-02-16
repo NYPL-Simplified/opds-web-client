@@ -17,18 +17,18 @@ export default class Lane extends React.Component<LaneProps, any> {
         <h2 style={{ clear: "both", paddingTop: "20px", cursor: "pointer" }}>
           <CollectionLink
             className="laneTitle"
-            text={this.props.title}
-            url={this.props.url}
-            fetchCollection={this.props.fetchCollection} />
+            text={this.props.lane.title}
+            url={this.props.lane.url}
+            setCollection={this.props.setCollection} />
         </h2>
 
         <div className="laneBooks" style={laneBooksStyle}>
-          { this.props.books && this.props.books.map(book =>
+          { this.props.lane.books && this.props.lane.books.map(book =>
             <LaneBook
               key={book.id}
-              {...book}
+              book={book}
               collectionUrl={this.props.collectionUrl}
-              showBookDetails={this.props.showBookDetails} />
+              setBook={this.props.setBook} />
           ) }
         </div>
       </div>

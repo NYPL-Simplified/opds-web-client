@@ -19,12 +19,12 @@ import { groupedCollectionData, ungroupedCollectionData } from "./collectionData
 
 describe("Collection", () => {
   describe("collection with lanes", () => {
-    let collectionData: CollectionProps = groupedCollectionData;
+    let collectionData: CollectionData = groupedCollectionData;
     let collection;
 
     beforeEach(() => {
       collection = TestUtils.renderIntoDocument(
-        <Collection {...collectionData} />
+        <Collection collection={collectionData} />
       );
     });
 
@@ -59,13 +59,13 @@ describe("Collection", () => {
 
     beforeEach(() => {
       collection = TestUtils.renderIntoDocument(
-        <Collection {...collectionData} />
+        <Collection collection={collectionData} />
       );
     });
 
     it("shows books", () => {
       let collection = TestUtils.renderIntoDocument(
-        <Collection {...collectionData} />
+        <Collection collection={collectionData} />
       );
       let books: LaneBook[] = TestUtils.scryRenderedComponentsWithType(collection, LaneBook);
       // count books in all lanes plus books directly belonging to this collection
@@ -77,7 +77,7 @@ describe("Collection", () => {
 
     it("shows books in order", () => {
       let collection = TestUtils.renderIntoDocument(
-        <Collection {...collectionData} />
+        <Collection collection={collectionData} />
       );
       let books: Book[] = TestUtils.scryRenderedComponentsWithType(collection, Book);
       let bookTitles = books.map(book => book.props.title);
@@ -101,7 +101,7 @@ describe("Collection", () => {
       };
 
       let collection = TestUtils.renderIntoDocument(
-        <Collection {...collectionData} />
+        <Collection collection={collectionData} />
       );
       let facetGroups: FacetGroup[] = TestUtils.scryRenderedComponentsWithType(collection, FacetGroup);
       expect(facetGroups.length).toEqual(1);
@@ -124,7 +124,7 @@ describe("Collection", () => {
       };
 
       let collection = TestUtils.renderIntoDocument(
-        <Collection {...collectionData} />
+        <Collection collection={collectionData} />
       );
 
       document.body.scrollTop = 1000;
@@ -147,7 +147,7 @@ describe("Collection", () => {
       };
 
       let collection = TestUtils.renderIntoDocument(
-        <Collection {...collectionData} />
+        <Collection collection={collectionData} />
       );
 
       let loading = TestUtils.findRenderedDOMComponentWithClass(collection, "loadingNextPage");
@@ -170,7 +170,7 @@ describe("Collection", () => {
     beforeEach(() => {
       node = document.createElement("div");
       collection = ReactDOM.render(
-        <Collection {...collectionData} isFetching={true}/>,
+        <Collection collection={collectionData} isFetching={true}/>,
         node
       );
       document.body.scrollTop = 1000;
@@ -178,7 +178,7 @@ describe("Collection", () => {
 
     it("scrolls to top when new collection fetched successfully", () => {
       ReactDOM.render(
-        <Collection {...collectionData} isFetching={false}/>,
+        <Collection collection={collectionData} isFetching={false}/>,
         node
       );
 
@@ -187,7 +187,7 @@ describe("Collection", () => {
 
     it("does not scroll when there's an error", () => {
       ReactDOM.render(
-        <Collection {...collectionData} isFetching={false} error={"error"}/>,
+        <Collection collection={collectionData} isFetching={false} error={"error"}/>,
         node
       );
 

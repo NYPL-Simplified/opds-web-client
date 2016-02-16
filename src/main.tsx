@@ -29,8 +29,22 @@ export default class OPDSBrowser {
     );
   }
 
-  loadCollection(url: string, skipOnFetchCollection: boolean = false, bookUrl?: string) {
-    this.root.getWrappedInstance().props.fetchCollection(url, skipOnFetchCollection, bookUrl);
+  loadCollection(url: string, skipOnNavigate: boolean = false, bookUrl?: string) {
+    this.root.getWrappedInstance().props.fetchCollection(url, skipOnNavigate, bookUrl);
+  }
+
+  loadCollectionAndBook(collectionUrl: string, bookUrl: string, skipOnNavigate: boolean = false) {
+    this.root.getWrappedInstance().props.setCollectionAndBook(collectionUrl, bookUrl, skipOnNavigate);
+    // let { setCollection, setBook, onNavigate } = this.root.getWrappedInstance().props;
+    // // skip onNavigate for both fetches, but call it at the end
+    // // either collectionUrl or bookUrl can be null
+    // setCollection(collectionUrl, true).then(data => {
+    //   setBook(bookUrl, true).then(data => {
+    //     if (!skipOnNavigate && onNavigate) {
+    //       onNavigate(collectionUrl, bookUrl);
+    //     }
+    //   });
+    // });
   }
 
   clearCollection() {

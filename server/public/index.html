@@ -40,13 +40,16 @@
       }
 
       window.onpopstate = function(event) {
-        if (event.state && event.state.collection) {
-          // call loadCollection with skipOnFetch = true
-          // so that state isn't pushed every time it's popped
-          browser.loadCollection(event.state.collection, true, event.state.book);
-        } else {
-          browser.clearCollection();
+        var collection, book;
+
+        if (event.state) {
+          collection = event.state.collection;
+          book = event.state.book;
         }
+
+        // call loadCollectionAndBook with skipOnNavigate = true
+        // so that state isn't pushed every time it's popped
+        browser.loadCollectionAndBook(collection, book, true);
       };
 
       var pushHistory = function(collectionUrl, bookUrl) {

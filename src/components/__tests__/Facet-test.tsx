@@ -10,14 +10,14 @@ import Facet from "../Facet";
 
 describe("Facet", () => {
   it("shows facet link", () => {
-    let facet = {
+    let facet: FacetData = {
       label: "Available now",
       href: "href",
       active: true
     };
 
     let renderedFacet = TestUtils.renderIntoDocument(
-      <Facet {...facet} />
+      <Facet facet={facet} />
     );
 
     let link = TestUtils.findRenderedDOMComponentWithTag(renderedFacet, "a");
@@ -25,22 +25,21 @@ describe("Facet", () => {
   });
 
   it("is clickable to navigate to facet", () => {
-    let fetchCollection = jest.genMockFunction();
-    let facet = {
+    let setCollection = jest.genMockFunction();
+    let facet: FacetData = {
       label: "Available now",
       href: "href",
-      active: true,
-      fetchCollection: fetchCollection
+      active: true
     };
 
     let renderedFacet = TestUtils.renderIntoDocument(
-      <Facet {...facet} />
+      <Facet facet={facet} setCollection={setCollection} />
     );
 
     let link = TestUtils.findRenderedDOMComponentWithTag(renderedFacet, "a");
     TestUtils.Simulate.click(link);
 
-    expect(fetchCollection.mock.calls.length).toEqual(1);
-    expect(fetchCollection.mock.calls[0][0]).toEqual("href");
+    expect(setCollection.mock.calls.length).toEqual(1);
+    expect(setCollection.mock.calls[0][0]).toEqual("href");
   });
 });

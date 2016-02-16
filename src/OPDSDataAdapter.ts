@@ -9,7 +9,7 @@ import {
 import * as url from "url";
 const sanitizeHtml = require("sanitize-html");
 
-function entryToBook(entry: any, feedUrl: string): BookProps {
+function entryToBook(entry: any, feedUrl: string): BookData {
   let authors = entry.authors.map((author) => {
     return author.name;
   });
@@ -38,7 +38,7 @@ function entryToBook(entry: any, feedUrl: string): BookProps {
   let publisher = entry.unparsed && entry.unparsed["dcterms:publisher"] ? entry.unparsed["dcterms:publisher"][0]["_"] : null;
   let published = formatDate(entry.published);
 
-  return <BookProps>{
+  return <BookData>{
     id: entry.id,
     title: entry.title,
     authors: authors,
@@ -50,25 +50,25 @@ function entryToBook(entry: any, feedUrl: string): BookProps {
   };
 }
 
-function entryToLink(entry: any, feedUrl: string): LinkProps {
+function entryToLink(entry: any, feedUrl: string): LinkData {
   let href: string;
   let links = entry.links;
   if (links.length > 0) {
      href = url.resolve(feedUrl, links[0].href);
   }
-  return <CollectionLinkProps>{
+  return <LinkData>{
     id: entry.id,
     text: entry.title,
     url: href
   };
 }
 
-function dedupeBooks(books: BookProps[]): BookProps[] {
+function dedupeBooks(books: BookData[]): BookData[] {
   // using Map because it preserves key order
   let bookIndex = books.reduce((index, book) => {
     index.set(book.id, book);
     return index;
-  }, new Map<any, BookProps>());
+  }, new Map<any, BookData>());
 
   return Array.from(bookIndex.values());
 }
@@ -90,18 +90,18 @@ function formatDate(inputDate: string): string {
   return `${month} ${day}, ${year}`;
 }
 
-export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
-  let collection = <CollectionProps>{
+export function feedToCollection(feed: any, feedUrl: string): CollectionData {
+  let collection = <CollectionData>{
     id: feed.id,
     title: feed.title,
     url: feedUrl
   };
-  let books: BookProps[] = [];
-  let links: LinkProps[] = [];
-  let lanes: LaneProps[] = [];
+  let books: BookData[] = [];
+  let links: LinkData[] = [];
+  let lanes: LaneData[] = [];
   let laneTitles = [];
   let laneIndex = [];
-  let facetGroups: FacetGroupProps[] = [];
+  let facetGroups: FacetGroupData[] = [];
   let search: SearchProps;
   let nextPageUrl: string;
 

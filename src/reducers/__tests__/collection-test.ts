@@ -176,12 +176,12 @@ describe("collection reducer", () => {
   });
 
   it("should handle LOAD_SEARCH_DESCRIPTION", () => {
-    let data = {
+    let searchData = {
       description: "d",
       shortName: "s",
       template: (s) => s + " template"
     };
-    let action = loadSearchDescription({ data });
+    let action = loadSearchDescription({ searchData });
 
     let newState = reducer(currentState, action);
     expect(newState.data.search).toBeTruthy;

@@ -17,9 +17,9 @@ describe("OpenSearchDescriptionParser", () => {
           <Url template="http://example.com/{searchTerms}" />
         </OpenSearchDescription>
         `, "http://example.com").then((result) => {
-      expect(result.data.description).toEqual("d");
-      expect(result.data.shortName).toEqual("s");
-      expect(result.data.template("test")).toEqual("http://example.com/test");
+      expect(result.searchData.description).toEqual("d");
+      expect(result.searchData.shortName).toEqual("s");
+      expect(result.searchData.template("test")).toEqual("http://example.com/test");
       done();
     }).catch(done);
   });
@@ -32,9 +32,9 @@ describe("OpenSearchDescriptionParser", () => {
           <Url template="/{searchTerms}" />
         </OpenSearchDescription>
         `, "http://example.com").then((result) => {
-      expect(result.data.description).toEqual("d");
-      expect(result.data.shortName).toEqual("s");
-      expect(result.data.template("test")).toEqual("http://example.com/test");
+      expect(result.searchData.description).toEqual("d");
+      expect(result.searchData.shortName).toEqual("s");
+      expect(result.searchData.template("test")).toEqual("http://example.com/test");
       done();
     }).catch(done);
   });

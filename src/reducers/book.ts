@@ -1,14 +1,40 @@
-const initialState = null;
+const initialState = {
+  url: null,
+  data: null,
+  isFetching: false,
+  error: null
+};
 
 const book = (state = initialState, action) => {
   switch (action.type) {
-    case "SHOW_BOOK_DETAILS":
-      return action.book;
+    case "FETCH_BOOK_REQUEST":
+      return Object.assign({}, state, {
+        url: action.url,
+        isFetching: true
+      });
 
-    case "CLEAR_COLLECTION":
-    case "LOAD_COLLECTION":
-    case "HIDE_BOOK_DETAILS":
-      return null;
+    case "FETCH_BOOK_SUCCESS":
+      return Object.assign({}, state, {
+        isFetching: false
+      });
+
+    case "FETCH_BOOK_FAILURE":
+      return Object.assign({}, state, {
+        isFetching: false,
+        error: action.message
+      });
+
+    case "LOAD_BOOK":
+      return Object.assign({}, state, {
+        data: action.data,
+        url: action.url ? action.url : state.url
+      });
+
+    case "CLEAR_BOOK":
+      return Object.assign({}, state, {
+        data: null,
+        url: null
+      });
 
     default:
       return state;

@@ -30,7 +30,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
       marginTop: `${padding + 5}px`
     };
 
-    if (this.props.facetGroups && this.props.facetGroups.length) {
+    if (this.props.collection.facetGroups && this.props.collection.facetGroups.length) {
       collectionBodyStyle.marginLeft = `${leftPanelWidth + padding}px`;
     }
 
@@ -61,49 +61,47 @@ export default class Collection extends React.Component<CollectionProps, any> {
       <div className="collection" style={{ fontFamily: "Arial, sans-serif" }}>
         <div className="collectionTop" style={collectionTopStyle}>
           <h1 style={{ margin: 0 }}>{this.props.title}</h1>
-          { this.props.search &&
+          { this.props.collection.search &&
             <Search
-              {...this.props.search}
+              searchData={this.props.collection.search.searchData}
               fetchSearchDescription={this.props.fetchSearchDescription}
-              fetchCollection={this.props.fetchCollection} />
+              setCollection={this.props.setCollection} />
           }
         </div>
 
-        {this.props.facetGroups && this.props.facetGroups.length && (
+        {this.props.collection.facetGroups && this.props.collection.facetGroups.length && (
           <div className="facetGroups" style={leftPanelStyle}>
-            { this.props.facetGroups.map(facetGroup =>
-                <FacetGroup key={facetGroup.label} {...facetGroup} fetchCollection={this.props.fetchCollection} />
+            { this.props.collection.facetGroups.map(facetGroup =>
+                <FacetGroup key={facetGroup.label} facetGroup={facetGroup} setCollection={this.props.setCollection} />
             )}
           </div>
         )}
 
         <div className="collectionBody" style={collectionBodyStyle}>
 
-          { this.props.lanes && this.props.lanes.map(lane =>
+          { this.props.collection.lanes && this.props.collection.lanes.map(lane =>
               <Lane
                 key={lane.title}
-                {...lane}
-                fetchCollection={this.props.fetchCollection}
-                collectionUrl={this.props.url}
-                showBookDetails={this.props.showBookDetails} />
+                lane={lane}
+                setCollection={this.props.setCollection}
+                setBook={this.props.setBook} />
           ) }
 
-          { this.props.books && this.props.books.map(book =>
+          { this.props.collection.books && this.props.collection.books.map(book =>
               <Book
                 key={book.id}
-                {...book}
-                collectionUrl={this.props.url}
-                showBookDetails={this.props.showBookDetails} />
+                book={book}
+                setBook={this.props.setBook} />
           ) }
 
-          { this.props.links &&
+          { this.props.collection.links &&
             <ul style={{ padding: 0, listStyleType: "none" }}>
-            { this.props.links.map(link =>
+            { this.props.collection.links.map(link =>
               <li key={link.id}>
                 <CollectionLink
                   text={link.text}
                   url={link.url}
-                  fetchCollection={this.props.fetchCollection}
+                  setCollection={this.props.setCollection}
                   style={linkStyle} />
               </li>) }
             </ul>
@@ -131,8 +129,8 @@ export default class Collection extends React.Component<CollectionProps, any> {
 
   handleScroll() {
     let atBottom = ((document.body.scrollTop + window.innerHeight) >= document.body.scrollHeight);
-    if (atBottom && !this.props.isFetchingPage && this.props.nextPageUrl) {
-      this.props.fetchPage(this.props.nextPageUrl);
+    if (atBottom && !this.props.isFetchingPage && this.props.collection.nextPageUrl) {
+      this.props.fetchPage(this.props.collection.nextPageUrl);
     }
   }
 }

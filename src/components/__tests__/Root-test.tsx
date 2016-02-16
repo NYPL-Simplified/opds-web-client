@@ -16,7 +16,7 @@ import { Provider } from "react-redux";
 
 describe("Root", () => {
   it("shows a collection if props include collectionData", () => {
-    let collectionData: CollectionProps = groupedCollectionData;
+    let collectionData: CollectionData = groupedCollectionData;
     let root = TestUtils.renderIntoDocument(
       <Root collectionData={collectionData} />
     );
@@ -38,13 +38,13 @@ describe("Root", () => {
 
   it("fetches a collection url", () => {
     let startCollection = "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/blocks.xml";
-    let fetchCollection = jest.genMockFunction();
+    let setCollection = jest.genMockFunction();
     let root = TestUtils.renderIntoDocument(
-      <Root startCollection={startCollection} fetchCollection={fetchCollection} />
+      <Root startCollection={startCollection} setCollection={setCollection} />
     );
 
-    expect(fetchCollection.mock.calls.length).toBe(1);
-    expect(fetchCollection.mock.calls[0][0]).toBe(startCollection);
+    expect(setCollection.mock.calls.length).toBe(1);
+    expect(setCollection.mock.calls[0][0]).toBe(startCollection);
   });
 
   it("shows loading message", () => {
@@ -78,7 +78,7 @@ describe("Root", () => {
 
   describe("connected to store", () => {
     let store: Redux.Store;
-    let collectionData: CollectionProps = groupedCollectionData;
+    let collectionData: CollectionData = groupedCollectionData;
     let onNavigate;
     let root, rootInstance;
 

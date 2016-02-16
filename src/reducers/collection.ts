@@ -30,6 +30,12 @@ const collection = (state = initialState, action) => {
         url: action.url ? action.url : state.url
       });
 
+    case "CLEAR_COLLECTION":
+      return Object.assign({}, state, {
+        data: null,
+        url: null
+      });
+
     case "FETCH_PAGE_REQUEST":
       return Object.assign({}, state, {
         pageUrl: action.url,
@@ -53,12 +59,6 @@ const collection = (state = initialState, action) => {
           books: Object.assign([], state.data.books).concat(action.data.books),
           nextPageUrl: action.data.nextPageUrl
         })
-      });
-
-    case "CLEAR_COLLECTION":
-      return Object.assign({}, state, {
-        data: null,
-        url: null
       });
 
     case "LOAD_SEARCH_DESCRIPTION":

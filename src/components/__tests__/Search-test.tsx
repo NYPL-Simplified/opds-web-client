@@ -19,14 +19,12 @@ describe("Search", () => {
 
   it("shows the search form", () => {
     let searchData = {
-      data: {
-        description: "description",
-        shortName: "shortName",
-        template: (s) => s
-      }
+      description: "description",
+      shortName: "shortName",
+      template: (s) => s
     };
     let search = TestUtils.renderIntoDocument(
-      <Search {...searchData} />
+      <Search searchData={searchData} />
     );
 
     let input = TestUtils.findRenderedDOMComponentWithTag(search, "input");
@@ -38,17 +36,14 @@ describe("Search", () => {
   });
 
   it("fetches the search feed", () => {
-    let fetchCollection = jest.genMockFunction();
+    let setCollection = jest.genMockFunction();
     let searchData = {
-      data: {
-        description: "description",
-        shortName: "shortName",
-        template: (s) => s + " template"
-      },
-      fetchCollection: fetchCollection
+      description: "description",
+      shortName: "shortName",
+      template: (s) => s + " template"
     };
     let search = TestUtils.renderIntoDocument(
-      <Search {...searchData} />
+      <Search searchData={searchData} setCollection={setCollection} />
     );
 
     let form = TestUtils.findRenderedDOMComponentWithTag(search, "form");
@@ -58,22 +53,19 @@ describe("Search", () => {
     input["value"] = "test";
     TestUtils.Simulate.submit(form);
 
-    expect(fetchCollection.mock.calls.length).toEqual(1);
-    expect(fetchCollection.mock.calls[0][0]).toEqual("test template");
+    expect(setCollection.mock.calls.length).toEqual(1);
+    expect(setCollection.mock.calls[0][0]).toEqual("test template");
   });
 
   it("escapes search terms", () => {
-    let fetchCollection = jest.genMockFunction();
+    let setCollection = jest.genMockFunction();
     let searchData = {
-      data: {
-        description: "description",
-        shortName: "shortName",
-        template: (s) => s + " template"
-      },
-      fetchCollection: fetchCollection
+      description: "description",
+      shortName: "shortName",
+      template: (s) => s + " template"
     };
     let search = TestUtils.renderIntoDocument(
-      <Search {...searchData} />
+      <Search searchData={searchData} setCollection={setCollection} />
     );
 
     let form = TestUtils.findRenderedDOMComponentWithTag(search, "form");
@@ -83,7 +75,7 @@ describe("Search", () => {
     input["value"] = "Indésirable";
     TestUtils.Simulate.submit(form);
 
-    expect(fetchCollection.mock.calls.length).toEqual(1);
-    expect(fetchCollection.mock.calls[0][0]).toEqual("Ind%C3%A9sirable template");
+    expect(setCollection.mock.calls.length).toEqual(1);
+    expect(setCollection.mock.calls[0][0]).toEqual("Ind%C3%A9sirable template");
   });
 });

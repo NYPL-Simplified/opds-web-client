@@ -20,7 +20,7 @@ let book = {
 describe("Book", () => {
   it("shows the book cover", () => {
     let renderedBook = TestUtils.renderIntoDocument(
-      <Book {...book} />
+      <Book book={book} />
     );
 
     let coverImage = TestUtils.findRenderedDOMComponentWithTag(renderedBook, "img");
@@ -29,7 +29,7 @@ describe("Book", () => {
 
   it("shows book info", () => {
     let renderedBook = TestUtils.renderIntoDocument(
-      <Book {...book} />
+      <Book book={book} />
     );
 
     let title = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookTitle");
