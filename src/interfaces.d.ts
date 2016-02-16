@@ -117,4 +117,5 @@ interface BookPreviewLinkProps extends LinkProps, BookActionProps {
 interface ErrorMessageProps {
   message: string;
   closeError: () => void;
+  retry?: () => void;
 }

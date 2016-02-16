@@ -21,7 +21,7 @@ export class Root extends React.Component<RootProps, any> {
       <div className="browser">
         { this.props.book && <BookDetails {...this.props.book} hideBookDetails={this.props.hideBookDetails} /> }
         { this.props.isFetching && <LoadingIndicator /> }
-        { this.props.error && <ErrorMessage message={this.props.error} closeError={this.props.closeError} /> }
+        { this.props.error && <ErrorMessage message={this.props.error} retry={() => this.props.fetchCollection(this.props.collectionUrl)} closeError={this.props.closeError} /> }
 
         { this.props.collectionData ?
           <Collection

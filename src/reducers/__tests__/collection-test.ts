@@ -108,6 +108,24 @@ describe("collection reducer", () => {
     expect(reducer(currentState, action)).toEqual(newState);
   });
 
+  it("should handle LOAD_COLLECTION after an error", () => {
+    let data = {
+      id: "some id",
+      url: "some url",
+      title: "some title",
+      lanes: [],
+      books: [],
+      links: []
+    };
+    let action = loadCollection(data, "some other url");
+    let newState = Object.assign({}, currentState, {
+      url: "some other url",
+      data: data
+    });
+
+    expect(reducer(errorState, action)).toEqual(newState);
+  });
+
   it("should handle FETCH_PAGE_REQUEST", () => {
     let action = fetchPageRequest("some other url");
     let newState = Object.assign({}, currentState, {
