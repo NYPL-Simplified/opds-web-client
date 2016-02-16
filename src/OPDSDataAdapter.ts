@@ -14,6 +14,10 @@ function entryToBook(entry: any, feedUrl: string): BookProps {
     return author.name;
   });
 
+  let contributors = entry.contributors.map((contributor) => {
+    return contributor.name;
+  });
+
   let imageUrl, imageThumbLink;
   let artworkLinks = entry.links.filter((link) => {
     return (link instanceof OPDSArtworkLink);
@@ -48,6 +52,7 @@ function entryToBook(entry: any, feedUrl: string): BookProps {
     id: entry.id,
     title: entry.title,
     authors: authors,
+    contributors: contributors,
     summary: sanitizeHtml(entry.summary.content),
     imageUrl: imageUrl,
     publisher: publisher,
