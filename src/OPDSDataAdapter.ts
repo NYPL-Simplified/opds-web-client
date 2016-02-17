@@ -14,6 +14,10 @@ function entryToBook(entry: any, feedUrl: string): BookProps {
     return author.name;
   });
 
+  let contributors = entry.contributors.map((contributor) => {
+    return contributor.name;
+  });
+
   let imageUrl, imageThumbLink;
   let artworkLinks = entry.links.filter((link) => {
     return (link instanceof OPDSArtworkLink);
@@ -38,14 +42,22 @@ function entryToBook(entry: any, feedUrl: string): BookProps {
   let publisher = entry.unparsed && entry.unparsed["dcterms:publisher"] ? entry.unparsed["dcterms:publisher"][0]["_"] : null;
   let published = formatDate(entry.published);
 
+  let categories = entry.categories.filter((category) => {
+    return category.label;
+  }).map((category) => {
+    return category.label;
+  });
+
   return <BookProps>{
     id: entry.id,
     title: entry.title,
     authors: authors,
+    contributors: contributors,
     summary: sanitizeHtml(entry.summary.content),
     imageUrl: imageUrl,
     publisher: publisher,
     published: published,
+    categories: categories,
     url: detailUrl
   };
 }

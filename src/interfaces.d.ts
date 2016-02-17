@@ -16,10 +16,12 @@ interface BookProps extends BookActionProps {
   id: string;
   title: string;
   authors: string[];
+  contributors?: string[];
   summary: string;
   imageUrl: string;
   publisher: string;
   published?: string;
+  categories?: string[];
   key?: any;
   url?: string;
 }

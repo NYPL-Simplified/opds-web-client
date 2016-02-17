@@ -38,4 +38,17 @@ describe("Book", () => {
     let authors = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookAuthors");
     expect(authors.textContent).toEqual(book.authors.join(", "));
   });
+
+  it("shows contributors when there's no author", () => {
+    let bookCopy = Object.assign({}, book, {
+      authors: [],
+      contributors: ["contributor"]
+    });
+    let renderedBook = TestUtils.renderIntoDocument(
+      <Book {...bookCopy} />
+    );
+
+    let authors = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookAuthors");
+    expect(authors.textContent).toEqual(bookCopy.contributors[0]);
+  });
 });
