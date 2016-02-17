@@ -30,28 +30,32 @@ export default (stateProps, dispatchProps, componentProps) => {
     return new Promise((resolve, reject) => {
       // TODO: don't fetch a book if it's already there???
       let url = null;
+      let bookData = null;
 
       if (typeof book === "string") {
         url = book;
-        book = null;
       } else if (!book) {
       } else if (typeof book === "object") {
+        bookData = book;
         url = book.url;
       }
 
-      if (!url) {
+      if (!url && !bookData) {
         dispatchProps.clearBook();
         resolve(null);
+      } else if (bookData) {
+        dispatchProps.loadBook(bookData, url);
+        resolve(bookData);
       } else if (url === stateProps.bookUrl) {
         resolve(stateProps.bookData);
       } else {
         if (stateProps.collectionData) {
-          book = findBookInCollection(stateProps.collectionData, url);
+          bookData = findBookInCollection(stateProps.collectionData, url);
         }
 
-        if (book) {
-          dispatchProps.loadBook(book, url);
-          resolve(book);
+        if (bookData) {
+          dispatchProps.loadBook(bookData, url);
+          resolve(bookData);
         } else {
           dispatchProps.fetchBook(url).then(data => resolve(data));
         }

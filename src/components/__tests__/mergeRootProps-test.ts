@@ -121,6 +121,20 @@ describe("mergeRootProps", () => {
       });
     });
 
+    it("does nothing and returns book data if given book data", (done) => {
+      let bookDataWithoutUrl = {
+        id: "test id",
+        "title": "test title"
+      };
+      props.setBook(bookDataWithoutUrl).then(data => {
+        expect(data).toBe(bookDataWithoutUrl);
+        expect(fetchBook.mock.calls.length).toBe(0);
+        expect(clearBook.mock.calls.length).toBe(0);
+        expect(onNavigate.mock.calls.length).toBe(1);
+        done();
+      });
+    });
+
     it("does nothing and returns existing data if given the existing book url", (done) => {
       props.setBook("test book url").then(data => {
         expect(data).toBe(stateProps.bookData);
