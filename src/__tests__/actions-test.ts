@@ -114,7 +114,7 @@ describe("actions", () => {
         expect(dispatch.mock.calls[0][0].type).toBe(LOAD_SEARCH_DESCRIPTION);
         expect(data).toBe(testData);
         done();
-      }).catch(done);
+      }).catch(err => done.fail(err));
     });
   });
 
