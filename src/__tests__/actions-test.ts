@@ -18,6 +18,15 @@ let mockFetchData = {
         reject("test error");
       }
     });
+  },
+  fetchSearchDescriptionData(url) {
+    return new Promise((resolve, reject) => {
+      if (this.resolve) {
+        resolve(testData);
+      } else {
+        reject("test error");
+      }
+    });
   }
 };
 jest.setMock("../fetchData", mockFetchData);
