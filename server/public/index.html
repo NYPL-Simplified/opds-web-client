@@ -22,11 +22,11 @@
           return "";
         }
 
-        return "?" + Object.keys(params).reduce(function(map, key) {
+        return "?" + Object.keys(params).reduce(function(keys, key) {
           if (params[key]) {
-            map.push(key + "=" + encodeURIComponent(params[key]));
+            keys.push(key + "=" + encodeURIComponent(params[key]));
           }
-          return map;
+          return keys;
         }, []).join("&");
       };
 
