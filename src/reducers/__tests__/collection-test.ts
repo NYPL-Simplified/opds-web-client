@@ -108,6 +108,16 @@ describe("collection reducer", () => {
     expect(reducer(currentState, action)).toEqual(newState);
   });
 
+  it("should handle CLEAR_COLLECTION", () => {
+    let action = clearCollection();
+    let newState = Object.assign({}, currentState, {
+      url: null,
+      data: null
+    });
+
+    expect(reducer(currentState, action)).toEqual(newState);
+  });
+
   it("should handle FETCH_PAGE_REQUEST", () => {
     let action = fetchPageRequest("some other url");
     let newState = Object.assign({}, currentState, {
@@ -163,16 +173,6 @@ describe("collection reducer", () => {
     });
 
     expect(reducer(fetchingPageState, action)).toEqual(newState);
-  });
-
-  it("should handle CLEAR_COLLECTION", () => {
-    let action = clearCollection();
-    let newState = Object.assign({}, currentState, {
-      url: null,
-      data: null
-    });
-
-    expect(reducer(currentState, action)).toEqual(newState);
   });
 
   it("should handle LOAD_SEARCH_DESCRIPTION", () => {

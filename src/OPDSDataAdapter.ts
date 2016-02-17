@@ -1,4 +1,6 @@
 import {
+  OPDSFeed,
+  OPDSEntry,
   OPDSArtworkLink,
   AcquisitionFeed,
   OPDSCollectionLink,
@@ -9,7 +11,7 @@ import {
 import * as url from "url";
 const sanitizeHtml = require("sanitize-html");
 
-function entryToBook(entry: any, feedUrl: string): BookData {
+export function entryToBook(entry: any, feedUrl: string): BookData {
   let authors = entry.authors.map((author) => {
     return author.name;
   });
@@ -34,23 +36,19 @@ function entryToBook(entry: any, feedUrl: string): BookData {
     detailUrl = detailLink.href;
   }
 
-  // until OPDSParser parses dcterms:publisher...
-  let publisher = entry.unparsed && entry.unparsed["dcterms:publisher"] ? entry.unparsed["dcterms:publisher"][0]["_"] : null;
-  let published = formatDate(entry.published);
-
   return <BookData>{
     id: entry.id,
     title: entry.title,
     authors: authors,
     summary: sanitizeHtml(entry.summary.content),
     imageUrl: imageUrl,
-    publisher: publisher,
-    published: published,
+    publisher: entry.publisher,
+    published: formatDate(entry.published),
     url: detailUrl
   };
 }
 
-function entryToLink(entry: any, feedUrl: string): LinkData {
+function entryToLink(entry: OPDSEntry, feedUrl: string): LinkData {
   let href: string;
   let links = entry.links;
   if (links.length > 0) {
@@ -90,7 +88,7 @@ function formatDate(inputDate: string): string {
   return `${month} ${day}, ${year}`;
 }
 
-export function feedToCollection(feed: any, feedUrl: string): CollectionData {
+export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionData {
   let collection = <CollectionData>{
     id: feed.id,
     title: feed.title,
