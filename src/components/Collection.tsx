@@ -84,14 +84,16 @@ export default class Collection extends React.Component<CollectionProps, any> {
                 key={lane.title}
                 lane={lane}
                 setCollection={this.props.setCollection}
-                setBook={this.props.setBook} />
+                setBook={this.props.setBook}
+                collectionUrl={this.props.collection.url} />
           ) }
 
           { this.props.collection.books && this.props.collection.books.map(book =>
               <Book
                 key={book.id}
                 book={book}
-                setBook={this.props.setBook} />
+                setBook={this.props.setBook}
+                collectionUrl={this.props.collection.url} />
           ) }
 
           { this.props.collection.links &&
