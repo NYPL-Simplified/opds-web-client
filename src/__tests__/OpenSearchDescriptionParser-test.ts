@@ -21,7 +21,7 @@ describe("OpenSearchDescriptionParser", () => {
       expect(result.searchData.shortName).toEqual("s");
       expect(result.searchData.template("test")).toEqual("http://example.com/test");
       done();
-    }).catch(done);
+    }).catch(err => done.fail(err));
   });
 
   it("parses open search description with relative url", (done) => {
@@ -36,6 +36,6 @@ describe("OpenSearchDescriptionParser", () => {
       expect(result.searchData.shortName).toEqual("s");
       expect(result.searchData.template("test")).toEqual("http://example.com/test");
       done();
-    }).catch(done);
+    }).catch(err => done.fail(err));
   });
 });

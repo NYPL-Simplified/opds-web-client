@@ -19,7 +19,9 @@ export default class OpenSearchDescriptionParser {
               return url.resolve(descriptionUrl, templateString.replace("{searchTerms}", s));
             };
             resolve({
-              description, shortName, template
+              searchData: {
+                description, shortName, template
+              }
             });
           }
         }
