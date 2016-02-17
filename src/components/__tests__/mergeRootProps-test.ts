@@ -203,7 +203,7 @@ describe("mergeRootProps", () => {
       });
     });
 
-    it("fetches book if not given a collection url", () => {
+    it("fetches book if not given a collection url", (done) => {
       props.setCollectionAndBook(null, "fake book url").then(data => {
         expect(data).toEqual({
           collectionData: null,
@@ -215,6 +215,7 @@ describe("mergeRootProps", () => {
         expect(onNavigate.mock.calls.length).toBe(1);
         expect(onNavigate.mock.calls[0][0]).toBe(null);
         expect(onNavigate.mock.calls[0][1]).toBe("fake book url");
+        done();
       });
     });
 

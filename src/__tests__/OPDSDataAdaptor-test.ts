@@ -22,7 +22,9 @@ describe("OPDSDataAdapter", () => {
       id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
       title: "The Mayan Secrets",
       authors: [factory.contributor({name: "Clive Cussler"}), factory.contributor({name: "Thomas Perry"})],
+      contributors: [factory.contributor({name: "contributor"})],
       summary: factory.summary({content: "&lt;b&gt;Sam and Remi Fargo race for treasure&#8212;and survival&#8212;in this lightning-paced new adventure from #1&lt;i&gt; New York Times&lt;/i&gt; bestselling author Clive Cussler.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;Husband-and-wife team Sam and Remi Fargo are in Mexico when they come upon a remarkable discovery&#8212;the mummified remainsof a man clutching an ancient sealed pot. Within the pot is a Mayan book larger than any known before.&lt;br /&gt;&lt;br /&gt;The book contains astonishing information about the Mayans, their cities, and about mankind itself. The secrets are so powerful that some people would do anything to possess them&#8212;as the Fargos are about to find out. Many men and women are going to die for that book.<script>alert('danger!');</script>"}),
+      categories: [factory.category({label: "label"}), factory.category({term: "no label"}), factory.category({label: "label 2"})],
       links: [largeImageLink, thumbImageLink],
       published: "2014-06-08T22:45:58Z",
       publisher: "Fake Publisher"
@@ -41,10 +43,15 @@ describe("OPDSDataAdapter", () => {
     expect(book.authors.length).toEqual(2);
     expect(book.authors[0]).toEqual(entry.authors[0].name);
     expect(book.authors[1]).toEqual(entry.authors[1].name);
+    expect(book.contributors.length).toEqual(1);
+    expect(book.contributors[0]).toEqual(entry.contributors[0].name);
     expect(book.summary).toEqual(sanitizeHtml(entry.summary.content));
     expect(book.summary).toContain("Many men and women are going to die for that book.");
     expect(book.summary).not.toContain("script");
     expect(book.summary).not.toContain("danger");
+    expect(book.categories.length).toEqual(2);
+    expect(book.categories).toContain("label");
+    expect(book.categories).toContain("label 2");
     expect(book.imageUrl).toEqual(thumbImageLink.href);
     expect(book.publisher).toBe("Fake Publisher");
     expect(book.published).toBe("June 8, 2014");

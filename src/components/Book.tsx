@@ -43,7 +43,15 @@ export default class Book extends React.Component<BookProps, any> {
           <img src={this.props.book.imageUrl} style={bookCoverStyle} />
           <div className="bookInfo" style={ bookInfoStyle }>
             <div className="bookTitle" style={ bookTitleStyle }>{this.props.book.title}</div>
-            <div className="bookAuthors">{this.props.book.authors.join(", ")}</div>
+            <div className="bookAuthors">
+              {
+                this.props.book.authors.length ?
+                this.props.book.authors.join(", ") :
+                  this.props.book.contributors && this.props.book.contributors.length ?
+                  this.props.book.contributors.join(", ") :
+                  ""
+              }
+            </div>
           </div>
         </BookPreviewLink>
       </div>

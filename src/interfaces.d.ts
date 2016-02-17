@@ -17,11 +17,13 @@ interface BookData {
   id: string;
   title: string;
   authors?: string[];
+  contributors?: string[];
   summary?: string;
   imageUrl?: string;
   url?: string;
   publisher?: string;
   published?: string;
+  categories?: string[];
 }
 
 interface BookProps extends BookActionProps, BaseProps {
@@ -138,4 +140,5 @@ interface BookPreviewLinkProps extends LinkProps, BookActionProps, BaseProps {
 interface ErrorMessageProps {
   message: string;
   closeError: () => void;
+  retry?: () => void;
 }

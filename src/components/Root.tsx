@@ -22,7 +22,12 @@ export class Root extends React.Component<RootProps, any> {
     return (
       <div className="browser">
         { this.props.isFetching && <LoadingIndicator /> }
-        { this.props.error && <ErrorMessage message={this.props.error} closeError={this.props.closeError} /> }
+        { this.props.error &&
+          <ErrorMessage
+            message={this.props.error}
+            retry={() => this.props.setCollection(this.props.collectionUrl)}
+            closeError={this.props.closeError} />
+        }
         { this.props.bookData && <BookDetails book={this.props.bookData} clearBook={this.props.clearBook} /> }
 
         { this.props.collectionData ?

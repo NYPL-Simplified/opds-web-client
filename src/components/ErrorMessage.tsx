@@ -24,6 +24,11 @@ export default class ErrorMessage extends React.Component<ErrorMessageProps, any
         </div>
         <br />
         <button
+          className="retryButton"
+          onClick={this.props.retry}>
+          Try again
+        </button>
+        <button
           className="errorCloseButton"
           onClick={this.props.closeError}>
           OK

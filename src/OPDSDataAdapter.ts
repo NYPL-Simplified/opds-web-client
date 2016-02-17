@@ -11,9 +11,13 @@ import {
 import * as url from "url";
 const sanitizeHtml = require("sanitize-html");
 
-export function entryToBook(entry: any, feedUrl: string): BookData {
+export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
   let authors = entry.authors.map((author) => {
     return author.name;
+  });
+
+  let contributors = entry.contributors.map((contributor) => {
+    return contributor.name;
   });
 
   let imageUrl, imageThumbLink;
@@ -36,14 +40,18 @@ export function entryToBook(entry: any, feedUrl: string): BookData {
     detailUrl = detailLink.href;
   }
 
+  let categories = entry.categories.filter(category => !!category.label).map(category => category.label);
+
   return <BookData>{
     id: entry.id,
     title: entry.title,
     authors: authors,
+    contributors: contributors,
     summary: sanitizeHtml(entry.summary.content),
     imageUrl: imageUrl,
     publisher: entry.publisher,
     published: formatDate(entry.published),
+    categories: categories,
     url: detailUrl
   };
 }
