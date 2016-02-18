@@ -8,6 +8,13 @@ export function findBookInCollection(collection: CollectionData, bookUrl: string
 
 // define setCollection and setBook here so that they can call onNavigate from component props
 export default (stateProps, dispatchProps, componentProps) => {
+  // wrap componentProps.onNavigate so it only fires when collection or book url changes
+  let onNavigate = componentProps.onNavigate ? (collectionUrl: string, bookUrl: string): void => {
+    if (collectionUrl !== stateProps.collectionUrl || bookUrl !== stateProps.bookUrl) {
+      componentProps.onNavigate(collectionUrl, bookUrl);
+    }
+  } : undefined;
+
   let setCollection = (url: string, skipOnNavigate: boolean = false) => {
     return new Promise((resolve, reject) => {
       if (!url) {
@@ -20,8 +27,8 @@ export default (stateProps, dispatchProps, componentProps) => {
         dispatchProps.fetchCollection(url).then(data => resolve(data));
       }
 
-      if (!skipOnNavigate && componentProps.onNavigate) {
-        componentProps.onNavigate(url, stateProps.bookUrl);
+      if (!skipOnNavigate && onNavigate) {
+        onNavigate(url, stateProps.bookUrl);
       }
     });
   };
@@ -34,10 +41,12 @@ export default (stateProps, dispatchProps, componentProps) => {
 
       if (typeof book === "string") {
         url = book;
-      } else if (!book) {
-      } else if (typeof book === "object") {
+      } else if (book && typeof book === "object") {
         bookData = book;
-        url = book.url;
+
+        if (book.url) {
+          url = book.url;
+        }
       }
 
       if (!url && !bookData) {
@@ -61,8 +70,8 @@ export default (stateProps, dispatchProps, componentProps) => {
         }
       }
 
-      if (!skipOnNavigate && componentProps.onNavigate) {
-        componentProps.onNavigate(stateProps.collectionUrl, url);
+      if (!skipOnNavigate && onNavigate) {
+        onNavigate(stateProps.collectionUrl, url);
       }
     });
   };
@@ -77,9 +86,10 @@ export default (stateProps, dispatchProps, componentProps) => {
         setCollection(collectionUrl, true).then(collectionData => {
           setBook(book, true).then(bookData => {
             resolve({ collectionData, bookData });
-            if (!skipOnNavigate && componentProps.onNavigate) {
+
+            if (!skipOnNavigate && onNavigate) {
               let bookUrl = (typeof book === "string" ? book : (book ? book.url : null));
-              componentProps.onNavigate(collectionUrl, bookUrl);
+              onNavigate(collectionUrl, bookUrl);
             }
           }).catch(err => reject(err));
         }).catch(err => reject(err));

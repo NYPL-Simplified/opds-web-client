@@ -40,11 +40,12 @@
       }
 
       window.onpopstate = function(event) {
-        var collection, book;
+        var collection = null,
+            book = null;
 
         if (event.state) {
-          collection = event.state.collection;
-          book = event.state.book;
+          collection = event.state.collection || null;
+          book = event.state.book || null;
         }
 
         // call loadCollectionAndBook with skipOnNavigate = true

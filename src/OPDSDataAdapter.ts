@@ -37,7 +37,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
   let detailUrl;
   let detailLink = entry.links.find(link => link instanceof CompleteEntryLink);
   if (detailLink) {
-    detailUrl = detailLink.href;
+    detailUrl = url.resolve(feedUrl, detailLink.href);
   }
 
   let categories = entry.categories.filter(category => !!category.label).map(category => category.label);

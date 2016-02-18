@@ -36,6 +36,11 @@ const book = (state = initialState, action) => {
         url: null
       });
 
+    case "CLOSE_ERROR":
+      return Object.assign({}, state, {
+        error: null
+      });
+
     default:
       return state;
   }
