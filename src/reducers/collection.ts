@@ -24,15 +24,21 @@ const collection = (state = initialState, action) => {
     case "LOAD_COLLECTION":
       let newHistory;
       let oldHistory = state.history;
-      let last = oldHistory.slice(-1)[0];
-      if (last && last.url === action.url) {
-        newHistory = oldHistory.slice(0, -1);
+
+      let newUrlIndex = oldHistory.findIndex((link) => {
+        return link.url === action.url;
+      });
+      if (newUrlIndex !== -1) {
+        newHistory = oldHistory.slice(0, newUrlIndex);
+      } else if (state.data && state.data.catalogRootUrl && state.data.catalogRootUrl === action.url) {
+        newHistory = [];
       } else {
         newHistory = oldHistory.slice(0);
         if (state.data) {
-          let isFacetChange = (state.data.id === action.data.id);
+          let isSameFeed = (state.data.id === action.data.id);
+          let isSameTitle = (state.data.title === action.data.title);
 
-          if (!isFacetChange) {
+          if (!isSameFeed && !isSameTitle) {
             newHistory.push({
               url: state.data.url,
               text: state.data.title,

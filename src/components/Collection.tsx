@@ -57,33 +57,38 @@ export default class Collection extends React.Component<CollectionProps, any> {
       textAlign: "center"
     };
 
-    let backUrl, backText;
+    let breadcrumbs: LinkData[];
     if (this.props.collection.catalogRootUrl === this.props.collection.url) {
-      backUrl = null;
-      backText = null;
+      breadcrumbs = [];
     } else if (this.props.history && this.props.history.length > 0) {
-      let previous = this.props.history.slice(-1)[0];
-      if (previous) {
-        backUrl = previous.url;
-        backText = "< " + previous.text;
-      }
+      breadcrumbs = this.props.history;
+    } else if (this.props.collection.catalogRootUrl) {
+      breadcrumbs = [{
+        text: "Catalog",
+        url: this.props.collection.catalogRootUrl,
+        id: null
+      }];
     } else {
-      backUrl = this.props.collection.catalogRootUrl;
-      backText = "< Catalog";
+      breadcrumbs = [];
     }
 
     return (
       <div className="collection" style={{ fontFamily: "Arial, sans-serif" }}>
         <div className="collectionTop" style={collectionTopStyle}>
-          { backUrl &&
-            <div style={{ float: "left", marginLeft: "20px" }}>
+          { breadcrumbs.length ?
+            <div style={{ float: "left" }}>
+            { breadcrumbs.map(breadcrumb =>
               <CollectionLink
-                text={backText}
-                url={backUrl}
+                key={breadcrumb.id}
+                text={breadcrumb.text + " > "}
+                url={breadcrumb.url}
                 setCollection={this.props.setCollection}
-                style={{ fontSize: "1.2em", cursor: "pointer" }} />
-            </div>
+                style={{ fontSize: "1.2em", marginRight: "5px", cursor: "pointer" }} />
+            )}
+            </div> :
+            null
           }
+          <div className="collectionTitle" style={{ float: "left", fontSize: "1.2em" }}>{this.props.collection.title}</div>
           { this.props.collection.search &&
             <div style={{ float: "right", marginRight: "20px" }}>
               <Search
@@ -93,7 +98,6 @@ export default class Collection extends React.Component<CollectionProps, any> {
                 setCollection={this.props.setCollection} />
             </div>
           }
-          <h1 style={{ margin: 0 }}>{this.props.collection.title}</h1>
         </div>
 
         {this.props.collection.facetGroups && this.props.collection.facetGroups.length && (

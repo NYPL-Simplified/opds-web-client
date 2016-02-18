@@ -30,7 +30,7 @@ describe("Collection", () => {
     });
 
     it("shows the collection title", () => {
-      let titleElement = TestUtils.findRenderedDOMComponentWithTag(collection, "h1");
+      let titleElement = TestUtils.findRenderedDOMComponentWithClass(collection, "collectionTitle");
       expect(titleElement.textContent).toEqual(collectionData.title);
     });
 
@@ -171,9 +171,11 @@ describe("Collection", () => {
       );
 
       let links = TestUtils.scryRenderedComponentsWithType(collection, CollectionLink);
-      expect(links.length).toEqual(1);
-      expect(links[0].props.text).toContain("last title");
-      expect(links[0].props.url).toEqual("last url");
+      expect(links.length).toEqual(2);
+      expect(links[0].props.text).toContain("2nd title");
+      expect(links[0].props.url).toEqual("2nd url");
+      expect(links[1].props.text).toContain("last title");
+      expect(links[1].props.url).toEqual("last url");
     });
   });
 
