@@ -58,9 +58,9 @@ export default class Collection extends React.Component<CollectionProps, any> {
     };
 
     return (
-      <div className="collection" style={{ fontFamily: "Arial, sans-serif" }}>
-        <div className="collectionTop" style={collectionTopStyle}>
-          <h1 style={{ margin: 0 }}>{this.props.collection.title}</h1>
+      <div className="collection" style={{ fontFamily: "Arial, sans-serif" }} aria-labelledby="collectionTitle">
+        <div className="collectionTop" style={collectionTopStyle} role="banner">
+          <h1 id="collectionTitle" style={{ margin: 0 }}>{this.props.collection.title}</h1>
           { this.props.collection.search &&
             <Search
               url={this.props.collection.search.url}
@@ -71,14 +71,14 @@ export default class Collection extends React.Component<CollectionProps, any> {
         </div>
 
         {this.props.collection.facetGroups && this.props.collection.facetGroups.length && (
-          <div className="facetGroups" style={leftPanelStyle}>
+          <div className="facetGroups" style={leftPanelStyle} role="navigation" aria-label="filters">
             { this.props.collection.facetGroups.map(facetGroup =>
                 <FacetGroup key={facetGroup.label} facetGroup={facetGroup} setCollection={this.props.setCollection} />
             )}
           </div>
         )}
 
-        <div className="collectionBody" style={collectionBodyStyle}>
+        <div className="collectionBody" style={collectionBodyStyle} role="main" aria-label="books">
 
           { this.props.collection.lanes && this.props.collection.lanes.map(lane =>
               <Lane

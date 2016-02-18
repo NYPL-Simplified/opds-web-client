@@ -33,7 +33,7 @@ export default class LaneBook extends Book {
           setBook={this.props.setBook}
           collectionUrl={this.props.collectionUrl}
           style={{ color: "black", textDecoration: "none" }}>
-          <img src={this.props.book.imageUrl} style={bookCoverStyle} />
+          <img src={this.props.book.imageUrl} style={bookCoverStyle} alt={`${this.props.book.title} cover`} />
           <div className="bookInfo" style={ bookInfoStyle }>
             <div className="bookTitle">{this.props.book.title}</div>
           </div>

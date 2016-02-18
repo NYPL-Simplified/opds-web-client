@@ -19,13 +19,14 @@ let book: BookData = {
 };
 
 describe("LaneBook", () => {
-  it("shows the book cover", () => {
+  it("shows the book cover with alt", () => {
     let renderedBook = TestUtils.renderIntoDocument(
       <LaneBook book={book} />
     );
 
     let coverImage = TestUtils.findRenderedDOMComponentWithTag(renderedBook, "img");
-    expect(coverImage.getAttribute("src")).toEqual(book.imageUrl);
+    expect(coverImage.getAttribute("src")).toBe(book.imageUrl);
+    expect(coverImage.getAttribute("alt")).toBe(book.title + " cover");
   });
 
   it("shows book title", () => {
@@ -34,6 +35,6 @@ describe("LaneBook", () => {
     );
 
     let title = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookTitle");
-    expect(title.textContent).toEqual(book.title);
+    expect(title.textContent).toBe(book.title);
   });
 });

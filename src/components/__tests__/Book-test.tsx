@@ -18,13 +18,14 @@ let book: BookData = {
 };
 
 describe("Book", () => {
-  it("shows the book cover", () => {
+  it("shows the book cover with alt", () => {
     let renderedBook = TestUtils.renderIntoDocument(
       <Book book={book} />
     );
 
     let coverImage = TestUtils.findRenderedDOMComponentWithTag(renderedBook, "img");
     expect(coverImage.getAttribute("src")).toEqual(book.imageUrl);
+    expect(coverImage.getAttribute("alt")).toBe(book.title + " cover");
   });
 
   it("shows book info", () => {
