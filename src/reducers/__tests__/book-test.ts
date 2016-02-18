@@ -8,7 +8,6 @@ import * as TestUtils from "react-addons-test-utils";
 import reducer from "../book";
 import {
   fetchBookRequest,
-  fetchBookSuccess,
   fetchBookFailure,
   loadBook,
   clearBook
@@ -61,15 +60,6 @@ describe("book reducer", () => {
     expect(reducer(bookState, action)).toEqual(newState);
   });
 
-  it("should handle FETCH_BOOK_SUCCESS", () => {
-    let action = fetchBookSuccess();
-    let newState = Object.assign({}, fetchingState, {
-      isFetching: false
-    });
-
-    expect(reducer(fetchingState, action)).toEqual(newState);
-  });
-
   it("should handle FETCH_BOOK_FAILURE", () => {
     let action = fetchBookFailure("test error");
     let newState = Object.assign({}, fetchingState, {
@@ -88,7 +78,8 @@ describe("book reducer", () => {
     let action = loadBook(data, "some other url");
     let newState = Object.assign({}, bookState, {
       url: "some other url",
-      data: data
+      data: data,
+      isFetching: false
     });
 
     expect(reducer(bookState, action)).toEqual(newState);

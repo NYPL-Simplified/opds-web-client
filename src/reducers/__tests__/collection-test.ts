@@ -8,11 +8,9 @@ import * as TestUtils from "react-addons-test-utils";
 import reducer from "../collection";
 import {
   fetchCollectionRequest,
-  fetchCollectionSuccess,
   fetchCollectionFailure,
   loadCollection,
   fetchPageRequest,
-  fetchPageSuccess,
   fetchPageFailure,
   loadPage,
   clearCollection,
@@ -71,15 +69,6 @@ describe("collection reducer", () => {
     expect(reducer(currentState, action)).toEqual(newState);
   });
 
-  it("should handle FETCH_COLLECTION_SUCCESS", () => {
-    let action = fetchCollectionSuccess();
-    let newState = Object.assign({}, fetchingState, {
-      isFetching: false
-    });
-
-    expect(reducer(fetchingState, action)).toEqual(newState);
-  });
-
   it("should handle FETCH_COLLECTION_FAILURE", () => {
     let action = fetchCollectionFailure("test error");
     let newState = Object.assign({}, fetchingState, {
@@ -102,7 +91,8 @@ describe("collection reducer", () => {
     let action = loadCollection(data, "some other url");
     let newState = Object.assign({}, currentState, {
       url: "some other url",
-      data: data
+      data: data,
+      isFetching: false
     });
 
     expect(reducer(currentState, action)).toEqual(newState);
@@ -120,7 +110,8 @@ describe("collection reducer", () => {
     let action = loadCollection(data, "some other url");
     let newState = Object.assign({}, currentState, {
       url: "some other url",
-      data: data
+      data: data,
+      isFetching: false
     });
 
     expect(reducer(errorState, action)).toEqual(newState);
@@ -144,15 +135,6 @@ describe("collection reducer", () => {
     });
 
     expect(reducer(currentState, action)).toEqual(newState);
-  });
-
-  it("should handle FETCH_PAGE_SUCCESS", () => {
-    let action = fetchPageSuccess();
-    let newState = Object.assign({}, fetchingPageState, {
-      isFetchingPage: false
-    });
-
-    expect(reducer(fetchingPageState, action)).toEqual(newState);
   });
 
   it("should handle FETCH_PAGE_FAILURE", () => {
@@ -187,7 +169,8 @@ describe("collection reducer", () => {
       data: Object.assign({}, fetchingPageState.data, {
         books: data.books,
         nextPageUrl: "next"
-      })
+      }),
+      isFetching: false
     });
 
     expect(reducer(fetchingPageState, action)).toEqual(newState);

@@ -14,11 +14,6 @@ const book = (state = initialState, action) => {
         error: null
       });
 
-    case "FETCH_BOOK_SUCCESS":
-      return Object.assign({}, state, {
-        isFetching: false
-      });
-
     case "FETCH_BOOK_FAILURE":
       return Object.assign({}, state, {
         isFetching: false,
@@ -28,7 +23,8 @@ const book = (state = initialState, action) => {
     case "LOAD_BOOK":
       return Object.assign({}, state, {
         data: action.data,
-        url: action.url ? action.url : state.url
+        url: action.url ? action.url : state.url,
+        isFetching: false
       });
 
     case "CLEAR_BOOK":
