@@ -2,7 +2,8 @@ const initialState = {
   url: null,
   data: null,
   isFetching: false,
-  error: null
+  error: null,
+  history: []
 };
 
 const collection = (state = initialState, action) => {
@@ -21,18 +22,40 @@ const collection = (state = initialState, action) => {
       });
 
     case "LOAD_COLLECTION":
+      let newHistory;
+      let oldHistory = state.history;
+      let last = oldHistory.slice(-1)[0];
+      if (last && last.url === action.url) {
+        newHistory = oldHistory.slice(0, -1);
+      } else {
+        newHistory = oldHistory.slice(0);
+        if (state.data) {
+          let isFacetChange = (state.data.id === action.data.id);
+
+          if (!isFacetChange) {
+            newHistory.push({
+              url: state.data.url,
+              text: state.data.title,
+              id: state.data.id
+            });
+          }
+        }
+      }
+
       return Object.assign({}, state, {
         data: action.data,
         url: action.url ? action.url : state.url,
         isFetching: false,
-        error: null
+        error: null,
+        history: newHistory
       });
 
     case "CLEAR_COLLECTION":
       return Object.assign({}, state, {
         data: null,
         url: null,
-        error: null
+        error: null,
+        history: state.history.slice(0, -1)
       });
 
     case "FETCH_PAGE_REQUEST":

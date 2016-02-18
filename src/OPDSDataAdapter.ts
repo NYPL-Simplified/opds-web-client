@@ -6,7 +6,8 @@ import {
   OPDSCollectionLink,
   OPDSFacetLink,
   SearchLink,
-  CompleteEntryLink
+  CompleteEntryLink,
+  OPDSCatalogRootLink
 } from "opds-feed-parser";
 import * as url from "url";
 const sanitizeHtml = require("sanitize-html");
@@ -110,6 +111,7 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
   let facetGroups: FacetGroupData[] = [];
   let search: SearchProps;
   let nextPageUrl: string;
+  let catalogRootUrl: string;
 
   feed.entries.forEach(entry => {
     if (feed instanceof AcquisitionFeed) {
@@ -160,6 +162,13 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
     if (nextPageLink) {
       nextPageUrl = url.resolve(feedUrl, nextPageLink.href);
     }
+
+    let catalogRootLink = feed.links.find(link => {
+      return (link instanceof OPDSCatalogRootLink);
+    });
+    if (catalogRootLink) {
+      catalogRootUrl = url.resolve(feedUrl, catalogRootLink.href);
+    }
   }
 
   facetGroups = facetLinks.reduce((result, link) => {
@@ -192,6 +201,7 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
   collection.facetGroups = facetGroups;
   collection.search = search;
   collection.nextPageUrl = nextPageUrl;
+  collection.catalogRootUrl = catalogRootUrl;
   Object.freeze(collection);
   return collection;
 }

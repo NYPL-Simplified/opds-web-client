@@ -15,6 +15,7 @@ import Lane from "../Lane";
 import Book from "../Book";
 import LaneBook from "../LaneBook";
 import FacetGroup from "../FacetGroup";
+import CollectionLink from "../CollectionLink";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 
 describe("Collection", () => {
@@ -85,7 +86,7 @@ describe("Collection", () => {
     });
   });
 
-  describe("collection without facetGroups", () => {
+  describe("collection with facetGroups", () => {
     it("shows facet groups", () => {
       let collectionData = {
         id: "test collection",
@@ -150,6 +151,46 @@ describe("Collection", () => {
 
       let loading = TestUtils.findRenderedDOMComponentWithClass(collection, "loadingNextPage");
       expect(loading.textContent).toContain("Loading");
+    });
+  });
+
+  describe("collection with history", () => {
+    it("shows link to previous collection", () => {
+      let history = [{
+        id: "2nd id",
+        text: "2nd title",
+        url: "2nd url"
+      }, {
+        id: "last id",
+        text: "last title",
+        url: "last url"
+      }];
+
+      let collection = TestUtils.renderIntoDocument(
+        <Collection collection={ungroupedCollectionData} history={history} />
+      );
+
+      let links = TestUtils.scryRenderedComponentsWithType(collection, CollectionLink);
+      expect(links.length).toEqual(1);
+      expect(links[0].props.text).toContain("last title");
+      expect(links[0].props.url).toEqual("last url");
+    });
+  });
+
+  describe("collection without history", () => {
+    it("shows link to catalogRoot", () => {
+      let collectionData = Object.assign({},  ungroupedCollectionData, {
+        catalogRootUrl: "catalog root"
+      });
+
+      let collection = TestUtils.renderIntoDocument(
+        <Collection collection={collectionData} />
+      );
+
+      let links = TestUtils.scryRenderedComponentsWithType(collection, CollectionLink);
+      expect(links.length).toEqual(1);
+      expect(links[0].props.text).toContain("Catalog");
+      expect(links[0].props.url).toEqual("catalog root");
     });
   });
 

@@ -35,7 +35,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
     }
 
     let leftPanelStyle = {
-      paddingTop: `${headerHeight + padding}px`,
+      marginTop: `${headerHeight + padding}px`,
       width: `${leftPanelWidth}px`,
       position: "fixed",
       left: "0"
@@ -57,17 +57,43 @@ export default class Collection extends React.Component<CollectionProps, any> {
       textAlign: "center"
     };
 
+    let backUrl, backText;
+    if (this.props.collection.catalogRootUrl === this.props.collection.url) {
+      backUrl = null;
+      backText = null;
+    } else if (this.props.history && this.props.history.length > 0) {
+      let previous = this.props.history.slice(-1)[0];
+      if (previous) {
+        backUrl = previous.url;
+        backText = "< " + previous.text;
+      }
+    } else {
+      backUrl = this.props.collection.catalogRootUrl;
+      backText = "< Catalog";
+    }
+
     return (
       <div className="collection" style={{ fontFamily: "Arial, sans-serif" }}>
         <div className="collectionTop" style={collectionTopStyle}>
-          <h1 style={{ margin: 0 }}>{this.props.collection.title}</h1>
-          { this.props.collection.search &&
-            <Search
-              url={this.props.collection.search.url}
-              searchData={this.props.collection.search.searchData}
-              fetchSearchDescription={this.props.fetchSearchDescription}
-              setCollection={this.props.setCollection} />
+          { backUrl &&
+            <div style={{ float: "left", marginLeft: "20px" }}>
+              <CollectionLink
+                text={backText}
+                url={backUrl}
+                setCollection={this.props.setCollection}
+                style={{ fontSize: "1.2em", cursor: "pointer" }} />
+            </div>
           }
+          { this.props.collection.search &&
+            <div style={{ float: "right", marginRight: "20px" }}>
+              <Search
+                url={this.props.collection.search.url}
+                searchData={this.props.collection.search.searchData}
+                fetchSearchDescription={this.props.fetchSearchDescription}
+                setCollection={this.props.setCollection} />
+            </div>
+          }
+          <h1 style={{ margin: 0 }}>{this.props.collection.title}</h1>
         </div>
 
         {this.props.collection.facetGroups && this.props.collection.facetGroups.length && (

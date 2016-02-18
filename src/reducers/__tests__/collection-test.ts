@@ -23,21 +23,29 @@ describe("collection reducer", () => {
     url: null,
     data: null,
     isFetching: false,
-    error: null
+    error: null,
+    history: []
   };
 
   let currentState = {
     url: "some url",
-    data: { foo: "bar" },
+    data: {
+      foo: "bar",
+      id: "id",
+      title: "title",
+      url: "url"
+    },
     isFetching: false,
-    error: null
+    error: null,
+    history: []
   };
 
   let fetchingState = {
     url: "some url",
     data: { foo: "bar "},
     isFetching: true,
-    error: null
+    error: null,
+    history: []
   };
 
   let fetchingPageState = {
@@ -45,14 +53,16 @@ describe("collection reducer", () => {
     data: { foo: "bar ", books: []},
     isFetching: false,
     isFetchingPage: true,
-    error: null
+    error: null,
+    history: []
   };
 
   let errorState = {
     url: "some url",
     data: null,
     isFetching: false,
-    error: "test error"
+    error: "test error",
+    history: []
   };
 
   it("should return the initial state", () => {
@@ -92,10 +102,61 @@ describe("collection reducer", () => {
     let newState = Object.assign({}, currentState, {
       url: "some other url",
       data: data,
+      isFetching: false,
+      history: [{
+        id: "id",
+        text: "title",
+        url: "url"
+      }]
+    });
+
+    expect(reducer(currentState, action)).toEqual(newState);
+  });
+
+  it("shouldn't change history on LOAD_COLLECTION with same id", () => {
+    let data = {
+      id: "id",
+      url: "some url",
+      title: "some title",
+      lanes: [],
+      books: [],
+      links: []
+    };
+    let action = loadCollection(data, "some other url");
+    let newState = Object.assign({}, currentState, {
+      url: "some other url",
+      data: data,
       isFetching: false
     });
 
     expect(reducer(currentState, action)).toEqual(newState);
+  });
+
+  it("should remove last history entry on LOAD_COLLECTION with that url", () => {
+    let stateWithHistory = Object.assign({}, currentState, {
+      history: [{
+        id: "test id",
+        url: "test url",
+        title: "test title"
+      }]
+    });
+    let data = {
+      id: "some id",
+      url: "test url",
+      title: "some title",
+      lanes: [],
+      books: [],
+      links: []
+    };
+    let action = loadCollection(data, "test url");
+    let newState = Object.assign({}, currentState, {
+      url: "test url",
+      data: data,
+      isFetching: false,
+      history: []
+    });
+
+    expect(reducer(stateWithHistory, action)).toEqual(newState);
   });
 
   it("should handle LOAD_COLLECTION after an error", () => {
