@@ -3,12 +3,14 @@ import { connect } from "react-redux";
 import {
   fetchCollection,
   fetchPage,
+  fetchBook,
+  loadBook,
   clearCollection,
+  clearBook,
   fetchSearchDescription,
-  closeError,
-  showBookDetails,
-  hideBookDetails
+  closeError
 } from "../actions";
+import mergeRootProps from "./mergeRootProps";
 import BookDetails from "./BookDetails";
 import LoadingIndicator from "./LoadingIndicator";
 import ErrorMessage from "./ErrorMessage";
@@ -19,30 +21,33 @@ export class Root extends React.Component<RootProps, any> {
   render(): JSX.Element {
     return (
       <div className="browser">
-        { this.props.book && <BookDetails {...this.props.book} hideBookDetails={this.props.hideBookDetails} /> }
         { this.props.isFetching && <LoadingIndicator /> }
-        { this.props.error && <ErrorMessage message={this.props.error} retry={() => this.props.fetchCollection(this.props.collectionUrl)} closeError={this.props.closeError} /> }
+        { this.props.error &&
+          <ErrorMessage
+            message={this.props.error}
+            retry={() => this.props.setCollection(this.props.collectionUrl)} />
+        }
+        { this.props.bookData && <BookDetails book={this.props.bookData} clearBook={this.props.clearBook} /> }
 
         { this.props.collectionData ?
           <Collection
-            {...this.props.collectionData}
-            fetchCollection={this.props.fetchCollection}
+            collection={this.props.collectionData}
+            setCollection={this.props.setCollection}
             fetchPage={this.props.fetchPage}
             isFetching={this.props.isFetching}
             isFetchingPage={this.props.isFetchingPage}
             error={this.props.error}
             fetchSearchDescription={this.props.fetchSearchDescription}
-            showBookDetails={this.props.showBookDetails} /> :
-          this.props.isFetching ? null : <UrlForm fetchCollection={this.props.fetchCollection} url={this.props.collectionUrl} />
+            setBook={this.props.setBook} /> :
+          this.props.isFetching ? null : <UrlForm setCollection={this.props.setCollection} url={this.props.collectionUrl} />
         }
       </div>
     );
   }
 
   componentWillMount() {
-    if (this.props.startUrl) {
-      // skip onFetch, which is not meant for initial fetch
-      this.props.fetchCollection(this.props.startUrl, true);
+    if (this.props.startCollection || this.props.startBook) {
+      this.props.setCollectionAndBook(this.props.startCollection, this.props.startBook, true);
     }
   }
 }
@@ -51,10 +56,11 @@ const mapStateToProps = (state) => {
   return {
     collectionData: state.collection.data,
     collectionUrl: state.collection.url,
-    isFetching: state.collection.isFetching,
+    isFetching: (state.collection.isFetching || state.book.isFetching),
     isFetchingPage: state.collection.isFetchingPage,
-    error: state.collection.error,
-    book: state.book
+    error: (state.collection.error || state.book.error),
+    bookData: state.book.data,
+    bookUrl: state.book.url
   };
 };
 
@@ -62,32 +68,20 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchCollection: (url: string) => dispatch(fetchCollection(url)),
     fetchPage: (url: string) => dispatch(fetchPage(url)),
+    fetchBook: (url: string) => dispatch(fetchBook(url)),
+    loadBook: (book: BookData, url: string) => dispatch(loadBook(book, url)),
     clearCollection: () => dispatch(clearCollection()),
+    clearBook: () => dispatch(clearBook()),
     fetchSearchDescription: (url: string) => dispatch(fetchSearchDescription(url)),
-    closeError: () => dispatch(closeError()),
-    showBookDetails: (book: BookProps) => dispatch(showBookDetails(book)),
-    hideBookDetails: () => dispatch(hideBookDetails())
+    closeError: () => dispatch(closeError())
   };
-};
-
-// define new fetchCollection here so that it can call onFetch from component props
-const mergeProps = (stateProps, dispatchProps, componentProps) => {
-  return Object.assign({}, componentProps, stateProps, dispatchProps, {
-    fetchCollection: (url: string, skipOnFetch: boolean = false) => {
-      dispatchProps.fetchCollection(url);
-
-      if (!skipOnFetch && componentProps.onFetch) {
-        componentProps.onFetch(url);
-      }
-    }
-  });
 };
 
 let connectOptions = { withRef: true, pure: true };
 const ConnectedRoot = connect(
   mapStateToProps,
   mapDispatchToProps,
-  mergeProps,
+  mergeRootProps,
   connectOptions
 )(Root);
 

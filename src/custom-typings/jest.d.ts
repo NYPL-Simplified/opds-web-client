@@ -17,6 +17,7 @@ declare function xdescribe(name: string, fn: any): void;
 declare function xit(name: string, fn: any): void;
 
 declare function expect(actual: any): any;
+declare function spyOn(object: any, method: any): any;
 
 interface NodeRequire {
   requireActual(moduleName: string): any;

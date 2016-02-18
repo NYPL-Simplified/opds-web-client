@@ -13,6 +13,11 @@ app.listen(port, function() {
   console.log("Server listening on port " + port);
 });
 
-app.post("/proxy", function(req, res) {
-  request.get(req.body.url).pipe(res);
+app.post("/proxy", function(req, res, next) {
+  request
+    .get(req.body.url)
+    .on("error", err => {
+      next("proxy request error: " + req.body.url);
+    })
+    .pipe(res);
 });

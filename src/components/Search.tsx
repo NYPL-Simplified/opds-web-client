@@ -4,9 +4,9 @@ export default class Search extends React.Component<SearchProps, any> {
   render(): JSX.Element {
     return (
       <div className="search" style={{ float: "right", marginRight: "20px" }}>
-        { this.props.data && (
+        { this.props.searchData && (
           <form onSubmit={this.onSubmit.bind(this)}>
-            <input ref="input" type="text" placeholder={this.props.data.shortName}/>
+            <input ref="input" type="text" placeholder={this.props.searchData.shortName}/>
             <button type="submit">Search</button>
           </form>
         )}
@@ -28,8 +28,8 @@ export default class Search extends React.Component<SearchProps, any> {
 
   onSubmit(event) {
     let searchTerms = encodeURIComponent(this.refs["input"]["value"]);
-    let url = this.props.data.template(searchTerms);
-    this.props.fetchCollection(url);
+    let url = this.props.searchData.template(searchTerms);
+    this.props.setCollection(url);
     event.preventDefault();
   }
 }

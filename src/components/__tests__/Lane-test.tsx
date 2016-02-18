@@ -11,7 +11,7 @@ import Lane from "../Lane";
 import CollectionLink from "../CollectionLink";
 import Book from "../Book";
 
-let books: BookProps[] = [1, 2, 3].map((i) => {
+let books: BookData[] = [1, 2, 3].map((i) => {
   return {
     id: `test book id ${i}`,
     title: `test book title ${i}`,
@@ -21,7 +21,7 @@ let books: BookProps[] = [1, 2, 3].map((i) => {
     publisher: `test publisher ${i}`
   };
 });
-let laneProps: LaneProps = {
+let laneData: LaneData = {
   title: "test lane",
   books: books,
   url: "http://example.com/testlane"
@@ -30,16 +30,16 @@ let laneProps: LaneProps = {
 describe("Lane", () => {
   it("shows the lane title", () => {
     let lane = TestUtils.renderIntoDocument(
-      <Lane {...laneProps} />
+      <Lane lane={laneData} />
     );
 
     let titleLink = TestUtils.findRenderedDOMComponentWithClass(lane, "laneTitle");
-    expect(titleLink.textContent).toBe(laneProps.title);
+    expect(titleLink.textContent).toBe(laneData.title);
   });
 
   it("shows the books", () => {
     let lane = TestUtils.renderIntoDocument(
-      <Lane {...laneProps} />
+      <Lane lane={laneData} />
     );
 
     let books = TestUtils.scryRenderedComponentsWithType(lane, Book);

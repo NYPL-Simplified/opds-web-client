@@ -9,13 +9,13 @@ import Facet from "../Facet";
 
 describe("FacetGroup", () => {
   it("shows facet group label", () => {
-    let facetGroup = {
+    let facetGroup: FacetGroupData = {
       label: "Availability",
       facets: []
     };
 
     let renderedFacetGroup = TestUtils.renderIntoDocument(
-      <FacetGroup {...facetGroup} />
+      <FacetGroup facetGroup={facetGroup} />
     );
 
     let label = TestUtils.findRenderedDOMComponentWithClass(renderedFacetGroup, "facet-group-label");
@@ -33,7 +33,7 @@ describe("FacetGroup", () => {
     };
 
     let renderedFacetGroup = TestUtils.renderIntoDocument(
-      <FacetGroup {...facetGroup} />
+      <FacetGroup facetGroup={facetGroup} />
     );
 
     let facets = TestUtils.scryRenderedComponentsWithType(renderedFacetGroup, Facet);

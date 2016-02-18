@@ -1,15 +1,22 @@
-import { feedToCollection } from "./OPDSDataAdapter";
-import OPDSParser from "opds-feed-parser";
+import { feedToCollection, entryToBook } from "./OPDSDataAdapter";
+import OPDSParser, { OPDSFeed, OPDSEntry } from "opds-feed-parser";
 import OpenSearchDescriptionParser from "./OpenSearchDescriptionParser";
 
-export function fetchOPDSData(feedUrl) {
+export function fetchOPDSData(url) {
   let parser = new OPDSParser;
 
   return new Promise((resolve, reject) => {
-    fetchData(feedUrl).then((response: string) => {
-      parser.parse(response).then((opdsFeed) => {
-        let collectionData = feedToCollection(opdsFeed, feedUrl);
-        resolve(collectionData);
+    fetchData(url).then((response: string) => {
+      parser.parse(response).then((parsedData: OPDSFeed | OPDSEntry) => {
+        if (parsedData instanceof OPDSFeed) {
+          let collectionData = feedToCollection(parsedData, url);
+          resolve(collectionData);
+        } else if (parsedData instanceof OPDSEntry) {
+          let bookData = entryToBook(parsedData, url);
+          resolve(bookData);
+        } else {
+          reject("parsed data must be OPDSFeed or OPDSEntry");
+        }
       }).catch(err => {
         reject(err);
       });
@@ -25,7 +32,7 @@ export function fetchSearchDescriptionData(searchDescriptionUrl) {
   return new Promise((resolve, reject) => {
     fetchData(searchDescriptionUrl).then((response: string) => {
       parser.parse(response, searchDescriptionUrl).then((openSearchDescription) => {
-        resolve({data: openSearchDescription});
+        resolve(openSearchDescription);
       }).catch(err => reject(err));
     }).catch(err => reject(err));
   });
@@ -44,6 +51,7 @@ export default function fetchData(url) {
         }
       }
     };
+
 
     httpRequest.open("POST", "/proxy", true);
     httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

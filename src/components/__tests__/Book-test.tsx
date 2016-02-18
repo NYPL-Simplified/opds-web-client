@@ -8,7 +8,7 @@ import * as TestUtils from "react-addons-test-utils";
 
 import Book from "../Book";
 
-let book = {
+let book: BookData = {
   id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
   title: "The Mayan Secrets",
   authors: ["Clive Cussler", "Thomas Perry"],
@@ -20,7 +20,7 @@ let book = {
 describe("Book", () => {
   it("shows the book cover", () => {
     let renderedBook = TestUtils.renderIntoDocument(
-      <Book {...book} />
+      <Book book={book} />
     );
 
     let coverImage = TestUtils.findRenderedDOMComponentWithTag(renderedBook, "img");
@@ -29,7 +29,7 @@ describe("Book", () => {
 
   it("shows book info", () => {
     let renderedBook = TestUtils.renderIntoDocument(
-      <Book {...book} />
+      <Book book={book} />
     );
 
     let title = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookTitle");
@@ -45,7 +45,7 @@ describe("Book", () => {
       contributors: ["contributor"]
     });
     let renderedBook = TestUtils.renderIntoDocument(
-      <Book {...bookCopy} />
+      <Book book={bookCopy} />
     );
 
     let authors = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookAuthors");

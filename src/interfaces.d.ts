@@ -1,54 +1,67 @@
 interface BaseProps extends __React.HTMLProps<any> {
 }
 
-interface FetchCollectionProps {
-  fetchCollection?: (url: string, push?: boolean) => void;
+interface CollectionActionProps {
+  setCollection?: (url: string, skipOnNavigate?: boolean, bookUrl?: string) => void;
   fetchPage?: (url: string) => void;
 }
 
 interface BookActionProps {
-  showBookDetails?: (book: BookProps) => void;
-  hideBookDetails?: () => void;
+  setBook?: (book: BookData|string, skipOnNavigate?: boolean) => Promise<BookData>;
+  clearBook?: () => void;
+  book?: BookData;
   collectionUrl?: string;
 }
 
-interface BookProps extends BookActionProps {
+interface BookData {
   id: string;
   title: string;
-  authors: string[];
+  authors?: string[];
   contributors?: string[];
-  summary: string;
-  imageUrl: string;
-  publisher: string;
+  summary?: string;
+  imageUrl?: string;
+  url?: string;
+  publisher?: string;
   published?: string;
   categories?: string[];
-  key?: any;
-  url?: string;
 }
 
-interface LaneProps extends FetchCollectionProps, BookActionProps {
+interface BookProps extends BookActionProps, BaseProps {
+  book: BookData;
+}
+
+interface LaneData {
   title: string;
   url: string;
-  books: BookProps[];
-  key?: any;
+  books: BookData[];
 }
 
-interface FacetProps extends FetchCollectionProps {
+interface LaneProps extends CollectionActionProps, BookActionProps, BaseProps {
+  lane: LaneData;
+}
+
+interface FacetData {
   label: string;
   href: string;
   active: boolean;
-  key?: any;
 }
 
-interface FacetGroupProps extends FetchCollectionProps {
+interface FacetProps extends CollectionActionProps, BaseProps {
+  facet: FacetData;
+}
+
+interface FacetGroupData {
   label: string;
-  facets: FacetProps[];
-  key?: any;
+  facets: FacetData[];
 }
 
-interface SearchProps extends FetchCollectionProps {
+interface FacetGroupProps extends CollectionActionProps, BaseProps {
+  facetGroup: FacetGroupData;
+}
+
+interface SearchProps extends CollectionActionProps, BaseProps {
   url?: string;
-  data?: {
+  searchData?: {
     description: string;
     shortName: string;
     template: (searchTerms: string) => string;
@@ -56,50 +69,60 @@ interface SearchProps extends FetchCollectionProps {
   fetchSearchDescription?: (url: string) => void;
 }
 
-interface CollectionProps extends FetchCollectionProps, BookActionProps {
+interface CollectionData {
   id: string;
   url: string;
   title: string;
-  lanes: LaneProps[];
-  books: BookProps[];
-  links: LinkProps[];
-  facetGroups?: FacetGroupProps[];
+  lanes: LaneData[];
+  books: BookData[];
+  links: LinkData[];
+  facetGroups?: FacetGroupData[];
   search?: SearchProps;
   nextPageUrl?: string;
+}
+
+interface CollectionProps extends CollectionActionProps, BookActionProps, BaseProps {
+  collection: CollectionData;
   isFetching?: boolean;
   isFetchingPage?: boolean;
   error?: string;
   fetchSearchDescription?: (url: string) => void;
 }
 
+// these properties need to be optional because they're used by RootProps,
+// which doesn't implement them until Root is connected to the state by redux;
+// initially, Root isn't provided most of these props
 interface State {
-  collectionData?: CollectionProps;
+  collectionData?: CollectionData;
   collectionUrl?: string;
   isFetching?: boolean;
   error?: string;
-  book?: BookProps;
+  bookData?: BookData;
+  bookUrl?: string;
   isFetchingPage?: boolean;
 }
 
-interface RootProps extends State, FetchCollectionProps, BookActionProps {
-  startUrl?: string;
-  onFetch?: (url: string) => any;
+interface RootProps extends State, CollectionActionProps, BookActionProps, BaseProps {
+  startCollection?: string;
+  startBook?: string;
+  onNavigate?: (collectionUrl: string, bookUrl?: string) => any;
   dispatch?: any;
   clearCollection?: () => void;
   ref?: any;
   fetchSearchDescription?: (url: string) => void;
   closeError?: () => void;
+  fetchBook?: (bookUrl: string) => void;
+  setCollectionAndBook?: (collectionUrl: string, book: BookProps|string, skipOnNavigate?: boolean) => void;
 }
 
-interface UrlFormProps extends FetchCollectionProps {
+interface UrlFormProps extends CollectionActionProps, BaseProps {
   url?: string;
 }
 
-interface Link {
+interface LinkData {
   id: string;
-  title: string;
-  href: string;
-  key?: string;
+  text: string;
+  url: string;
 }
 
 interface LinkProps extends BaseProps {
@@ -107,17 +130,14 @@ interface LinkProps extends BaseProps {
   url: string;
 }
 
-interface CollectionLinkProps extends LinkProps, FetchCollectionProps {
-  id?: string;
+interface CollectionLinkProps extends LinkProps, CollectionActionProps, BaseProps {
 }
 
-interface BookPreviewLinkProps extends LinkProps, BookActionProps {
-  book?: BookProps;
-  collectionUrl: string;
+interface BookPreviewLinkProps extends LinkProps, BookActionProps, BaseProps {
+  book?: BookData;
 }
 
 interface ErrorMessageProps {
   message: string;
-  closeError: () => void;
   retry?: () => void;
 }

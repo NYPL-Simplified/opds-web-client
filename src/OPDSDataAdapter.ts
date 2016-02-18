@@ -1,4 +1,6 @@
 import {
+  OPDSFeed,
+  OPDSEntry,
   OPDSArtworkLink,
   AcquisitionFeed,
   OPDSCollectionLink,
@@ -9,7 +11,7 @@ import {
 import * as url from "url";
 const sanitizeHtml = require("sanitize-html");
 
-function entryToBook(entry: any, feedUrl: string): BookProps {
+export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
   let authors = entry.authors.map((author) => {
     return author.name;
   });
@@ -35,52 +37,44 @@ function entryToBook(entry: any, feedUrl: string): BookProps {
   let detailUrl;
   let detailLink = entry.links.find(link => link instanceof CompleteEntryLink);
   if (detailLink) {
-    detailUrl = detailLink.href;
+    detailUrl = url.resolve(feedUrl, detailLink.href);
   }
 
-  // until OPDSParser parses dcterms:publisher...
-  let publisher = entry.unparsed && entry.unparsed["dcterms:publisher"] ? entry.unparsed["dcterms:publisher"][0]["_"] : null;
-  let published = formatDate(entry.published);
+  let categories = entry.categories.filter(category => !!category.label).map(category => category.label);
 
-  let categories = entry.categories.filter((category) => {
-    return category.label;
-  }).map((category) => {
-    return category.label;
-  });
-
-  return <BookProps>{
+  return <BookData>{
     id: entry.id,
     title: entry.title,
     authors: authors,
     contributors: contributors,
     summary: sanitizeHtml(entry.summary.content),
     imageUrl: imageUrl,
-    publisher: publisher,
-    published: published,
+    publisher: entry.publisher,
+    published: formatDate(entry.published),
     categories: categories,
     url: detailUrl
   };
 }
 
-function entryToLink(entry: any, feedUrl: string): LinkProps {
+function entryToLink(entry: OPDSEntry, feedUrl: string): LinkData {
   let href: string;
   let links = entry.links;
   if (links.length > 0) {
      href = url.resolve(feedUrl, links[0].href);
   }
-  return <CollectionLinkProps>{
+  return <LinkData>{
     id: entry.id,
     text: entry.title,
     url: href
   };
 }
 
-function dedupeBooks(books: BookProps[]): BookProps[] {
+function dedupeBooks(books: BookData[]): BookData[] {
   // using Map because it preserves key order
   let bookIndex = books.reduce((index, book) => {
     index.set(book.id, book);
     return index;
-  }, new Map<any, BookProps>());
+  }, new Map<any, BookData>());
 
   return Array.from(bookIndex.values());
 }
@@ -102,18 +96,18 @@ function formatDate(inputDate: string): string {
   return `${month} ${day}, ${year}`;
 }
 
-export function feedToCollection(feed: any, feedUrl: string): CollectionProps {
-  let collection = <CollectionProps>{
+export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionData {
+  let collection = <CollectionData>{
     id: feed.id,
     title: feed.title,
     url: feedUrl
   };
-  let books: BookProps[] = [];
-  let links: LinkProps[] = [];
-  let lanes: LaneProps[] = [];
+  let books: BookData[] = [];
+  let links: LinkData[] = [];
+  let lanes: LaneData[] = [];
   let laneTitles = [];
   let laneIndex = [];
-  let facetGroups: FacetGroupProps[] = [];
+  let facetGroups: FacetGroupData[] = [];
   let search: SearchProps;
   let nextPageUrl: string;
 

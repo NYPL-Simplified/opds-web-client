@@ -6,13 +6,13 @@ export default class Facet extends React.Component<FacetProps, any> {
     let facetStyle: any = {
       cursor: "pointer"
     };
-    if (this.props.active) {
+    if (this.props.facet.active) {
       facetStyle.backgroundColor = "#ddd";
     }
 
     return (
       <div style={facetStyle}>
-        <CollectionLink text={this.props.label} url={this.props.href} fetchCollection={this.props.fetchCollection} />
+        <CollectionLink text={this.props.facet.label} url={this.props.facet.href} setCollection={this.props.setCollection} />
       </div>
     );
   }

@@ -27,12 +27,12 @@ let linkProps: BookPreviewLinkProps = {
 
 describe("BookPreviewLink", () => {
   let link;
-  let showBookDetails;
+  let setBook;
 
   beforeEach(() => {
-    showBookDetails = jest.genMockFunction();
+    setBook = jest.genMockFunction();
     link = TestUtils.renderIntoDocument(
-      <BookPreviewLink {...linkProps} showBookDetails={showBookDetails} />
+      <BookPreviewLink {...linkProps} setBook={setBook} />
     );
   });
 
@@ -46,21 +46,21 @@ describe("BookPreviewLink", () => {
     let element = TestUtils.findRenderedDOMComponentWithTag(link, "a");
     let encodedCollectionUrl = encodeURIComponent(linkProps.collectionUrl);
     let encodedBookUrl = encodeURIComponent(linkProps.url);
-    expect(element.getAttribute("href")).toBe("?url=" + encodedCollectionUrl + "&book=" + encodedBookUrl);
+    expect(element.getAttribute("href")).toBe("?collection=" + encodedCollectionUrl + "&book=" + encodedBookUrl);
   });
 
   it("shows the book preview if clicked normally", () => {
     let element = TestUtils.findRenderedDOMComponentWithTag(link, "a");
     TestUtils.Simulate.click(element);
-    expect(showBookDetails.mock.calls.length).toBe(1);
-    expect(showBookDetails.mock.calls[0][0]).toBe(linkProps.book);
+    expect(setBook.mock.calls.length).toBe(1);
+    expect(setBook.mock.calls[0][0]).toBe(linkProps.book);
   });
 
   it("does not show the book preview if clicked with alt, ctrl, cmd, or shift key", () => {
     let element = TestUtils.findRenderedDOMComponentWithTag(link, "a");
     ["altKey", "ctrlKey", "metaKey", "shiftKey"].forEach(key => {
       TestUtils.Simulate.click(element, { [key]: true });
-      expect(showBookDetails.mock.calls.length).toBe(0);
+      expect(setBook.mock.calls.length).toBe(0);
     });
   });
 });

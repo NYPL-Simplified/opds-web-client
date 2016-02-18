@@ -10,12 +10,8 @@ const collection = (state = initialState, action) => {
     case "FETCH_COLLECTION_REQUEST":
       return Object.assign({}, state, {
         url: action.url,
-        isFetching: true
-      });
-
-    case "FETCH_COLLECTION_SUCCESS":
-      return Object.assign({}, state, {
-        isFetching: false
+        isFetching: true,
+        error: null
       });
 
     case "FETCH_COLLECTION_FAILURE":
@@ -28,18 +24,22 @@ const collection = (state = initialState, action) => {
       return Object.assign({}, state, {
         data: action.data,
         url: action.url ? action.url : state.url,
+        isFetching: false,
+        error: null
+      });
+
+    case "CLEAR_COLLECTION":
+      return Object.assign({}, state, {
+        data: null,
+        url: null,
         error: null
       });
 
     case "FETCH_PAGE_REQUEST":
       return Object.assign({}, state, {
         pageUrl: action.url,
-        isFetchingPage: true
-      });
-
-    case "FETCH_PAGE_SUCCESS":
-      return Object.assign({}, state, {
-        isFetchingPage: false
+        isFetchingPage: true,
+        error: null
       });
 
     case "FETCH_PAGE_FAILURE":
@@ -53,13 +53,8 @@ const collection = (state = initialState, action) => {
         data: Object.assign({}, state.data, {
           books: Object.assign([], state.data.books).concat(action.data.books),
           nextPageUrl: action.data.nextPageUrl
-        })
-      });
-
-    case "CLEAR_COLLECTION":
-      return Object.assign({}, state, {
-        data: null,
-        url: null
+        }),
+        isFetching: false
       });
 
     case "LOAD_SEARCH_DESCRIPTION":

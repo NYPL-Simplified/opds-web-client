@@ -9,7 +9,7 @@ export default class Link<P extends LinkProps> extends React.Component<P, any> {
         href={this.href()}
         onClick={this.handleClick.bind(this)}>
 
-        {this.props.children || this.props.text}
+        { this.props.children || this.props.text }
 
       </a>
     );

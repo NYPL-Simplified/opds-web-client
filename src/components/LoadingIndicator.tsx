@@ -13,7 +13,8 @@ export default class LoadingIndicator extends React.Component<any, any> {
       padding: "30px",
       backgroundColor: "#bbb",
       textAlign: "center",
-      fontFamily: "Arial, Helvetica, sans-serif"
+      fontFamily: "Arial, Helvetica, sans-serif",
+      zIndex: 100
     };
 
     return (

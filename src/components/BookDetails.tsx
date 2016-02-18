@@ -28,42 +28,42 @@ export default class BookDetails extends React.Component<BookProps, any> {
       <div>
         <div
           className="bookDetailsScreen"
-          onClick={() => this.props.hideBookDetails()}
+          onClick={this.props.clearBook}
           style={screenStyle}></div>
         <div className="bookDetails" style={bookDetailsStyle}>
           <div style={{ float: "right" }}>
             <a href="javascript:void(0)"
               className="bookDetailsCloseLink"
               style={{ fontSize: "1em" }}
-              onClick={this.props.hideBookDetails}>
+              onClick={this.props.clearBook}>
               Close
             </a>
           </div>
           <div className="bookImage" style={{ width: "150px", float: "left", textAlign: "right" }}>
-            <img src={this.props.imageUrl} style={{ height: "150px" }}/>
+            <img src={this.props.book.imageUrl} style={{ height: "150px" }}/>
           </div>
           <div className="bookDetailsTop" style={{ marginLeft: "1em", float: "left" }}>
-            <h1 className="bookDetailsTitle" style={{ margin: 0 }}>{this.props.title}</h1>
+            <h1 className="bookDetailsTitle" style={{ margin: 0 }}>{this.props.book.title}</h1>
             {
-              this.props.authors.length ?
-              <h2 className="bookDetailsAuthors" style={{ marginTop: "0.5em", fontSize: "1.2em" }}>{this.props.authors.join(", ")}</h2> :
+              this.props.book.authors.length ?
+              <h2 className="bookDetailsAuthors" style={{ marginTop: "0.5em", fontSize: "1.2em" }}>{this.props.book.authors.join(", ")}</h2> :
               ""
             }
             {
-              this.props.contributors && this.props.contributors.length ?
-              <h2 className="bookDetailsContributors" style={{ marginTop: "0.5em", fontSize: "1.2em" }}>Contributors: {this.props.contributors.join(", ")}</h2> :
+              this.props.book.contributors && this.props.book.contributors.length ?
+              <h2 className="bookDetailsContributors" style={{ marginTop: "0.5em", fontSize: "1.2em" }}>Contributors: {this.props.book.contributors.join(", ")}</h2> :
               ""
             }
             <div style={{ marginTop: "2em", color: "#888", fontSize: "0.9em" }}>
-              <div className="bookDetailsPublished">Published: {this.props.published}</div>
+              <div className="bookDetailsPublished">Published: {this.props.book.published}</div>
               {
-                this.props.publisher ?
-                <div className="bookDetailsPublisher">Publisher: {this.props.publisher}</div> :
+                this.props.book.publisher ?
+                <div className="bookDetailsPublisher">Publisher: {this.props.book.publisher}</div> :
                 ""
               }
               {
-                this.props.categories && this.props.categories.length ?
-                <div className="bookDetailsCategories">Categories: {this.props.categories.join(", ")}</div> :
+                this.props.book.categories && this.props.book.categories.length ?
+                <div className="bookDetailsCategories">Categories: {this.props.book.categories.join(", ")}</div> :
                 ""
               }
             </div>
@@ -72,7 +72,7 @@ export default class BookDetails extends React.Component<BookProps, any> {
           <div
             className="bookDetailsSummary"
             style={{ marginTop: "1em", marginBottom: "1em", paddingTop: "1em", borderTop: "1px solid #ccc" }}
-            dangerouslySetInnerHTML={{ __html: this.props.summary }}></div>
+            dangerouslySetInnerHTML={{ __html: this.props.book.summary }}></div>
         </div>
       </div>
     );

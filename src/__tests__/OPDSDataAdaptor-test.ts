@@ -27,11 +27,7 @@ describe("OPDSDataAdapter", () => {
       categories: [factory.category({label: "label"}), factory.category({term: "no label"}), factory.category({label: "label 2"})],
       links: [largeImageLink, thumbImageLink],
       published: "2014-06-08T22:45:58Z",
-      unparsed: {
-        "dcterms:publisher": [{
-          "_": "Fake Publisher"
-        }]
-      }
+      publisher: "Fake Publisher"
     });
 
     let acquisitionFeed = factory.acquisitionFeed({

@@ -7,12 +7,16 @@ import * as TestUtils from "react-addons-test-utils";
 
 import reducer from "../book";
 import {
-  showBookDetails, hideBookDetails
+  fetchBookRequest,
+  fetchBookFailure,
+  loadBook,
+  clearBook
 } from "../../actions";
 
 describe("book reducer", () => {
   let book = {
     id: "test id",
+    url: "test url",
     title: "test title",
     authors: ["test author"],
     summary: "test summary",
@@ -20,20 +24,74 @@ describe("book reducer", () => {
     published: "test date",
     publisher: "test publisher"
   };
-  let initState = null;
-  let bookState = Object.assign({}, book);
+
+  let initState = {
+    url: null,
+    data: null,
+    isFetching: false,
+    error: null
+  };
+
+  let bookState = {
+    url: book.url,
+    data: book,
+    isFetching: false,
+    error: null
+  };
+
+  let fetchingState = {
+    url: book.url,
+    data: book,
+    isFetching: true,
+    error: null
+  };
 
   it("should return the initial state", () => {
     expect(reducer(undefined, {})).toEqual(initState);
   });
 
-  it("should handle SHOW_BOOK_DETAILS", () => {
-    let action = showBookDetails(book);
-    expect(reducer(initState, action)).toEqual(bookState);
+  it("should handle FETCH_BOOK_REQUEST", () => {
+    let action = fetchBookRequest("some other url");
+    let newState = Object.assign({}, bookState, {
+      url: action.url,
+      isFetching: true
+    });
+
+    expect(reducer(bookState, action)).toEqual(newState);
   });
 
-  it("should handle HIDE_BOOK_DETAILS", () => {
-    let action = hideBookDetails();
-    expect(reducer(bookState, action)).toEqual(initState);
+  it("should handle FETCH_BOOK_FAILURE", () => {
+    let action = fetchBookFailure("test error");
+    let newState = Object.assign({}, fetchingState, {
+      isFetching: false,
+      error: "test error"
+    });
+
+    expect(reducer(fetchingState, action)).toEqual(newState);
+  });
+
+  it("should handle LOAD_BOOK", () => {
+    let data = {
+      id: "some id",
+      title: "some title"
+    };
+    let action = loadBook(data, "some other url");
+    let newState = Object.assign({}, bookState, {
+      url: "some other url",
+      data: data,
+      isFetching: false
+    });
+
+    expect(reducer(bookState, action)).toEqual(newState);
+  });
+
+  it("should handle CLEAR_BOOK", () => {
+    let action = clearBook();
+    let newState = Object.assign({}, bookState, {
+      url: null,
+      data: null
+    });
+
+    expect(reducer(bookState, action)).toEqual(newState);
   });
 });

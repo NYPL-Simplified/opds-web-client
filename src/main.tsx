@@ -21,18 +21,33 @@ export default class OPDSBrowser {
       <Provider store={store}>
         <Root
           ref={(c) => this.root = c}
-          startUrl={config.startUrl}
-          onFetch={config.onFetch} />
+          startCollection={config.startCollection}
+          startBook={config.startBook}
+          onNavigate={config.onNavigate} />
       </Provider>,
       document.getElementById(elementId)
     );
   }
 
-  loadUrl(url: string, skipOnFetch: boolean = false) {
-    this.root.getWrappedInstance().props.fetchCollection(url, skipOnFetch);
+  loadCollection(url: string, skipOnNavigate: boolean = false, bookUrl?: string) {
+    this.root.getWrappedInstance().props.fetchCollection(url, skipOnNavigate, bookUrl);
   }
 
-  clearUrl() {
+  loadCollectionAndBook(collectionUrl: string, bookUrl: string, skipOnNavigate: boolean = false) {
+    this.root.getWrappedInstance().props.setCollectionAndBook(collectionUrl, bookUrl, skipOnNavigate);
+    // let { setCollection, setBook, onNavigate } = this.root.getWrappedInstance().props;
+    // // skip onNavigate for both fetches, but call it at the end
+    // // either collectionUrl or bookUrl can be null
+    // setCollection(collectionUrl, true).then(data => {
+    //   setBook(bookUrl, true).then(data => {
+    //     if (!skipOnNavigate && onNavigate) {
+    //       onNavigate(collectionUrl, bookUrl);
+    //     }
+    //   });
+    // });
+  }
+
+  clearCollection() {
     this.root.getWrappedInstance().props.clearCollection();
   }
 }

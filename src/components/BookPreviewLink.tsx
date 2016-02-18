@@ -3,12 +3,13 @@ import Link from "./Link";
 
 export default class BookPreviewLink extends Link<BookPreviewLinkProps> {
   processClick() {
-    this.props.showBookDetails(this.props.book);
+    this.props.setBook(this.props.book);
   }
 
   href() {
     let collectionUrl = encodeURIComponent(this.props.collectionUrl);
-    let bookUrl = encodeURIComponent(this.props.url);
-    return `?url=${collectionUrl}&book=${bookUrl}`;
+    return `?collection=${collectionUrl}` + (
+      this.props.url ? `&book=${encodeURIComponent(this.props.url)}` : ""
+    );
   }
 }
