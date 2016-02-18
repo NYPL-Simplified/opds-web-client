@@ -1,17 +1,38 @@
-var webpack = require("webpack");
-var config = require("./webpack.dev.config");
+var webpack = require('webpack');
 
-config.entry.app = [
-  "./src/index.ts"
-];
-
-config.output = {
-  path: "./dist",
-  filename: "opds-browser.js",
-  library: "OPDSBrowser",
-  libraryTarget: "umd"
+var config = {
+  entry: {
+    app: [
+      './src/index.ts',
+    ],
+  },
+  output: {
+    path: './dist',
+    filename: 'opds-browser.js',
+    library: 'OPDSBrowser',
+    libraryTarget: 'umd'
+  },
+  plugins: [
+    new webpack.DefinePlugin({ "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV) })
+  ],
+  module: {
+    loaders: [
+      {
+        test: /\.tsx?$/,
+        exclude: [/node_modules/],
+        loaders: [
+          'ts-loader'
+        ]
+      },
+      {
+        test: /\.json$/,
+        loaders: ['json-loader']
+      }
+    ],
+  },
+  resolve: {
+    extensions: ["", ".webpack.js", ".web.js", ".js", ".ts", ".tsx"]
+  }
 };
-
-config.devtool = undefined;
 
 module.exports = config;

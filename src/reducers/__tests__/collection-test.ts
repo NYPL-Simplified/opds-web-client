@@ -170,7 +170,7 @@ describe("collection reducer", () => {
         books: data.books,
         nextPageUrl: "next"
       }),
-      isFetching: false
+      isFetchingPage: false
     });
 
     expect(reducer(fetchingPageState, action)).toEqual(newState);
