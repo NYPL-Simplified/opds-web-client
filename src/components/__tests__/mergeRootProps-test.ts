@@ -56,7 +56,7 @@ describe("mergeRootProps", () => {
         expect(onNavigate.mock.calls[0][0]).toBe("new collection url");
         expect(onNavigate.mock.calls[0][1]).toBe(stateProps.bookUrl);
         done();
-      });
+      }).catch(err => done.fail(err));
     });
 
     it("does nothing and returns existing data if given the existing collection url", (done) => {
@@ -68,7 +68,7 @@ describe("mergeRootProps", () => {
         expect(onNavigate.mock.calls[0][0]).toBe(stateProps.collectionUrl);
         expect(onNavigate.mock.calls[0][1]).toBe(stateProps.bookUrl);
         done();
-      });
+      }).catch(err => done.fail(err));
     });
 
     it("clears collection data if given a falsy collection url", (done) => {
@@ -80,14 +80,14 @@ describe("mergeRootProps", () => {
         expect(onNavigate.mock.calls[0][0]).toBe(null);
         expect(onNavigate.mock.calls[0][1]).toBe(stateProps.bookUrl);
         done();
-      });
+      }).catch(err => done.fail(err));
     });
 
     it("does not call onNavigate if given skipOnNavigate = true", (done) => {
       props.setCollection("test url", true).then(data => {
         expect(onNavigate.mock.calls.length).toBe(0);
         done();
-      });
+      }).catch(err => done.fail(err));
     });
   });
 
@@ -118,7 +118,7 @@ describe("mergeRootProps", () => {
         expect(onNavigate.mock.calls[0][0]).toBe(stateProps.collectionUrl);
         expect(onNavigate.mock.calls[0][1]).toBe("fake book url");
         done();
-      });
+      }).catch(err => done.fail(err));
     });
 
     it("does nothing and returns book data if given book data", (done) => {
@@ -132,7 +132,7 @@ describe("mergeRootProps", () => {
         expect(clearBook.mock.calls.length).toBe(0);
         expect(onNavigate.mock.calls.length).toBe(1);
         done();
-      });
+      }).catch(err => done.fail(err));
     });
 
     it("does nothing and returns existing data if given the existing book url", (done) => {
@@ -144,7 +144,7 @@ describe("mergeRootProps", () => {
         expect(onNavigate.mock.calls[0][0]).toBe(stateProps.collectionUrl);
         expect(onNavigate.mock.calls[0][1]).toBe(stateProps.bookUrl);
         done();
-      });
+      }).catch(err => done.fail(err));
     });
 
     it("clears book data if given a falsy book url", (done) => {
@@ -156,14 +156,14 @@ describe("mergeRootProps", () => {
         expect(onNavigate.mock.calls[0][0]).toBe(stateProps.collectionUrl);
         expect(onNavigate.mock.calls[0][1]).toBe(null);
         done();
-      });
+      }).catch(err => done.fail(err));
     });
 
     it("does not call onNavigate if given skipOnNavigate = true", (done) => {
       props.setBook("test url", true).then(data => {
         expect(onNavigate.mock.calls.length).toBe(0);
         done();
-      });
+      }).catch(err => done.fail(err));
     });
   });
 
@@ -197,7 +197,7 @@ describe("mergeRootProps", () => {
         expect(onNavigate.mock.calls[0][0]).toBe(fakeCollection.url);
         expect(onNavigate.mock.calls[0][1]).toBe(fakeCollection.books[0].url);
         done();
-      });
+      }).catch(err => done.fail(err));
     });
 
     it("fetches book if given book url not belonging to given collection", (done) => {
@@ -214,7 +214,7 @@ describe("mergeRootProps", () => {
         expect(onNavigate.mock.calls[0][0]).toBe(fakeCollection.url);
         expect(onNavigate.mock.calls[0][1]).toBe("fake book url");
         done();
-      });
+      }).catch(err => done.fail(err));
     });
 
     it("fetches book if not given a collection url", (done) => {
@@ -230,7 +230,7 @@ describe("mergeRootProps", () => {
         expect(onNavigate.mock.calls[0][0]).toBe(null);
         expect(onNavigate.mock.calls[0][1]).toBe("fake book url");
         done();
-      });
+      }).catch(err => done.fail(err));
     });
 
     it("does nothing and returns existing data if given the existing collection and book urls", (done) => {
@@ -247,7 +247,7 @@ describe("mergeRootProps", () => {
         expect(onNavigate.mock.calls[0][0]).toBe("test collection url");
         expect(onNavigate.mock.calls[0][1]).toBe("test book url");
         done();
-      });
+      }).catch(err => done.fail(err));
     });
 
     it("clears collection and book data if given falsy urls", (done) => {
@@ -264,14 +264,14 @@ describe("mergeRootProps", () => {
         expect(onNavigate.mock.calls[0][0]).toBe(null);
         expect(onNavigate.mock.calls[0][1]).toBe(null);
         done();
-      });
+      }).catch(err => done.fail(err));
     });
 
     it("does not call onNavigate if given skipOnNavigate = true", (done) => {
       props.setCollectionAndBook("new collection url", "new book url", true).then(data => {
         expect(onNavigate.mock.calls.length).toBe(0);
         done();
-      });
+      }).catch(err => done.fail(err));
     });
   });
 });

@@ -66,7 +66,7 @@ describe("actions", () => {
         expect(dispatch.mock.calls[2][0].type).toBe(LOAD_COLLECTION);
         expect(data).toBe(testData);
         done();
-      });
+      }).catch(err => done.fail(err));
     });
 
     it("dispatches failure", (done) => {
@@ -96,7 +96,7 @@ describe("actions", () => {
         expect(dispatch.mock.calls[2][0].type).toBe(LOAD_PAGE);
         expect(data).toBe(testData);
         done();
-      });
+      }).catch(err => done.fail(err));
     });
 
     it("dispatches failure", (done) => {
@@ -141,7 +141,7 @@ describe("actions", () => {
         expect(dispatch.mock.calls[2][0].type).toBe(LOAD_BOOK);
         expect(data).toBe(testData);
         done();
-      });
+      }).catch(err => done.fail(err));
     });
 
     it("dispatches failure", (done) => {
