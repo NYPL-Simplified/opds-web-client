@@ -17,7 +17,7 @@ app.post("/proxy", function(req, res, next) {
   request
     .get(req.body.url)
     .on("error", err => {
-      next("connection error");
+      next("proxy request error: " + req.body.url);
     })
     .pipe(res);
 });
