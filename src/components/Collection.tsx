@@ -63,6 +63,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
           <h1 style={{ margin: 0 }}>{this.props.collection.title}</h1>
           { this.props.collection.search &&
             <Search
+              url={this.props.collection.search.url}
               searchData={this.props.collection.search.searchData}
               fetchSearchDescription={this.props.fetchSearchDescription}
               setCollection={this.props.setCollection} />

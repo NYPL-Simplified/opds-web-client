@@ -32,7 +32,7 @@ export function fetchSearchDescriptionData(searchDescriptionUrl) {
   return new Promise((resolve, reject) => {
     fetchData(searchDescriptionUrl).then((response: string) => {
       parser.parse(response, searchDescriptionUrl).then((openSearchDescription) => {
-        resolve({data: openSearchDescription});
+        resolve(openSearchDescription);
       }).catch(err => reject(err));
     }).catch(err => reject(err));
   });
