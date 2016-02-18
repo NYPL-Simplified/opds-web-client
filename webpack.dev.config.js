@@ -1,6 +1,4 @@
-/* global process */
 var webpack = require('webpack');
-
 
 var config = {
   entry: {
@@ -17,7 +15,7 @@ var config = {
   },
   devtool: 'eval',
   plugins: [
-    new webpack.DefinePlugin({ "process.env": JSON.stringify(process.env)})
+    new webpack.DefinePlugin({ "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV) })
   ],
   module: {
     loaders: [
@@ -34,7 +32,6 @@ var config = {
         loaders: ['json-loader']
       }
     ],
-    noParse:[]
   },
   resolve: {
     extensions: ["", ".webpack.js", ".web.js", ".js", ".ts", ".tsx"]

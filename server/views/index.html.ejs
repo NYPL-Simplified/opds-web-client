@@ -3,14 +3,20 @@
   <head>
     <meta charset="utf-8">
     <title>OPDS Browser</title>
+    <% if (process.env.NODE_ENV === "development") { %>
     <script src="http://localhost:8090/webpack-dev-server.js"></script>
+    <% } %>
     <style>
       body { margin: 0; }
     </style>
   </head>
   <body>
     <div id="opds-browser"></div>
+    <% if (process.env.NODE_ENV === "development") { %>
     <script src="http://localhost:8090/dist/opds-browser.js"></script>
+    <% } else { %>
+    <script src="/opds-browser.js"></script>
+    <% } %>
     <script>
       var getParam = function(name) {
         var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
