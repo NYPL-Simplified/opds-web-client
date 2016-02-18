@@ -14,9 +14,13 @@
     "dev": "npm run dev-serve | npm run dev-build",
     "dev-serve": "NODE_ENV=development node server/index.js",
     "dev-build": "webpack-dev-server --progress --history-api-fallback --hot --content-base build --port 8090 --config webpack.dev.config",
+    "prod": "npm run prod-serve | npm run prod-build",
+    "prod-serve": "NODE_ENV=production node server/index.js",
+    "prod-build": "NODE_ENV=production webpack -p --progress --display-modules --config webpack.prod.config",
     "prepublish": "typings install && tsc"
   },
   "dependencies": {
+    "ejs": "^2.4.1",
     "opds-feed-parser": "^0.0.9",
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
