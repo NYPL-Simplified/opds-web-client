@@ -64,9 +64,7 @@ describe("mergeRootProps", () => {
         expect(data).toBe(groupedCollectionData);
         expect(fetchCollection.mock.calls.length).toBe(0);
         expect(clearCollection.mock.calls.length).toBe(0);
-        expect(onNavigate.mock.calls.length).toBe(1);
-        expect(onNavigate.mock.calls[0][0]).toBe(stateProps.collectionUrl);
-        expect(onNavigate.mock.calls[0][1]).toBe(stateProps.bookUrl);
+        expect(onNavigate.mock.calls.length).toBe(0);
         done();
       }).catch(err => done.fail(err));
     });
@@ -140,9 +138,7 @@ describe("mergeRootProps", () => {
         expect(data).toBe(stateProps.bookData);
         expect(fetchBook.mock.calls.length).toBe(0);
         expect(clearBook.mock.calls.length).toBe(0);
-        expect(onNavigate.mock.calls.length).toBe(1);
-        expect(onNavigate.mock.calls[0][0]).toBe(stateProps.collectionUrl);
-        expect(onNavigate.mock.calls[0][1]).toBe(stateProps.bookUrl);
+        expect(onNavigate.mock.calls.length).toBe(0);
         done();
       }).catch(err => done.fail(err));
     });
@@ -243,9 +239,7 @@ describe("mergeRootProps", () => {
         expect(fetchBook.mock.calls.length).toBe(0);
         expect(clearCollection.mock.calls.length).toBe(0);
         expect(clearBook.mock.calls.length).toBe(0);
-        expect(onNavigate.mock.calls.length).toBe(1);
-        expect(onNavigate.mock.calls[0][0]).toBe("test collection url");
-        expect(onNavigate.mock.calls[0][1]).toBe("test book url");
+        expect(onNavigate.mock.calls.length).toBe(0);
         done();
       }).catch(err => done.fail(err));
     });

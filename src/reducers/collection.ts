@@ -10,7 +10,8 @@ const collection = (state = initialState, action) => {
     case "FETCH_COLLECTION_REQUEST":
       return Object.assign({}, state, {
         url: action.url,
-        isFetching: true
+        isFetching: true,
+        error: null
       });
 
     case "FETCH_COLLECTION_SUCCESS":
@@ -34,13 +35,15 @@ const collection = (state = initialState, action) => {
     case "CLEAR_COLLECTION":
       return Object.assign({}, state, {
         data: null,
-        url: null
+        url: null,
+        error: null
       });
 
     case "FETCH_PAGE_REQUEST":
       return Object.assign({}, state, {
         pageUrl: action.url,
-        isFetchingPage: true
+        isFetchingPage: true,
+        error: null
       });
 
     case "FETCH_PAGE_SUCCESS":

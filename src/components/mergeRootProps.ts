@@ -20,7 +20,7 @@ export default (stateProps, dispatchProps, componentProps) => {
       if (!url) {
         dispatchProps.clearCollection();
         resolve(null);
-      } else if (url === stateProps.collectionUrl) {
+      } else if (!stateProps.error && url === stateProps.collectionUrl) {
         resolve(stateProps.collectionData);
       } else {
         // only fetch collection if url has changed
@@ -35,7 +35,6 @@ export default (stateProps, dispatchProps, componentProps) => {
 
   let setBook = (book: BookData|string, skipOnNavigate: boolean = false) => {
     return new Promise((resolve, reject) => {
-      // TODO: don't fetch a book if it's already there???
       let url = null;
       let bookData = null;
 
@@ -55,7 +54,7 @@ export default (stateProps, dispatchProps, componentProps) => {
       } else if (bookData) {
         dispatchProps.loadBook(bookData, url);
         resolve(bookData);
-      } else if (url === stateProps.bookUrl) {
+      } else if (!stateProps.error && url === stateProps.bookUrl) {
         resolve(stateProps.bookData);
       } else {
         if (stateProps.collectionData) {

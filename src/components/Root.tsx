@@ -25,8 +25,7 @@ export class Root extends React.Component<RootProps, any> {
         { this.props.error &&
           <ErrorMessage
             message={this.props.error}
-            retry={() => this.props.setCollection(this.props.collectionUrl)}
-            closeError={this.props.closeError} />
+            retry={() => this.props.setCollection(this.props.collectionUrl)} />
         }
         { this.props.bookData && <BookDetails book={this.props.bookData} clearBook={this.props.clearBook} /> }
 

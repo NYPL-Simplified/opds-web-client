@@ -52,6 +52,7 @@ export default function fetchData(url) {
       }
     };
 
+
     httpRequest.open("POST", "/proxy", true);
     httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     httpRequest.send("url=" + encodeURIComponent(url));
