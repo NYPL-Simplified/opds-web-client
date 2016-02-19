@@ -17,7 +17,7 @@ export default class Lane extends React.Component<LaneProps, any> {
     };
 
     return (
-      <li className="lane">
+      <div className="lane">
         <h2 style={{ clear: "both", paddingTop: "20px", cursor: "pointer" }}>
           <CollectionLink
             className="laneTitle"
@@ -29,15 +29,16 @@ export default class Lane extends React.Component<LaneProps, any> {
         { this.props.lane.books &&
           <ul className="laneBooks" aria-label={"books in " + this.props.lane.title} style={laneBooksStyle}>
           { this.props.lane.books.map(book =>
-            <LaneBook
-              key={book.id}
-              book={book}
-              collectionUrl={this.props.collectionUrl}
-              setBook={this.props.setBook} />
+            <li key={book.id} style={{ display: "inline-block" }}>
+              <LaneBook
+                book={book}
+                collectionUrl={this.props.collectionUrl}
+                setBook={this.props.setBook} />
+            </li>
           ) }
           </ul>
         }
-      </li>
+      </div>
     );
   }
 }

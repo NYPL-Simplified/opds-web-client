@@ -61,7 +61,11 @@ export default class Collection extends React.Component<CollectionProps, any> {
 
     return (
       <div className="collection" style={{ fontFamily: "Arial, sans-serif" }}>
-        <div className="collectionTop" style={collectionTopStyle} aria-label="collection title and search" role="banner">
+        <div
+          className="collectionTop"
+          style={collectionTopStyle}
+          aria-label={this.props.collection.title + " header and search"}
+          role="banner">
           <h1 style={{ margin: 0 }}>{this.props.collection.title}</h1>
           { this.props.collection.search &&
             <Search
@@ -85,18 +89,19 @@ export default class Collection extends React.Component<CollectionProps, any> {
           className="collectionBody"
           style={collectionBodyStyle}
           role="main"
-          aria-label={"books in " + this.props.collection.title + " collection"}>
+          aria-label={"books in " + this.props.collection.title}>
           <a className="mainAnchor" name="main"></a>
 
           { this.props.collection.lanes &&
-            <ul aria-label="subcollections" style={subtleListStyle}>
+            <ul aria-label="groups of books" style={subtleListStyle}>
             { this.props.collection.lanes.map(lane =>
-              <Lane
-                key={lane.title}
-                lane={lane}
-                setCollection={this.props.setCollection}
-                setBook={this.props.setBook}
-                collectionUrl={this.props.collection.url} />
+              <li key={lane.title}>
+                <Lane
+                  lane={lane}
+                  setCollection={this.props.setCollection}
+                  setBook={this.props.setBook}
+                  collectionUrl={this.props.collection.url} />
+              </li>
             ) }
             </ul>
           }
@@ -104,11 +109,12 @@ export default class Collection extends React.Component<CollectionProps, any> {
           { this.props.collection.books &&
             <ul aria-label="books" style={subtleListStyle}>
             { this.props.collection.books.map(book =>
-              <Book
-                key={book.id}
-                book={book}
-                setBook={this.props.setBook}
-                collectionUrl={this.props.collection.url} />
+              <li key={book.id}>
+                <Book
+                  book={book}
+                  setBook={this.props.setBook}
+                  collectionUrl={this.props.collection.url} />
+              </li>
             ) }
             </ul>
           }

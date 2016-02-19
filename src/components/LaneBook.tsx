@@ -25,7 +25,7 @@ export default class LaneBook extends Book {
     };
 
     return (
-      <li className="book laneBook" style={ bookStyle }>
+      <div className="book laneBook" style={ bookStyle }>
         <BookPreviewLink
           className="laneBookLink"
           url={this.props.book.url}
@@ -38,7 +38,7 @@ export default class LaneBook extends Book {
             <div className="bookTitle">{this.props.book.title}</div>
           </div>
         </BookPreviewLink>
-      </li>
+      </div>
     );
   }
 }
