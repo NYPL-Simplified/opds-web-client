@@ -83,7 +83,7 @@ const collection = (state = initialState, action) => {
           books: Object.assign([], state.data.books).concat(action.data.books),
           nextPageUrl: action.data.nextPageUrl
         }),
-        isFetching: false
+        isFetchingPage: false
       });
 
     case "LOAD_SEARCH_DESCRIPTION":
