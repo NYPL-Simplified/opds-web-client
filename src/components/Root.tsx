@@ -16,15 +16,14 @@ import LoadingIndicator from "./LoadingIndicator";
 import ErrorMessage from "./ErrorMessage";
 import Collection from "./Collection";
 import UrlForm from "./UrlForm";
-import { visuallyHidden } from "./styles";
+import SkipNavigationLink from "./SkipNavigationLink";
+import { visuallyHiddenStyle } from "./styles";
 
 export class Root extends React.Component<RootProps, any> {
   render(): JSX.Element {
     return (
       <div className="browser">
-        <div style={visuallyHidden}>
-          <a href="#main">Skip Navigation</a>
-        </div>
+        <SkipNavigationLink />
 
         { this.props.isFetching && <LoadingIndicator /> }
         { this.props.error &&

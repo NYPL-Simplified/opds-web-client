@@ -26,7 +26,6 @@ describe("LaneBook", () => {
 
     let coverImage = TestUtils.findRenderedDOMComponentWithTag(renderedBook, "img");
     expect(coverImage.getAttribute("src")).toBe(book.imageUrl);
-    expect(coverImage.getAttribute("alt")).toBe(book.title + " cover");
   });
 
   it("shows book title", () => {

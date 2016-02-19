@@ -5,15 +5,19 @@ import CollectionLink from "./CollectionLink";
 export default class Lane extends React.Component<LaneProps, any> {
   render(): JSX.Element {
     let laneBooksStyle = {
+      display: "block",
       height: "260px",
       width: "100%",
       whiteSpace: "nowrap",
       overflowX: "scroll",
-      overflowY: "hidden"
+      overflowY: "hidden",
+      padding: 0,
+      margin: 0,
+      listStyleType: "none"
     };
 
     return (
-      <div className="lane">
+      <li className="lane">
         <h2 style={{ clear: "both", paddingTop: "20px", cursor: "pointer" }}>
           <CollectionLink
             className="laneTitle"
@@ -22,16 +26,18 @@ export default class Lane extends React.Component<LaneProps, any> {
             setCollection={this.props.setCollection} />
         </h2>
 
-        <div className="laneBooks" style={laneBooksStyle}>
-          { this.props.lane.books && this.props.lane.books.map(book =>
+        { this.props.lane.books &&
+          <ul className="laneBooks" aria-label={"books in " + this.props.lane.title} style={laneBooksStyle}>
+          { this.props.lane.books.map(book =>
             <LaneBook
               key={book.id}
               book={book}
               collectionUrl={this.props.collectionUrl}
               setBook={this.props.setBook} />
           ) }
-        </div>
-      </div>
+          </ul>
+        }
+      </li>
     );
   }
 }

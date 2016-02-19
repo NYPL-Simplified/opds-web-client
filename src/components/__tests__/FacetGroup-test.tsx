@@ -1,4 +1,5 @@
 jest.dontMock("../FacetGroup");
+jest.dontMock("../SkipNavigationLink");
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -6,6 +7,7 @@ import * as TestUtils from "react-addons-test-utils";
 
 import FacetGroup from "../FacetGroup";
 import Facet from "../Facet";
+import SkipNavigationLink from "../SkipNavigationLink";
 
 describe("FacetGroup", () => {
   it("shows facet group label", () => {

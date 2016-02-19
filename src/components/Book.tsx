@@ -34,7 +34,7 @@ export default class Book extends React.Component<BookProps, any> {
     };
 
     return (
-      <div className="book" style={ bookStyle }>
+      <li className="book" style={ bookStyle }>
         <BookPreviewLink
           url={this.props.book.url}
           book={this.props.book}
@@ -55,7 +55,7 @@ export default class Book extends React.Component<BookProps, any> {
             </div>
           </div>
         </BookPreviewLink>
-      </div>
+      </li>
     );
   }
 }

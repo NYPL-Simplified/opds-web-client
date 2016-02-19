@@ -4,7 +4,8 @@ import CollectionLink from "./CollectionLink";
 import Lane from "./Lane";
 import FacetGroup from "./FacetGroup";
 import Search from "./Search";
-import { visuallyHidden } from "./styles";
+import SkipNavigationLink from "./SkipNavigationLink";
+import { visuallyHiddenStyle, subtleListStyle } from "./styles";
 
 export default class Collection extends React.Component<CollectionProps, any> {
   render(): JSX.Element {
@@ -71,8 +72,9 @@ export default class Collection extends React.Component<CollectionProps, any> {
           }
         </div>
 
-        {this.props.collection.facetGroups && this.props.collection.facetGroups.length > 0 && (
+        { this.props.collection.facetGroups && this.props.collection.facetGroups.length > 0 && (
           <div className="facetGroups" style={leftPanelStyle} role="navigation" aria-label="filters">
+            <SkipNavigationLink />
             { this.props.collection.facetGroups.map(facetGroup =>
                 <FacetGroup key={facetGroup.label} facetGroup={facetGroup} setCollection={this.props.setCollection} />
             )}
@@ -84,27 +86,35 @@ export default class Collection extends React.Component<CollectionProps, any> {
           style={collectionBodyStyle}
           role="main"
           aria-label={"books in " + this.props.collection.title + " collection"}>
-          <a name="books"></a>
+          <a className="mainAnchor" name="main"></a>
 
-          { this.props.collection.lanes && this.props.collection.lanes.map(lane =>
+          { this.props.collection.lanes &&
+            <ul aria-label="subcollections" style={subtleListStyle}>
+            { this.props.collection.lanes.map(lane =>
               <Lane
                 key={lane.title}
                 lane={lane}
                 setCollection={this.props.setCollection}
                 setBook={this.props.setBook}
                 collectionUrl={this.props.collection.url} />
-          ) }
+            ) }
+            </ul>
+          }
 
-          { this.props.collection.books && this.props.collection.books.map(book =>
+          { this.props.collection.books &&
+            <ul aria-label="books" style={subtleListStyle}>
+            { this.props.collection.books.map(book =>
               <Book
                 key={book.id}
                 book={book}
                 setBook={this.props.setBook}
                 collectionUrl={this.props.collection.url} />
-          ) }
+            ) }
+            </ul>
+          }
 
           { this.props.collection.links &&
-            <ul style={{ padding: 0, listStyleType: "none" }}>
+            <ul aria-label="navigation links" style={subtleListStyle} role="navigation">
             { this.props.collection.links.map(link =>
               <li key={link.id}>
                 <CollectionLink
@@ -117,8 +127,14 @@ export default class Collection extends React.Component<CollectionProps, any> {
           }
 
           { this.canFetch() &&
-            <button style={visuallyHidden} onClick={this.fetch.bind(this)}>Load more books</button>
+            <button
+              className="nextPageLink"
+              style={visuallyHiddenStyle}
+              onClick={this.fetch.bind(this)}>
+              Load more books
+            </button>
           }
+
           { this.props.isFetchingPage &&
             <div className="loadingNextPage" style={loadingNextPageStyle}>Loading next page...</div>
           }
@@ -142,20 +158,17 @@ export default class Collection extends React.Component<CollectionProps, any> {
   }
 
   canFetch() {
-    // console.log(!this.props.isFetchingPage, this.props.collection.nextPageUrl);
     return !this.props.isFetchingPage && this.props.collection.nextPageUrl;
   }
 
   fetch() {
     if (this.canFetch()) {
-      console.log("can fetch");
       this.props.fetchPage(this.props.collection.nextPageUrl);
     }
   }
 
   handleScroll() {
     if ((document.body.scrollTop + window.innerHeight) >= document.body.scrollHeight) {
-      console.log("at bottom");
       this.fetch();
     }
   }

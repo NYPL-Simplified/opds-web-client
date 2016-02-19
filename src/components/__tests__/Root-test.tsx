@@ -8,6 +8,7 @@ import ConnectedRoot, { Root } from "../Root";
 import Collection from "../Collection";
 import UrlForm from "../UrlForm";
 import BookDetails from "../BookDetails";
+import SkipNavigationLink from "../SkipNavigationLink";
 import { groupedCollectionData } from "./collectionData";
 import { createStore, applyMiddleware } from "redux";
 let thunk: any = require("redux-thunk");
@@ -15,6 +16,15 @@ import reducers from "../../reducers/index";
 import { Provider } from "react-redux";
 
 describe("Root", () => {
+  it("shows skip navigation link", () => {
+    let root = TestUtils.renderIntoDocument(
+      <Root />
+    );
+
+    let link = TestUtils.findRenderedComponentWithType(root, SkipNavigationLink);
+    expect(link).toBeTruthy;
+  });
+
   it("shows a collection if props include collectionData", () => {
     let collectionData: CollectionData = groupedCollectionData;
     let root = TestUtils.renderIntoDocument(
