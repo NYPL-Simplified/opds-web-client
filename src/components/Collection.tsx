@@ -8,7 +8,8 @@ import Search from "./Search";
 export default class Collection extends React.Component<CollectionProps, any> {
   render(): JSX.Element {
     let padding = 10;
-    let headerHeight = 50;
+    let headerHeight = 70;
+    let navHeight = this.props.history && this.props.history.length ? 50 : 0;
     let leftPanelWidth = 190;
 
     let collectionTopStyle = {
@@ -23,9 +24,18 @@ export default class Collection extends React.Component<CollectionProps, any> {
       top: "0"
     };
 
+    let navStyle = {
+      height: `${navHeight}px`,
+      position: "fixed",
+      top: `${headerHeight + padding}px`,
+      width: "100%",
+      backgroundColor: "#fff",
+      borderBottom: "1px solid #eee"
+    };
+
     let collectionBodyStyle: any = {
       padding: `${padding}px`,
-      paddingTop: `${headerHeight + padding}px`,
+      paddingTop: `${headerHeight + navHeight + padding}px`,
       height: "100%",
       marginTop: `${padding + 5}px`
     };
@@ -35,7 +45,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
     }
 
     let leftPanelStyle = {
-      marginTop: `${headerHeight + padding}px`,
+      marginTop: `${headerHeight + navHeight + padding}px`,
       width: `${leftPanelWidth}px`,
       position: "fixed",
       left: "0"
@@ -60,23 +70,6 @@ export default class Collection extends React.Component<CollectionProps, any> {
     return (
       <div className="collection" style={{ fontFamily: "Arial, sans-serif" }}>
         <div className="collectionTop" style={collectionTopStyle}>
-          { this.props.history && this.props.history.length ?
-            <div style={{ float: "left" }}>
-            { this.props.history &&
-              this.props.history.map(breadcrumb =>
-              <span style={{ marginRight: "5px" }} key={breadcrumb.id}>
-                <CollectionLink
-                  text={breadcrumb.text}
-                  url={breadcrumb.url}
-                  setCollection={this.props.setCollection}
-                  style={{ fontSize: "1.2em", marginRight: "5px", cursor: "pointer" }} />
-                ›
-              </span>
-            )}
-            </div> :
-            null
-          }
-          <div className="collectionTitle" style={{ float: "left", fontSize: "1.2em" }}>{this.props.collection.title}</div>
           { this.props.collection.search &&
             <div style={{ float: "right", marginRight: "20px" }}>
               <Search
@@ -86,7 +79,25 @@ export default class Collection extends React.Component<CollectionProps, any> {
                 setCollection={this.props.setCollection} />
             </div>
           }
+          <h1 className="collectionTitle">{this.props.collection.title}</h1>
         </div>
+
+        { this.props.history && this.props.history.length ?
+          <nav role="navigation" style={ navStyle }><ul>
+            { this.props.history.map(breadcrumb =>
+              <li style={{ listStyle: "none", float: "left", marginRight: "5px" }} key={breadcrumb.id}>
+                <CollectionLink
+                  text={breadcrumb.text}
+                  url={breadcrumb.url}
+                  setCollection={this.props.setCollection}
+                  style={{ fontSize: "1.2em", marginRight: "5px", cursor: "pointer" }} />
+                ›
+              </li>
+            )}
+            <li className="currentCollection" style={{ listStyle: "none", float: "left", fontSize: "1.2em" }}>{this.props.collection.title}</li>
+          </ul></nav> :
+          null
+        }
 
         {this.props.collection.facetGroups && this.props.collection.facetGroups.length && (
           <div className="facetGroups" style={leftPanelStyle}>
