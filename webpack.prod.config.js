@@ -1,4 +1,3 @@
-/* global process */
 var webpack = require('webpack');
 
 var config = {
@@ -13,20 +12,22 @@ var config = {
     library: 'OPDSBrowser',
     libraryTarget: 'umd'
   },
-  devtool: 'eval',
   plugins: [
-    new webpack.DefinePlugin({ "process.env": JSON.stringify(process.env)})
+    new webpack.DefinePlugin({ "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV) })
   ],
   module: {
     loaders: [
-      { 
+      {
         test: /\.tsx?$/,
         exclude: [/node_modules/],
         loaders: [
-          'react-hot', 
-          'ts-loader' 
-        ] 
+          'ts-loader'
+        ]
       },
+      {
+        test: /\.json$/,
+        loaders: ['json-loader']
+      }
     ],
   },
   resolve: {
