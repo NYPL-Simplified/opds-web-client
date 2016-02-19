@@ -1,4 +1,4 @@
-import { fetchOPDSData, fetchSearchDescriptionData } from "./fetchData";
+import DataFetcher from "./DataFetcher";
 
 export const FETCH_COLLECTION_REQUEST = "FETCH_COLLECTION_REQUEST";
 export const FETCH_COLLECTION_SUCCESS = "FETCH_COLLECTION_SUCCESS";
@@ -20,11 +20,11 @@ export const CLEAR_BOOK = "CLEAR_BOOK";
 export const LOAD_SEARCH_DESCRIPTION = "LOAD_SEARCH_DESCRIPTION";
 export const CLOSE_ERROR = "CLOSE_ERROR";
 
-export function fetchCollection(url: string) {
+export function fetchCollection(url: string, fetcher: DataFetcher) {
   return function(dispatch) {
     dispatch(fetchCollectionRequest(url));
     return new Promise((resolve, reject) => {
-      fetchOPDSData(url).then((data: CollectionData) => {
+      fetcher.fetchOPDSData(url).then((data: CollectionData) => {
         dispatch(fetchCollectionSuccess());
         dispatch(loadCollection(data, url));
         resolve(data);
@@ -36,11 +36,11 @@ export function fetchCollection(url: string) {
   };
 }
 
-export function fetchPage(url: string) {
+export function fetchPage(url: string, fetcher: DataFetcher) {
   return function(dispatch) {
     dispatch(fetchPageRequest(url));
     return new Promise((resolve, reject) => {
-      fetchOPDSData(url).then((data: CollectionData) => {
+      fetcher.fetchOPDSData(url).then((data: CollectionData) => {
         dispatch(fetchPageSuccess());
         dispatch(loadPage(data));
         resolve(data);
@@ -52,11 +52,11 @@ export function fetchPage(url: string) {
   };
 }
 
-export function fetchBook(url: string) {
+export function fetchBook(url: string, fetcher: DataFetcher) {
   return function(dispatch) {
     dispatch(fetchBookRequest(url));
     return new Promise((resolve, reject) => {
-      fetchOPDSData(url).then((data: BookData) => {
+      fetcher.fetchOPDSData(url).then((data: BookData) => {
         dispatch(fetchBookSuccess());
         dispatch(loadBook(data, url));
         resolve(data);
@@ -68,10 +68,10 @@ export function fetchBook(url: string) {
   };
 }
 
-export function fetchSearchDescription(url: string) {
+export function fetchSearchDescription(url: string, fetcher: DataFetcher) {
   return function(dispatch) {
     return new Promise((resolve, reject) => {
-      fetchSearchDescriptionData(url).then((data: SearchProps) => {
+      fetcher.fetchSearchDescriptionData(url).then((data: SearchProps) => {
         dispatch(loadSearchDescription(data));
         resolve(data);
       }).catch(err => reject(err));

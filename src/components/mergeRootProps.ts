@@ -1,3 +1,5 @@
+import DataFetcher from "../DataFetcher";
+
 export function findBookInCollection(collection: CollectionData, bookUrl: string) {
   let allBooks = collection.lanes.reduce((books, lane) => {
     return books.concat(lane.books);
@@ -15,6 +17,8 @@ export default (stateProps, dispatchProps, componentProps) => {
     }
   } : undefined;
 
+  let fetcher = new DataFetcher(componentProps.proxyUrl);
+
   let setCollection = (url: string, skipOnNavigate: boolean = false) => {
     return new Promise((resolve, reject) => {
       if (!url) {
@@ -24,7 +28,7 @@ export default (stateProps, dispatchProps, componentProps) => {
         resolve(stateProps.collectionData);
       } else {
         // only fetch collection if url has changed
-        dispatchProps.fetchCollection(url).then(data => resolve(data));
+        dispatchProps.fetchCollection(url, fetcher).then(data => resolve(data));
       }
 
       if (!skipOnNavigate && onNavigate) {
@@ -65,7 +69,7 @@ export default (stateProps, dispatchProps, componentProps) => {
           dispatchProps.loadBook(bookData, url);
           resolve(bookData);
         } else {
-          dispatchProps.fetchBook(url).then(data => resolve(data));
+          dispatchProps.fetchBook(url, fetcher).then(data => resolve(data));
         }
       }
 
@@ -75,9 +79,19 @@ export default (stateProps, dispatchProps, componentProps) => {
     });
   };
 
+  let fetchPage = (url: string) => {
+    return dispatchProps.fetchPage(url, fetcher);
+  };
+
+  let fetchSearchDescription = (url: string) => {
+    return dispatchProps.fetchSearchDescription(url, fetcher);
+  };
+
   return Object.assign({}, componentProps, stateProps, dispatchProps, {
     setCollection: setCollection,
     setBook: setBook,
+    fetchPage: fetchPage,
+    fetchSearchDescription: fetchSearchDescription,
     setCollectionAndBook: (collectionUrl: string, book: BookData|string, skipOnNavigate: boolean = false) => {
       return new Promise((resolve, reject) => {
         // skip onNavigate for both fetches, but call it at the end

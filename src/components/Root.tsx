@@ -10,6 +10,7 @@ import {
   fetchSearchDescription,
   closeError
 } from "../actions";
+import DataFetcher from "../DataFetcher";
 import mergeRootProps from "./mergeRootProps";
 import BookDetails from "./BookDetails";
 import LoadingIndicator from "./LoadingIndicator";
@@ -66,13 +67,13 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchCollection: (url: string) => dispatch(fetchCollection(url)),
-    fetchPage: (url: string) => dispatch(fetchPage(url)),
-    fetchBook: (url: string) => dispatch(fetchBook(url)),
+    fetchCollection: (url: string, fetcher: DataFetcher) => dispatch(fetchCollection(url, fetcher)),
+    fetchPage: (url: string, fetcher: DataFetcher) => dispatch(fetchPage(url, fetcher)),
+    fetchBook: (url: string, fetcher: DataFetcher) => dispatch(fetchBook(url, fetcher)),
     loadBook: (book: BookData, url: string) => dispatch(loadBook(book, url)),
     clearCollection: () => dispatch(clearCollection()),
     clearBook: () => dispatch(clearBook()),
-    fetchSearchDescription: (url: string) => dispatch(fetchSearchDescription(url)),
+    fetchSearchDescription: (url: string, fetcher: DataFetcher) => dispatch(fetchSearchDescription(url, fetcher)),
     closeError: () => dispatch(closeError())
   };
 };

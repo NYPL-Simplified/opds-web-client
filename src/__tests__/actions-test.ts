@@ -1,5 +1,7 @@
 jest.dontMock("../actions");
 
+import DataFetcher from "../DataFetcher";
+
 let testData = {
   lanes: [],
   books: [{
@@ -8,8 +10,14 @@ let testData = {
     title: "test title"
   }]
 };
-let mockFetchData = {
-  resolve: true,
+
+class MockDataFetcher extends DataFetcher {
+  resolve: boolean = true;
+
+  constructor() {
+    super(null);
+  }
+
   fetchOPDSData(url) {
     return new Promise((resolve, reject) => {
       if (this.resolve) {
@@ -18,7 +26,8 @@ let mockFetchData = {
         reject("test error");
       }
     });
-  },
+  }
+
   fetchSearchDescriptionData(url) {
     return new Promise((resolve, reject) => {
       if (this.resolve) {
@@ -29,7 +38,8 @@ let mockFetchData = {
     });
   }
 };
-jest.setMock("../fetchData", mockFetchData);
+
+let fetcher = new MockDataFetcher();
 
 import {
   fetchCollection,
@@ -57,9 +67,9 @@ describe("actions", () => {
 
     it("dispatches request, load, and success", (done) => {
       let dispatch = jest.genMockFunction();
-      mockFetchData.resolve = true;
+      fetcher.resolve = true;
 
-      fetchCollection(collectionUrl)(dispatch).then(data => {
+      fetchCollection(collectionUrl, fetcher)(dispatch).then(data => {
         expect(dispatch.mock.calls.length).toBe(3);
         expect(dispatch.mock.calls[0][0].type).toBe(FETCH_COLLECTION_REQUEST);
         expect(dispatch.mock.calls[1][0].type).toBe(FETCH_COLLECTION_SUCCESS);
@@ -71,9 +81,9 @@ describe("actions", () => {
 
     it("dispatches failure", (done) => {
       let dispatch = jest.genMockFunction();
-      mockFetchData.resolve = false;
+      fetcher.resolve = false;
 
-      fetchCollection(collectionUrl)(dispatch).catch(err => {
+      fetchCollection(collectionUrl, fetcher)(dispatch).catch(err => {
         expect(dispatch.mock.calls.length).toBe(2);
         expect(dispatch.mock.calls[0][0].type).toBe(FETCH_COLLECTION_REQUEST);
         expect(dispatch.mock.calls[1][0].type).toBe(FETCH_COLLECTION_FAILURE);
@@ -87,9 +97,9 @@ describe("actions", () => {
 
     it("dispatches request, success, and load", (done) => {
       let dispatch = jest.genMockFunction();
-      mockFetchData.resolve = true;
+      fetcher.resolve = true;
 
-      fetchPage("http://example.com/feed")(dispatch).then(data => {
+      fetchPage("http://example.com/feed", fetcher)(dispatch).then(data => {
         expect(dispatch.mock.calls.length).toBe(3);
         expect(dispatch.mock.calls[0][0].type).toBe(FETCH_PAGE_REQUEST);
         expect(dispatch.mock.calls[1][0].type).toBe(FETCH_PAGE_SUCCESS);
@@ -101,9 +111,9 @@ describe("actions", () => {
 
     it("dispatches failure", (done) => {
       let dispatch = jest.genMockFunction();
-      mockFetchData.resolve = false;
+      fetcher.resolve = false;
 
-      fetchPage("http://example.com/feed")(dispatch).catch(err => {
+      fetchPage("http://example.com/feed", fetcher)(dispatch).catch(err => {
         expect(dispatch.mock.calls.length).toBe(2);
         expect(dispatch.mock.calls[0][0].type).toBe(FETCH_PAGE_REQUEST);
         expect(dispatch.mock.calls[1][0].type).toBe(FETCH_PAGE_FAILURE);
@@ -116,9 +126,9 @@ describe("actions", () => {
   describe("fetchSearchDescription", () => {
     it("dispatches load", (done) => {
       let dispatch = jest.genMockFunction();
-      mockFetchData.resolve = true;
+      fetcher.resolve = true;
 
-      fetchSearchDescription("http://example.com/search")(dispatch).then(data => {
+      fetchSearchDescription("http://example.com/search", fetcher)(dispatch).then(data => {
         expect(dispatch.mock.calls.length).toBe(1);
         expect(dispatch.mock.calls[0][0].type).toBe(LOAD_SEARCH_DESCRIPTION);
         expect(data).toBe(testData);
@@ -132,9 +142,9 @@ describe("actions", () => {
 
     it("dispatches request, load, and success", (done) => {
       let dispatch = jest.genMockFunction();
-      mockFetchData.resolve = true;
+      fetcher.resolve = true;
 
-      fetchBook(bookUrl)(dispatch).then(data => {
+      fetchBook(bookUrl, fetcher)(dispatch).then(data => {
         expect(dispatch.mock.calls.length).toBe(3);
         expect(dispatch.mock.calls[0][0].type).toBe(FETCH_BOOK_REQUEST);
         expect(dispatch.mock.calls[1][0].type).toBe(FETCH_BOOK_SUCCESS);
@@ -146,9 +156,9 @@ describe("actions", () => {
 
     it("dispatches failure", (done) => {
       let dispatch = jest.genMockFunction();
-      mockFetchData.resolve = false;
+      fetcher.resolve = false;
 
-      fetchBook(bookUrl)(dispatch).catch(err => {
+      fetchBook(bookUrl, fetcher)(dispatch).catch(err => {
         expect(dispatch.mock.calls.length).toBe(2);
         expect(dispatch.mock.calls[0][0].type).toBe(FETCH_BOOK_REQUEST);
         expect(dispatch.mock.calls[1][0].type).toBe(FETCH_BOOK_FAILURE);
