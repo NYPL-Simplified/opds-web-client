@@ -4,6 +4,7 @@ import CollectionLink from "./CollectionLink";
 import Lane from "./Lane";
 import FacetGroup from "./FacetGroup";
 import Search from "./Search";
+import { visuallyHidden } from "./styles";
 
 export default class Collection extends React.Component<CollectionProps, any> {
   render(): JSX.Element {
@@ -58,9 +59,9 @@ export default class Collection extends React.Component<CollectionProps, any> {
     };
 
     return (
-      <div className="collection" style={{ fontFamily: "Arial, sans-serif" }} aria-labelledby="collectionTitle">
-        <div className="collectionTop" style={collectionTopStyle} role="banner">
-          <h1 id="collectionTitle" style={{ margin: 0 }}>{this.props.collection.title}</h1>
+      <div className="collection" style={{ fontFamily: "Arial, sans-serif" }}>
+        <div className="collectionTop" style={collectionTopStyle} aria-label="collection title and search" role="banner">
+          <h1 style={{ margin: 0 }}>{this.props.collection.title}</h1>
           { this.props.collection.search &&
             <Search
               url={this.props.collection.search.url}
@@ -70,7 +71,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
           }
         </div>
 
-        {this.props.collection.facetGroups && this.props.collection.facetGroups.length && (
+        {this.props.collection.facetGroups && this.props.collection.facetGroups.length > 0 && (
           <div className="facetGroups" style={leftPanelStyle} role="navigation" aria-label="filters">
             { this.props.collection.facetGroups.map(facetGroup =>
                 <FacetGroup key={facetGroup.label} facetGroup={facetGroup} setCollection={this.props.setCollection} />
@@ -78,7 +79,12 @@ export default class Collection extends React.Component<CollectionProps, any> {
           </div>
         )}
 
-        <div className="collectionBody" style={collectionBodyStyle} role="main" aria-label="books">
+        <div
+          className="collectionBody"
+          style={collectionBodyStyle}
+          role="main"
+          aria-label={"books in " + this.props.collection.title + " collection"}>
+          <a name="books"></a>
 
           { this.props.collection.lanes && this.props.collection.lanes.map(lane =>
               <Lane
@@ -110,7 +116,12 @@ export default class Collection extends React.Component<CollectionProps, any> {
             </ul>
           }
 
-          { this.props.isFetchingPage && <div className="loadingNextPage" style={loadingNextPageStyle}>Loading next page...</div> }
+          { this.canFetch() &&
+            <button style={visuallyHidden} onClick={this.fetch.bind(this)}>Load more books</button>
+          }
+          { this.props.isFetchingPage &&
+            <div className="loadingNextPage" style={loadingNextPageStyle}>Loading next page...</div>
+          }
         </div>
       </div>
     );
@@ -130,10 +141,22 @@ export default class Collection extends React.Component<CollectionProps, any> {
     window.removeEventListener("scroll", this.handleScroll.bind(this));
   }
 
-  handleScroll() {
-    let atBottom = ((document.body.scrollTop + window.innerHeight) >= document.body.scrollHeight);
-    if (atBottom && !this.props.isFetchingPage && this.props.collection.nextPageUrl) {
+  canFetch() {
+    // console.log(!this.props.isFetchingPage, this.props.collection.nextPageUrl);
+    return !this.props.isFetchingPage && this.props.collection.nextPageUrl;
+  }
+
+  fetch() {
+    if (this.canFetch()) {
+      console.log("can fetch");
       this.props.fetchPage(this.props.collection.nextPageUrl);
+    }
+  }
+
+  handleScroll() {
+    if ((document.body.scrollTop + window.innerHeight) >= document.body.scrollHeight) {
+      console.log("at bottom");
+      this.fetch();
     }
   }
 }
