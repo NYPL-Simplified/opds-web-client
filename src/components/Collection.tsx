@@ -78,12 +78,14 @@ export default class Collection extends React.Component<CollectionProps, any> {
           { breadcrumbs.length ?
             <div style={{ float: "left" }}>
             { breadcrumbs.map(breadcrumb =>
-              <CollectionLink
-                key={breadcrumb.id}
-                text={breadcrumb.text + " > "}
-                url={breadcrumb.url}
-                setCollection={this.props.setCollection}
-                style={{ fontSize: "1.2em", marginRight: "5px", cursor: "pointer" }} />
+              <span style={{ marginRight: "5px" }} key={breadcrumb.id}>
+                <CollectionLink
+                  text={breadcrumb.text}
+                  url={breadcrumb.url}
+                  setCollection={this.props.setCollection}
+                  style={{ fontSize: "1.2em", marginRight: "5px", cursor: "pointer" }} />
+                ›
+              </span>
             )}
             </div> :
             null
