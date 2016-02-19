@@ -56,11 +56,11 @@ const collection = (state = initialState, action) => {
           });
 
           if (!catalogRootUrlInHistory) {
-            newHistory.unshift({
+            newHistory = [{
               text: "Catalog",
               url: action.data.catalogRootUrl,
               id: null
-            });
+            }];
           }
         }
       }

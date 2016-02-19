@@ -151,7 +151,7 @@ describe("collection reducer", () => {
     expect(reducer(currentState, action)).toEqual(newState);
   });
 
-  it("should clear history on LOAD_COLLECTION with the catalog root", () => {
+  it("should clear history on LOAD_COLLECTION with the old catalog root", () => {
     let stateWithHistory = Object.assign({}, currentState, {
       history: [{
         id: "test id",
@@ -181,21 +181,19 @@ describe("collection reducer", () => {
     expect(reducer(stateWithHistory, action)).toEqual(newState);
   });
 
-  it("should clear history on LOAD_COLLECTION with the catalog root", () => {
+  it("should clear history on LOAD_COLLECTION with a new catalog", () => {
     let stateWithHistory = Object.assign({}, currentState, {
       history: [{
         id: "test id",
         url: "test url",
         title: "test title"
-      }],
-      data: Object.assign({}, currentState.data, {
-        catalogRootUrl: "root url"
-      })
+      }]
     });
     let data = {
       id: "some id",
       url: "root url",
       title: "some title",
+      catalogRootUrl: "root url",
       lanes: [],
       books: [],
       links: []
@@ -211,7 +209,7 @@ describe("collection reducer", () => {
     expect(reducer(stateWithHistory, action)).toEqual(newState);
   });
 
-  it("should add catalog root to history on LOAD_COLLECTION if it's not there", () => {
+  it("should set history to catalog root on LOAD_COLLECTION if it's not there", () => {
     let data = {
       id: "some id",
       url: "some url",
@@ -230,10 +228,6 @@ describe("collection reducer", () => {
         id: null,
         text: "Catalog",
         url: "root"
-      }, {
-        id: "id",
-        text: "title",
-        url: "url"
       }]
     });
 
