@@ -19,7 +19,7 @@ let book: BookData = {
 };
 
 describe("LaneBook", () => {
-  it("shows the book cover with alt", () => {
+  it("shows the book cover", () => {
     let renderedBook = TestUtils.renderIntoDocument(
       <LaneBook book={book} />
     );

@@ -18,7 +18,7 @@ let book: BookData = {
 };
 
 describe("Book", () => {
-  it("shows the book cover with alt", () => {
+  it("shows the book cover", () => {
     let renderedBook = TestUtils.renderIntoDocument(
       <Book book={book} />
     );

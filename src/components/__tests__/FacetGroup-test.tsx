@@ -1,4 +1,6 @@
 jest.dontMock("../FacetGroup");
+jest.dontMock("../Link");
+jest.dontMock("../CollectionLink");
 jest.dontMock("../SkipNavigationLink");
 
 import * as React from "react";
@@ -6,7 +8,6 @@ import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
 
 import FacetGroup from "../FacetGroup";
-import Facet from "../Facet";
 import SkipNavigationLink from "../SkipNavigationLink";
 
 describe("FacetGroup", () => {
@@ -27,18 +28,26 @@ describe("FacetGroup", () => {
   it("shows facets", () => {
     let facetGroup = {
       label: "Availability",
-      facets: [{
-        label: "Available now",
-        href: "href",
-        active: true
-      }]
+      facets: [
+        {
+          label: "Available now",
+          href: "available href",
+          active: true
+        },
+        {
+          label: "All",
+          href: "all href",
+          active: false
+        }
+      ]
     };
 
     let renderedFacetGroup = TestUtils.renderIntoDocument(
       <FacetGroup facetGroup={facetGroup} />
     );
 
-    let facets = TestUtils.scryRenderedComponentsWithType(renderedFacetGroup, Facet);
-    expect(facets.length).toEqual(1);
+    let facets = TestUtils.scryRenderedDOMComponentsWithClass(renderedFacetGroup, "facetLink");
+    expect(facets.length).toEqual(2);
+    expect(facets.map(facet => facet.textContent)).toEqual(facetGroup.facets.map(facet => facet.label));
   });
 });

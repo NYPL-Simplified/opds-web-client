@@ -81,7 +81,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
             <SkipNavigationLink />
             { this.props.collection.facetGroups.map(facetGroup =>
                 <FacetGroup key={facetGroup.label} facetGroup={facetGroup} setCollection={this.props.setCollection} />
-            )}
+            ) }
           </div>
         )}
 
