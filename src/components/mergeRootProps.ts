@@ -1,3 +1,13 @@
+import {
+  fetchCollection,
+  fetchPage,
+  fetchBook,
+  loadBook,
+  clearCollection,
+  clearBook,
+  fetchSearchDescription,
+  closeError
+} from "../actions";
 import DataFetcher from "../DataFetcher";
 
 export function findBookInCollection(collection: CollectionData, bookUrl: string) {
@@ -8,8 +18,33 @@ export function findBookInCollection(collection: CollectionData, bookUrl: string
   return allBooks.find(book => book.url === bookUrl);
 }
 
+export function mapStateToProps(state) {
+  return {
+    collectionData: state.collection.data,
+    collectionUrl: state.collection.url,
+    isFetching: (state.collection.isFetching || state.book.isFetching),
+    isFetchingPage: state.collection.isFetchingPage,
+    error: (state.collection.error || state.book.error),
+    bookData: state.book.data,
+    bookUrl: state.book.url
+  };
+};
+
+export function mapDispatchToProps(dispatch) {
+  return {
+    fetchCollection: (url: string, fetcher: DataFetcher) => dispatch(fetchCollection(url, fetcher)),
+    fetchPage: (url: string, fetcher: DataFetcher) => dispatch(fetchPage(url, fetcher)),
+    fetchBook: (url: string, fetcher: DataFetcher) => dispatch(fetchBook(url, fetcher)),
+    loadBook: (book: BookData, url: string) => dispatch(loadBook(book, url)),
+    clearCollection: () => dispatch(clearCollection()),
+    clearBook: () => dispatch(clearBook()),
+    fetchSearchDescription: (url: string, fetcher: DataFetcher) => dispatch(fetchSearchDescription(url, fetcher)),
+    closeError: () => dispatch(closeError())
+  };
+};
+
 // define setCollection and setBook here so that they can call onNavigate from component props
-export default (stateProps, dispatchProps, componentProps) => {
+export function mergeRootProps(stateProps, dispatchProps, componentProps) {
   // wrap componentProps.onNavigate so it only fires when collection or book url changes
   let onNavigate = componentProps.onNavigate ? (collectionUrl: string, bookUrl: string): void => {
     if (collectionUrl !== stateProps.collectionUrl || bookUrl !== stateProps.bookUrl) {

@@ -1,7 +1,7 @@
 jest.dontMock("../mergeRootProps");
 jest.dontMock("./collectionData");
 
-import mergeRootProps, { findBookInCollection } from "../mergeRootProps";
+import { mergeRootProps, findBookInCollection } from "../mergeRootProps";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 
 describe("mergeRootProps", () => {
