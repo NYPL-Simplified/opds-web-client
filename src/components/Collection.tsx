@@ -57,27 +57,13 @@ export default class Collection extends React.Component<CollectionProps, any> {
       textAlign: "center"
     };
 
-    let breadcrumbs: LinkData[];
-    if (this.props.collection.catalogRootUrl === this.props.collection.url) {
-      breadcrumbs = [];
-    } else if (this.props.history && this.props.history.length > 0) {
-      breadcrumbs = this.props.history;
-    } else if (this.props.collection.catalogRootUrl) {
-      breadcrumbs = [{
-        text: "Catalog",
-        url: this.props.collection.catalogRootUrl,
-        id: null
-      }];
-    } else {
-      breadcrumbs = [];
-    }
-
     return (
       <div className="collection" style={{ fontFamily: "Arial, sans-serif" }}>
         <div className="collectionTop" style={collectionTopStyle}>
-          { breadcrumbs.length ?
+          { this.props.history && this.props.history.length ?
             <div style={{ float: "left" }}>
-            { breadcrumbs.map(breadcrumb =>
+            { this.props.history &&
+              this.props.history.map(breadcrumb =>
               <span style={{ marginRight: "5px" }} key={breadcrumb.id}>
                 <CollectionLink
                   text={breadcrumb.text}

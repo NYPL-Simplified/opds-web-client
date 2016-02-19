@@ -181,31 +181,63 @@ describe("collection reducer", () => {
     expect(reducer(stateWithHistory, action)).toEqual(newState);
   });
 
-  it("should remove last history entry on LOAD_COLLECTION with that url", () => {
+  it("should clear history on LOAD_COLLECTION with the catalog root", () => {
     let stateWithHistory = Object.assign({}, currentState, {
       history: [{
         id: "test id",
         url: "test url",
         title: "test title"
-      }]
+      }],
+      data: Object.assign({}, currentState.data, {
+        catalogRootUrl: "root url"
+      })
     });
     let data = {
       id: "some id",
-      url: "test url",
+      url: "root url",
       title: "some title",
       lanes: [],
       books: [],
       links: []
     };
-    let action = loadCollection(data, "test url");
+    let action = loadCollection(data, "root url");
     let newState = Object.assign({}, currentState, {
-      url: "test url",
+      url: "root url",
       data: data,
       isFetching: false,
       history: []
     });
 
     expect(reducer(stateWithHistory, action)).toEqual(newState);
+  });
+
+  it("should add catalog root to history on LOAD_COLLECTION if it's not there", () => {
+    let data = {
+      id: "some id",
+      url: "some url",
+      title: "some title",
+      lanes: [],
+      books: [],
+      links: [],
+      catalogRootUrl: "root"
+    };
+    let action = loadCollection(data, "another url");
+    let newState = Object.assign({}, currentState, {
+      url: "another url",
+      data: data,
+      isFetching: false,
+      history: [{
+        id: null,
+        text: "Catalog",
+        url: "root"
+      }, {
+        id: "id",
+        text: "title",
+        url: "url"
+      }]
+    });
+
+    expect(reducer(currentState, action)).toEqual(newState);
   });
 
   it("should remove history up to loaded url on LOAD_COLLECTION with url in history", () => {

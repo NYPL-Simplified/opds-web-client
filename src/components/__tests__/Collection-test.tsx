@@ -179,23 +179,6 @@ describe("Collection", () => {
     });
   });
 
-  describe("collection without history", () => {
-    it("shows link to catalogRoot", () => {
-      let collectionData = Object.assign({},  ungroupedCollectionData, {
-        catalogRootUrl: "catalog root"
-      });
-
-      let collection = TestUtils.renderIntoDocument(
-        <Collection collection={collectionData} />
-      );
-
-      let links = TestUtils.scryRenderedComponentsWithType(collection, CollectionLink);
-      expect(links.length).toEqual(1);
-      expect(links[0].props.text).toContain("Catalog");
-      expect(links[0].props.url).toEqual("catalog root");
-    });
-  });
-
   describe("collection that scrolls", () => {
     let collectionData = {
       id: "test collection",
