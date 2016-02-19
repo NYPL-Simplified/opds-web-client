@@ -1,13 +1,4 @@
-import {
-  fetchCollection,
-  fetchPage,
-  fetchBook,
-  loadBook,
-  clearCollection,
-  clearBook,
-  fetchSearchDescription,
-  closeError
-} from "../actions";
+import ActionsCreator from "../actions";
 import DataFetcher from "../DataFetcher";
 
 export function findBookInCollection(collection: CollectionData, bookUrl: string) {
@@ -32,19 +23,24 @@ export function mapStateToProps(state) {
 
 export function mapDispatchToProps(dispatch) {
   return {
-    fetchCollection: (url: string, fetcher: DataFetcher) => dispatch(fetchCollection(url, fetcher)),
-    fetchPage: (url: string, fetcher: DataFetcher) => dispatch(fetchPage(url, fetcher)),
-    fetchBook: (url: string, fetcher: DataFetcher) => dispatch(fetchBook(url, fetcher)),
-    loadBook: (book: BookData, url: string) => dispatch(loadBook(book, url)),
-    clearCollection: () => dispatch(clearCollection()),
-    clearBook: () => dispatch(clearBook()),
-    fetchSearchDescription: (url: string, fetcher: DataFetcher) => dispatch(fetchSearchDescription(url, fetcher)),
-    closeError: () => dispatch(closeError())
+    createDispatchProps: (fetcher) => {
+      let actions = new ActionsCreator(fetcher);
+      return {
+        fetchCollection: (url: string) => dispatch(actions.fetchCollection(url)),
+        fetchPage: (url: string) => dispatch(actions.fetchPage(url)),
+        fetchBook: (url: string) => dispatch(actions.fetchBook(url)),
+        loadBook: (book: BookData, url: string) => dispatch(actions.loadBook(book, url)),
+        clearCollection: () => dispatch(actions.clearCollection()),
+        clearBook: () => dispatch(actions.clearBook()),
+        fetchSearchDescription: (url: string) => dispatch(actions.fetchSearchDescription(url)),
+        closeError: () => dispatch(actions.closeError())
+      };
+    }
   };
 };
 
 // define setCollection and setBook here so that they can call onNavigate from component props
-export function mergeRootProps(stateProps, dispatchProps, componentProps) {
+export function mergeRootProps(stateProps, createDispatchProps, componentProps) {
   // wrap componentProps.onNavigate so it only fires when collection or book url changes
   let onNavigate = componentProps.onNavigate ? (collectionUrl: string, bookUrl: string): void => {
     if (collectionUrl !== stateProps.collectionUrl || bookUrl !== stateProps.bookUrl) {
@@ -53,6 +49,7 @@ export function mergeRootProps(stateProps, dispatchProps, componentProps) {
   } : undefined;
 
   let fetcher = new DataFetcher(componentProps.proxyUrl);
+  let dispatchProps = createDispatchProps.createDispatchProps(fetcher);
 
   let setCollection = (url: string, skipOnNavigate: boolean = false) => {
     return new Promise((resolve, reject) => {
@@ -63,7 +60,7 @@ export function mergeRootProps(stateProps, dispatchProps, componentProps) {
         resolve(stateProps.collectionData);
       } else {
         // only fetch collection if url has changed
-        dispatchProps.fetchCollection(url, fetcher).then(data => resolve(data));
+        dispatchProps.fetchCollection(url).then(data => resolve(data));
       }
 
       if (!skipOnNavigate && onNavigate) {
@@ -104,7 +101,7 @@ export function mergeRootProps(stateProps, dispatchProps, componentProps) {
           dispatchProps.loadBook(bookData, url);
           resolve(bookData);
         } else {
-          dispatchProps.fetchBook(url, fetcher).then(data => resolve(data));
+          dispatchProps.fetchBook(url).then(data => resolve(data));
         }
       }
 
@@ -114,19 +111,9 @@ export function mergeRootProps(stateProps, dispatchProps, componentProps) {
     });
   };
 
-  let fetchPage = (url: string) => {
-    return dispatchProps.fetchPage(url, fetcher);
-  };
-
-  let fetchSearchDescription = (url: string) => {
-    return dispatchProps.fetchSearchDescription(url, fetcher);
-  };
-
   return Object.assign({}, componentProps, stateProps, dispatchProps, {
     setCollection: setCollection,
     setBook: setBook,
-    fetchPage: fetchPage,
-    fetchSearchDescription: fetchSearchDescription,
     setCollectionAndBook: (collectionUrl: string, book: BookData|string, skipOnNavigate: boolean = false) => {
       return new Promise((resolve, reject) => {
         // skip onNavigate for both fetches, but call it at the end

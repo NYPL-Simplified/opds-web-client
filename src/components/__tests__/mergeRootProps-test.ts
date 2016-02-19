@@ -1,5 +1,6 @@
 jest.dontMock("../mergeRootProps");
 jest.dontMock("./collectionData");
+jest.dontMock("../../actions");
 
 import { mergeRootProps, findBookInCollection } from "../mergeRootProps";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
@@ -29,7 +30,9 @@ describe("mergeRootProps", () => {
     clearCollection = jest.genMockFunction();
     clearBook = jest.genMockFunction();
     onNavigate = jest.genMockFunction();
-    dispatchProps = { fetchCollection, clearCollection, loadBook, fetchBook, clearBook };
+    dispatchProps = { createDispatchProps: (fetcher) => {
+      return { fetchCollection, clearCollection, loadBook, fetchBook, clearBook };
+    }};
     componentProps = { onNavigate };
   });
 
