@@ -38,7 +38,8 @@ export class Root extends React.Component<RootProps, any> {
             isFetchingPage={this.props.isFetchingPage}
             error={this.props.error}
             fetchSearchDescription={this.props.fetchSearchDescription}
-            setBook={this.props.setBook} /> :
+            setBook={this.props.setBook}
+            history={this.props.history} /> :
           this.props.isFetching ? null : <UrlForm setCollection={this.props.setCollection} url={this.props.collectionUrl} />
         }
       </div>
@@ -60,7 +61,8 @@ const mapStateToProps = (state) => {
     isFetchingPage: state.collection.isFetchingPage,
     error: (state.collection.error || state.book.error),
     bookData: state.book.data,
-    bookUrl: state.book.url
+    bookUrl: state.book.url,
+    history: state.collection.history
   };
 };
 

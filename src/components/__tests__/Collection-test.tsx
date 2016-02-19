@@ -15,6 +15,7 @@ import Lane from "../Lane";
 import Book from "../Book";
 import LaneBook from "../LaneBook";
 import FacetGroup from "../FacetGroup";
+import CollectionLink from "../CollectionLink";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 
 describe("Collection", () => {
@@ -29,7 +30,7 @@ describe("Collection", () => {
     });
 
     it("shows the collection title", () => {
-      let titleElement = TestUtils.findRenderedDOMComponentWithTag(collection, "h1");
+      let titleElement = TestUtils.findRenderedDOMComponentWithClass(collection, "collectionTitle");
       expect(titleElement.textContent).toEqual(collectionData.title);
     });
 
@@ -85,7 +86,7 @@ describe("Collection", () => {
     });
   });
 
-  describe("collection without facetGroups", () => {
+  describe("collection with facetGroups", () => {
     it("shows facet groups", () => {
       let collectionData = {
         id: "test collection",
@@ -150,6 +151,31 @@ describe("Collection", () => {
 
       let loading = TestUtils.findRenderedDOMComponentWithClass(collection, "loadingNextPage");
       expect(loading.textContent).toContain("Loading");
+    });
+  });
+
+  describe("collection with history", () => {
+    it("shows link to previous collection", () => {
+      let history = [{
+        id: "2nd id",
+        text: "2nd title",
+        url: "2nd url"
+      }, {
+        id: "last id",
+        text: "last title",
+        url: "last url"
+      }];
+
+      let collection = TestUtils.renderIntoDocument(
+        <Collection collection={ungroupedCollectionData} history={history} />
+      );
+
+      let links = TestUtils.scryRenderedComponentsWithType(collection, CollectionLink);
+      expect(links.length).toEqual(2);
+      expect(links[0].props.text).toContain("2nd title");
+      expect(links[0].props.url).toEqual("2nd url");
+      expect(links[1].props.text).toContain("last title");
+      expect(links[1].props.url).toEqual("last url");
     });
   });
 
