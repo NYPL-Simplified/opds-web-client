@@ -3,7 +3,7 @@ import * as React from "react";
 export default class Search extends React.Component<SearchProps, any> {
   render(): JSX.Element {
     return (
-      <div className="search" style={{ float: "right", marginRight: "20px" }}>
+      <div className="search">
         { this.props.searchData && (
           <form onSubmit={this.onSubmit.bind(this)}>
             <input ref="input" type="text" placeholder={this.props.searchData.shortName}/>&nbsp;

@@ -10,7 +10,8 @@ import { visuallyHiddenStyle, subtleListStyle } from "./styles";
 export default class Collection extends React.Component<CollectionProps, any> {
   render(): JSX.Element {
     let padding = 10;
-    let headerHeight = 50;
+    let headerHeight = 70;
+    let navHeight = this.props.history && this.props.history.length ? 30 : 0;
     let leftPanelWidth = 190;
 
     let collectionTopStyle = {
@@ -25,9 +26,20 @@ export default class Collection extends React.Component<CollectionProps, any> {
       top: "0"
     };
 
+    let navStyle = {
+      height: `${navHeight}px`,
+      position: "fixed",
+      top: `${headerHeight + padding}px`,
+      width: "100%",
+      backgroundColor: "#fff",
+      borderBottom: "1px solid #eee",
+      paddingTop: `${padding}px`,
+      paddingLeft: `${padding}px`
+    };
+
     let collectionBodyStyle: any = {
       padding: `${padding}px`,
-      paddingTop: `${headerHeight + padding}px`,
+      paddingTop: `${headerHeight + navHeight + padding + padding}px`,
       height: "100%",
       marginTop: `${padding + 5}px`
     };
@@ -37,7 +49,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
     }
 
     let leftPanelStyle = {
-      paddingTop: `${headerHeight + padding}px`,
+      marginTop: `${headerHeight + navHeight + padding}px`,
       width: `${leftPanelWidth}px`,
       position: "fixed",
       left: "0"
@@ -66,21 +78,46 @@ export default class Collection extends React.Component<CollectionProps, any> {
           style={collectionTopStyle}
           aria-label={this.props.collection.title + " header and search"}
           role="banner">
-          <h1 style={{ margin: 0 }}>{this.props.collection.title}</h1>
           { this.props.collection.search &&
-            <Search
-              url={this.props.collection.search.url}
-              searchData={this.props.collection.search.searchData}
-              fetchSearchDescription={this.props.fetchSearchDescription}
-              setCollection={this.props.setCollection} />
+            <div style={{ float: "right", marginRight: "20px" }}>
+              <Search
+                url={this.props.collection.search.url}
+                searchData={this.props.collection.search.searchData}
+                fetchSearchDescription={this.props.fetchSearchDescription}
+                setCollection={this.props.setCollection} />
+            </div>
           }
+          <h1 className="collectionTitle">{this.props.collection.title}</h1>
         </div>
+
+        { this.props.history && this.props.history.length > 0 &&
+          <nav aria-label="breadcrumbs" role="navigation" style={ navStyle }>
+            <ul style={subtleListStyle}>
+              { this.props.history.map(breadcrumb =>
+                <li style={{ listStyle: "none", float: "left", marginRight: "5px" }} key={breadcrumb.id}>
+                  <CollectionLink
+                    text={breadcrumb.text}
+                    url={breadcrumb.url}
+                    setCollection={this.props.setCollection}
+                    style={{ fontSize: "1.2em", marginRight: "5px", cursor: "pointer" }} />
+                  ›
+                </li>
+              )}
+              <li className="currentCollection" style={{ listStyle: "none", float: "left", fontSize: "1.2em" }}>
+                {this.props.collection.title}
+              </li>
+            </ul>
+          </nav>
+        }
 
         { this.props.collection.facetGroups && this.props.collection.facetGroups.length > 0 && (
           <div className="facetGroups" style={leftPanelStyle} role="navigation" aria-label="filters">
             <SkipNavigationLink />
             { this.props.collection.facetGroups.map(facetGroup =>
-                <FacetGroup key={facetGroup.label} facetGroup={facetGroup} setCollection={this.props.setCollection} />
+                <FacetGroup
+                  key={facetGroup.label}
+                  facetGroup={facetGroup}
+                  setCollection={this.props.setCollection} />
             ) }
           </div>
         )}
