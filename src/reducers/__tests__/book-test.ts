@@ -6,12 +6,11 @@ import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
 
 import reducer from "../book";
-import {
-  fetchBookRequest,
-  fetchBookFailure,
-  loadBook,
-  clearBook
-} from "../../actions";
+import DataFetcher from "../../DataFetcher";
+import ActionsCreator from "../../actions";
+
+let fetcher = new DataFetcher(null);
+let actions = new ActionsCreator(fetcher);
 
 describe("book reducer", () => {
   let book = {
@@ -51,7 +50,7 @@ describe("book reducer", () => {
   });
 
   it("should handle FETCH_BOOK_REQUEST", () => {
-    let action = fetchBookRequest("some other url");
+    let action = actions.fetchBookRequest("some other url");
     let newState = Object.assign({}, bookState, {
       url: action.url,
       isFetching: true
@@ -61,7 +60,7 @@ describe("book reducer", () => {
   });
 
   it("should handle FETCH_BOOK_FAILURE", () => {
-    let action = fetchBookFailure("test error");
+    let action = actions.fetchBookFailure("test error");
     let newState = Object.assign({}, fetchingState, {
       isFetching: false,
       error: "test error"
@@ -75,7 +74,7 @@ describe("book reducer", () => {
       id: "some id",
       title: "some title"
     };
-    let action = loadBook(data, "some other url");
+    let action = actions.loadBook(data, "some other url");
     let newState = Object.assign({}, bookState, {
       url: "some other url",
       data: data,
@@ -86,7 +85,7 @@ describe("book reducer", () => {
   });
 
   it("should handle CLEAR_BOOK", () => {
-    let action = clearBook();
+    let action = actions.clearBook();
     let newState = Object.assign({}, bookState, {
       url: null,
       data: null

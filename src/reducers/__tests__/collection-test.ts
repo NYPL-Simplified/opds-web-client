@@ -6,17 +6,11 @@ import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
 
 import reducer from "../collection";
-import {
-  fetchCollectionRequest,
-  fetchCollectionFailure,
-  loadCollection,
-  fetchPageRequest,
-  fetchPageFailure,
-  loadPage,
-  clearCollection,
-  loadSearchDescription,
-  closeError
-} from "../../actions";
+import DataFetcher from "../../DataFetcher";
+import ActionsCreator from "../../actions";
+
+let fetcher = new DataFetcher(null);
+let actions = new ActionsCreator(fetcher);
 
 describe("collection reducer", () => {
   let initState = {
@@ -74,7 +68,7 @@ describe("collection reducer", () => {
   });
 
   it("should handle FETCH_COLLECTION_REQUEST", () => {
-    let action = fetchCollectionRequest("some other url");
+    let action = actions.fetchCollectionRequest("some other url");
     let newState = Object.assign({}, currentState, {
       url: action.url,
       isFetching: true
@@ -84,7 +78,7 @@ describe("collection reducer", () => {
   });
 
   it("should handle FETCH_COLLECTION_FAILURE", () => {
-    let action = fetchCollectionFailure("test error");
+    let action = actions.fetchCollectionFailure("test error");
     let newState = Object.assign({}, fetchingState, {
       isFetching: false,
       error: "test error"
@@ -102,7 +96,7 @@ describe("collection reducer", () => {
       books: [],
       links: []
     };
-    let action = loadCollection(data, "some other url");
+    let action = actions.loadCollection(data, "some other url");
     let newState = Object.assign({}, currentState, {
       url: "some other url",
       data: data,
@@ -126,7 +120,7 @@ describe("collection reducer", () => {
       books: [],
       links: []
     };
-    let action = loadCollection(data, "some other url");
+    let action = actions.loadCollection(data, "some other url");
     let newState = Object.assign({}, currentState, {
       url: "some other url",
       data: data,
@@ -145,7 +139,7 @@ describe("collection reducer", () => {
       books: [],
       links: []
     };
-    let action = loadCollection(data, "some other url");
+    let action = actions.loadCollection(data, "some other url");
     let newState = Object.assign({}, currentState, {
       url: "some other url",
       data: data,
@@ -174,7 +168,7 @@ describe("collection reducer", () => {
       books: [],
       links: []
     };
-    let action = loadCollection(data, "root url");
+    let action = actions.loadCollection(data, "root url");
     let newState = Object.assign({}, currentState, {
       url: "root url",
       data: data,
@@ -202,7 +196,7 @@ describe("collection reducer", () => {
       books: [],
       links: []
     };
-    let action = loadCollection(data, "root url");
+    let action = actions.loadCollection(data, "root url");
     let newState = Object.assign({}, currentState, {
       url: "root url",
       data: data,
@@ -223,7 +217,7 @@ describe("collection reducer", () => {
       links: [],
       catalogRootUrl: "root"
     };
-    let action = loadCollection(data, "another url");
+    let action = actions.loadCollection(data, "another url");
     let newState = Object.assign({}, currentState, {
       url: "another url",
       data: data,
@@ -262,7 +256,7 @@ describe("collection reducer", () => {
       books: [],
       links: []
     };
-    let action = loadCollection(data, "test url");
+    let action = actions.loadCollection(data, "test url");
     let newState = Object.assign({}, currentState, {
       url: "test url",
       data: data,
@@ -286,7 +280,7 @@ describe("collection reducer", () => {
       books: [],
       links: []
     };
-    let action = loadCollection(data, "some other url");
+    let action = actions.loadCollection(data, "some other url");
     let newState = Object.assign({}, currentState, {
       url: "some other url",
       data: data,
@@ -297,7 +291,7 @@ describe("collection reducer", () => {
   });
 
   it("should handle CLEAR_COLLECTION", () => {
-    let action = clearCollection();
+    let action = actions.clearCollection();
     let newState = Object.assign({}, currentState, {
       url: null,
       data: null
@@ -307,7 +301,7 @@ describe("collection reducer", () => {
   });
 
   it("should handle FETCH_PAGE_REQUEST", () => {
-    let action = fetchPageRequest("some other url");
+    let action = actions.fetchPageRequest("some other url");
     let newState = Object.assign({}, currentState, {
       pageUrl: "some other url",
       isFetchingPage: true
@@ -317,7 +311,7 @@ describe("collection reducer", () => {
   });
 
   it("should handle FETCH_PAGE_FAILURE", () => {
-    let action = fetchPageFailure("test error");
+    let action = actions.fetchPageFailure("test error");
     let newState = Object.assign({}, fetchingPageState, {
       isFetchingPage: false,
       error: "test error"
@@ -343,7 +337,7 @@ describe("collection reducer", () => {
       links: [],
       nextPageUrl: "next"
     };
-    let action = loadPage(data);
+    let action = actions.loadPage(data);
     let newState = Object.assign({}, fetchingPageState, {
       data: Object.assign({}, fetchingPageState.data, {
         books: data.books,
@@ -361,7 +355,7 @@ describe("collection reducer", () => {
       shortName: "s",
       template: (s) => s + " template"
     };
-    let action = loadSearchDescription({ searchData });
+    let action = actions.loadSearchDescription({ searchData });
 
     let newState = reducer(currentState, action);
     expect(newState.data.search).toBeTruthy;
@@ -371,7 +365,7 @@ describe("collection reducer", () => {
   });
 
   it("should handle CLOSE_ERROR", () => {
-    let action = closeError();
+    let action = actions.closeError();
     let newState = Object.assign({}, errorState, {
       error: null
     });

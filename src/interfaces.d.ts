@@ -108,6 +108,7 @@ interface State {
 interface RootProps extends State, CollectionActionProps, BookActionProps, BaseProps {
   startCollection?: string;
   startBook?: string;
+  proxyUrl?: string;
   onNavigate?: (collectionUrl: string, bookUrl?: string) => any;
   dispatch?: any;
   clearCollection?: () => void;

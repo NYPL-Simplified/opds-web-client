@@ -1,3 +1,6 @@
+import ActionsCreator from "../actions";
+import DataFetcher from "../DataFetcher";
+
 export function findBookInCollection(collection: CollectionData, bookUrl: string) {
   let allBooks = collection.lanes.reduce((books, lane) => {
     return books.concat(lane.books);
@@ -6,14 +9,48 @@ export function findBookInCollection(collection: CollectionData, bookUrl: string
   return allBooks.find(book => book.url === bookUrl);
 }
 
+export function mapStateToProps(state) {
+  return {
+    collectionData: state.collection.data,
+    collectionUrl: state.collection.url,
+    isFetching: (state.collection.isFetching || state.book.isFetching),
+    isFetchingPage: state.collection.isFetchingPage,
+    error: (state.collection.error || state.book.error),
+    bookData: state.book.data,
+    bookUrl: state.book.url,
+    history: state.collection.history
+  };
+};
+
+export function mapDispatchToProps(dispatch) {
+  return {
+    createDispatchProps: (fetcher) => {
+      let actions = new ActionsCreator(fetcher);
+      return {
+        fetchCollection: (url: string) => dispatch(actions.fetchCollection(url)),
+        fetchPage: (url: string) => dispatch(actions.fetchPage(url)),
+        fetchBook: (url: string) => dispatch(actions.fetchBook(url)),
+        loadBook: (book: BookData, url: string) => dispatch(actions.loadBook(book, url)),
+        clearCollection: () => dispatch(actions.clearCollection()),
+        clearBook: () => dispatch(actions.clearBook()),
+        fetchSearchDescription: (url: string) => dispatch(actions.fetchSearchDescription(url)),
+        closeError: () => dispatch(actions.closeError())
+      };
+    }
+  };
+};
+
 // define setCollection and setBook here so that they can call onNavigate from component props
-export default (stateProps, dispatchProps, componentProps) => {
+export function mergeRootProps(stateProps, createDispatchProps, componentProps) {
   // wrap componentProps.onNavigate so it only fires when collection or book url changes
   let onNavigate = componentProps.onNavigate ? (collectionUrl: string, bookUrl: string): void => {
     if (collectionUrl !== stateProps.collectionUrl || bookUrl !== stateProps.bookUrl) {
       componentProps.onNavigate(collectionUrl, bookUrl);
     }
   } : undefined;
+
+  let fetcher = new DataFetcher(componentProps.proxyUrl);
+  let dispatchProps = createDispatchProps.createDispatchProps(fetcher);
 
   let setCollection = (url: string, skipOnNavigate: boolean = false) => {
     return new Promise((resolve, reject) => {
