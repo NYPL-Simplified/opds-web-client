@@ -157,6 +157,29 @@ describe("Collection", () => {
       expect(fetchPage.mock.calls[0][0]).toEqual("next");
     });
 
+    it("fetches next page if first page doesn't fill window", () => {
+      document.body.scrollTop = 1000;
+      document.body.scrollHeight = 1;
+
+      let fetchPage = jest.genMockFunction();
+      let collectionData = {
+        id: "test collection",
+        url: "test url",
+        title: "title",
+        books: [],
+        lanes: [],
+        links: [],
+        nextPageUrl: "next"
+      };
+
+      let collection = TestUtils.renderIntoDocument(
+        <Collection collection={collectionData} fetchPage={fetchPage} />
+      );
+
+      expect(fetchPage.mock.calls.length).toEqual(1);
+      expect(fetchPage.mock.calls[0][0]).toEqual("next");
+    });
+
     it("shows loading indicator for next page", () => {
       let collectionData = {
         id: "test collection",
@@ -176,11 +199,12 @@ describe("Collection", () => {
     });
 
     it("contains next page button", () => {
+      let fetchPage = jest.genMockFunction();
       let collectionData = Object.assign({}, ungroupedCollectionData, {
         nextPageUrl: "next page url"
       });
       let collection = TestUtils.renderIntoDocument(
-        <Collection collection={collectionData} isFetchingPage={false} />
+        <Collection collection={collectionData} isFetchingPage={false} fetchPage={fetchPage} />
       );
 
       let link = TestUtils.findRenderedDOMComponentWithClass(collection, "nextPageLink");

@@ -193,11 +193,16 @@ export default class Collection extends React.Component<CollectionProps, any> {
   }
 
   componentDidMount() {
-    window.addEventListener("scroll", this.handleScroll.bind(this));
+    window.addEventListener("scroll", this.handleScrollOrResize.bind(this));
+    window.addEventListener("resize", this.handleScrollOrResize.bind(this));
+
+    // the first page might not fill the screen on initial load, so run handler once
+    this.handleScrollOrResize();
   }
 
   componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScroll.bind(this));
+    window.removeEventListener("scroll", this.handleScrollOrResize.bind(this));
+    window.removeEventListener("resize", this.handleScrollOrResize.bind(this));
   }
 
   canFetch() {
@@ -210,7 +215,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
     }
   }
 
-  handleScroll() {
+  handleScrollOrResize() {
     if ((document.body.scrollTop + window.innerHeight) >= document.body.scrollHeight) {
       this.fetch();
     }
