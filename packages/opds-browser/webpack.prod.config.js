@@ -7,8 +7,8 @@ var config = {
     ],
   },
   output: {
-    path: './dist',
-    filename: 'opds-browser.js',
+    path: './lib',
+    filename: 'index.js',
     library: 'OPDSBrowser',
     libraryTarget: 'umd'
   },

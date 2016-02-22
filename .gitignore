@@ -1,11 +1,11 @@
 # Dependency directory
-node_modules
+packages/**/node_modules
 
 # Compiled JS directory
-lib
+packages/opds-browser/lib
 
 # TypeScript definitions
-typings/*
+packages/opds-browser/typings/*
 
 # Temporary files
 *~
