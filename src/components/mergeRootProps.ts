@@ -17,7 +17,8 @@ export function mapStateToProps(state) {
     isFetchingPage: state.collection.isFetchingPage,
     error: (state.collection.error || state.book.error),
     bookData: state.book.data,
-    bookUrl: state.book.url
+    bookUrl: state.book.url,
+    history: state.collection.history
   };
 };
 

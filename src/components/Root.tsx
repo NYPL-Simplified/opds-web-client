@@ -6,11 +6,15 @@ import LoadingIndicator from "./LoadingIndicator";
 import ErrorMessage from "./ErrorMessage";
 import Collection from "./Collection";
 import UrlForm from "./UrlForm";
+import SkipNavigationLink from "./SkipNavigationLink";
+import { visuallyHiddenStyle } from "./styles";
 
 export class Root extends React.Component<RootProps, any> {
   render(): JSX.Element {
     return (
       <div className="browser">
+        <SkipNavigationLink />
+
         { this.props.isFetching && <LoadingIndicator /> }
         { this.props.error &&
           <ErrorMessage
@@ -28,7 +32,8 @@ export class Root extends React.Component<RootProps, any> {
             isFetchingPage={this.props.isFetchingPage}
             error={this.props.error}
             fetchSearchDescription={this.props.fetchSearchDescription}
-            setBook={this.props.setBook} /> :
+            setBook={this.props.setBook}
+            history={this.props.history} /> :
           this.props.isFetching ? null : <UrlForm setCollection={this.props.setCollection} url={this.props.collectionUrl} />
         }
       </div>
@@ -41,7 +46,6 @@ export class Root extends React.Component<RootProps, any> {
     }
   }
 }
-
 
 let connectOptions = { withRef: true, pure: true };
 const ConnectedRoot = connect(

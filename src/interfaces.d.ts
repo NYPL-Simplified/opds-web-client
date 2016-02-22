@@ -79,6 +79,7 @@ interface CollectionData {
   facetGroups?: FacetGroupData[];
   search?: SearchProps;
   nextPageUrl?: string;
+  catalogRootUrl?: string;
 }
 
 interface CollectionProps extends CollectionActionProps, BookActionProps, BaseProps {
@@ -87,6 +88,7 @@ interface CollectionProps extends CollectionActionProps, BookActionProps, BasePr
   isFetchingPage?: boolean;
   error?: string;
   fetchSearchDescription?: (url: string) => void;
+  history?: LinkData[];
 }
 
 // these properties need to be optional because they're used by RootProps,
@@ -100,6 +102,7 @@ interface State {
   bookData?: BookData;
   bookUrl?: string;
   isFetchingPage?: boolean;
+  history?: LinkData[];
 }
 
 interface RootProps extends State, CollectionActionProps, BookActionProps, BaseProps {
