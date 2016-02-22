@@ -16,11 +16,15 @@ import LoadingIndicator from "./LoadingIndicator";
 import ErrorMessage from "./ErrorMessage";
 import Collection from "./Collection";
 import UrlForm from "./UrlForm";
+import SkipNavigationLink from "./SkipNavigationLink";
+import { visuallyHiddenStyle } from "./styles";
 
 export class Root extends React.Component<RootProps, any> {
   render(): JSX.Element {
     return (
       <div className="browser">
+        <SkipNavigationLink />
+
         { this.props.isFetching && <LoadingIndicator /> }
         { this.props.error &&
           <ErrorMessage

@@ -2,6 +2,7 @@ const initialState = {
   url: null,
   data: null,
   isFetching: false,
+  isFetchingPage: false,
   error: null,
   history: []
 };

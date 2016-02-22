@@ -4,12 +4,14 @@ import CollectionLink from "./CollectionLink";
 import Lane from "./Lane";
 import FacetGroup from "./FacetGroup";
 import Search from "./Search";
+import SkipNavigationLink from "./SkipNavigationLink";
+import { visuallyHiddenStyle, subtleListStyle } from "./styles";
 
 export default class Collection extends React.Component<CollectionProps, any> {
   render(): JSX.Element {
     let padding = 10;
     let headerHeight = 70;
-    let navHeight = this.props.history && this.props.history.length ? 50 : 0;
+    let navHeight = this.props.history && this.props.history.length ? 30 : 0;
     let leftPanelWidth = 190;
 
     let collectionTopStyle = {
@@ -30,12 +32,14 @@ export default class Collection extends React.Component<CollectionProps, any> {
       top: `${headerHeight + padding}px`,
       width: "100%",
       backgroundColor: "#fff",
-      borderBottom: "1px solid #eee"
+      borderBottom: "1px solid #eee",
+      paddingTop: `${padding}px`,
+      paddingLeft: `${padding}px`
     };
 
     let collectionBodyStyle: any = {
       padding: `${padding}px`,
-      paddingTop: `${headerHeight + navHeight + padding}px`,
+      paddingTop: `${headerHeight + navHeight + padding + padding}px`,
       height: "100%",
       marginTop: `${padding + 5}px`
     };
@@ -69,7 +73,11 @@ export default class Collection extends React.Component<CollectionProps, any> {
 
     return (
       <div className="collection" style={{ fontFamily: "Arial, sans-serif" }}>
-        <div className="collectionTop" style={collectionTopStyle}>
+        <div
+          className="collectionTop"
+          style={collectionTopStyle}
+          aria-label={this.props.collection.title + " header and search"}
+          role="banner">
           { this.props.collection.search &&
             <div style={{ float: "right", marginRight: "20px" }}>
               <Search
@@ -82,52 +90,74 @@ export default class Collection extends React.Component<CollectionProps, any> {
           <h1 className="collectionTitle">{this.props.collection.title}</h1>
         </div>
 
-        { this.props.history && this.props.history.length ?
-          <nav role="navigation" style={ navStyle }><ul>
-            { this.props.history.map(breadcrumb =>
-              <li style={{ listStyle: "none", float: "left", marginRight: "5px" }} key={breadcrumb.id}>
-                <CollectionLink
-                  text={breadcrumb.text}
-                  url={breadcrumb.url}
-                  setCollection={this.props.setCollection}
-                  style={{ fontSize: "1.2em", marginRight: "5px", cursor: "pointer" }} />
-                ›
+        { this.props.history && this.props.history.length > 0 &&
+          <nav aria-label="breadcrumbs" role="navigation" style={ navStyle }>
+            <ul style={subtleListStyle}>
+              { this.props.history.map(breadcrumb =>
+                <li style={{ listStyle: "none", float: "left", marginRight: "5px" }} key={breadcrumb.id}>
+                  <CollectionLink
+                    text={breadcrumb.text}
+                    url={breadcrumb.url}
+                    setCollection={this.props.setCollection}
+                    style={{ fontSize: "1.2em", marginRight: "5px", cursor: "pointer" }} />
+                  ›
+                </li>
+              )}
+              <li className="currentCollection" style={{ listStyle: "none", float: "left", fontSize: "1.2em" }}>
+                {this.props.collection.title}
               </li>
-            )}
-            <li className="currentCollection" style={{ listStyle: "none", float: "left", fontSize: "1.2em" }}>{this.props.collection.title}</li>
-          </ul></nav> :
-          null
+            </ul>
+          </nav>
         }
 
-        {this.props.collection.facetGroups && this.props.collection.facetGroups.length && (
-          <div className="facetGroups" style={leftPanelStyle}>
+        { this.props.collection.facetGroups && this.props.collection.facetGroups.length > 0 && (
+          <div className="facetGroups" style={leftPanelStyle} role="navigation" aria-label="filters">
+            <SkipNavigationLink />
             { this.props.collection.facetGroups.map(facetGroup =>
-                <FacetGroup key={facetGroup.label} facetGroup={facetGroup} setCollection={this.props.setCollection} />
-            )}
+                <FacetGroup
+                  key={facetGroup.label}
+                  facetGroup={facetGroup}
+                  setCollection={this.props.setCollection} />
+            ) }
           </div>
         )}
 
-        <div className="collectionBody" style={collectionBodyStyle}>
+        <div
+          className="collectionBody"
+          style={collectionBodyStyle}
+          role="main"
+          aria-label={"books in " + this.props.collection.title}>
+          <a className="mainAnchor" name="main"></a>
 
-          { this.props.collection.lanes && this.props.collection.lanes.map(lane =>
-              <Lane
-                key={lane.title}
-                lane={lane}
-                setCollection={this.props.setCollection}
-                setBook={this.props.setBook}
-                collectionUrl={this.props.collection.url} />
-          ) }
+          { this.props.collection.lanes &&
+            <ul aria-label="groups of books" style={subtleListStyle}>
+            { this.props.collection.lanes.map(lane =>
+              <li key={lane.title}>
+                <Lane
+                  lane={lane}
+                  setCollection={this.props.setCollection}
+                  setBook={this.props.setBook}
+                  collectionUrl={this.props.collection.url} />
+              </li>
+            ) }
+            </ul>
+          }
 
-          { this.props.collection.books && this.props.collection.books.map(book =>
-              <Book
-                key={book.id}
-                book={book}
-                setBook={this.props.setBook}
-                collectionUrl={this.props.collection.url} />
-          ) }
+          { this.props.collection.books &&
+            <ul aria-label="books" style={subtleListStyle}>
+            { this.props.collection.books.map(book =>
+              <li key={book.id}>
+                <Book
+                  book={book}
+                  setBook={this.props.setBook}
+                  collectionUrl={this.props.collection.url} />
+              </li>
+            ) }
+            </ul>
+          }
 
           { this.props.collection.links &&
-            <ul style={{ padding: 0, listStyleType: "none" }}>
+            <ul aria-label="navigation links" style={subtleListStyle} role="navigation">
             { this.props.collection.links.map(link =>
               <li key={link.id}>
                 <CollectionLink
@@ -139,7 +169,18 @@ export default class Collection extends React.Component<CollectionProps, any> {
             </ul>
           }
 
-          { this.props.isFetchingPage && <div className="loadingNextPage" style={loadingNextPageStyle}>Loading next page...</div> }
+          { this.canFetch() &&
+            <button
+              className="nextPageLink"
+              style={visuallyHiddenStyle}
+              onClick={this.fetch.bind(this)}>
+              Load more books
+            </button>
+          }
+
+          { this.props.isFetchingPage &&
+            <div className="loadingNextPage" style={loadingNextPageStyle}>Loading next page...</div>
+          }
         </div>
       </div>
     );
@@ -159,10 +200,19 @@ export default class Collection extends React.Component<CollectionProps, any> {
     window.removeEventListener("scroll", this.handleScroll.bind(this));
   }
 
-  handleScroll() {
-    let atBottom = ((document.body.scrollTop + window.innerHeight) >= document.body.scrollHeight);
-    if (atBottom && !this.props.isFetchingPage && this.props.collection.nextPageUrl) {
+  canFetch() {
+    return !this.props.isFetchingPage && this.props.collection.nextPageUrl;
+  }
+
+  fetch() {
+    if (this.canFetch()) {
       this.props.fetchPage(this.props.collection.nextPageUrl);
+    }
+  }
+
+  handleScroll() {
+    if ((document.body.scrollTop + window.innerHeight) >= document.body.scrollHeight) {
+      this.fetch();
     }
   }
 }

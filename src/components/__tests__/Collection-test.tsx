@@ -5,6 +5,7 @@ jest.dontMock("../LaneBook");
 jest.dontMock("../Link");
 jest.dontMock("../CollectionLink");
 jest.dontMock("../FacetGroup");
+jest.dontMock("../SkipNavigationLink");
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -16,6 +17,7 @@ import Book from "../Book";
 import LaneBook from "../LaneBook";
 import FacetGroup from "../FacetGroup";
 import CollectionLink from "../CollectionLink";
+import SkipNavigationLink from "../SkipNavigationLink";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 
 describe("Collection", () => {
@@ -27,6 +29,11 @@ describe("Collection", () => {
       collection = TestUtils.renderIntoDocument(
         <Collection collection={collectionData} />
       );
+    });
+
+    it("contains #main anchor", () => {
+      let link = TestUtils.findRenderedDOMComponentWithClass(collection, "mainAnchor");
+      expect(link.getAttribute("name")).toBe("main");
     });
 
     it("shows the collection title", () => {
@@ -64,6 +71,11 @@ describe("Collection", () => {
       );
     });
 
+    it("shows #main anchor", () => {
+      let link = TestUtils.findRenderedDOMComponentWithClass(collection, "mainAnchor");
+      expect(link.getAttribute("name")).toBe("main");
+    });
+
     it("shows books", () => {
       let collection = TestUtils.renderIntoDocument(
         <Collection collection={collectionData} />
@@ -87,8 +99,10 @@ describe("Collection", () => {
   });
 
   describe("collection with facetGroups", () => {
-    it("shows facet groups", () => {
-      let collectionData = {
+    let collectionData, collection;
+
+    beforeEach(() => {
+      collectionData = {
         id: "test collection",
         url: "test url",
         title: "title",
@@ -101,11 +115,19 @@ describe("Collection", () => {
         }]
       };
 
-      let collection = TestUtils.renderIntoDocument(
+      collection = TestUtils.renderIntoDocument(
         <Collection collection={collectionData} />
       );
+    });
+
+    it("shows facet groups", () => {
       let facetGroups: FacetGroup[] = TestUtils.scryRenderedComponentsWithType(collection, FacetGroup);
       expect(facetGroups.length).toEqual(1);
+    });
+
+    it("shows skip navigation link for facet groups", () => {
+      let link = TestUtils.findRenderedComponentWithType(collection, SkipNavigationLink);
+      expect(link).toBeTruthy;
     });
 
   });
@@ -151,6 +173,18 @@ describe("Collection", () => {
 
       let loading = TestUtils.findRenderedDOMComponentWithClass(collection, "loadingNextPage");
       expect(loading.textContent).toContain("Loading");
+    });
+
+    it("contains next page button", () => {
+      let collectionData = Object.assign({}, ungroupedCollectionData, {
+        nextPageUrl: "next page url"
+      });
+      let collection = TestUtils.renderIntoDocument(
+        <Collection collection={collectionData} isFetchingPage={false} />
+      );
+
+      let link = TestUtils.findRenderedDOMComponentWithClass(collection, "nextPageLink");
+      expect(link.textContent).toBe("Load more books");
     });
   });
 

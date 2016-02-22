@@ -23,6 +23,7 @@ describe("collection reducer", () => {
     url: null,
     data: null,
     isFetching: false,
+    isFetchingPage: false,
     error: null,
     history: []
   };
@@ -36,6 +37,7 @@ describe("collection reducer", () => {
       url: "url"
     },
     isFetching: false,
+    isFetchingPage: false,
     error: null,
     history: []
   };
@@ -44,6 +46,7 @@ describe("collection reducer", () => {
     url: "some url",
     data: { foo: "bar "},
     isFetching: true,
+    isFetchingPage: false,
     error: null,
     history: []
   };
@@ -61,6 +64,7 @@ describe("collection reducer", () => {
     url: "some url",
     data: null,
     isFetching: false,
+    isFetchingPage: false,
     error: "test error",
     history: []
   };
