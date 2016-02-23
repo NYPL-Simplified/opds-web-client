@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export default class Link<P extends LinkProps> extends React.Component<P, any> {
+abstract class Link<P extends LinkProps> extends React.Component<P, any> {
   render(): JSX.Element {
     return (
       <a
@@ -27,12 +27,11 @@ export default class Link<P extends LinkProps> extends React.Component<P, any> {
     }
   }
 
-  href() {
-    throw "href() unimplemented!";
-    return ""; // hack to satisfy type checking
-  }
+  abstract href(): string;
 
-  processClick() {
-    throw "handleUrl() unimplemented!";
-  }
+  abstract processClick(): void;
 }
+
+// Can't "export default abstract class"
+// https://github.com/Microsoft/TypeScript/issues/3792
+export default Link;
