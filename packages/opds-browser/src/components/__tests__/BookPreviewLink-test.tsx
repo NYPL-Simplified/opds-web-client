@@ -28,11 +28,14 @@ let linkProps: BookPreviewLinkProps = {
 describe("BookPreviewLink", () => {
   let link;
   let setBook;
+  let pathFor;
 
   beforeEach(() => {
     setBook = jest.genMockFunction();
+    pathFor = jest.genMockFunction();
+    pathFor.mockReturnValue("path");
     link = TestUtils.renderIntoDocument(
-      <BookPreviewLink {...linkProps} setBook={setBook} />
+      <BookPreviewLink {...linkProps} setBook={setBook} pathFor={pathFor} />
     );
   });
 
@@ -42,11 +45,12 @@ describe("BookPreviewLink", () => {
     expect(element.className).toBe(linkProps.className);
   });
 
-  it("encodes the collection and book urls", () => {
+  it("calls pathFor on the collection and book urls", () => {
     let element = TestUtils.findRenderedDOMComponentWithTag(link, "a");
-    let encodedCollectionUrl = encodeURIComponent(linkProps.collectionUrl);
-    let encodedBookUrl = encodeURIComponent(linkProps.url);
-    expect(element.getAttribute("href")).toBe("?collection=" + encodedCollectionUrl + "&book=" + encodedBookUrl);
+    expect(element.getAttribute("href")).toBe("path");
+    expect(pathFor.mock.calls.length).toBe(1);
+    expect(pathFor.mock.calls[0][0]).toBe(linkProps.collectionUrl);
+    expect(pathFor.mock.calls[0][1]).toBe(linkProps.url);
   });
 
   it("shows the book preview if clicked normally", () => {

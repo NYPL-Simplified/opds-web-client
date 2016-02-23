@@ -16,11 +16,14 @@ let linkProps = {
 describe("CollectionLink", () => {
   let collectionLink;
   let setCollection;
+  let pathFor;
 
   beforeEach(() => {
     setCollection = jest.genMockFunction();
+    pathFor = jest.genMockFunction();
+    pathFor.mockReturnValue("path");
     collectionLink = TestUtils.renderIntoDocument(
-      <CollectionLink {...linkProps} setCollection={setCollection} />
+      <CollectionLink {...linkProps} setCollection={setCollection} pathFor={pathFor} />
     );
   });
 
@@ -30,9 +33,12 @@ describe("CollectionLink", () => {
     expect(link.getAttribute("class")).toBe(linkProps.className);
   });
 
-  it("encodes the collection url", () => {
+  it("calls pathFor on the collection url", () => {
     let link = TestUtils.findRenderedDOMComponentWithTag(collectionLink, "a");
-    expect(link.getAttribute("href")).toBe("?collection=" + encodeURIComponent(linkProps.url));
+    expect(link.getAttribute("href")).toBe("path");
+    expect(pathFor.mock.calls.length).toBe(1);
+    expect(pathFor.mock.calls[0][0]).toBe(linkProps.url);
+    expect(pathFor.mock.calls[0][1]).toBeFalsy();
   });
 
   it("fetches the url if clicked normally", () => {

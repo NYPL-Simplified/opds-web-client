@@ -98,6 +98,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
                   <CollectionLink
                     text={breadcrumb.text}
                     url={breadcrumb.url}
+                    pathFor={this.props.pathFor}
                     setCollection={this.props.setCollection}
                     style={{ fontSize: "1.2em", marginRight: "5px", cursor: "pointer" }} />
                   ›
@@ -117,6 +118,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
                 <FacetGroup
                   key={facetGroup.label}
                   facetGroup={facetGroup}
+                  pathFor={this.props.pathFor}
                   setCollection={this.props.setCollection} />
             ) }
           </div>
@@ -137,6 +139,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
                   lane={lane}
                   setCollection={this.props.setCollection}
                   setBook={this.props.setBook}
+                  pathFor={this.props.pathFor}
                   collectionUrl={this.props.collection.url} />
               </li>
             ) }
@@ -150,6 +153,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
                 <Book
                   book={book}
                   setBook={this.props.setBook}
+                  pathFor={this.props.pathFor}
                   collectionUrl={this.props.collection.url} />
               </li>
             ) }
@@ -164,6 +168,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
                   text={link.text}
                   url={link.url}
                   setCollection={this.props.setCollection}
+                  pathFor={this.props.pathFor}
                   style={linkStyle} />
               </li>) }
             </ul>

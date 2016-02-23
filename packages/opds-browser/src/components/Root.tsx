@@ -33,6 +33,7 @@ export class Root extends React.Component<RootProps, any> {
             error={this.props.error}
             fetchSearchDescription={this.props.fetchSearchDescription}
             setBook={this.props.setBook}
+            pathFor={this.props.pathFor}
             history={this.props.history} /> :
           this.props.isFetching ? null : <UrlForm setCollection={this.props.setCollection} url={this.props.collectionUrl} />
         }

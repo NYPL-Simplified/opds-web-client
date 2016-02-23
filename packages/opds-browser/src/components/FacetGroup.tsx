@@ -14,7 +14,8 @@ export default class FacetGroup extends React.Component<FacetGroupProps, any> {
               className="facetLink"
               text={facet.label}
               url={facet.href}
-              setCollection={this.props.setCollection} />
+              setCollection={this.props.setCollection}
+              pathFor={this.props.pathFor} />
           </li>
         ) }
         </ul>

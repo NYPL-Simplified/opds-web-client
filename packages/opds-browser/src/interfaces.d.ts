@@ -1,4 +1,5 @@
 interface BaseProps extends __React.HTMLProps<any> {
+  pathFor?: (collectionUrl: string, bookUrl: string) => string;
 }
 
 interface CollectionActionProps {

@@ -69,7 +69,10 @@
         startCollection: startCollection,
         startBook: startBook,
         proxyUrl: "/proxy",
-        onNavigate: pushHistory
+        onNavigate: pushHistory,
+        pathFor: function (collectionUrl, bookUrl) {
+          return serializeParams({collection: collectionUrl, book: bookUrl});
+        }
       }, "opds-browser");
 
       if (startCollection || startBook) {

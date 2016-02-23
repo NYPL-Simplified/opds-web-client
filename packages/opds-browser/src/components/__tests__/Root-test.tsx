@@ -106,11 +106,19 @@ describe("Root", () => {
     beforeEach(() => {
       store = createStore(reducers, applyMiddleware(thunk));
       onNavigate = jest.genMockFunction();
+      let pathFor = (collectionUrl, bookUrl) => {
+        let path = "?collection=" + encodeURIComponent(collectionUrl);
+        if (bookUrl) {
+          path += "&book=" + encodeURIComponent(bookUrl);
+        }
+        return path;
+      };
       TestUtils.renderIntoDocument(
         <Provider store={store}>
           <ConnectedRoot
             ref={(c) => root = c}
             onNavigate={onNavigate}
+            pathFor={pathFor}
             collectionData={collectionData} />
         </Provider>
       );

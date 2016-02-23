@@ -39,6 +39,7 @@ export default class Book extends React.Component<BookProps, any> {
           url={this.props.book.url}
           book={this.props.book}
           setBook={this.props.setBook}
+          pathFor={this.props.pathFor}
           collectionUrl={this.props.collectionUrl}
           style={{ color: "black", textDecoration: "none" }}>
           <img src={this.props.book.imageUrl} style={bookCoverStyle} alt=""/>

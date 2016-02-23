@@ -24,7 +24,8 @@ export default class OPDSBrowser {
           startCollection={config.startCollection}
           startBook={config.startBook}
           proxyUrl={config.proxyUrl}
-          onNavigate={config.onNavigate} />
+          onNavigate={config.onNavigate}
+          pathFor={config.pathFor} />
       </Provider>,
       document.getElementById(elementId)
     );
