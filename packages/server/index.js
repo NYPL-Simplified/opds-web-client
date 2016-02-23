@@ -1,5 +1,6 @@
 var express = require('express');
 var request = require("request");
+var url = require("url");
 var app = express();
 var port = process.env.PORT || 3000;
 
@@ -20,10 +21,16 @@ app.get("/", function(req, res, next) {
 });
 
 app.post("/proxy", function(req, res, next) {
+  var options = {
+    uri: req.body.url,
+    headers: {
+      "Authorization": req.headers.authorization
+    }
+  };
   request
-    .get(req.body.url)
+    .get(options)
     .on("error", function(err) {
-      next("proxy request error: " + req.body.url);
+      next("proxy request error: " + req.body.url + " " + err);
     })
     .pipe(res);
 });
