@@ -30,7 +30,7 @@ export default class Modal extends React.Component<any, any> {
           className="modalScreen"
           onClick={this.props.close}
           style={screenStyle}></div>
-        <div className="modal" style={modalStyle}>
+        <div className="modalContent" style={modalStyle}>
           <div style={{ float: "right" }}>
             <a href="javascript:void(0)"
               className="closeLink"

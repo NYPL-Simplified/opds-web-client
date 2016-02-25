@@ -91,7 +91,7 @@ describe("Root", () => {
     let root = TestUtils.renderIntoDocument(
       <Root bookData={bookData} />
     );
-    let book = TestUtils.findRenderedDOMComponentWithClass(root, "modal");
+    let book = TestUtils.findRenderedDOMComponentWithClass(root, "modalContent");
 
     expect(book.textContent).toContain(bookData.title);
     expect(book.textContent).toContain(bookData.authors.join(", "));

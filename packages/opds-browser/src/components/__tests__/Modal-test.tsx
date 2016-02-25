@@ -17,7 +17,7 @@ describe("Modal", () => {
   });
 
   it("shows modal content", () => {
-    let renderedModal = TestUtils.findRenderedDOMComponentWithClass(modal, "modal");
+    let renderedModal = TestUtils.findRenderedDOMComponentWithClass(modal, "modalContent");
     expect(renderedModal.textContent).toContain("content");
   });
 
