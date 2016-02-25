@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "OPDS browser",
   "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/NYPL-Simplified/opds-browser.git"
@@ -13,7 +14,7 @@
     "test": "tslint -c tslint.json src/*.ts src/*.tsx src/**/*.ts src/**/*.tsx src/**/**/*.ts src/**/**/*.tsx && tsc && jest",
     "dev": "webpack-dev-server --progress --history-api-fallback --hot --content-base build --port 8090 --config webpack.dev.config",
     "prod": "rm -rf lib && NODE_ENV=production webpack -p --progress --display-modules --config webpack.prod.config",
-    "prepublish": "typings install && tsc && npm run prod"
+    "prepublish": "typings install && rm -rf lib && tsc"
   },
   "dependencies": {
     "opds-feed-parser": "^0.0.9",
