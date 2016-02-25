@@ -111,6 +111,7 @@ interface RootProps extends State, CollectionActionProps, BookActionProps, BaseP
   startBook?: string;
   proxyUrl?: string;
   onNavigate?: (collectionUrl: string, bookUrl?: string) => any;
+  BookDetailsContainer?: new() =>  __React.Component<BookProps, any>;
   dispatch?: any;
   clearCollection?: () => void;
   ref?: any;

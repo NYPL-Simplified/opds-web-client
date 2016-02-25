@@ -91,10 +91,29 @@ describe("Root", () => {
     let root = TestUtils.renderIntoDocument(
       <Root bookData={bookData} />
     );
-    let book = TestUtils.findRenderedDOMComponentWithClass(root, "bookDetails");
+    let book = TestUtils.findRenderedDOMComponentWithClass(root, "modal");
 
     expect(book.textContent).toContain(bookData.title);
     expect(book.textContent).toContain(bookData.authors.join(", "));
+  });
+
+  it("shows book detail container from config", () => {
+    class Container extends React.Component<BookProps, any> {
+      render(): JSX.Element {
+        return (
+          <div className="container">
+            {this.props.children}
+          </div>
+        );
+      }
+    }
+
+    let bookData = groupedCollectionData.lanes[0].books[0];
+    let root = TestUtils.renderIntoDocument(
+      <Root bookData={bookData} BookDetailsContainer={Container} />
+    );
+    let container = TestUtils.findRenderedDOMComponentWithClass(root, "container");
+    expect(container.textContent).toContain(bookData.title);
   });
 
   describe("connected to store", () => {
@@ -141,7 +160,7 @@ describe("Root", () => {
       let collectionUrl = decodeURIComponent(parts[0].split("=")[1]);
       let bookUrl = decodeURIComponent(parts[1].split("=")[1]);
       TestUtils.Simulate.click(bookLink);
-      let closeLink = TestUtils.findRenderedDOMComponentWithClass(rootInstance, "bookDetailsCloseLink");
+      let closeLink = TestUtils.findRenderedDOMComponentWithClass(rootInstance, "closeLink");
       TestUtils.Simulate.click(closeLink);
 
       expect(onNavigate.mock.calls.length).toBe(2);
