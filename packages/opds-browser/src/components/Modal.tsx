@@ -8,7 +8,6 @@ export default class Modal extends React.Component<any, any> {
       position: "fixed",
       left: "10%",
       top: "25%",
-      overflowY: "scroll",
       padding: "30px",
       backgroundColor: "#fff",
       fontFamily: "Arial, Helvetica, sans-serif",

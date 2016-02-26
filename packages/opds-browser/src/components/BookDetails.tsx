@@ -2,8 +2,14 @@ import * as React from "react";
 
 export default class BookDetails extends React.Component<BookProps, any> {
   render(): JSX.Element {
+    let bookDetailsStyle = {
+      width: "100%",
+      height: "100%",
+      overflowY: "auto"
+    };
+
     return (
-      <div>
+      <div style={bookDetailsStyle}>
         <div className="bookImage" style={{ width: "150px", float: "left", textAlign: "right" }}>
           <img src={this.props.book.imageUrl} style={{ height: "150px" }}/>
         </div>
