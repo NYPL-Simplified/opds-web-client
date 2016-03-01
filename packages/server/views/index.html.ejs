@@ -15,7 +15,7 @@
     <% if (process.env.NODE_ENV === "development") { %>
     <script src="http://localhost:8090/dist/opds-browser.js"></script>
     <% } else { %>
-    <script src="/opds-browser.js"></script>
+    <script src="/index.js"></script>
     <% } %>
     <script>
       var getParam = function(name) {
@@ -69,7 +69,10 @@
         startCollection: startCollection,
         startBook: startBook,
         proxyUrl: "/proxy",
-        onNavigate: pushHistory
+        onNavigate: pushHistory,
+        pathFor: function (collectionUrl, bookUrl) {
+          return serializeParams({collection: collectionUrl, book: bookUrl});
+        }
       }, "opds-browser");
 
       if (startCollection || startBook) {

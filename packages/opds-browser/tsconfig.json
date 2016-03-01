@@ -5,7 +5,8 @@
     "target": "es5",
     "outDir": "lib",
     "rootDir": "src",
-    "jsx": "react"
+    "jsx": "react",
+    "declaration": true
   },
   "exclude": [
     "lib",

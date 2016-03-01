@@ -49,6 +49,8 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
     }
   } : undefined;
 
+  let pathFor = componentProps.pathFor ? componentProps.pathFor : (collectionUrl: string, bookUrl: string) => { return "#"; };
+
   let fetcher = new DataFetcher(componentProps.proxyUrl);
   let dispatchProps = createDispatchProps.createDispatchProps(fetcher);
 
@@ -138,6 +140,7 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
       setBook(null);
     },
     // so that collectionData can be passed to Root as prop and not be overwritten by empty initial state
-    collectionData: componentProps.collectionData ? componentProps.collectionData : stateProps.collectionData
+    collectionData: componentProps.collectionData ? componentProps.collectionData : stateProps.collectionData,
+    pathFor: pathFor
   });
 };

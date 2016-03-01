@@ -23,7 +23,8 @@ export default class Lane extends React.Component<LaneProps, any> {
             className="laneTitle"
             text={this.props.lane.title}
             url={this.props.lane.url}
-            setCollection={this.props.setCollection} />
+            setCollection={this.props.setCollection}
+            pathFor={this.props.pathFor} />
         </h2>
 
         { this.props.lane.books &&
@@ -33,7 +34,8 @@ export default class Lane extends React.Component<LaneProps, any> {
               <LaneBook
                 book={book}
                 collectionUrl={this.props.collectionUrl}
-                setBook={this.props.setBook} />
+                setBook={this.props.setBook}
+                pathFor={this.props.pathFor} />
             </li>
           ) }
           </ul>

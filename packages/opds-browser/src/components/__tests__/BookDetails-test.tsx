@@ -19,12 +19,11 @@ let book = {
 };
 
 describe("BookDetails", () => {
-  let renderedBook, clearBook;
+  let renderedBook;
 
   beforeEach(() => {
-    clearBook = jest.genMockFunction();
     renderedBook = TestUtils.renderIntoDocument(
-      <BookDetails book={book} clearBook={clearBook} />
+      <BookDetails book={book} />
     );
   });
 
@@ -85,18 +84,5 @@ describe("BookDetails", () => {
   it("doesn't show categories when there aren't any", () => {
     let categories = TestUtils.scryRenderedDOMComponentsWithClass(renderedBook, "bookDetailsCategories");
     expect(categories.length).toEqual(0);
-  });
-
-  it("hides when close link is clicked", () => {
-    let link = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookDetailsCloseLink");
-    expect(link.textContent).toEqual("Close");
-    TestUtils.Simulate.click(link);
-    expect(clearBook.mock.calls.length).toBe(1);
-  });
-
-  it("hides when background screen is clicked", () => {
-    let screen = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookDetailsScreen");
-    TestUtils.Simulate.click(screen);
-    expect(clearBook.mock.calls.length).toBe(1);
   });
 });

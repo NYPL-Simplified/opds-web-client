@@ -1,6 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps, mergeRootProps } from "./mergeRootProps";
+import Modal from "./Modal";
 import BookDetails from "./BookDetails";
 import LoadingIndicator from "./LoadingIndicator";
 import ErrorMessage from "./ErrorMessage";
@@ -11,6 +12,8 @@ import { visuallyHiddenStyle } from "./styles";
 
 export class Root extends React.Component<RootProps, any> {
   render(): JSX.Element {
+    let BookDetailsContainer = this.props.BookDetailsContainer;
+
     return (
       <div className="browser">
         <SkipNavigationLink />
@@ -21,7 +24,16 @@ export class Root extends React.Component<RootProps, any> {
             message={this.props.error}
             retry={() => this.props.setCollection(this.props.collectionUrl)} />
         }
-        { this.props.bookData && <BookDetails book={this.props.bookData} clearBook={this.props.clearBook} /> }
+        { this.props.bookData &&
+            <Modal close={this.props.clearBook}>
+              { BookDetailsContainer ?
+                <BookDetailsContainer book={this.props.bookData}>
+                  <BookDetails book={this.props.bookData} />
+                </BookDetailsContainer> :
+                <BookDetails book={this.props.bookData} />
+              }
+            </Modal>
+        }
 
         { this.props.collectionData ?
           <Collection
@@ -33,6 +45,7 @@ export class Root extends React.Component<RootProps, any> {
             error={this.props.error}
             fetchSearchDescription={this.props.fetchSearchDescription}
             setBook={this.props.setBook}
+            pathFor={this.props.pathFor}
             history={this.props.history} /> :
           this.props.isFetching ? null : <UrlForm setCollection={this.props.setCollection} url={this.props.collectionUrl} />
         }

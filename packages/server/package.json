@@ -1,0 +1,23 @@
+{
+  "name": "opds-browser-demo",
+  "version": "0.0.1",
+  "description": "Demo server using the OPDS browser",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NYPL-Simplified/opds-browser.git"
+  },
+  "main": "index.js",
+  "author": "NYPL",
+  "license": "Apache-2.0",
+  "scripts": {
+    "dev": "NODE_ENV=development node index.js",
+    "start": "NODE_ENV=production node index.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "ejs": "^2.4.1",
+    "express": "^4.13.4",
+    "opds-browser": ">=0.0.3",
+    "request": "^2.69.0"
+  }
+}
