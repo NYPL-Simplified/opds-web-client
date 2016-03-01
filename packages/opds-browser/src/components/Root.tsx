@@ -27,10 +27,10 @@ export class Root extends React.Component<RootProps, any> {
         { this.props.bookData &&
             <Modal close={this.props.clearBook}>
               { BookDetailsContainer ?
-                <BookDetailsContainer book={this.props.bookData} clearBook={this.props.clearBook}>
-                  <BookDetails book={this.props.bookData} clearBook={this.props.clearBook} />
+                <BookDetailsContainer book={this.props.bookData}>
+                  <BookDetails book={this.props.bookData} />
                 </BookDetailsContainer> :
-                <BookDetails book={this.props.bookData} clearBook={this.props.clearBook} />
+                <BookDetails book={this.props.bookData} />
               }
             </Modal>
         }
