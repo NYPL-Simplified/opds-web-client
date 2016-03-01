@@ -22,7 +22,7 @@ describe("Modal", () => {
   });
 
   it("hides when close link is clicked", () => {
-    let link = TestUtils.findRenderedDOMComponentWithClass(modal, "closeLink");
+    let link = TestUtils.findRenderedDOMComponentWithClass(modal, "modalCloseLink");
     expect(link.textContent).toEqual("Close");
     TestUtils.Simulate.click(link);
     expect(close.mock.calls.length).toBe(1);

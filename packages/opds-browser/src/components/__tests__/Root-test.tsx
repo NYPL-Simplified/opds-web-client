@@ -160,7 +160,7 @@ describe("Root", () => {
       let collectionUrl = decodeURIComponent(parts[0].split("=")[1]);
       let bookUrl = decodeURIComponent(parts[1].split("=")[1]);
       TestUtils.Simulate.click(bookLink);
-      let closeLink = TestUtils.findRenderedDOMComponentWithClass(rootInstance, "closeLink");
+      let closeLink = TestUtils.findRenderedDOMComponentWithClass(rootInstance, "modalCloseLink");
       TestUtils.Simulate.click(closeLink);
 
       expect(onNavigate.mock.calls.length).toBe(2);

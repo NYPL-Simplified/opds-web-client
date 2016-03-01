@@ -32,7 +32,7 @@ export default class Modal extends React.Component<any, any> {
         <div className="modalContent" style={modalStyle}>
           <div style={{ float: "right" }}>
             <a href="javascript:void(0)"
-              className="closeLink"
+              className="modalCloseLink"
               style={{ fontSize: "1em" }}
               onClick={this.props.close}>
               Close
