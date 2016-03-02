@@ -55,6 +55,7 @@ describe("OPDSDataAdapter", () => {
     expect(book.imageUrl).toEqual(thumbImageLink.href);
     expect(book.publisher).toBe("Fake Publisher");
     expect(book.published).toBe("June 8, 2014");
+    expect(book.rawEntry).toBe(entry);
   });
 
   it("extracts link info", () => {

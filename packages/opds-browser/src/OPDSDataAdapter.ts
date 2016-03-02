@@ -53,7 +53,8 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
     publisher: entry.publisher,
     published: formatDate(entry.published),
     categories: categories,
-    url: detailUrl
+    url: detailUrl,
+    rawEntry: entry
   };
 }
 
