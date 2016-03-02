@@ -25,6 +25,7 @@ interface BookData {
   publisher?: string;
   published?: string;
   categories?: string[];
+  rawEntry?: any;
 }
 
 interface BookProps extends BookActionProps, BaseProps {
