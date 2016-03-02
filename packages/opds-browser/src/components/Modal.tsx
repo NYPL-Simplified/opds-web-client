@@ -4,11 +4,12 @@ export default class Modal extends React.Component<any, any> {
   render(): JSX.Element {
     let modalStyle = {
       width: "80%",
-      height: "50%",
+      height: "80%",
       position: "fixed",
       left: "10%",
-      top: "25%",
+      top: "10%",
       padding: "30px",
+      boxSizing: "border-box",
       backgroundColor: "#fff",
       fontFamily: "Arial, Helvetica, sans-serif",
       zIndex: 20
