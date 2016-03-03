@@ -1,18 +1,18 @@
 import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 export default class Modal extends React.Component<any, any> {
   render(): JSX.Element {
     let modalStyle = {
-      width: "80%",
-      height: "80%",
+      width: "60%",
       position: "fixed",
-      left: "10%",
-      top: "10%",
+      left: "20%",
       padding: "30px",
-      boxSizing: "border-box",
       backgroundColor: "#fff",
       fontFamily: "Arial, Helvetica, sans-serif",
-      zIndex: 20
+      zIndex: 20,
+      borderRadius: "10px",
+      overflowY: "auto"
     };
 
     let screenStyle = {
@@ -43,6 +43,29 @@ export default class Modal extends React.Component<any, any> {
         </div>
       </div>
     );
+  }
 
+  componentDidMount() {
+    this.setPosition();
+    this.setCollectionOverflow("hidden");
+  }
+
+  componentWillUnmount() {
+    this.setCollectionOverflow("visible");
+  }
+
+  setPosition() {
+    let node = ReactDOM.findDOMNode(this).querySelector(".modalContent") as HTMLElement;
+    let newHeight = Math.min(node.offsetHeight, window.innerHeight - 200);
+    node.style.height = newHeight + "px";
+    node.style.top = (window.innerHeight - node.offsetHeight)/2 + "px";
+  }
+
+  setCollectionOverflow(value: string) {
+    let elem = document.getElementsByTagName("body")[0] as HTMLElement;
+
+    if (elem) {
+      elem.style.overflow = value;
+    }
   }
 }

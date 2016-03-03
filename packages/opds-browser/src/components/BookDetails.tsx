@@ -2,18 +2,18 @@ import * as React from "react";
 
 export default class BookDetails extends React.Component<BookProps, any> {
   render(): JSX.Element {
-    let bookDetailsStyle = {
-      width: "100%",
-      height: "100%",
-      overflowY: "auto"
+    let bookSummaryStyle = {
+      marginTop: "1em",
+      paddingTop: "1em",
+      borderTop: "1px solid #ccc"
     };
 
     return (
-      <div style={bookDetailsStyle}>
+      <div>
         <div className="bookImage" style={{ width: "150px", float: "left", textAlign: "right" }}>
           <img src={this.props.book.imageUrl} style={{ height: "150px" }}/>
         </div>
-        <div className="bookDetailsTop" style={{ marginLeft: "1em", float: "left" }}>
+        <div className="bookDetailsTop" style={{ marginLeft: "1em", float: "left", width: "calc(100% - 220px)" }}>
           <h1 className="bookDetailsTitle" style={{ margin: 0 }}>{this.props.book.title}</h1>
           {
             this.props.book.authors.length ?
@@ -42,7 +42,7 @@ export default class BookDetails extends React.Component<BookProps, any> {
         <div style={{ clear: "both" }}></div>
         <div
           className="bookDetailsSummary"
-          style={{ marginTop: "1em", marginBottom: "1em", paddingTop: "1em", borderTop: "1px solid #ccc" }}
+          style={bookSummaryStyle}
           dangerouslySetInnerHTML={{ __html: this.props.book.summary }}></div>
       </div>
     );
