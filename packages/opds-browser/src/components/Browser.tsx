@@ -8,6 +8,7 @@ import Root from "./Root";
 export default class Browser extends React.Component<RootProps, any> {
   store: Redux.Store;
   root: any;
+  static App: any;
 
   constructor(props) {
     super(props);

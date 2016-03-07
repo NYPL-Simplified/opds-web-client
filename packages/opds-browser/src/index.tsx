@@ -4,7 +4,6 @@ import Browser from "./components/Browser";
 
 class OPDSBrowser {
   browser: any;
-  Browser: any;
 
   constructor(config: any, elementId: string) {
     ReactDOM.render(
@@ -29,21 +28,5 @@ class OPDSBrowser {
   }
 }
 
-var _extends = function (target: any, whatever: any) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = arguments[i];
-    for (var key in source) {
-      target[key] = source[key];
-    }
-  }
-
-  return target;
-};
-
-exports.App = OPDSBrowser;
-exports['default'] = Browser;
-
-module.exports = _extends(exports['default'], exports);
-
-// export = OPDSBrowser;
-// exports.Browser = Browser;
+Browser.App = OPDSBrowser;
+export = Browser;
