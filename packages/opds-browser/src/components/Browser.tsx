@@ -23,7 +23,7 @@ export default class Browser extends React.Component<RootProps, any> {
       <Root
         ref={c => this.root = c}
         store={this.store}
-        {...this.props} />      
+        {...this.props} />
     );
   }
 }

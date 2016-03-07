@@ -50,7 +50,7 @@ describe("Root", () => {
     let startCollection = "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/blocks.xml";
     let setCollectionAndBook = jest.genMockFunction();
     let root = TestUtils.renderIntoDocument(
-      <Root startCollection={startCollection} setCollectionAndBook={setCollectionAndBook} />
+      <Root collectionUrl={startCollection} setCollectionAndBook={setCollectionAndBook} />
     );
 
     expect(setCollectionAndBook.mock.calls.length).toBe(1);
@@ -61,7 +61,7 @@ describe("Root", () => {
     let startBook = "http://example.com/book";
     let setCollectionAndBook = jest.genMockFunction();
     let root = TestUtils.renderIntoDocument(
-      <Root startBook={startBook} setCollectionAndBook={setCollectionAndBook} />
+      <Root bookUrl={startBook} setCollectionAndBook={setCollectionAndBook} />
     );
 
     expect(setCollectionAndBook.mock.calls.length).toBe(1);

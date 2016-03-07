@@ -19,10 +19,6 @@ class OPDSBrowser {
     );
   }
 
-  loadCollection(url: string, skipOnNavigate: boolean = false, bookUrl?: string) {
-    this.browser.root.getWrappedInstance().props.fetchCollection(url, skipOnNavigate, bookUrl);
-  }
-
   loadCollectionAndBook(collectionUrl: string, bookUrl: string, skipOnNavigate: boolean = false) {
     this.browser.root.getWrappedInstance().props.setCollectionAndBook(collectionUrl, bookUrl, skipOnNavigate);
   }
