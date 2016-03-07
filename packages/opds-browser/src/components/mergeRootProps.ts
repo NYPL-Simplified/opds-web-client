@@ -9,15 +9,15 @@ export function findBookInCollection(collection: CollectionData, bookUrl: string
   return allBooks.find(book => book.url === bookUrl);
 }
 
-export function mapStateToProps(state) {
+export function mapStateToProps(state, ownProps) {
   return {
-    collectionData: state.collection.data,
-    collectionUrl: state.collection.url,
+    collectionData: state.collection.data || ownProps.collectionData,
+    collectionUrl: state.collection.url || ownProps.collectionUrl,
     isFetching: (state.collection.isFetching || state.book.isFetching),
     isFetchingPage: state.collection.isFetchingPage,
     error: (state.collection.error || state.book.error),
     bookData: state.book.data,
-    bookUrl: state.book.url,
+    bookUrl: state.book.url || ownProps.bookUrl,
     history: state.collection.history
   };
 };
@@ -139,8 +139,6 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
     clearBook: () => {
       setBook(null);
     },
-    // so that collectionData can be passed to Root as prop and not be overwritten by empty initial state
-    collectionData: componentProps.collectionData ? componentProps.collectionData : stateProps.collectionData,
     pathFor: pathFor
   });
 };

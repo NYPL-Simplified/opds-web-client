@@ -12,6 +12,7 @@
     "lib",
     "node_modules",
     "typings/main.d.ts",
-    "typings/main"
+    "typings/main",
+    "src/components/__tests__"
   ]
 }

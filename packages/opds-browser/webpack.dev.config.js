@@ -4,7 +4,7 @@ var config = {
   entry: {
     app: [
       'webpack/hot/dev-server',
-      './src/index.ts',
+      './src/index.tsx',
     ],
   },
   output: {

@@ -8,7 +8,7 @@ export default class UrlForm extends React.Component<UrlFormProps, any> {
         <form onSubmit={this.onSubmit.bind(this)}>
           <input
             ref="input"
-            name="url"
+            name="collection"
             type="text"
             style={{ width: "600px", fontSize: "1.2em", padding: "0.5em" }}
             defaultValue={this.props.url} />

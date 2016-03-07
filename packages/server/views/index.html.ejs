@@ -66,8 +66,8 @@
       var startCollection = getParam("collection");
       var startBook = getParam("book");
       var browser = new OPDSBrowser({
-        startCollection: startCollection,
-        startBook: startBook,
+        collectionUrl: startCollection,
+        bookUrl: startBook,
         proxyUrl: "/proxy",
         onNavigate: pushHistory,
         pathFor: function (collectionUrl, bookUrl) {

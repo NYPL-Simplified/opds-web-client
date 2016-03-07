@@ -107,8 +107,9 @@ interface State {
 }
 
 interface RootProps extends State, CollectionActionProps, BookActionProps, BaseProps {
-  startCollection?: string;
-  startBook?: string;
+  store?: Redux.Store;
+  collectionUrl?: string;
+  bookUrl?: string;
   proxyUrl?: string;
   onNavigate?: (collectionUrl: string, bookUrl?: string) => any;
   BookDetailsContainer?: new() =>  __React.Component<BookProps, any>;

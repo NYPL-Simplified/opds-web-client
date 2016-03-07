@@ -3,7 +3,7 @@ var webpack = require('webpack');
 var config = {
   entry: {
     app: [
-      './src/index.ts',
+      './src/index.tsx',
     ],
   },
   output: {

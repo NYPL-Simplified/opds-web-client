@@ -21,8 +21,8 @@ export default class OPDSBrowser {
       <Provider store={store}>
         <Root
           ref={(c) => this.root = c}
-          startCollection={config.startCollection}
-          startBook={config.startBook}
+          collectionUrl={config.collectionUrl}
+          bookUrl={config.bookUrl}
           proxyUrl={config.proxyUrl}
           onNavigate={config.onNavigate}
           pathFor={config.pathFor}
