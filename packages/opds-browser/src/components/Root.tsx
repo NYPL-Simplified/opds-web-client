@@ -61,7 +61,7 @@ export class Root extends React.Component<RootProps, any> {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.collection !== this.props.collection || nextProps.book !== this.props.book) {
-      this.props.setCollectionAndBook(nextProps.collection, nextProps.book);
+      this.props.setCollectionAndBook(nextProps.collection, nextProps.book, true);
     }
   }
 }
