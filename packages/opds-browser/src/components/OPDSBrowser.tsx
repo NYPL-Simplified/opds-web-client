@@ -8,7 +8,6 @@ import Root from "./Root";
 export default class OPDSBrowser extends React.Component<RootProps, any> {
   store: Redux.Store;
   root: any;
-  static App: any;
 
   constructor(props) {
     super(props);
