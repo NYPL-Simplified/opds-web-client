@@ -5,7 +5,7 @@ let thunk: any = require("redux-thunk");
 import reducers from "../reducers/index";
 import Root from "./Root";
 
-export default class Browser extends React.Component<RootProps, any> {
+export default class OPDSBrowser extends React.Component<RootProps, any> {
   store: Redux.Store;
   root: any;
   static App: any;

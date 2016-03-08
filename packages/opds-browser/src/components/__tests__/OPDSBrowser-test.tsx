@@ -4,10 +4,10 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
 
-import Browser from "../Browser";
+import OPDSBrowser from "../OPDSBrowser";
 import Root from "../Root";
 
-describe("Browser", () => {
+describe("OPDSBrowser", () => {
   let browser;
   let props = {
     collectionUrl: "collection url",
@@ -19,7 +19,7 @@ describe("Browser", () => {
 
   beforeEach(() => {
     browser = TestUtils.renderIntoDocument(
-      <Browser {...props} />
+      <OPDSBrowser {...props} />
     );
   });
 

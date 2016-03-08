@@ -1,13 +1,13 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Browser from "./components/Browser";
+import OPDSBrowser from "./components/OPDSBrowser";
 
-class OPDSBrowser {
+class OPDSBrowserApp {
   browser: any;
 
   constructor(config: any, elementId: string) {
     ReactDOM.render(
-      <Browser
+      <OPDSBrowser
         ref={(c) => this.browser = c}
         collectionUrl={config.collectionUrl}
         bookUrl={config.bookUrl}
@@ -24,5 +24,5 @@ class OPDSBrowser {
   }
 }
 
-Browser.App = OPDSBrowser;
-export = Browser;
+OPDSBrowser.App = OPDSBrowserApp;
+export = OPDSBrowser;
