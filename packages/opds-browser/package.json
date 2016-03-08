@@ -13,7 +13,7 @@
   "scripts": {
     "test": "tslint -c tslint.json src/*.ts src/*.tsx src/**/*.ts src/**/*.tsx src/**/**/*.ts src/**/**/*.tsx && tsc && jest",
     "dev": "webpack-dev-server --progress --history-api-fallback --hot --content-base build --port 8090 --config webpack.dev.config",
-    "prod": "rm -rf lib && NODE_ENV=production webpack -p --progress --display-modules --config webpack.prod.config",
+    "prod": "NODE_ENV=production webpack -p --progress --display-modules --config webpack.prod.config",
     "prepublish": "typings install && rm -rf lib && tsc && npm run prod"
   },
   "dependencies": {
