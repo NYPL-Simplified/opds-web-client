@@ -46,26 +46,44 @@ describe("Root", () => {
     expect(urlForms.length).toBe(1);
   });
 
-  it("fetches a collection url", () => {
+  it("fetches a collection url on mount", () => {
     let startCollection = "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/blocks.xml";
     let setCollectionAndBook = jest.genMockFunction();
     let root = TestUtils.renderIntoDocument(
-      <Root collectionUrl={startCollection} setCollectionAndBook={setCollectionAndBook} />
+      <Root collection={startCollection} setCollectionAndBook={setCollectionAndBook} />
     );
 
     expect(setCollectionAndBook.mock.calls.length).toBe(1);
     expect(setCollectionAndBook.mock.calls[0][0]).toBe(startCollection);
   });
 
-  it("fetches a book url", () => {
+  it("fetches a book url on mount", () => {
     let startBook = "http://example.com/book";
     let setCollectionAndBook = jest.genMockFunction();
     let root = TestUtils.renderIntoDocument(
-      <Root bookUrl={startBook} setCollectionAndBook={setCollectionAndBook} />
+      <Root book={startBook} setCollectionAndBook={setCollectionAndBook} />
     );
 
     expect(setCollectionAndBook.mock.calls.length).toBe(1);
     expect(setCollectionAndBook.mock.calls[0][1]).toBe(startBook);
+  });
+
+  it("fetches a collection url when updated", () => {
+    let elem = document.createElement("div");
+    let startCollection = "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/blocks.xml";
+    let newCollection = "new collection url";
+    let setCollectionAndBook = jest.genMockFunction();
+    let root = ReactDOM.render(
+      <Root collection={startCollection} setCollectionAndBook={setCollectionAndBook} />,
+      elem
+    );
+    ReactDOM.render(
+      <Root collection={newCollection} setCollectionAndBook={setCollectionAndBook} />,
+      elem
+    );
+
+    expect(setCollectionAndBook.mock.calls.length).toBe(2);
+    expect(setCollectionAndBook.mock.calls[1][0]).toBe(newCollection);
   });
 
   it("shows loading message", () => {
@@ -133,13 +151,12 @@ describe("Root", () => {
         return path;
       };
       TestUtils.renderIntoDocument(
-        <Provider store={store}>
-          <ConnectedRoot
-            ref={(c) => root = c}
-            onNavigate={onNavigate}
-            pathFor={pathFor}
-            collectionData={collectionData} />
-        </Provider>
+        <ConnectedRoot
+          store={store}
+          ref={(c) => root = c}
+          onNavigate={onNavigate}
+          pathFor={pathFor}
+          collectionData={collectionData} />
       );
       rootInstance = root.getWrappedInstance();
     });

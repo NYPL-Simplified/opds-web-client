@@ -106,15 +106,19 @@ interface State {
   history?: LinkData[];
 }
 
-interface RootProps extends State, CollectionActionProps, BookActionProps, BaseProps {
+interface RootProps extends State, CollectionActionProps, BaseProps {
   store?: Redux.Store;
+  collection?: string;
+  book?: string;
   collectionUrl?: string;
   bookUrl?: string;
   proxyUrl?: string;
   onNavigate?: (collectionUrl: string, bookUrl?: string) => any;
   BookDetailsContainer?: new() =>  __React.Component<BookProps, any>;
   dispatch?: any;
+  setBook?: (book: BookData|string, skipOnNavigate?: boolean) => Promise<BookData>;
   clearCollection?: () => void;
+  clearBook?: () => void;
   ref?: any;
   fetchSearchDescription?: (url: string) => void;
   closeError?: () => void;

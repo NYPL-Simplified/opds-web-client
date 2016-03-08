@@ -15,7 +15,7 @@
     <% if (process.env.NODE_ENV === "development") { %>
     <script src="http://localhost:8090/dist/opds-browser.js"></script>
     <% } else { %>
-    <script src="/index.js"></script>
+    <script src="/opds-browser.js"></script>
     <% } %>
     <script>
       var getParam = function(name) {
@@ -54,9 +54,9 @@
           book = event.state.book || null;
         }
 
-        // call loadCollectionAndBook with skipOnNavigate = true
+        // call setCollectionAndBook with skipOnNavigate = true
         // so that state isn't pushed every time it's popped
-        browser.loadCollectionAndBook(collection, book, true);
+        browser.setCollectionAndBook(collection, book, true);
       };
 
       var pushHistory = function(collectionUrl, bookUrl) {
@@ -65,9 +65,9 @@
 
       var startCollection = getParam("collection");
       var startBook = getParam("book");
-      var browser = new OPDSBrowser.App({
-        collectionUrl: startCollection,
-        bookUrl: startBook,
+      var browser = new OPDSBrowserApp({
+        collection: startCollection,
+        book: startBook,
         proxyUrl: "/proxy",
         onNavigate: pushHistory,
         pathFor: function (collectionUrl, bookUrl) {

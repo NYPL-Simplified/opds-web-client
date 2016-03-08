@@ -11,6 +11,8 @@ export function findBookInCollection(collection: CollectionData, bookUrl: string
 
 export function mapStateToProps(state, ownProps) {
   return {
+    collection: ownProps.collection,
+    book: ownProps.book,
     collectionData: state.collection.data || ownProps.collectionData,
     collectionUrl: state.collection.url || ownProps.collectionUrl,
     isFetching: (state.collection.isFetching || state.book.isFetching),
@@ -59,7 +61,7 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
       if (!url) {
         dispatchProps.clearCollection();
         resolve(null);
-      } else if (!stateProps.error && url === stateProps.collectionUrl) {
+      } else if (!stateProps.error && stateProps.collectionData && url === stateProps.collectionUrl) {
         resolve(stateProps.collectionData);
       } else {
         // only fetch collection if url has changed
@@ -93,7 +95,7 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
       } else if (bookData) {
         dispatchProps.loadBook(bookData, url);
         resolve(bookData);
-      } else if (!stateProps.error && url === stateProps.bookUrl) {
+      } else if (!stateProps.error && stateProps.bookData && url === stateProps.bookUrl) {
         resolve(stateProps.bookData);
       } else {
         if (stateProps.collectionData) {
