@@ -1,5 +1,6 @@
 import ActionsCreator from "../actions";
 import DataFetcher from "../DataFetcher";
+import { adapter } from "../OPDSDataAdapter";
 
 export function findBookInCollection(collection: CollectionData, bookUrl: string) {
   let allBooks = collection.lanes.reduce((books, lane) => {
@@ -53,7 +54,7 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
 
   let pathFor = componentProps.pathFor ? componentProps.pathFor : (collectionUrl: string, bookUrl: string) => { return "#"; };
 
-  let fetcher = new DataFetcher(componentProps.proxyUrl);
+  let fetcher = new DataFetcher(componentProps.proxyUrl, adapter);
   let dispatchProps = createDispatchProps.createDispatchProps(fetcher);
 
   let setCollection = (url: string, skipOnNavigate: boolean = false) => {
