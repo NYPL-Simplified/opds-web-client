@@ -12,8 +12,6 @@ export function findBookInCollection(collection: CollectionData, bookUrl: string
 
 export function mapStateToProps(state, ownProps) {
   return {
-    collection: ownProps.collection,
-    book: ownProps.book,
     collectionData: state.collection.data || ownProps.collectionData,
     collectionUrl: state.collection.url || ownProps.collectionUrl,
     isFetching: (state.collection.isFetching || state.book.isFetching),
