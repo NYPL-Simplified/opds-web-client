@@ -1,6 +1,6 @@
 {
   "name": "opds-browser",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "OPDS browser",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",

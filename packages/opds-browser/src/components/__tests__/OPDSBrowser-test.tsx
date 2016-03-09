@@ -37,8 +37,6 @@ describe("OPDSBrowser", () => {
   });
 
   it("puts Root in a 'root' ref", () => {
-    let root = TestUtils.findRenderedComponentWithType(browser, Root);
-
     Object.keys(props).forEach(key => {
       expect(browser.root.props[key]).toEqual(props[key]);
     });
