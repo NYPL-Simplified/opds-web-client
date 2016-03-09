@@ -1,6 +1,6 @@
 {
   "name": "opds-browser",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "OPDS browser",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -13,13 +13,13 @@
   "scripts": {
     "test": "tslint -c tslint.json src/*.ts src/*.tsx src/**/*.ts src/**/*.tsx src/**/**/*.ts src/**/**/*.tsx && tsc && jest",
     "dev": "webpack-dev-server --progress --history-api-fallback --hot --content-base build --port 8090 --config webpack.dev.config",
-    "prod": "rm -rf lib && NODE_ENV=production webpack -p --progress --display-modules --config webpack.prod.config",
-    "prepublish": "typings install && rm -rf lib && tsc"
+    "prod": "NODE_ENV=production webpack -p --progress --display-modules --config webpack.prod.config",
+    "prepublish": "typings install && rm -rf lib && tsc && npm run prod"
   },
   "dependencies": {
     "opds-feed-parser": "^0.0.9",
-    "react": "^0.14.6",
-    "react-dom": "^0.14.6",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7",
     "react-redux": "^4.3.0",
     "redux": "^3.2.1",
     "redux-thunk": "^1.0.3",

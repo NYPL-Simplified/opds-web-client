@@ -54,8 +54,14 @@ export class Root extends React.Component<RootProps, any> {
   }
 
   componentWillMount() {
-    if (this.props.startCollection || this.props.startBook) {
-      this.props.setCollectionAndBook(this.props.startCollection, this.props.startBook, true);
+    if (this.props.collection || this.props.book) {
+      this.props.setCollectionAndBook(this.props.collection, this.props.book, true);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.collection !== this.props.collection || nextProps.book !== this.props.book) {
+      this.props.setCollectionAndBook(nextProps.collection, nextProps.book, true);
     }
   }
 }

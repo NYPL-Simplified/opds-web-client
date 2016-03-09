@@ -3,13 +3,13 @@ var webpack = require('webpack');
 var config = {
   entry: {
     app: [
-      './src/index.ts',
+      './src/app.tsx',
     ],
   },
   output: {
-    path: './lib',
-    filename: 'index.js',
-    library: 'OPDSBrowser',
+    path: './dist',
+    filename: 'opds-browser.js',
+    library: 'OPDSBrowserApp',
     libraryTarget: 'umd'
   },
   plugins: [

@@ -12,6 +12,18 @@ import {
 import * as url from "url";
 const sanitizeHtml = require("sanitize-html");
 
+export function adapter(data: OPDSFeed|OPDSEntry, url: string): CollectionData|BookData {
+  if (data instanceof OPDSFeed) {
+    let collectionData = feedToCollection(data, url);
+    return collectionData;
+  } else if (data instanceof OPDSEntry) {
+    let bookData = entryToBook(data, url);
+    return bookData;
+  } else {
+    throw("parsed data must be OPDSFeed or OPDSEntry");
+  }
+}
+
 export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
   let authors = entry.authors.map((author) => {
     return author.name;
