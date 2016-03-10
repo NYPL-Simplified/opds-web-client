@@ -6,7 +6,6 @@ import FacetGroup from "./FacetGroup";
 import Search from "./Search";
 import SkipNavigationLink from "./SkipNavigationLink";
 import { visuallyHiddenStyle, subtleListStyle } from "./styles";
-import Breadcrumbs from "./Breadcrumbs";
 
 export default class Collection extends React.Component<CollectionProps, any> {
   render(): JSX.Element {

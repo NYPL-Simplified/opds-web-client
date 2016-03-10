@@ -14,13 +14,6 @@ export default class BookDetails extends React.Component<BookProps, any> {
       margin: "0 auto"
     };
 
-    let links = [
-      {
-        text: "Edit",
-        url: (id) => "/admin/?app=editor&book=" + id
-      }
-    ];
-
     return (
       <div className="bookDetails" style={bookStyle}>
         <div className="bookDetailsTop" style={{ textAlign: "left", display: "table-row" }}>
