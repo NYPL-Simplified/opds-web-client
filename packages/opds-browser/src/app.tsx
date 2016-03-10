@@ -9,12 +9,7 @@ class OPDSBrowserApp {
     ReactDOM.render(
       <OPDSBrowser
         ref={(c) => this.browser = c}
-        collection={config.collection}
-        book={config.book}
-        proxyUrl={config.proxyUrl}
-        onNavigate={config.onNavigate}
-        pathFor={config.pathFor}
-        BookDetailsContainer={config.BookDetailsContainer} />,
+        {...config} />,
       document.getElementById(elementId)
     );
   }

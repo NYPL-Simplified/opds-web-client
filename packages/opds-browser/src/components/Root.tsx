@@ -5,6 +5,8 @@ import Modal from "./Modal";
 import BookDetails from "./BookDetails";
 import LoadingIndicator from "./LoadingIndicator";
 import ErrorMessage from "./ErrorMessage";
+import Search from "./Search";
+import Breadcrumbs from "./Breadcrumbs";
 import Collection from "./Collection";
 import UrlForm from "./UrlForm";
 import SkipNavigationLink from "./SkipNavigationLink";
@@ -14,41 +16,111 @@ export class Root extends React.Component<RootProps, any> {
   render(): JSX.Element {
     let BookDetailsContainer = this.props.BookDetailsContainer;
 
+    let headerTitle = this.props.headerTitle || (this.props.collectionData ? this.props.collectionData.title : null);
+
+    let showCollection = this.props.collectionData;
+    let showBook = this.props.bookData;
+    let showUrlForm = !this.props.collectionData && !this.props.bookData && !this.props.isFetching;
+    let showHeader = this.props.collectionData || this.props.bookData;
+    let showBreadcrumbs = showHeader && (showBook || (this.props.history && this.props.history.length > 0));
+
+    let padding = 10;
+    let headerHeight = 70;
+    let navHeight = showBreadcrumbs ? 30 : 0;
+    let marginTop = headerHeight + navHeight + padding + padding;
+
+    let headerStyle = {
+      padding: `${padding}px`,
+      backgroundColor: "#eee",
+      borderBottom: "1px solid #ccc",
+      marginBottom: `${padding}px`,
+      textAlign: "left",
+      position: "fixed",
+      width: "100%",
+      height: `${headerHeight}px`,
+      top: "0"
+    };
+
+
+    let bodyStyle = {
+      paddingTop: `${marginTop}px`
+    };
+
     return (
-      <div className="browser">
+      <div className="browser" style={{ fontFamily: "Arial, sans-serif" }}>
         <SkipNavigationLink />
 
         { this.props.isFetching && <LoadingIndicator /> }
         { this.props.error &&
           <ErrorMessage
             message={this.props.error}
-            retry={() => this.props.setCollection(this.props.collectionUrl)} />
-        }
-        { this.props.bookData &&
-            <Modal close={this.props.clearBook}>
-              { BookDetailsContainer ?
-                <BookDetailsContainer book={this.props.bookData}>
-                  <BookDetails book={this.props.bookData} />
-                </BookDetailsContainer> :
-                <BookDetails book={this.props.bookData} />
-              }
-            </Modal>
+            retry={() => this.props.setCollectionAndBook(this.props.collectionUrl, null)} />
         }
 
-        { this.props.collectionData ?
-          <Collection
-            collection={this.props.collectionData}
-            setCollection={this.props.setCollection}
-            fetchPage={this.props.fetchPage}
-            isFetching={this.props.isFetching}
-            isFetchingPage={this.props.isFetchingPage}
-            error={this.props.error}
-            fetchSearchDescription={this.props.fetchSearchDescription}
-            setBook={this.props.setBook}
-            pathFor={this.props.pathFor}
-            history={this.props.history} /> :
-          this.props.isFetching ? null : <UrlForm setCollection={this.props.setCollection} url={this.props.collectionUrl} />
+        { showUrlForm &&
+          <UrlForm setCollectionAndBook={this.props.setCollectionAndBook} url={this.props.collectionUrl} />
         }
+
+        { headerTitle &&
+          <div
+            className="header"
+            style={headerStyle}
+            role="banner">
+            { this.props.collectionData && this.props.collectionData.search &&
+              <div style={{ float: "right", marginRight: "20px" }}>
+                <Search
+                  url={this.props.collectionData.search.url}
+                  searchData={this.props.collectionData.search.searchData}
+                  fetchSearchDescription={this.props.fetchSearchDescription}
+                  setCollectionAndBook={this.props.setCollectionAndBook} />
+              </div>
+            }
+            <h1 className="headerTitle">{headerTitle}</h1>
+          </div>
+        }
+
+        { showBreadcrumbs &&
+          <Breadcrumbs
+            history={this.props.history}
+            collection={this.props.collectionData}
+            pathFor={this.props.pathFor}
+            setCollectionAndBook={this.props.setCollectionAndBook}
+            showCurrentLink={!!this.props.bookData}
+            navHeight={navHeight}
+            padding={padding}
+            navTop={headerHeight + padding} />
+        }
+
+        <div className="body" style={bodyStyle}>
+          { showBook &&
+            ( BookDetailsContainer ?
+              <BookDetailsContainer book={this.props.bookData}>
+                <BookDetails
+                  book={this.props.bookData}
+                  history={this.props.history}
+                  marginTop={marginTop} />
+              </BookDetailsContainer> :
+              <div><BookDetails
+                book={this.props.bookData}
+                history={this.props.history}
+                marginTop={marginTop} /></div>
+            )
+          }
+
+          { showCollection &&
+            <Collection
+              collection={this.props.collectionData}
+              setCollectionAndBook={this.props.setCollectionAndBook}
+              fetchPage={this.props.fetchPage}
+              isFetching={this.props.isFetching}
+              isFetchingPage={this.props.isFetchingPage}
+              error={this.props.error}
+              fetchSearchDescription={this.props.fetchSearchDescription}
+              setBook={this.props.setBook}
+              pathFor={this.props.pathFor}
+              history={this.props.history} />
+          }
+        </div>
       </div>
     );
   }

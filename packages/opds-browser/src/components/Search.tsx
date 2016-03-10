@@ -29,7 +29,7 @@ export default class Search extends React.Component<SearchProps, any> {
   onSubmit(event) {
     let searchTerms = encodeURIComponent(this.refs["input"]["value"]);
     let url = this.props.searchData.template(searchTerms);
-    this.props.setCollection(url);
+    this.props.setCollectionAndBook(url, null);
     event.preventDefault();
   }
 }
