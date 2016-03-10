@@ -15,7 +15,7 @@ class MockDataFetcher extends DataFetcher {
   resolve: boolean = true;
 
   constructor() {
-    super(null);
+    super(null, null);
   }
 
   fetchOPDSData(url) {

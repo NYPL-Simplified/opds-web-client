@@ -4,9 +4,11 @@ import OpenSearchDescriptionParser from "./OpenSearchDescriptionParser";
 
 export default class DataFetcher {
   private proxyUrl: string;
+  private adapter: any;
 
-  constructor(proxyUrl: string) {
+  constructor(proxyUrl: string, adapter: any) {
     this.proxyUrl = proxyUrl;
+    this.adapter = adapter;
   }
 
   fetchOPDSData(url: string) {
@@ -15,15 +17,7 @@ export default class DataFetcher {
     return new Promise((resolve, reject) => {
       this.fetchData(url).then((response: string) => {
         parser.parse(response).then((parsedData: OPDSFeed | OPDSEntry) => {
-          if (parsedData instanceof OPDSFeed) {
-            let collectionData = feedToCollection(parsedData, url);
-            resolve(collectionData);
-          } else if (parsedData instanceof OPDSEntry) {
-            let bookData = entryToBook(parsedData, url);
-            resolve(bookData);
-          } else {
-            reject("parsed data must be OPDSFeed or OPDSEntry");
-          }
+          resolve(this.adapter(parsedData, url));
         }).catch(err => {
           reject(err);
         });

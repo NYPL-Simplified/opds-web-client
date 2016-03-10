@@ -4,6 +4,9 @@ packages/**/node_modules
 # Compiled JS directory
 packages/opds-browser/lib
 
+# Bundled JS
+dist
+
 # TypeScript definitions
 packages/opds-browser/typings/*
 

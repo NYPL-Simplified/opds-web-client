@@ -4,13 +4,13 @@ var config = {
   entry: {
     app: [
       'webpack/hot/dev-server',
-      './src/index.ts',
+      './src/app.tsx',
     ],
   },
   output: {
     filename: 'opds-browser.js',
     publicPath: 'http://localhost:8090/dist',
-    library: 'OPDSBrowser',
+    library: 'OPDSBrowserApp',
     libraryTarget: 'umd'
   },
   devtool: 'eval',

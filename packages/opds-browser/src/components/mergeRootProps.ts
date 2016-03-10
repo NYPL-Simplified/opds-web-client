@@ -1,5 +1,6 @@
 import ActionsCreator from "../actions";
 import DataFetcher from "../DataFetcher";
+import { adapter } from "../OPDSDataAdapter";
 
 export function findBookInCollection(collection: CollectionData, bookUrl: string) {
   let allBooks = collection.lanes.reduce((books, lane) => {
@@ -9,15 +10,15 @@ export function findBookInCollection(collection: CollectionData, bookUrl: string
   return allBooks.find(book => book.url === bookUrl);
 }
 
-export function mapStateToProps(state) {
+export function mapStateToProps(state, ownProps) {
   return {
-    collectionData: state.collection.data,
-    collectionUrl: state.collection.url,
+    collectionData: state.collection.data || ownProps.collectionData,
+    collectionUrl: state.collection.url || ownProps.collectionUrl,
     isFetching: (state.collection.isFetching || state.book.isFetching),
     isFetchingPage: state.collection.isFetchingPage,
     error: (state.collection.error || state.book.error),
     bookData: state.book.data,
-    bookUrl: state.book.url,
+    bookUrl: state.book.url || ownProps.bookUrl,
     history: state.collection.history
   };
 };
@@ -51,7 +52,7 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
 
   let pathFor = componentProps.pathFor ? componentProps.pathFor : (collectionUrl: string, bookUrl: string) => { return "#"; };
 
-  let fetcher = new DataFetcher(componentProps.proxyUrl);
+  let fetcher = new DataFetcher(componentProps.proxyUrl, adapter);
   let dispatchProps = createDispatchProps.createDispatchProps(fetcher);
 
   let setCollection = (url: string, skipOnNavigate: boolean = false) => {
@@ -59,7 +60,7 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
       if (!url) {
         dispatchProps.clearCollection();
         resolve(null);
-      } else if (!stateProps.error && url === stateProps.collectionUrl) {
+      } else if (!stateProps.error && stateProps.collectionData && url === stateProps.collectionUrl) {
         resolve(stateProps.collectionData);
       } else {
         // only fetch collection if url has changed
@@ -93,7 +94,7 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
       } else if (bookData) {
         dispatchProps.loadBook(bookData, url);
         resolve(bookData);
-      } else if (!stateProps.error && url === stateProps.bookUrl) {
+      } else if (!stateProps.error && stateProps.bookData && url === stateProps.bookUrl) {
         resolve(stateProps.bookData);
       } else {
         if (stateProps.collectionData) {
@@ -139,8 +140,6 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
     clearBook: () => {
       setBook(null);
     },
-    // so that collectionData can be passed to Root as prop and not be overwritten by empty initial state
-    collectionData: componentProps.collectionData ? componentProps.collectionData : stateProps.collectionData,
     pathFor: pathFor
   });
 };

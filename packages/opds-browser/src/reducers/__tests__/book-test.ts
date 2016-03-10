@@ -8,8 +8,9 @@ import * as TestUtils from "react-addons-test-utils";
 import reducer from "../book";
 import DataFetcher from "../../DataFetcher";
 import ActionsCreator from "../../actions";
+import { adapter } from "../../OPDSDataAdapter";
 
-let fetcher = new DataFetcher(null);
+let fetcher = new DataFetcher(null, adapter);
 let actions = new ActionsCreator(fetcher);
 
 describe("book reducer", () => {
