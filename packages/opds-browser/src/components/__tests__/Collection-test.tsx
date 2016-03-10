@@ -36,11 +36,6 @@ describe("Collection", () => {
       expect(link.getAttribute("name")).toBe("main");
     });
 
-    it("shows the collection title", () => {
-      let titleElement = TestUtils.findRenderedDOMComponentWithClass(collection, "collectionTitle");
-      expect(titleElement.textContent).toEqual(collectionData.title);
-    });
-
     it("shows books", () => {
       let books = TestUtils.scryRenderedComponentsWithType(collection, Book);
       let bookCount = collectionData.lanes.reduce((count, lane) => {
@@ -209,31 +204,6 @@ describe("Collection", () => {
 
       let link = TestUtils.findRenderedDOMComponentWithClass(collection, "nextPageLink");
       expect(link.textContent).toBe("Load more books");
-    });
-  });
-
-  describe("collection with history", () => {
-    it("shows link to previous collection", () => {
-      let history = [{
-        id: "2nd id",
-        text: "2nd title",
-        url: "2nd url"
-      }, {
-        id: "last id",
-        text: "last title",
-        url: "last url"
-      }];
-
-      let collection = TestUtils.renderIntoDocument(
-        <Collection collection={ungroupedCollectionData} history={history} />
-      );
-
-      let links = TestUtils.scryRenderedComponentsWithType(collection, CollectionLink);
-      expect(links.length).toEqual(2);
-      expect(links[0].props.text).toContain("2nd title");
-      expect(links[0].props.url).toEqual("2nd url");
-      expect(links[1].props.text).toContain("last title");
-      expect(links[1].props.url).toEqual("last url");
     });
   });
 

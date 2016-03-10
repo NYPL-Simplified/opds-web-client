@@ -125,13 +125,13 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
         setCollection(collectionUrl, true).then(collectionData => {
           setBook(book, true).then(bookData => {
             resolve({ collectionData, bookData });
-
-            if (!skipOnNavigate && onNavigate) {
-              let bookUrl = (typeof book === "string" ? book : (book ? book.url : null));
-              onNavigate(collectionUrl, bookUrl);
-            }
           }).catch(err => reject(err));
         }).catch(err => reject(err));
+
+        if (!skipOnNavigate && onNavigate) {
+          let bookUrl = (typeof book === "string" ? book : (book ? book.url : null));
+          onNavigate(collectionUrl, bookUrl);
+        }
       });
     },
     clearCollection: () => {

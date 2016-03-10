@@ -5,11 +5,13 @@ import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
 
 import ConnectedRoot, { Root } from "../Root";
+import Breadcrumbs from "../Breadcrumbs";
 import Collection from "../Collection";
 import UrlForm from "../UrlForm";
 import BookDetails from "../BookDetails";
 import SkipNavigationLink from "../SkipNavigationLink";
-import { groupedCollectionData } from "./collectionData";
+import CollectionLink from "../CollectionLink";
+import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 import { createStore, applyMiddleware } from "redux";
 let thunk: any = require("redux-thunk");
 import reducers from "../../reducers/index";
@@ -36,6 +38,15 @@ describe("Root", () => {
     expect(collections[0].props.collection.title).toBe(collectionData.title);
   });
 
+  it("shows a header title if a collection is loaded", () => {
+    let collectionData: CollectionData = groupedCollectionData;
+    let root = TestUtils.renderIntoDocument(
+      <Root collectionData={collectionData} />
+    );
+
+    let titleElement = TestUtils.findRenderedDOMComponentWithClass(root, "headerTitle");
+    expect(titleElement.textContent).toEqual(collectionData.title);
+  });
 
   it("shows a url form if props do not include collectionData", () => {
     let root = TestUtils.renderIntoDocument(
@@ -109,10 +120,29 @@ describe("Root", () => {
     let root = TestUtils.renderIntoDocument(
       <Root bookData={bookData} />
     );
-    let book = TestUtils.findRenderedDOMComponentWithClass(root, "modalContent");
+    let book = TestUtils.findRenderedDOMComponentWithClass(root, "bookDetails");
 
     expect(book.textContent).toContain(bookData.title);
     expect(book.textContent).toContain(bookData.authors.join(", "));
+  });
+
+  it("shows breadcrumbs", () => {
+    let history = [{
+      id: "2nd id",
+      text: "2nd title",
+      url: "2nd url"
+    }, {
+      id: "last id",
+      text: "last title",
+      url: "last url"
+    }];
+
+    let root = TestUtils.renderIntoDocument(
+      <Root collectionData={ungroupedCollectionData} history={history} />
+    );
+
+    let breadcrumbs = TestUtils.findRenderedComponentWithType(root, Breadcrumbs);
+    expect(breadcrumbs.props.history).toEqual(history);
   });
 
   it("shows book detail container from config", () => {
@@ -177,8 +207,8 @@ describe("Root", () => {
       let collectionUrl = decodeURIComponent(parts[0].split("=")[1]);
       let bookUrl = decodeURIComponent(parts[1].split("=")[1]);
       TestUtils.Simulate.click(bookLink);
-      let closeLink = TestUtils.findRenderedDOMComponentWithClass(rootInstance, "modalCloseLink");
-      TestUtils.Simulate.click(closeLink);
+      let links = TestUtils.scryRenderedDOMComponentsWithClass(rootInstance, "currentCollectionLink");
+      TestUtils.Simulate.click(links[0]);
 
       expect(onNavigate.mock.calls.length).toBe(2);
       // can't test collectionUrl because it comes from Root's props,

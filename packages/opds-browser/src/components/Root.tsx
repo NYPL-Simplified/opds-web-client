@@ -22,15 +22,15 @@ export class Root extends React.Component<RootProps, any> {
     let showBook = this.props.bookData;
     let showUrlForm = !this.props.collectionData && !this.props.bookData && !this.props.isFetching;
     let showHeader = this.props.collectionData || this.props.bookData;
-    let showBreadcrumbs = showHeader && (showBook || (this.props.history && this.props.history.length > 0));
+    let showBreadcrumbs = showCollection && (this.props.bookData || this.props.history && this.props.history.length > 0);
 
     let padding = 10;
-    let headerHeight = 70;
+    let headerHeight = 40 + padding * 4;
     let navHeight = showBreadcrumbs ? 30 : 0;
-    let marginTop = headerHeight + navHeight + padding + padding;
+    let marginTop = headerHeight + navHeight;
 
     let headerStyle = {
-      padding: `${padding}px`,
+      padding: `${padding * 2}px`,
       backgroundColor: "#eee",
       borderBottom: "1px solid #ccc",
       marginBottom: `${padding}px`,
@@ -38,12 +38,33 @@ export class Root extends React.Component<RootProps, any> {
       position: "fixed",
       width: "100%",
       height: `${headerHeight}px`,
-      top: "0"
+      top: "0",
+      boxSizing: "border-box"
     };
 
+    let navStyle = {
+      height: `${navHeight}px`,
+      position: "fixed",
+      top: `${headerHeight}px`,
+      width: "100%",
+      backgroundColor: "#fff",
+      borderBottom: "1px solid #eee",
+      paddingTop: `${padding}px`,
+      paddingLeft: `${padding}px`
+    };
 
     let bodyStyle = {
       paddingTop: `${marginTop}px`
+    };
+
+    let bookWrapperStyle = {
+      position: "fixed",
+      width: "100%",
+      top: `${marginTop}`,
+      height: `calc(100% - ${marginTop}px)`,
+      backgroundColor: "white",
+      zIndex: 100,
+      overflowY: "scroll"
     };
 
     return (
@@ -67,7 +88,7 @@ export class Root extends React.Component<RootProps, any> {
             style={headerStyle}
             role="banner">
             { this.props.collectionData && this.props.collectionData.search &&
-              <div style={{ float: "right", marginRight: "20px" }}>
+              <div style={{ float: "right" }}>
                 <Search
                   url={this.props.collectionData.search.url}
                   searchData={this.props.collectionData.search.searchData}
@@ -75,35 +96,30 @@ export class Root extends React.Component<RootProps, any> {
                   setCollectionAndBook={this.props.setCollectionAndBook} />
               </div>
             }
-            <h1 className="headerTitle">{headerTitle}</h1>
+            <h1 className="headerTitle" style={{ margin: 0 }}>{headerTitle}</h1>
           </div>
         }
 
         { showBreadcrumbs &&
-          <Breadcrumbs
-            history={this.props.history}
-            collection={this.props.collectionData}
-            pathFor={this.props.pathFor}
-            setCollectionAndBook={this.props.setCollectionAndBook}
-            showCurrentLink={!!this.props.bookData}
-            navHeight={navHeight}
-            padding={padding}
-            navTop={headerHeight + padding} />
+          <div className="breadcrumbsWrapper" style={navStyle}>
+            <Breadcrumbs
+              history={this.props.history}
+              collection={this.props.collectionData}
+              pathFor={this.props.pathFor}
+              setCollectionAndBook={this.props.setCollectionAndBook}
+              showCurrentLink={!!this.props.bookData} />
+          </div>
         }
 
         <div className="body" style={bodyStyle}>
           { showBook &&
             ( BookDetailsContainer ?
               <BookDetailsContainer book={this.props.bookData}>
-                <BookDetails
-                  book={this.props.bookData}
-                  history={this.props.history}
-                  marginTop={marginTop} />
+                <BookDetails book={this.props.bookData} />
               </BookDetailsContainer> :
-              <div><BookDetails
-                book={this.props.bookData}
-                history={this.props.history}
-                marginTop={marginTop} /></div>
+              <div className="bookDetailsWrapper" style={bookWrapperStyle}>
+                <BookDetails book={this.props.bookData} />
+              </div>
             )
           }
 

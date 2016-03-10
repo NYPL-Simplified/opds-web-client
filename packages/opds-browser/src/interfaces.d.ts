@@ -31,11 +31,6 @@ interface BookProps extends BookActionProps, BaseProps {
   book: BookData;
 }
 
-interface BookDetailsProps extends BookProps {
-  history: LinkData[];
-  marginTop: Number;
-}
-
 interface LaneData {
   title: string;
   url: string;
@@ -161,8 +156,5 @@ interface ErrorMessageProps {
 interface BreadcrumbsProps extends BaseProps, CollectionActionProps {
   history: LinkData[];
   collection: CollectionData;
-  navHeight: Number;
-  navTop: Number;
-  padding: Number;
   showCurrentLink?: Boolean;
 }

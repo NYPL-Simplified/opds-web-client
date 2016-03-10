@@ -58,7 +58,7 @@ export default class Modal extends React.Component<any, any> {
     let node = ReactDOM.findDOMNode(this).querySelector(".modalContent") as HTMLElement;
     let newHeight = Math.min(node.offsetHeight, window.innerHeight - 200);
     node.style.height = newHeight + "px";
-    node.style.top = (window.innerHeight - node.offsetHeight)/2 + "px";
+    node.style.top = (window.innerHeight - node.offsetHeight) / 2 + "px";
   }
 
   setCollectionOverflow(value: string) {
