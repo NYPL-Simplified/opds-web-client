@@ -13,12 +13,12 @@ export function findBookInCollection(collection: CollectionData, bookUrl: string
 export function mapStateToProps(state, ownProps) {
   return {
     collectionData: state.collection.data || ownProps.collectionData,
-    collectionUrl: state.collection.url || ownProps.collectionUrl,
+    collectionUrl: state.collection.url,
     isFetching: (state.collection.isFetching || state.book.isFetching),
     isFetchingPage: state.collection.isFetchingPage,
     error: (state.collection.error || state.book.error),
     bookData: state.book.data,
-    bookUrl: state.book.url || ownProps.bookUrl,
+    bookUrl: state.book.url,
     history: state.collection.history
   };
 };
@@ -125,13 +125,13 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
         setCollection(collectionUrl, true).then(collectionData => {
           setBook(book, true).then(bookData => {
             resolve({ collectionData, bookData });
-
-            if (!skipOnNavigate && onNavigate) {
-              let bookUrl = (typeof book === "string" ? book : (book ? book.url : null));
-              onNavigate(collectionUrl, bookUrl);
-            }
           }).catch(err => reject(err));
         }).catch(err => reject(err));
+
+        if (!skipOnNavigate && onNavigate) {
+          let bookUrl = (typeof book === "string" ? book : (book ? book.url : null));
+          onNavigate(collectionUrl, bookUrl);
+        }
       });
     },
     clearCollection: () => {

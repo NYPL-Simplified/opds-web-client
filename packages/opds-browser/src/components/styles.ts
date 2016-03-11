@@ -14,3 +14,21 @@ export const subtleListStyle: __React.CSSProperties = {
   margin: 0,
   listStyleType: "none"
 };
+
+export function popupStyle(width: number): __React.CSSProperties {
+  return {
+    position: "fixed",
+    top: "50%",
+    left: "50%",
+    width: `${width}px`,
+    marginTop: "-100px",
+    marginLeft: `-${width / 2}px`,
+    padding: "30px",
+    backgroundColor: "#ddd",
+    textAlign: "center",
+    fontFamily: "Arial, Helvetica, sans-serif",
+    zIndex: 200,
+    borderRadius: "20px",
+    boxShadow: "0 0 1em #888"
+  };
+}

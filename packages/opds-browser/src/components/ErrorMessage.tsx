@@ -1,20 +1,10 @@
 import * as React from "react";
+import { popupStyle } from "./styles";
 
 export default class ErrorMessage extends React.Component<ErrorMessageProps, any> {
   render(): JSX.Element {
     let errorWidth = Math.max(400, this.maxWordLength() * 5);
-    let errorStyle = {
-      position: "fixed",
-      top: "50%",
-      left: "50%",
-      width: `${errorWidth}px`,
-      marginTop: "-100px",
-      marginLeft: `-${errorWidth / 2}px`,
-      padding: "30px",
-      backgroundColor: "#bbb",
-      textAlign: "center",
-      fontFamily: "Arial, Helvetica, sans-serif"
-    };
+    let errorStyle = popupStyle(errorWidth);
 
     return (
       <div className="error" style={errorStyle}>
@@ -25,11 +15,13 @@ export default class ErrorMessage extends React.Component<ErrorMessageProps, any
         <br />
         <button
           className="retryButton"
+          style={{ fontSize: "1.2em" }}
           onClick={this.props.retry}>
           Try again
-        </button>&nbsp;
+        </button>&nbsp;&nbsp;
         <button
           className="errorCloseButton"
+          style={{ fontSize: "1.2em" }}
           onClick={() => window.history.back() }>
           Go Back
         </button>

@@ -3,7 +3,7 @@ interface BaseProps extends __React.HTMLProps<any> {
 }
 
 interface CollectionActionProps {
-  setCollection?: (url: string, skipOnNavigate?: boolean, bookUrl?: string) => void;
+  setCollectionAndBook?: (collectionUrl: string, book: BookProps|string, skipOnNavigate?: boolean) => void;
   fetchPage?: (url: string) => void;
 }
 
@@ -123,7 +123,7 @@ interface RootProps extends State, CollectionActionProps, BaseProps {
   fetchSearchDescription?: (url: string) => void;
   closeError?: () => void;
   fetchBook?: (bookUrl: string) => void;
-  setCollectionAndBook?: (collectionUrl: string, book: BookProps|string, skipOnNavigate?: boolean) => void;
+  headerTitle?: string;
 }
 
 interface UrlFormProps extends CollectionActionProps, BaseProps {
@@ -151,4 +151,10 @@ interface BookPreviewLinkProps extends LinkProps, BookActionProps, BaseProps {
 interface ErrorMessageProps {
   message: string;
   retry?: () => void;
+}
+
+interface BreadcrumbsProps extends BaseProps, CollectionActionProps {
+  history: LinkData[];
+  collection: CollectionData;
+  showCurrentLink?: Boolean;
 }

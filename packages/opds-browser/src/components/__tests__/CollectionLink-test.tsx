@@ -15,15 +15,15 @@ let linkProps = {
 
 describe("CollectionLink", () => {
   let collectionLink;
-  let setCollection;
+  let setCollectionAndBook;
   let pathFor;
 
   beforeEach(() => {
-    setCollection = jest.genMockFunction();
+    setCollectionAndBook = jest.genMockFunction();
     pathFor = jest.genMockFunction();
     pathFor.mockReturnValue("path");
     collectionLink = TestUtils.renderIntoDocument(
-      <CollectionLink {...linkProps} setCollection={setCollection} pathFor={pathFor} />
+      <CollectionLink {...linkProps} setCollectionAndBook={setCollectionAndBook} pathFor={pathFor} />
     );
   });
 
@@ -44,15 +44,16 @@ describe("CollectionLink", () => {
   it("fetches the url if clicked normally", () => {
     let link = TestUtils.findRenderedDOMComponentWithTag(collectionLink, "a");
     TestUtils.Simulate.click(link);
-    expect(setCollection.mock.calls.length).toBe(1);
-    expect(setCollection.mock.calls[0][0]).toBe(linkProps.url);
+    expect(setCollectionAndBook.mock.calls.length).toBe(1);
+    expect(setCollectionAndBook.mock.calls[0][0]).toBe(linkProps.url);
+    expect(setCollectionAndBook.mock.calls[0][1]).toBe(null);
   });
 
   it("does not fetch the url if clicked with alt, ctrl, cmd, or shift key", () => {
     let link = TestUtils.findRenderedDOMComponentWithTag(collectionLink, "a");
     ["altKey", "ctrlKey", "metaKey", "shiftKey"].forEach(key => {
       TestUtils.Simulate.click(link, { [key]: true });
-      expect(setCollection.mock.calls.length).toBe(0);
+      expect(setCollectionAndBook.mock.calls.length).toBe(0);
     });
   });
 });

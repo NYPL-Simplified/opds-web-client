@@ -2,18 +2,21 @@ import * as React from "react";
 
 export default class UrlForm extends React.Component<UrlFormProps, any> {
   render(): JSX.Element {
+    let placeholder = "e.g. http://feedbooks.github.io/opds-test-catalog/catalog/root.xml";
+
     return (
-      <div id="urlForm" style={{ textAlign: "center", marginTop: "100px" }}>
-        <h1>Remote Data URL:</h1>
+      <div id="urlForm" style={{ width: "800px", margin: "200px auto" }}>
+        <h2>Browse OPDS Feed</h2>
         <form onSubmit={this.onSubmit.bind(this)}>
           <input
             ref="input"
             name="collection"
             type="text"
-            style={{ width: "600px", fontSize: "1.2em", padding: "0.5em" }}
-            defaultValue={this.props.url} />
+            style={{ width: "650px", fontSize: "1.2em", padding: "0.5em" }}
+            defaultValue={this.props.url}
+            placeholder={placeholder} />
           &nbsp;
-          <button type="submit" style={{ fontSize: "1.2em", padding: "0.5em" }}>Load</button>
+          <button type="submit" style={{ fontSize: "1.2em", padding: "0.5em" }}>Browse</button>
         </form>
       </div>
     );
@@ -21,7 +24,7 @@ export default class UrlForm extends React.Component<UrlFormProps, any> {
 
   onSubmit(event) {
     let url = this.refs["input"]["value"];
-    this.props.setCollection(url);
+    this.props.setCollectionAndBook(url, null);
     event.preventDefault();
   }
 }

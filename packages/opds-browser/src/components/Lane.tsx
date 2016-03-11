@@ -23,7 +23,7 @@ export default class Lane extends React.Component<LaneProps, any> {
             className="laneTitle"
             text={this.props.lane.title}
             url={this.props.lane.url}
-            setCollection={this.props.setCollection}
+            setCollectionAndBook={this.props.setCollectionAndBook}
             pathFor={this.props.pathFor} />
         </h2>
 
