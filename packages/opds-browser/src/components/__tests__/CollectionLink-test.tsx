@@ -46,6 +46,7 @@ describe("CollectionLink", () => {
     TestUtils.Simulate.click(link);
     expect(setCollectionAndBook.mock.calls.length).toBe(1);
     expect(setCollectionAndBook.mock.calls[0][0]).toBe(linkProps.url);
+    expect(setCollectionAndBook.mock.calls[0][1]).toBe(null);
   });
 
   it("does not fetch the url if clicked with alt, ctrl, cmd, or shift key", () => {

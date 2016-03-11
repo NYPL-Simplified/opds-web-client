@@ -47,11 +47,11 @@ export default class Modal extends React.Component<any, any> {
 
   componentDidMount() {
     this.setPosition();
-    this.setCollectionOverflow("hidden");
+    this.setBodyOverflow("hidden");
   }
 
   componentWillUnmount() {
-    this.setCollectionOverflow("visible");
+    this.setBodyOverflow("visible");
   }
 
   setPosition() {
@@ -61,7 +61,7 @@ export default class Modal extends React.Component<any, any> {
     node.style.top = (window.innerHeight - node.offsetHeight) / 2 + "px";
   }
 
-  setCollectionOverflow(value: string) {
+  setBodyOverflow(value: string) {
     let elem = document.getElementsByTagName("body")[0] as HTMLElement;
 
     if (elem) {

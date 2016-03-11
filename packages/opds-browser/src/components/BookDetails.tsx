@@ -2,16 +2,16 @@ import * as React from "react";
 
 export default class BookDetails extends React.Component<BookProps, any> {
   render(): JSX.Element {
-    let bookSummaryStyle = {
-      marginTop: "1em",
-      paddingTop: "1em",
-      borderTop: "1px solid #ccc"
-    };
-
     let bookStyle = {
       padding: "40px",
       maxWidth: "700px",
       margin: "0 auto"
+    };
+
+    let bookSummaryStyle = {
+      marginTop: "1em",
+      paddingTop: "1em",
+      borderTop: "1px solid #ccc"
     };
 
     return (
@@ -57,14 +57,14 @@ export default class BookDetails extends React.Component<BookProps, any> {
   }
 
   componentDidMount() {
-    this.setCollectionOverflow("hidden");
+    this.setBodyOverflow("hidden");
   }
 
   componentWillUnmount() {
-    this.setCollectionOverflow("visible");
+    this.setBodyOverflow("visible");
   }
 
-  setCollectionOverflow(value: string) {
+  setBodyOverflow(value: string) {
     let elem = document.getElementsByTagName("body")[0] as HTMLElement;
 
     if (elem) {

@@ -25,12 +25,12 @@ export class Root extends React.Component<RootProps, any> {
     let showBreadcrumbs = showCollection && (this.props.bookData || this.props.history && this.props.history.length > 0);
 
     let padding = 10;
-    let headerHeight = 40 + padding * 4;
+    let headerHeight = 40 + padding * 2;
     let navHeight = showBreadcrumbs ? 30 : 0;
     let marginTop = headerHeight + navHeight;
 
     let headerStyle = {
-      padding: `${padding * 2}px`,
+      padding: `${padding}px`,
       backgroundColor: "#eee",
       borderBottom: "1px solid #ccc",
       marginBottom: `${padding}px`,
@@ -54,7 +54,7 @@ export class Root extends React.Component<RootProps, any> {
     };
 
     let bodyStyle = {
-      paddingTop: `${marginTop}px`
+      paddingTop: `${marginTop + padding}px`,
     };
 
     let bookWrapperStyle = {

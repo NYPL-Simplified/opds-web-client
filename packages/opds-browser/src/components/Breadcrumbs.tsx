@@ -10,6 +10,13 @@ export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> 
       cursor: "pointer"
     };
 
+    let currentCollectionStyle = {
+      listStyle: "none",
+      float: "left",
+      fontSize: (this.props.showCurrentLink ? null : "1.2em"),
+      fontWeight: "bold"
+    };
+
     return (
       <nav className="breadcrumbs" aria-label="breadcrumbs" role="navigation">
         <ul style={subtleListStyle}>
@@ -25,7 +32,7 @@ export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> 
             </li>
           ) }
 
-          <li className="currentCollection" style={{ listStyle: "none", float: "left", fontSize: (this.props.showCurrentLink ? null : "1.2em") }}>
+          <li className="currentCollection" style={currentCollectionStyle}>
             { this.props.showCurrentLink ?
               <CollectionLink
                 className="currentCollectionLink"
