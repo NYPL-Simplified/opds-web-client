@@ -40,6 +40,10 @@ interface BookDetailsProps extends BookProps {
   links?: BookLink[];
 }
 
+interface BookDetailsContainerProps extends BookProps {
+  collection: string;
+}
+
 interface LaneData {
   title: string;
   url: string;
@@ -123,7 +127,7 @@ interface RootProps extends State, CollectionActionProps, BaseProps {
   bookUrl?: string;
   proxyUrl?: string;
   onNavigate?: (collectionUrl: string, bookUrl?: string) => any;
-  BookDetailsContainer?: new() =>  __React.Component<BookProps, any>;
+  BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
   dispatch?: any;
   setBook?: (book: BookData|string, skipOnNavigate?: boolean) => Promise<BookData>;
   clearCollection?: () => void;

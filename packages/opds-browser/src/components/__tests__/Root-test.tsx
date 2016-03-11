@@ -146,7 +146,7 @@ describe("Root", () => {
   });
 
   it("shows book detail container from config", () => {
-    class Container extends React.Component<BookProps, any> {
+    class Container extends React.Component<BookDetailsContainerProps, any> {
       render(): JSX.Element {
         return (
           <div className="container">

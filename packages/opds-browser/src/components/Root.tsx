@@ -13,6 +13,8 @@ import SkipNavigationLink from "./SkipNavigationLink";
 import { visuallyHiddenStyle } from "./styles";
 
 export class Root extends React.Component<RootProps, any> {
+  bookDetailsContainer: any;
+
   render(): JSX.Element {
     let BookDetailsContainer = this.props.BookDetailsContainer;
 
@@ -114,14 +116,21 @@ export class Root extends React.Component<RootProps, any> {
 
         <div className="body" style={bodyStyle}>
           { showBookWrapper &&
-            ( showBook && BookDetailsContainer ?
-              <BookDetailsContainer book={this.props.bookData}>
-                <BookDetails book={this.props.bookData} links={this.props.bookLinks} />
-              </BookDetailsContainer> :
-              <div className="bookDetailsWrapper" style={bookWrapperStyle}>
-                { showBook && <BookDetails book={this.props.bookData} links={this.props.bookLinks} /> }
-              </div>
-            )
+            <div className="bookDetailsWrapper" style={bookWrapperStyle}>
+              { showBook &&
+                ( BookDetailsContainer ?
+                  <BookDetailsContainer
+                    ref={c => this.bookDetailsContainer = c}
+                    book={this.props.bookData}
+                    collection={this.props.collectionUrl}>
+                    <BookDetails book={this.props.bookData} links={this.props.bookLinks} />
+                  </BookDetailsContainer> :
+                  <div style={{ padding: "40px", maxWidth: "700px", margin: "0 auto" }}>
+                    <BookDetails book={this.props.bookData} links={this.props.bookLinks} />
+                  </div>
+                )
+              }
+            </div>
           }
 
           { showCollection &&

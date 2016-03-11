@@ -2,12 +2,6 @@ import * as React from "react";
 
 export default class BookDetails extends React.Component<BookDetailsProps, any> {
   render(): JSX.Element {
-    let bookStyle = {
-      padding: "40px",
-      maxWidth: "700px",
-      margin: "0 auto"
-    };
-
     let bookSummaryStyle = {
       paddingTop: "2em",
       borderTop: "1px solid #ccc"
@@ -15,12 +9,12 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
 
     let linksStyle = {
       padding: "1em",
-      borderTop: "1px solid #ccc",
+      borderTop: "0px solid #ccc",
       textAlign: "left"
     };
 
     return (
-      <div className="bookDetails" style={bookStyle}>
+      <div className="bookDetails">
         <div className="bookDetailsTop" style={{ textAlign: "left", display: "table-row", marginBottom: "1em" }}>
           { this.props.book.imageUrl &&
             <div className="bookImage" style={{ display: "table-cell", paddingRight: "20px", verticalAlign: "top" }}>
