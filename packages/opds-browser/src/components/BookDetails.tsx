@@ -1,16 +1,10 @@
 import * as React from "react";
 
-export default class BookDetails extends React.Component<BookDetailsProps, any> {
+export default class BookDetails extends React.Component<BookProps, any> {
   render(): JSX.Element {
     let bookSummaryStyle = {
       paddingTop: "2em",
       borderTop: "1px solid #ccc"
-    };
-
-    let linksStyle = {
-      padding: "1em",
-      borderTop: "0px solid #ccc",
-      textAlign: "left"
     };
 
     return (
@@ -49,13 +43,6 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
           </div>
         </div>
         <div style={{ clear: "both", marginTop: "1em" }}></div>
-        { this.props.links && this.props.links.length > 0 &&
-          <div className="bookDetailsLinks" style={linksStyle}>
-           { this.props.links.map(link =>
-             <a className="bookDetailsLink btn btn-default" href={link.url(this.props.book)} target="_blank">{link.text}</a>
-           ) }
-          </div>
-        }
         <div
           className="bookDetailsSummary"
           style={bookSummaryStyle}

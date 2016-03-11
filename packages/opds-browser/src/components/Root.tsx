@@ -123,10 +123,10 @@ export class Root extends React.Component<RootProps, any> {
                     ref={c => this.bookDetailsContainer = c}
                     book={this.props.bookData}
                     collection={this.props.collectionUrl}>
-                    <BookDetails book={this.props.bookData} links={this.props.bookLinks} />
+                    <BookDetails book={this.props.bookData} />
                   </BookDetailsContainer> :
                   <div style={{ padding: "40px", maxWidth: "700px", margin: "0 auto" }}>
-                    <BookDetails book={this.props.bookData} links={this.props.bookLinks} />
+                    <BookDetails book={this.props.bookData} />
                   </div>
                 )
               }
