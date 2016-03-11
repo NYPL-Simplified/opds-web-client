@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export default class BookDetails extends React.Component<BookProps, any> {
+export default class BookDetails extends React.Component<BookDetailsProps, any> {
   render(): JSX.Element {
     let bookStyle = {
       padding: "40px",
@@ -9,14 +9,19 @@ export default class BookDetails extends React.Component<BookProps, any> {
     };
 
     let bookSummaryStyle = {
-      marginTop: "1em",
       paddingTop: "2em",
       borderTop: "1px solid #ccc"
     };
 
+    let linksStyle = {
+      padding: "1em",
+      borderTop: "1px solid #ccc",
+      textAlign: "left"
+    };
+
     return (
       <div className="bookDetails" style={bookStyle}>
-        <div className="bookDetailsTop" style={{ textAlign: "left", display: "table-row" }}>
+        <div className="bookDetailsTop" style={{ textAlign: "left", display: "table-row", marginBottom: "1em" }}>
           { this.props.book.imageUrl &&
             <div className="bookImage" style={{ display: "table-cell", paddingRight: "20px", verticalAlign: "top" }}>
               <img src={this.props.book.imageUrl} style={{ height: "150px" }}/>
@@ -49,7 +54,14 @@ export default class BookDetails extends React.Component<BookProps, any> {
             </div>
           </div>
         </div>
-        <div style={{ clear: "both" }}></div>
+        <div style={{ clear: "both", marginTop: "1em" }}></div>
+        { this.props.links && this.props.links.length > 0 &&
+          <div className="bookDetailsLinks" style={linksStyle}>
+           { this.props.links.map(link =>
+             <a className="bookDetailsLink btn btn-default" href={link.url(this.props.book)} target="_blank">{link.text}</a>
+           ) }
+          </div>
+        }
         <div
           className="bookDetailsSummary"
           style={bookSummaryStyle}

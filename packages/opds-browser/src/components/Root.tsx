@@ -116,10 +116,10 @@ export class Root extends React.Component<RootProps, any> {
           { showBookWrapper &&
             ( showBook && BookDetailsContainer ?
               <BookDetailsContainer book={this.props.bookData}>
-                <BookDetails book={this.props.bookData} />
+                <BookDetails book={this.props.bookData} links={this.props.bookLinks} />
               </BookDetailsContainer> :
               <div className="bookDetailsWrapper" style={bookWrapperStyle}>
-                { showBook && <BookDetails book={this.props.bookData} /> }
+                { showBook && <BookDetails book={this.props.bookData} links={this.props.bookLinks} /> }
               </div>
             )
           }

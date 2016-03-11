@@ -31,6 +31,15 @@ interface BookProps extends BookActionProps, BaseProps {
   book: BookData;
 }
 
+interface BookLink {
+  text: string;
+  url: (book: BookData) => string;
+}
+
+interface BookDetailsProps extends BookProps {
+  links?: BookLink[];
+}
+
 interface LaneData {
   title: string;
   url: string;
@@ -124,6 +133,7 @@ interface RootProps extends State, CollectionActionProps, BaseProps {
   closeError?: () => void;
   fetchBook?: (bookUrl: string) => void;
   headerTitle?: string;
+  bookLinks?: BookLink[];
 }
 
 interface UrlFormProps extends CollectionActionProps, BaseProps {
