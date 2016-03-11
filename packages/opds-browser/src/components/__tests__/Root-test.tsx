@@ -164,6 +164,25 @@ describe("Root", () => {
     expect(container.textContent).toContain(bookData.title);
   });
 
+  it("creates a ref for book detail container", () => {
+    class Container extends React.Component<BookDetailsContainerProps, any> {
+      render(): JSX.Element {
+        return (
+          <div className="container">
+            {this.props.children}
+          </div>
+        );
+      }
+    }
+
+    let bookData = groupedCollectionData.lanes[0].books[0];
+    let root = TestUtils.renderIntoDocument(
+      <Root bookUrl={bookData.url} bookData={bookData} BookDetailsContainer={Container} />
+    ) as Root;
+    let container = TestUtils.findRenderedComponentWithType(root, Container);
+    expect(root.bookDetailsContainer.props).toEqual(container.props);
+  });
+
   describe("connected to store", () => {
     let store: Redux.Store;
     let collectionData: CollectionData = groupedCollectionData;
