@@ -2,7 +2,7 @@ import * as React from "react";
 
 export default class UrlForm extends React.Component<UrlFormProps, any> {
   render(): JSX.Element {
-    let placeholder = "e.g. http://feedbooks.github.io/opds-test-catalog/catalog/root.xml"
+    let placeholder = "e.g. http://feedbooks.github.io/opds-test-catalog/catalog/root.xml";
 
     return (
       <div id="urlForm" style={{ width: "800px", margin: "200px auto" }}>

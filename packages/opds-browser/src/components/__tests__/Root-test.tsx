@@ -118,7 +118,7 @@ describe("Root", () => {
   it("shows book detail", () => {
     let bookData = groupedCollectionData.lanes[0].books[0];
     let root = TestUtils.renderIntoDocument(
-      <Root bookData={bookData} />
+      <Root bookUrl={bookData.url} bookData={bookData} />
     );
     let book = TestUtils.findRenderedDOMComponentWithClass(root, "bookDetails");
 
@@ -158,7 +158,7 @@ describe("Root", () => {
 
     let bookData = groupedCollectionData.lanes[0].books[0];
     let root = TestUtils.renderIntoDocument(
-      <Root bookData={bookData} BookDetailsContainer={Container} />
+      <Root bookUrl={bookData.url} bookData={bookData} BookDetailsContainer={Container} />
     );
     let container = TestUtils.findRenderedDOMComponentWithClass(root, "container");
     expect(container.textContent).toContain(bookData.title);
