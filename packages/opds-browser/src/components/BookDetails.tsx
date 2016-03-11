@@ -10,16 +10,18 @@ export default class BookDetails extends React.Component<BookProps, any> {
 
     let bookSummaryStyle = {
       marginTop: "1em",
-      paddingTop: "1em",
+      paddingTop: "2em",
       borderTop: "1px solid #ccc"
     };
 
     return (
       <div className="bookDetails" style={bookStyle}>
         <div className="bookDetailsTop" style={{ textAlign: "left", display: "table-row" }}>
-          <div className="bookImage" style={{ display: "table-cell", paddingRight: "20px", verticalAlign: "top" }}>
-            <img src={this.props.book.imageUrl} style={{ height: "150px" }}/>
-          </div>
+          { this.props.book.imageUrl &&
+            <div className="bookImage" style={{ display: "table-cell", paddingRight: "20px", verticalAlign: "top" }}>
+              <img src={this.props.book.imageUrl} style={{ height: "150px" }}/>
+            </div>
+          }
           <div className="bookDetailsHeader" style={{ display: "table-cell", verticalAlign: "top", textAlign: "left", maxWidth: "500px" }}>
             <h1 className="bookDetailsTitle" style={{ margin: 0 }}>{this.props.book.title}</h1>
             {

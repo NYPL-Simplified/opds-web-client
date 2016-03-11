@@ -13,12 +13,12 @@ export function findBookInCollection(collection: CollectionData, bookUrl: string
 export function mapStateToProps(state, ownProps) {
   return {
     collectionData: state.collection.data || ownProps.collectionData,
-    collectionUrl: state.collection.url || ownProps.collectionUrl,
+    collectionUrl: state.collection.url || ownProps.collection,
     isFetching: (state.collection.isFetching || state.book.isFetching),
     isFetchingPage: state.collection.isFetchingPage,
     error: (state.collection.error || state.book.error),
     bookData: state.book.data,
-    bookUrl: state.book.url || ownProps.bookUrl,
+    bookUrl: state.book.url || ownProps.book,
     history: state.collection.history
   };
 };

@@ -21,7 +21,7 @@ export class Root extends React.Component<RootProps, any> {
     let showCollection = this.props.collectionData;
     let showBook = this.props.bookData;
     let showUrlForm = !this.props.collectionData && !this.props.bookData && !this.props.isFetching;
-    let showHeader = this.props.collectionData || this.props.bookData;
+    let showHeader = headerTitle;
     let showBreadcrumbs = showCollection && (this.props.bookData || this.props.history && this.props.history.length > 0);
 
     let padding = 10;
@@ -82,7 +82,7 @@ export class Root extends React.Component<RootProps, any> {
           <UrlForm setCollectionAndBook={this.props.setCollectionAndBook} url={this.props.collectionUrl} />
         }
 
-        { headerTitle &&
+        { showHeader &&
           <div
             className="header"
             style={headerStyle}
@@ -112,13 +112,13 @@ export class Root extends React.Component<RootProps, any> {
         }
 
         <div className="body" style={bodyStyle}>
-          { showBook &&
-            ( BookDetailsContainer ?
+          { this.props.bookUrl &&
+            ( showBook && BookDetailsContainer ?
               <BookDetailsContainer book={this.props.bookData}>
                 <BookDetails book={this.props.bookData} />
               </BookDetailsContainer> :
               <div className="bookDetailsWrapper" style={bookWrapperStyle}>
-                <BookDetails book={this.props.bookData} />
+                { showBook && <BookDetails book={this.props.bookData} /> }
               </div>
             )
           }
