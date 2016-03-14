@@ -27,6 +27,6 @@ export default class OPDSBrowser extends React.Component<RootProps, any> {
   }
 
   getBookDetailsContainer() {
-    return this.root.getWrappedInstance().bookContainer;
+    return this.root.getWrappedInstance().bookDetailsContainer;
   }
 }
