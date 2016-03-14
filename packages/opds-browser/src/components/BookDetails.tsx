@@ -23,7 +23,7 @@ export default class BookDetails extends React.Component<BookProps, any> {
               ""
             }
             {
-              this.props.book.contributors && this.props.book.contributors && this.props.book.contributors.length ?
+              this.props.book.contributors && this.props.book.contributors.length ?
               <h2 className="bookDetailsContributors" style={{ marginTop: "0.5em", fontSize: "1.2em" }}>Contributors: {this.props.book.contributors.join(", ")}</h2> :
               ""
             }

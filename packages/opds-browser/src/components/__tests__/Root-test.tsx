@@ -234,7 +234,7 @@ describe("Root", () => {
       // much for this test:
       // expect(onNavigate.mock.calls[0][0]).toBe(collectionUrl);
       expect(onNavigate.mock.calls[0][1]).toBe(bookUrl);
-      expect(onNavigate.mock.calls[1][1]).toBeFalsy;
+      expect(onNavigate.mock.calls[1][1]).toBeFalsy();
     });
   });
 });

@@ -74,7 +74,7 @@ describe("mergeRootProps", () => {
 
     it("clears collection data if given a falsy collection url", (done) => {
       props.setCollection(null).then(data => {
-        expect(data).toBeFalsy;
+        expect(data).toBeFalsy();
         expect(fetchCollection.mock.calls.length).toBe(0);
         expect(clearCollection.mock.calls.length).toBe(1);
         expect(onNavigate.mock.calls.length).toBe(1);
@@ -148,7 +148,7 @@ describe("mergeRootProps", () => {
 
     it("clears book data if given a falsy book url", (done) => {
       props.setBook(null).then(data => {
-        expect(data).toBeFalsy;
+        expect(data).toBeFalsy();
         expect(fetchBook.mock.calls.length).toBe(0);
         expect(clearBook.mock.calls.length).toBe(1);
         expect(onNavigate.mock.calls.length).toBe(1);
