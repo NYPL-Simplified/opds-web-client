@@ -121,17 +121,17 @@ describe("OPDSDataAdapter", () => {
 
     let facet1 = groupA.facets[0];
     expect(facet1.label).toEqual("title 1");
-    expect(facet1.active).toBeTruthy;
+    expect(facet1.active).toBeTruthy();
     expect(facet1.href).toEqual("href1");
 
     let facet2 = groupB.facets[0];
     expect(facet2.label).toEqual("title 2");
-    expect(facet2.active).toBeFalsy;
+    expect(facet2.active).toBeFalsy();
     expect(facet2.href).toEqual("href2");
 
     let facet3 = groupA.facets[1];
     expect(facet3.label).toEqual("title 3");
-    expect(facet3.active).toBeFalsy;
+    expect(facet3.active).toBeFalsy();
     expect(facet3.href).toEqual("href3");
   });
 
@@ -147,7 +147,7 @@ describe("OPDSDataAdapter", () => {
     });
 
     let collection = feedToCollection(navigationFeed, "");
-    expect(collection.search).toBeTruthy;
+    expect(collection.search).toBeTruthy();
     expect(collection.search.url).toEqual("href");
   });
 
@@ -164,7 +164,7 @@ describe("OPDSDataAdapter", () => {
     });
 
     let collection = feedToCollection(acquisitionFeed, "");
-    expect(collection.nextPageUrl).toBeTruthy;
+    expect(collection.nextPageUrl).toBeTruthy();
     expect(collection.nextPageUrl).toEqual("href");
   });
 });

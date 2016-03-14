@@ -2,20 +2,13 @@ import * as React from "react";
 
 export default class BookDetails extends React.Component<BookProps, any> {
   render(): JSX.Element {
-    let bookStyle = {
-      padding: "40px",
-      maxWidth: "700px",
-      margin: "0 auto"
-    };
-
     let bookSummaryStyle = {
-      marginTop: "1em",
       paddingTop: "2em",
       borderTop: "1px solid #ccc"
     };
 
     return (
-      <div className="bookDetails" style={bookStyle}>
+      <div className="bookDetails">
         <div className="bookDetailsTop" style={{ textAlign: "left", display: "table-row" }}>
           { this.props.book.imageUrl &&
             <div className="bookImage" style={{ display: "table-cell", paddingRight: "20px", verticalAlign: "top" }}>
@@ -25,7 +18,7 @@ export default class BookDetails extends React.Component<BookProps, any> {
           <div className="bookDetailsHeader" style={{ display: "table-cell", verticalAlign: "top", textAlign: "left", maxWidth: "500px" }}>
             <h1 className="bookDetailsTitle" style={{ margin: 0 }}>{this.props.book.title}</h1>
             {
-              this.props.book.authors.length ?
+              this.props.book.authors && this.props.book.authors.length ?
               <h2 className="bookDetailsAuthors" style={{ marginTop: "0.5em", fontSize: "1.2em" }}>{this.props.book.authors.join(", ")}</h2> :
               ""
             }
@@ -49,7 +42,7 @@ export default class BookDetails extends React.Component<BookProps, any> {
             </div>
           </div>
         </div>
-        <div style={{ clear: "both" }}></div>
+        <div style={{ clear: "both", marginTop: "1em" }}></div>
         <div
           className="bookDetailsSummary"
           style={bookSummaryStyle}

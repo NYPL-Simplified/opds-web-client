@@ -122,7 +122,7 @@ describe("Collection", () => {
 
     it("shows skip navigation link for facet groups", () => {
       let link = TestUtils.findRenderedComponentWithType(collection, SkipNavigationLink);
-      expect(link).toBeTruthy;
+      expect(link).toBeTruthy();
     });
 
   });

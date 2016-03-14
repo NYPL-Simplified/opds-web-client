@@ -1,6 +1,6 @@
 {
   "name": "opds-browser",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "OPDS browser",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -13,7 +13,7 @@
   "scripts": {
     "test": "tslint -c tslint.json src/*.ts src/*.tsx src/**/*.ts src/**/*.tsx src/**/**/*.ts src/**/**/*.tsx && tsc && jest",
     "dev": "webpack-dev-server --progress --history-api-fallback --hot --content-base build --port 8090 --config webpack.dev.config",
-    "prod": "NODE_ENV=production webpack -p --progress --display-modules --config webpack.prod.config",
+    "prod": "NODE_ENV=production webpack -p --progress --display-modules --config webpack.prod.config && rm -rf dist/lib",
     "prepublish": "typings install && rm -rf lib && tsc && npm run prod"
   },
   "dependencies": {
@@ -30,7 +30,7 @@
     "jest": "^0.1.40",
     "jest-cli": "^0.8.2",
     "json-loader": "^0.5.4",
-    "react-addons-test-utils": "^0.14.6",
+    "react-addons-test-utils": "^0.14.7",
     "react-hot-loader": "^1.3.0",
     "ts-loader": "^0.8.0",
     "tslint": "^3.3.0",

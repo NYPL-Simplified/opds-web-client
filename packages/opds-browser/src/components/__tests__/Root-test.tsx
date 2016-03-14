@@ -15,7 +15,6 @@ import { groupedCollectionData, ungroupedCollectionData } from "./collectionData
 import { createStore, applyMiddleware } from "redux";
 let thunk: any = require("redux-thunk");
 import reducers from "../../reducers/index";
-import { Provider } from "react-redux";
 
 describe("Root", () => {
   it("shows skip navigation link", () => {
@@ -24,7 +23,7 @@ describe("Root", () => {
     );
 
     let link = TestUtils.findRenderedComponentWithType(root, SkipNavigationLink);
-    expect(link).toBeTruthy;
+    expect(link).toBeTruthy();
   });
 
   it("shows a collection if props include collectionData", () => {
@@ -103,7 +102,7 @@ describe("Root", () => {
     );
 
     let loading = TestUtils.findRenderedDOMComponentWithClass(root, "loading");
-    expect(loading.textContent).toBeTruthy;
+    expect(loading.textContent).toBeTruthy();
   });
 
   it("shows error message", () => {
@@ -146,7 +145,7 @@ describe("Root", () => {
   });
 
   it("shows book detail container from config", () => {
-    class Container extends React.Component<BookProps, any> {
+    class Container extends React.Component<BookDetailsContainerProps, any> {
       render(): JSX.Element {
         return (
           <div className="container">
@@ -162,6 +161,25 @@ describe("Root", () => {
     );
     let container = TestUtils.findRenderedDOMComponentWithClass(root, "container");
     expect(container.textContent).toContain(bookData.title);
+  });
+
+  it("creates a ref for book detail container", () => {
+    class Container extends React.Component<BookDetailsContainerProps, any> {
+      render(): JSX.Element {
+        return (
+          <div className="container">
+            {this.props.children}
+          </div>
+        );
+      }
+    }
+
+    let bookData = groupedCollectionData.lanes[0].books[0];
+    let root = TestUtils.renderIntoDocument(
+      <Root bookUrl={bookData.url} bookData={bookData} BookDetailsContainer={Container} />
+    ) as Root;
+    let container = TestUtils.findRenderedComponentWithType(root, Container);
+    expect(root.bookDetailsContainer.props).toEqual(container.props);
   });
 
   describe("connected to store", () => {
@@ -216,7 +234,7 @@ describe("Root", () => {
       // much for this test:
       // expect(onNavigate.mock.calls[0][0]).toBe(collectionUrl);
       expect(onNavigate.mock.calls[0][1]).toBe(bookUrl);
-      expect(onNavigate.mock.calls[1][1]).toBeFalsy;
+      expect(onNavigate.mock.calls[1][1]).toBeFalsy();
     });
   });
 });

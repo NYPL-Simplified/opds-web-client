@@ -30,9 +30,9 @@ describe("Search", () => {
     let input = TestUtils.findRenderedDOMComponentWithTag(search, "input");
     let button = TestUtils.findRenderedDOMComponentWithTag(search, "button");
 
-    expect(input).toBeTruthy;
+    expect(input).toBeTruthy();
     expect(input.getAttribute("placeholder")).toEqual("shortName");
-    expect(button).toBeTruthy;
+    expect(button).toBeTruthy();
   });
 
   it("fetches the search feed", () => {
@@ -47,7 +47,7 @@ describe("Search", () => {
     );
 
     let form = TestUtils.findRenderedDOMComponentWithTag(search, "form");
-    expect(form).toBeTruthy;
+    expect(form).toBeTruthy();
 
     let input = TestUtils.findRenderedDOMComponentWithTag(search, "input");
     input["value"] = "test";
@@ -69,7 +69,7 @@ describe("Search", () => {
     );
 
     let form = TestUtils.findRenderedDOMComponentWithTag(search, "form");
-    expect(form).toBeTruthy;
+    expect(form).toBeTruthy();
 
     let input = TestUtils.findRenderedDOMComponentWithTag(search, "input");
     input["value"] = "Indésirable";
