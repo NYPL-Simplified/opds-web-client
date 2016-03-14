@@ -16,8 +16,8 @@ describe("UrlForm", () => {
     let input = TestUtils.findRenderedDOMComponentWithTag(form, "input");
     let button = TestUtils.findRenderedDOMComponentWithTag(form, "button");
 
-    expect(input).toBeTruthy;
-    expect(button).toBeTruthy;
+    expect(input).toBeTruthy();
+    expect(button).toBeTruthy();
   });
 
   it("fetches the url", () => {

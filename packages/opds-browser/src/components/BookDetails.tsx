@@ -18,12 +18,12 @@ export default class BookDetails extends React.Component<BookProps, any> {
           <div className="bookDetailsHeader" style={{ display: "table-cell", verticalAlign: "top", textAlign: "left", maxWidth: "500px" }}>
             <h1 className="bookDetailsTitle" style={{ margin: 0 }}>{this.props.book.title}</h1>
             {
-              this.props.book.authors.length ?
+              this.props.book.authors && this.props.book.authors.length ?
               <h2 className="bookDetailsAuthors" style={{ marginTop: "0.5em", fontSize: "1.2em" }}>{this.props.book.authors.join(", ")}</h2> :
               ""
             }
             {
-              this.props.book.contributors && this.props.book.contributors.length ?
+              this.props.book.contributors && this.props.book.contributors && this.props.book.contributors.length ?
               <h2 className="bookDetailsContributors" style={{ marginTop: "0.5em", fontSize: "1.2em" }}>Contributors: {this.props.book.contributors.join(", ")}</h2> :
               ""
             }

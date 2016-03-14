@@ -15,7 +15,6 @@ import { groupedCollectionData, ungroupedCollectionData } from "./collectionData
 import { createStore, applyMiddleware } from "redux";
 let thunk: any = require("redux-thunk");
 import reducers from "../../reducers/index";
-import { Provider } from "react-redux";
 
 describe("Root", () => {
   it("shows skip navigation link", () => {
@@ -24,7 +23,7 @@ describe("Root", () => {
     );
 
     let link = TestUtils.findRenderedComponentWithType(root, SkipNavigationLink);
-    expect(link).toBeTruthy;
+    expect(link).toBeTruthy();
   });
 
   it("shows a collection if props include collectionData", () => {
@@ -103,7 +102,7 @@ describe("Root", () => {
     );
 
     let loading = TestUtils.findRenderedDOMComponentWithClass(root, "loading");
-    expect(loading.textContent).toBeTruthy;
+    expect(loading.textContent).toBeTruthy();
   });
 
   it("shows error message", () => {

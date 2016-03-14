@@ -17,7 +17,7 @@ export function mapStateToProps(state, ownProps) {
     isFetching: (state.collection.isFetching || state.book.isFetching),
     isFetchingPage: state.collection.isFetchingPage,
     error: (state.collection.error || state.book.error),
-    bookData: state.book.data,
+    bookData: state.book.data || ownProps.bookData,
     bookUrl: state.book.url,
     history: state.collection.history
   };

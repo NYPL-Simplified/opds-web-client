@@ -359,7 +359,7 @@ describe("collection reducer", () => {
     let action = actions.loadSearchDescription({ searchData });
 
     let newState = reducer(currentState, action);
-    expect(newState.data.search).toBeTruthy;
+    expect(newState.data.search).toBeTruthy();
     expect(newState.data.search.searchData.description).toEqual("d");
     expect(newState.data.search.searchData.shortName).toEqual("s");
     expect(newState.data.search.searchData.template("test")).toEqual("test template");

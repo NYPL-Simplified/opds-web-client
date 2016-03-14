@@ -121,7 +121,7 @@ describe("OPDSDataAdapter", () => {
 
     let facet1 = groupA.facets[0];
     expect(facet1.label).toEqual("title 1");
-    expect(facet1.active).toBeTruthy;
+    expect(facet1.active).toBeTruthy();
     expect(facet1.href).toEqual("href1");
 
     let facet2 = groupB.facets[0];
@@ -147,7 +147,7 @@ describe("OPDSDataAdapter", () => {
     });
 
     let collection = feedToCollection(navigationFeed, "");
-    expect(collection.search).toBeTruthy;
+    expect(collection.search).toBeTruthy();
     expect(collection.search.url).toEqual("href");
   });
 
@@ -164,7 +164,7 @@ describe("OPDSDataAdapter", () => {
     });
 
     let collection = feedToCollection(acquisitionFeed, "");
-    expect(collection.nextPageUrl).toBeTruthy;
+    expect(collection.nextPageUrl).toBeTruthy();
     expect(collection.nextPageUrl).toEqual("href");
   });
 });
