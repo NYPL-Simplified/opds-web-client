@@ -9,7 +9,7 @@ export default class BookDetails extends React.Component<BookProps, any> {
 
     return (
       <div className="bookDetails">
-        <div className="bookDetailsTop" style={{ textAlign: "left", display: "table-row", marginBottom: "1em" }}>
+        <div className="bookDetailsTop" style={{ textAlign: "left", display: "table-row" }}>
           { this.props.book.imageUrl &&
             <div className="bookImage" style={{ display: "table-cell", paddingRight: "20px", verticalAlign: "top" }}>
               <img src={this.props.book.imageUrl} style={{ height: "150px" }}/>
