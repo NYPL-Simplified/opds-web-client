@@ -29,4 +29,8 @@ export default class OPDSBrowser extends React.Component<RootProps, any> {
   getBookDetailsContainer() {
     return this.root.getWrappedInstance().bookDetailsContainer;
   }
+
+  refreshBook() {
+    return this.root.getWrappedInstance().props.refreshBook();
+  }
 }
