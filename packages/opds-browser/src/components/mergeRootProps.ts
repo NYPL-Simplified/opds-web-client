@@ -116,9 +116,7 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
   };
 
   let refreshBook = () => {
-    return new Promise((resolve, reject) => {
-      dispatchProps.fetchBook(stateProps.bookUrl).then(data => resolve(data));
-    });
+    return dispatchProps.fetchBook(stateProps.bookUrl);
   };
 
   return Object.assign({}, componentProps, stateProps, dispatchProps, {
