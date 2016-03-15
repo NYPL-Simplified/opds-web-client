@@ -155,7 +155,8 @@ export default class Collection extends React.Component<CollectionProps, any> {
   }
 
   handleScrollOrResize() {
-    if ((document.body.scrollTop + window.innerHeight) >= document.body.scrollHeight) {
+    let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    if ((scrollTop + window.innerHeight) >= document.body.scrollHeight) {
       this.fetch();
     }
   }
