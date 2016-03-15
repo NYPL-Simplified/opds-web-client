@@ -8,19 +8,19 @@ export default class ErrorMessage extends React.Component<ErrorMessageProps, any
 
     return (
       <div className="error" style={errorStyle}>
-        <h1>ERROR</h1>
+        <h1 style={{ marginTop: "0px" }}>Error</h1>
         <div className="errorMessage">
           {this.props.message}
         </div>
         <br />
         <button
-          className="retryButton"
+          className="retryButton btn btn-default"
           style={{ fontSize: "1.2em" }}
           onClick={this.props.retry}>
           Try again
         </button>&nbsp;&nbsp;
         <button
-          className="errorCloseButton"
+          className="errorCloseButton btn btn-default"
           style={{ fontSize: "1.2em" }}
           onClick={() => window.history.back() }>
           Go Back

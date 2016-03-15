@@ -2,22 +2,17 @@ import * as React from "react";
 
 export default class Search extends React.Component<SearchProps, any> {
   render(): JSX.Element {
-    let inputStyle = {
-      fontSize: "1.2em",
-      padding: "5px"
-    };
-
     return (
       <div className="search">
         { this.props.searchData && (
-          <form onSubmit={this.onSubmit.bind(this)}>
+          <form onSubmit={this.onSubmit.bind(this)} className="form-inline">
             <input
-              style={inputStyle}
+              className="form-control input"
               ref="input"
               type="text"
               placeholder={this.props.searchData.shortName} />&nbsp;
             <button
-              style={inputStyle}
+              className="btn btn btn-default"
               type="submit">Search</button>
           </form>
         )}

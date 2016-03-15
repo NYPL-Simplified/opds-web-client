@@ -40,7 +40,8 @@ export default class Collection extends React.Component<CollectionProps, any> {
     let loadingNextPageStyle = {
       clear: "both",
       height: "50px",
-      textAlign: "center"
+      textAlign: "center",
+      padding: "10px"
     };
 
     return (
@@ -118,7 +119,9 @@ export default class Collection extends React.Component<CollectionProps, any> {
           }
 
           { this.props.isFetchingPage &&
-            <div className="loadingNextPage" style={loadingNextPageStyle}>Loading next page...</div>
+            <div className="loadingNextPage" style={loadingNextPageStyle}>
+              <h3>Loading next page...</h3>
+            </div>
           }
         </div>
       </div>
