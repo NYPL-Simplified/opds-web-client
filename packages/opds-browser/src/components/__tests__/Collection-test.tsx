@@ -150,6 +150,16 @@ describe("Collection", () => {
 
       expect(fetchPage.mock.calls.length).toEqual(1);
       expect(fetchPage.mock.calls[0][0]).toEqual("next");
+
+      // firefox puts scrollTop in document.documentElement instead of document.body
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 1000;
+      document.body.scrollHeight = 1;
+      window.dispatchEvent(new (window as any).UIEvent("scroll", {detail: 0}));
+
+      expect(fetchPage.mock.calls.length).toEqual(2);
+      expect(fetchPage.mock.calls[1][0]).toEqual("next");
+
     });
 
     it("fetches next page if first page doesn't fill window", () => {
