@@ -1,4 +1,5 @@
 jest.autoMockOff();
+jest.mock("../../DataFetcher");
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -6,6 +7,7 @@ import * as TestUtils from "react-addons-test-utils";
 
 import OPDSBrowser from "../OPDSBrowser";
 import Root from "../Root";
+
 
 class TestContainer extends React.Component<BookDetailsContainerProps, any> {
   render(): JSX.Element {
@@ -67,6 +69,13 @@ describe("OPDSBrowser", () => {
     expect(container).toBeTruthy();
     expect(container.constructor.name).toBe("TestContainer");
     expect(container.testMethod()).toBe("test");
+  });
+
+  it("provides function to refresh book", (done) => {
+    browser.refreshBook().then(data => {
+      expect(data).toEqual("test");
+      done();
+    });
   });
 });
 

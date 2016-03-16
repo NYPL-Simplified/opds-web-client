@@ -115,9 +115,14 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
     });
   };
 
+  let refreshBook = () => {
+    return dispatchProps.fetchBook(stateProps.bookUrl);
+  };
+
   return Object.assign({}, componentProps, stateProps, dispatchProps, {
     setCollection: setCollection,
     setBook: setBook,
+    refreshBook: refreshBook,
     setCollectionAndBook: (collectionUrl: string, book: BookData|string, skipOnNavigate: boolean = false) => {
       return new Promise((resolve, reject) => {
         // skip onNavigate for both fetches, but call it at the end
