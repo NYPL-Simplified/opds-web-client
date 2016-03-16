@@ -11,6 +11,7 @@ import UrlForm from "../UrlForm";
 import BookDetails from "../BookDetails";
 import SkipNavigationLink from "../SkipNavigationLink";
 import CollectionLink from "../CollectionLink";
+import Search from "../Search";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 import { createStore, applyMiddleware } from "redux";
 let thunk: any = require("redux-thunk");
@@ -35,16 +36,6 @@ describe("Root", () => {
     let collections = TestUtils.scryRenderedComponentsWithType(root, Collection);
     expect(collections.length).toBe(1);
     expect(collections[0].props.collection.title).toBe(collectionData.title);
-  });
-
-  it("shows a header title if a collection is loaded", () => {
-    let collectionData: CollectionData = groupedCollectionData;
-    let root = TestUtils.renderIntoDocument(
-      <Root collectionData={collectionData} />
-    );
-
-    let titleElement = TestUtils.findRenderedDOMComponentWithClass(root, "headerTitle");
-    expect(titleElement.textContent).toEqual(collectionData.title);
   });
 
   it("shows a url form if props do not include collectionData", () => {
@@ -180,6 +171,37 @@ describe("Root", () => {
     ) as Root;
     let container = TestUtils.findRenderedComponentWithType(root, Container);
     expect(root.bookDetailsContainer.props).toEqual(container.props);
+  });
+
+  it("shows a header component from config", () => {
+    class Header extends React.Component<HeaderProps, any> {
+      render(): JSX.Element {
+        return (
+          <div className="header">
+            {this.props.children}
+          </div>
+        );
+      }
+    }
+
+    let fetchSearchDescription = (url: string) => {};
+    let collectionData = ungroupedCollectionData;
+    collectionData.search = {
+      url: "test search url",
+      searchData: {
+        description: "description",
+        shortName: "shortName",
+        template: (s) => s
+      }
+    };
+
+    let root = TestUtils.renderIntoDocument(
+      <Root header={Header} collectionData={collectionData} fetchSearchDescription={fetchSearchDescription} />
+    ) as Root;
+    let header = TestUtils.findRenderedComponentWithType(root, Header);
+    let search = TestUtils.findRenderedComponentWithType(header, Search);
+    expect(root.header.Props).toEqual(header.props);
+    expect(search).toBeTruthy();
   });
 
   describe("connected to store", () => {

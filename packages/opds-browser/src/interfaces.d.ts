@@ -110,6 +110,13 @@ interface State {
   history?: LinkData[];
 }
 
+interface HeaderProps extends BaseProps {
+  book?: BookData;
+  collection?: CollectionData;
+  collectionLink: new() => __React.Component<CollectionLinkProps, any>;
+  setCollectionAndBook?: (collectionUrl: string, book: BookProps|string, skipOnNavigate?: boolean) => void;
+}
+
 interface RootProps extends State, CollectionActionProps, BaseProps {
   store?: Redux.Store;
   collection?: string;
@@ -128,6 +135,7 @@ interface RootProps extends State, CollectionActionProps, BaseProps {
   closeError?: () => void;
   fetchBook?: (bookUrl: string) => void;
   headerTitle?: string;
+  header?: new () => __React.Component<HeaderProps, any>;
 }
 
 interface UrlFormProps extends CollectionActionProps, BaseProps {

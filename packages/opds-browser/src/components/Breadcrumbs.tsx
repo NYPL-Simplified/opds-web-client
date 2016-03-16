@@ -11,24 +11,18 @@ export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> 
     };
 
     let currentCollectionStyle = {
-      listStyle: "none",
-      float: "left",
-      fontSize: (this.props.showCurrentLink ? null : "1.2em"),
       fontWeight: "bold"
     };
 
     return (
-      <nav className="breadcrumbs" aria-label="breadcrumbs" role="navigation">
-        <ul style={subtleListStyle}>
+        <ol className="breadcrumb" style={{ fontSize: "1.2em" }}>
           { this.props.history && this.props.history.map(breadcrumb =>
-            <li style={{ listStyle: "none", float: "left", marginRight: "5px" }} key={breadcrumb.id}>
+            <li key={breadcrumb.id}>
               <CollectionLink
                 text={breadcrumb.text}
                 url={breadcrumb.url}
                 pathFor={this.props.pathFor}
-                setCollectionAndBook={this.props.setCollectionAndBook}
-                style={linkStyle} />
-              ›
+                setCollectionAndBook={this.props.setCollectionAndBook} />
             </li>
           ) }
 
@@ -39,13 +33,11 @@ export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> 
                 text={this.props.collection.title}
                 url={this.props.collection.url}
                 pathFor={this.props.pathFor}
-                setCollectionAndBook={this.props.setCollectionAndBook}
-                style={linkStyle} /> :
+                setCollectionAndBook={this.props.setCollectionAndBook}/> :
               this.props.collection.title
             }
           </li>
-        </ul>
-      </nav>
+        </ol>
     );
   }
 }

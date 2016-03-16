@@ -10,13 +10,15 @@ import Breadcrumbs from "./Breadcrumbs";
 import Collection from "./Collection";
 import UrlForm from "./UrlForm";
 import SkipNavigationLink from "./SkipNavigationLink";
-import { visuallyHiddenStyle } from "./styles";
+import CollectionLink from "./CollectionLink";
 
 export class Root extends React.Component<RootProps, any> {
   bookDetailsContainer: any;
+  header: any;
 
   render(): JSX.Element {
     let BookDetailsContainer = this.props.BookDetailsContainer;
+    let Header = this.props.header;
 
     let headerTitle = this.props.headerTitle || (this.props.collectionData ? this.props.collectionData.title : null);
 
@@ -24,11 +26,10 @@ export class Root extends React.Component<RootProps, any> {
     let showBook = this.props.bookData;
     let showBookWrapper = this.props.bookUrl || this.props.bookData;
     let showUrlForm = !this.props.collectionData && !this.props.bookData && !this.props.isFetching;
-    let showHeader = headerTitle;
     let showBreadcrumbs = showCollection && (this.props.bookData || this.props.history && this.props.history.length > 0);
 
     let padding = 10;
-    let headerHeight = 40 + padding * 2;
+    let headerHeight = 50;
     let navHeight = showBreadcrumbs ? 40 : 0;
     let marginTop = headerHeight + navHeight;
 
@@ -45,14 +46,10 @@ export class Root extends React.Component<RootProps, any> {
       boxSizing: "border-box"
     };
 
-    let navStyle = {
+    let breadcrumbsStyle = {
       position: "fixed",
       top: `${headerHeight}px`,
-      width: "100%",
-      backgroundColor: "#fff",
-      borderBottom: "1px solid #eee",
-      padding: `${padding}px`,
-      paddingLeft: `${padding}px`
+      width: "100%"
     };
 
     let bodyStyle = {
@@ -84,26 +81,41 @@ export class Root extends React.Component<RootProps, any> {
           <UrlForm setCollectionAndBook={this.props.setCollectionAndBook} url={this.props.collectionUrl} />
         }
 
-        { showHeader &&
-          <div
-            className="header"
-            style={headerStyle}
-            role="banner">
+        { Header ?
+          <Header
+            ref={c => this.header = c}
+            collection={this.props.collectionData}
+            book={this.props.bookData}
+            pathFor={this.props.pathFor}
+            setCollectionAndBook={this.props.setCollectionAndBook}
+            collectionLink={CollectionLink}>
             { this.props.collectionData && this.props.collectionData.search &&
-              <div style={{ float: "right" }}>
+              <Search
+                url={this.props.collectionData.search.url}
+                searchData={this.props.collectionData.search.searchData}
+                fetchSearchDescription={this.props.fetchSearchDescription}
+                setCollectionAndBook={this.props.setCollectionAndBook}/>
+            }
+          </Header> :
+          <nav className="header navbar navbar-default navbar-fixed-top">
+            <div className="container-fluid">
+              <span className="navbar-brand" style={{ fontSize: "1.8em", color: "black" }}>
+                OPDS Browser
+              </span>
+              { this.props.collectionData && this.props.collectionData.search &&
                 <Search
+                  className="navbar-form navbar-right"
                   url={this.props.collectionData.search.url}
                   searchData={this.props.collectionData.search.searchData}
                   fetchSearchDescription={this.props.fetchSearchDescription}
-                  setCollectionAndBook={this.props.setCollectionAndBook} />
-              </div>
-            }
-            <h1 className="headerTitle" style={{ margin: 0 }}>{headerTitle}</h1>
-          </div>
+                  setCollectionAndBook={this.props.setCollectionAndBook}/>
+              }
+            </div>
+          </nav>
         }
 
         { showBreadcrumbs &&
-          <div className="breadcrumbsWrapper" style={navStyle}>
+          <div className="breadcrumbsWrapper" style={breadcrumbsStyle}>
             <Breadcrumbs
               history={this.props.history}
               collection={this.props.collectionData}
