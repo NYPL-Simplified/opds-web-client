@@ -17,9 +17,9 @@ describe("UrlForm", () => {
     let input = TestUtils.findRenderedDOMComponentWithTag(form, "input");
     let button = TestUtils.findRenderedDOMComponentWithTag(form, "button");
 
-    expect(formNode.getAttribute("class").split(" ")).toContain("form-inline");
+    expect(formNode.getAttribute("class")).toContain("form-inline");
     expect(input).toBeTruthy();
-    expect(input.getAttribute("class").split(" ")).toContain("form-control");
+    expect(input.getAttribute("class")).toContain("form-control");
     expect(button).toBeTruthy();
     expect(button.getAttribute("class").split(" ")).toContain("btn");
   });

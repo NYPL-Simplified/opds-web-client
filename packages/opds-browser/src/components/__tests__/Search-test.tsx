@@ -31,10 +31,10 @@ describe("Search", () => {
     let input = TestUtils.findRenderedDOMComponentWithTag(search, "input");
     let button = TestUtils.findRenderedDOMComponentWithTag(search, "button");
 
-    expect(form.getAttribute("class").split(" ")).toContain("form-inline");
+    expect(form.getAttribute("class")).toContain("form-inline");
     expect(input).toBeTruthy();
     expect(input.getAttribute("placeholder")).toEqual("shortName");
-    expect(input.getAttribute("class")).toBe("form-control");
+    expect(input.getAttribute("class")).toContain("form-control");
     expect(button).toBeTruthy();
     expect(button.getAttribute("class").split(" ")).toContain("btn");
   });
