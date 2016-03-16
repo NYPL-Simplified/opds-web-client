@@ -17,7 +17,7 @@ describe("Search", () => {
     expect(fetchSearchDescription.mock.calls[0][0]).toEqual("test url");
   });
 
-  it("shows the search form", () => {
+  it("shows the search form with bootstrap classes", () => {
     let searchData = {
       description: "description",
       shortName: "shortName",
@@ -27,12 +27,16 @@ describe("Search", () => {
       <Search searchData={searchData} />
     );
 
+    let form = TestUtils.findRenderedDOMComponentWithTag(search, "form");
     let input = TestUtils.findRenderedDOMComponentWithTag(search, "input");
     let button = TestUtils.findRenderedDOMComponentWithTag(search, "button");
 
+    expect(form.getAttribute("class").split(" ")).toContain("form-inline");
     expect(input).toBeTruthy();
     expect(input.getAttribute("placeholder")).toEqual("shortName");
+    expect(input.getAttribute("class")).toBe("form-control");
     expect(button).toBeTruthy();
+    expect(button.getAttribute("class").split(" ")).toContain("btn");
   });
 
   it("fetches the search feed", () => {

@@ -39,4 +39,13 @@ describe("ErrorMessage", () => {
 
     expect(retry.mock.calls.length).toBe(1);
   });
+
+  it("uses bootstrap classes", () => {
+    let error = TestUtils.renderIntoDocument(
+      <ErrorMessage message="test error" />
+    );
+
+    let buttons = TestUtils.scryRenderedDOMComponentsWithClass(error, "btn");
+    expect(buttons.length).toBe(2);
+  });
 });

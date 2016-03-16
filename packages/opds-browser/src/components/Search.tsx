@@ -7,7 +7,7 @@ export default class Search extends React.Component<SearchProps, any> {
         { this.props.searchData && (
           <form onSubmit={this.onSubmit.bind(this)} className="form-inline">
             <input
-              className="form-control input"
+              className="form-control"
               ref="input"
               type="text"
               placeholder={this.props.searchData.shortName} />&nbsp;
