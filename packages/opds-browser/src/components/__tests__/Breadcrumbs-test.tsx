@@ -26,12 +26,14 @@ describe("Breadcrumbs", () => {
     }];
   });
 
-  it("shows breadcrumbs", () => {
+  it("shows breadcrumbs with bootstrap classes", () => {
     let breadcrumbs = TestUtils.renderIntoDocument(
       <Breadcrumbs collection={collectionData} history={history} />
     );
 
+    let list = TestUtils.findRenderedDOMComponentWithTag(breadcrumbs, "ol");
     let links = TestUtils.scryRenderedComponentsWithType(breadcrumbs, CollectionLink);
+    expect(list.getAttribute("class")).toBe("breadcrumb");
     expect(links[0].props.text).toContain("2nd title");
     expect(links[0].props.url).toEqual("2nd url");
     expect(links[1].props.text).toContain("last title");

@@ -200,8 +200,9 @@ describe("Root", () => {
     ) as Root;
     let header = TestUtils.findRenderedComponentWithType(root, Header);
     let search = TestUtils.findRenderedComponentWithType(header, Search);
-    expect(root.header.Props).toEqual(header.props);
-    expect(search).toBeTruthy();
+    expect(root.header.props).toEqual(header.props);
+    expect(search.props.url).toBe("test search url");
+    expect(header.props.collectionLink.name).toBe("CollectionLink");
   });
 
   describe("connected to store", () => {

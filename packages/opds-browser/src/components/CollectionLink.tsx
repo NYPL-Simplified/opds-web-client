@@ -7,9 +7,6 @@ export default class CollectionLink extends Link<CollectionLinkProps> {
   }
 
   href() {
-    if (this.props.url.match(/complaints$/)) {
-      console.log(this.props.pathFor(this.props.url, null));
-    }
     if (this.props.pathFor) {
       return this.props.pathFor(this.props.url, null);
     }
