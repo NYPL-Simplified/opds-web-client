@@ -29,7 +29,7 @@ export class Root extends React.Component<RootProps, any> {
 
     let padding = 10;
     let headerHeight = 40 + padding * 2;
-    let navHeight = showBreadcrumbs ? 30 : 0;
+    let navHeight = showBreadcrumbs ? 40 : 0;
     let marginTop = headerHeight + navHeight;
 
     let headerStyle = {
@@ -46,13 +46,12 @@ export class Root extends React.Component<RootProps, any> {
     };
 
     let navStyle = {
-      height: `${navHeight}px`,
       position: "fixed",
       top: `${headerHeight}px`,
       width: "100%",
       backgroundColor: "#fff",
       borderBottom: "1px solid #eee",
-      paddingTop: `${padding}px`,
+      padding: `${padding}px`,
       paddingLeft: `${padding}px`
     };
 

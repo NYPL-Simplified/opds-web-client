@@ -21,7 +21,8 @@ export default class LaneBook extends Book {
     let bookInfoStyle = {
       clear: "left",
       width: "150px",
-      textAlign: "center"
+      textAlign: "center",
+      marginTop: "5px"
     };
 
     return (

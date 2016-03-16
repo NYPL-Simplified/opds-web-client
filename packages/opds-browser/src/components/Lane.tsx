@@ -18,7 +18,7 @@ export default class Lane extends React.Component<LaneProps, any> {
 
     return (
       <div className="lane">
-        <h2 style={{ clear: "both", paddingTop: "20px", cursor: "pointer" }}>
+        <h2 style={{ clear: "both", cursor: "pointer" }}>
           <CollectionLink
             className="laneTitle"
             text={this.props.lane.title}
