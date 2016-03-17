@@ -115,9 +115,14 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
     });
   };
 
+  let refreshBook = () => {
+    return dispatchProps.fetchBook(stateProps.bookUrl);
+  };
+
   return Object.assign({}, componentProps, stateProps, dispatchProps, {
     setCollection: setCollection,
     setBook: setBook,
+    refreshBook: refreshBook,
     setCollectionAndBook: (
       collectionUrl: string,
       book: BookData|string,

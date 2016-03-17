@@ -1,6 +1,5 @@
 jest.dontMock("../actions");
 
-import DataFetcher from "../DataFetcher";
 
 let testData = {
   lanes: [],
@@ -11,35 +10,9 @@ let testData = {
   }]
 };
 
-class MockDataFetcher extends DataFetcher {
-  resolve: boolean = true;
-
-  constructor() {
-    super(null, null);
-  }
-
-  fetchOPDSData(url) {
-    return new Promise((resolve, reject) => {
-      if (this.resolve) {
-        resolve(testData);
-      } else {
-        reject("test error");
-      }
-    });
-  }
-
-  fetchSearchDescriptionData(url) {
-    return new Promise((resolve, reject) => {
-      if (this.resolve) {
-        resolve(testData);
-      } else {
-        reject("test error");
-      }
-    });
-  }
-};
-
-let fetcher = new MockDataFetcher();
+import DataFetcher from "../DataFetcher";
+let fetcher = new DataFetcher(null, null) as any;
+fetcher.testData = testData;
 
 import ActionsCreator from "../actions";
 let actions = new ActionsCreator(fetcher);
