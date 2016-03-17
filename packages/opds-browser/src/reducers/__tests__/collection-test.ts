@@ -218,9 +218,9 @@ describe("collection reducer", () => {
       links: [],
       catalogRootUrl: "root"
     };
-    let action = actions.loadCollection(data, "another url");
+    let action = actions.loadCollection(data, "some url");
     let newState = Object.assign({}, currentState, {
-      url: "another url",
+      url: "some url",
       data: data,
       isFetching: false,
       history: [{
@@ -231,6 +231,44 @@ describe("collection reducer", () => {
     });
 
     expect(reducer(currentState, action)).toEqual(newState);
+  });
+
+  it("should set history to catalog root on LOAD_COLLECTION if it's top-level", () => {
+    let oldState = Object.assign({}, currentState, {
+      history: [
+        {
+          id: null,
+          text: "Catalog",
+          url: "root"
+        }, {
+          id: "some other id",
+          url: "some other url",
+          text: "some other title"
+        }
+      ]
+    });
+    let data = {
+      id: "some id",
+      url: "some url",
+      title: "some title",
+      lanes: [],
+      books: [],
+      links: [],
+      catalogRootUrl: "root"
+    };
+    let action = actions.loadCollection(data, "some url", true);
+    let newState = Object.assign({}, oldState, {
+      url: "some url",
+      data: data,
+      isFetching: false,
+      history: [{
+        id: null,
+        text: "Catalog",
+        url: "root"
+      }]
+    });
+
+    expect(reducer(oldState, action)).toEqual(newState);
   });
 
   it("should remove history up to loaded url on LOAD_COLLECTION with url in history", () => {

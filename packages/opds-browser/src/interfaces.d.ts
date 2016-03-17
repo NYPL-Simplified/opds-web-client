@@ -3,7 +3,7 @@ interface BaseProps extends __React.HTMLProps<any> {
 }
 
 interface CollectionActionProps {
-  setCollectionAndBook?: (collectionUrl: string, book: BookProps|string, skipOnNavigate?: boolean) => void;
+  setCollectionAndBook?: (collectionUrl: string, book: BookData|string, skipOnNavigate?: boolean, isTopLevel?: boolean) => Promise<any>;
   fetchPage?: (url: string) => void;
 }
 
@@ -113,8 +113,7 @@ interface State {
 interface HeaderProps extends BaseProps {
   book?: BookData;
   collection?: CollectionData;
-  collectionLink: new() => __React.Component<CollectionLinkProps, any>;
-  setCollectionAndBook?: (collectionUrl: string, book: BookProps|string, skipOnNavigate?: boolean) => void;
+  renderCollectionLink: (text: string, url: string) => JSX.Element;
 }
 
 interface RootProps extends State, CollectionActionProps, BaseProps {
@@ -169,4 +168,9 @@ interface BreadcrumbsProps extends BaseProps, CollectionActionProps {
   history: LinkData[];
   collection: CollectionData;
   showCurrentLink?: Boolean;
+}
+
+interface SetCollectionOptions {
+  skipOnNavigate?: boolean;
+  isTopLevel?: boolean;
 }

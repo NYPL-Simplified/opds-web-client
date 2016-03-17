@@ -66,6 +66,19 @@ export class Root extends React.Component<RootProps, any> {
       overflowY: "scroll"
     };
 
+    let setTopLevelCollectionAndBook = (collection, book, skipOnNavigate): Promise<any> => {
+      return this.props.setCollectionAndBook(collection, book, skipOnNavigate, true);
+    };
+
+    let renderCollectionLink = (text: string, url: string) => (
+      <CollectionLink
+        text={text}
+        url={url}
+        setCollectionAndBook={setTopLevelCollectionAndBook}
+        pathFor={this.props.pathFor}
+        />
+    );
+
     return (
       <div className="browser" style={{ fontFamily: "Arial, sans-serif" }}>
         <SkipNavigationLink />
@@ -84,17 +97,13 @@ export class Root extends React.Component<RootProps, any> {
         { Header ?
           <Header
             ref={c => this.header = c}
-            collection={this.props.collectionData}
-            book={this.props.bookData}
-            pathFor={this.props.pathFor}
-            setCollectionAndBook={this.props.setCollectionAndBook}
-            collectionLink={CollectionLink}>
+            renderCollectionLink={renderCollectionLink.bind(this)}>
             { this.props.collectionData && this.props.collectionData.search &&
               <Search
                 url={this.props.collectionData.search.url}
                 searchData={this.props.collectionData.search.searchData}
                 fetchSearchDescription={this.props.fetchSearchDescription}
-                setCollectionAndBook={this.props.setCollectionAndBook}/>
+                setCollectionAndBook={setTopLevelCollectionAndBook}/>
             }
           </Header> :
           <nav className="header navbar navbar-default navbar-fixed-top">
@@ -108,7 +117,7 @@ export class Root extends React.Component<RootProps, any> {
                   url={this.props.collectionData.search.url}
                   searchData={this.props.collectionData.search.searchData}
                   fetchSearchDescription={this.props.fetchSearchDescription}
-                  setCollectionAndBook={this.props.setCollectionAndBook}/>
+                  setCollectionAndBook={setTopLevelCollectionAndBook}/>
               }
             </div>
           </nav>

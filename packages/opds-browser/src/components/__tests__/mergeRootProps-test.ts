@@ -90,6 +90,13 @@ describe("mergeRootProps", () => {
         done();
       }).catch(err => done.fail(err));
     });
+
+    it("passes isTopLevel to fetchCollection", (done) => {
+      props.setCollection("new collection url", false, true).then(data => {
+        expect(fetchCollection.mock.calls[0][1]).toBe(true);
+        done();
+      }).catch(err => done.fail(err));
+    });
   });
 
   describe("setBook", () => {
@@ -267,6 +274,13 @@ describe("mergeRootProps", () => {
     it("does not call onNavigate if given skipOnNavigate = true", (done) => {
       props.setCollectionAndBook("new collection url", "new book url", true).then(data => {
         expect(onNavigate.mock.calls.length).toBe(0);
+        done();
+      }).catch(err => done.fail(err));
+    });
+
+    it("passes isTopLevel to fetchCollection", (done) => {
+      props.setCollectionAndBook("new collection url", null, false, true).then(data => {
+        expect(fetchCollection.mock.calls[0][1]).toBe(true);
         done();
       }).catch(err => done.fail(err));
     });
