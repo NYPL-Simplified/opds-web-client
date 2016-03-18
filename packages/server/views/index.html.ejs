@@ -72,8 +72,12 @@
         book: startBook,
         proxyUrl: "/proxy",
         onNavigate: pushHistory,
-        pathFor: function (collectionUrl, bookUrl) {
+        pathFor: function(collectionUrl, bookUrl) {
           return serializeParams({collection: collectionUrl, book: bookUrl});
+        },
+        pageTitleTemplate: function(collectionTitle, bookTitle) {
+          var title = "OPDS Browser" + (collectionTitle ? " - " + collectionTitle : "");
+          return title + (bookTitle ? " - " + bookTitle : "");
         }
       }, "opds-browser");
 

@@ -20,6 +20,7 @@ export class Root extends React.Component<RootProps, any> {
     let BookDetailsContainer = this.props.BookDetailsContainer;
     let Header = this.props.header;
 
+    let pageTitleTemplate = this.props.pageTitleTemplate || (() => "OPDS Browser");
     let headerTitle = this.props.headerTitle || (this.props.collectionData ? this.props.collectionData.title : null);
 
     let showCollection = this.props.collectionData;
@@ -175,11 +176,27 @@ export class Root extends React.Component<RootProps, any> {
     if (this.props.collection || this.props.book) {
       this.props.setCollectionAndBook(this.props.collection, this.props.book, true);
     }
+
+    this.updatePageTitle(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.collection !== this.props.collection || nextProps.book !== this.props.book) {
       this.props.setCollectionAndBook(nextProps.collection, nextProps.book, true);
+    }
+  }
+
+  componentWillUpdate(nextProps) {
+    this.updatePageTitle(nextProps);
+  }
+
+  updatePageTitle(props) {
+    if (props.pageTitleTemplate) {
+      let collectionTitle = props.collectionData && props.collectionData.title;
+      let bookTitle = props.bookData && props.bookData.title;
+      document.title = props.pageTitleTemplate(collectionTitle, bookTitle);
+    } else {
+      document.title = "OPDS Browser";
     }
   }
 }
