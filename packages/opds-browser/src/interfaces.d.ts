@@ -111,8 +111,6 @@ interface State {
 }
 
 interface HeaderProps extends BaseProps {
-  book?: BookData;
-  collection?: CollectionData;
   renderCollectionLink: (text: string, url: string) => JSX.Element;
 }
 
@@ -168,9 +166,4 @@ interface BreadcrumbsProps extends BaseProps, CollectionActionProps {
   history: LinkData[];
   collection: CollectionData;
   showCurrentLink?: Boolean;
-}
-
-interface SetCollectionOptions {
-  skipOnNavigate?: boolean;
-  isTopLevel?: boolean;
 }
