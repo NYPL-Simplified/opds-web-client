@@ -28,7 +28,7 @@ export function mapDispatchToProps(dispatch) {
     createDispatchProps: (fetcher) => {
       let actions = new ActionsCreator(fetcher);
       return {
-        fetchCollection: (url: string) => dispatch(actions.fetchCollection(url)),
+        fetchCollection: (url: string, isTopLevel) => dispatch(actions.fetchCollection(url, isTopLevel)),
         fetchPage: (url: string) => dispatch(actions.fetchPage(url)),
         fetchBook: (url: string) => dispatch(actions.fetchBook(url)),
         loadBook: (book: BookData, url: string) => dispatch(actions.loadBook(book, url)),
@@ -55,7 +55,7 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
   let fetcher = new DataFetcher(componentProps.proxyUrl, adapter);
   let dispatchProps = createDispatchProps.createDispatchProps(fetcher);
 
-  let setCollection = (url: string, skipOnNavigate: boolean = false) => {
+  let setCollection = (url: string, skipOnNavigate: boolean = false, isTopLevel: boolean = false) => {
     return new Promise((resolve, reject) => {
       if (!url) {
         dispatchProps.clearCollection();
@@ -64,7 +64,7 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
         resolve(stateProps.collectionData);
       } else {
         // only fetch collection if url has changed
-        dispatchProps.fetchCollection(url).then(data => resolve(data));
+        dispatchProps.fetchCollection(url, isTopLevel).then(data => resolve(data));
       }
 
       if (!skipOnNavigate && onNavigate) {
@@ -123,11 +123,15 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
     setCollection: setCollection,
     setBook: setBook,
     refreshBook: refreshBook,
-    setCollectionAndBook: (collectionUrl: string, book: BookData|string, skipOnNavigate: boolean = false) => {
+    setCollectionAndBook: (
+      collectionUrl: string,
+      book: BookData|string,
+      skipOnNavigate: boolean = false,
+      isTopLevel: boolean = false) => {
       return new Promise((resolve, reject) => {
         // skip onNavigate for both fetches, but call it at the end
         // either collectionUrl or bookUrl can be null
-        setCollection(collectionUrl, true).then(collectionData => {
+        setCollection(collectionUrl, true, isTopLevel).then(collectionData => {
           setBook(book, true).then(bookData => {
             resolve({ collectionData, bookData });
           }).catch(err => reject(err));

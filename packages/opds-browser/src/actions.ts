@@ -27,13 +27,13 @@ export default class ActionCreator {
     this.fetcher = fetcher;
   }
 
-  fetchCollection(url: string) {
+  fetchCollection(url: string, isTopLevel: boolean = false) {
     return (function(dispatch) {
       dispatch(this.fetchCollectionRequest(url));
       return new Promise((resolve, reject) => {
         this.fetcher.fetchOPDSData(url).then((data: CollectionData) => {
           dispatch(this.fetchCollectionSuccess());
-          dispatch(this.loadCollection(data, url));
+          dispatch(this.loadCollection(data, url, isTopLevel));
           resolve(data);
         }).catch(err => {
           dispatch(this.fetchCollectionFailure(err));
@@ -98,8 +98,8 @@ export default class ActionCreator {
     return { type: this.FETCH_COLLECTION_FAILURE, message };
   }
 
-  loadCollection(data: CollectionData, url?: string) {
-    return { type: this.LOAD_COLLECTION, data, url };
+  loadCollection(data: CollectionData, url?: string, isTopLevel: boolean = false) {
+    return { type: this.LOAD_COLLECTION, data, url, isTopLevel };
   }
 
   fetchPageRequest(url: string) {

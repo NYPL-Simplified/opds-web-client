@@ -3,7 +3,7 @@ interface BaseProps extends __React.HTMLProps<any> {
 }
 
 interface CollectionActionProps {
-  setCollectionAndBook?: (collectionUrl: string, book: BookProps|string, skipOnNavigate?: boolean) => void;
+  setCollectionAndBook?: (collectionUrl: string, book: BookData|string, skipOnNavigate?: boolean, isTopLevel?: boolean) => Promise<any>;
   fetchPage?: (url: string) => void;
 }
 
@@ -110,6 +110,10 @@ interface State {
   history?: LinkData[];
 }
 
+interface HeaderProps extends BaseProps {
+  renderCollectionLink: (text: string, url: string) => JSX.Element;
+}
+
 interface RootProps extends State, CollectionActionProps, BaseProps {
   store?: Redux.Store;
   collection?: string;
@@ -128,6 +132,7 @@ interface RootProps extends State, CollectionActionProps, BaseProps {
   closeError?: () => void;
   fetchBook?: (bookUrl: string) => void;
   headerTitle?: string;
+  header?: new () => __React.Component<HeaderProps, any>;
 }
 
 interface UrlFormProps extends CollectionActionProps, BaseProps {

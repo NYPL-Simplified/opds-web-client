@@ -11,6 +11,7 @@ import UrlForm from "../UrlForm";
 import BookDetails from "../BookDetails";
 import SkipNavigationLink from "../SkipNavigationLink";
 import CollectionLink from "../CollectionLink";
+import Search from "../Search";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 import { createStore, applyMiddleware } from "redux";
 let thunk: any = require("redux-thunk");
@@ -26,6 +27,35 @@ describe("Root", () => {
     expect(link).toBeTruthy();
   });
 
+  it("shows search and treats it as top-level", () => {
+    let collectionData = Object.assign({}, ungroupedCollectionData, {
+      search: {
+        url: "test search url",
+        searchData: {
+          description: "description",
+          shortName: "shortName",
+          template: (s) => s
+        }
+      }
+    });
+    let setCollectionAndBook = jest.genMockFunction();
+
+    let root = TestUtils.renderIntoDocument(
+      <Root
+        collectionData={collectionData}
+        fetchSearchDescription={(url: string) => {}}
+        setCollectionAndBook={setCollectionAndBook}
+        />
+    );
+    let search = TestUtils.findRenderedComponentWithType(root, Search);
+    let form = TestUtils.findRenderedDOMComponentWithTag(search, "form");
+    TestUtils.Simulate.submit(form);
+    expect(search).toBeTruthy();
+    expect(form).toBeTruthy();
+    expect(setCollectionAndBook.mock.calls.length).toBe(1);
+    expect(setCollectionAndBook.mock.calls[0][3]).toBe(true);
+  });
+
   it("shows a collection if props include collectionData", () => {
     let collectionData: CollectionData = groupedCollectionData;
     let root = TestUtils.renderIntoDocument(
@@ -35,16 +65,6 @@ describe("Root", () => {
     let collections = TestUtils.scryRenderedComponentsWithType(root, Collection);
     expect(collections.length).toBe(1);
     expect(collections[0].props.collection.title).toBe(collectionData.title);
-  });
-
-  it("shows a header title if a collection is loaded", () => {
-    let collectionData: CollectionData = groupedCollectionData;
-    let root = TestUtils.renderIntoDocument(
-      <Root collectionData={collectionData} />
-    );
-
-    let titleElement = TestUtils.findRenderedDOMComponentWithClass(root, "headerTitle");
-    expect(titleElement.textContent).toEqual(collectionData.title);
   });
 
   it("shows a url form if props do not include collectionData", () => {
@@ -180,6 +200,70 @@ describe("Root", () => {
     ) as Root;
     let container = TestUtils.findRenderedComponentWithType(root, Container);
     expect(root.bookDetailsContainer.props).toEqual(container.props);
+  });
+
+  describe("when given a header component", () => {
+    let root;
+    let collectionData = Object.assign({}, ungroupedCollectionData, {
+      search: {
+        url: "test search url",
+        searchData: {
+          description: "description",
+          shortName: "shortName",
+          template: (s) => s
+        }
+      }
+    });
+    let setCollectionAndBook = jest.genMockFunction();
+
+    class Header extends React.Component<HeaderProps, any> {
+      render(): JSX.Element {
+        return (
+          <div className="header">
+            { this.props.children }
+            { this.props.renderCollectionLink("test", "test url") }
+          </div>
+        );
+      }
+    }
+
+    beforeEach(() => {
+      root = TestUtils.renderIntoDocument(
+        <Root
+          header={Header}
+          collectionData={collectionData}
+          fetchSearchDescription={(url: string) => {}}
+          setCollectionAndBook={setCollectionAndBook}
+          />
+      ) as Root;
+    });
+
+    it("shows the given header", () => {
+      let header = TestUtils.findRenderedComponentWithType(root, Header);
+      let search = TestUtils.findRenderedComponentWithType(header, Search);
+      let link = TestUtils.findRenderedComponentWithType(header, CollectionLink);
+      expect(root.header.props).toEqual(header.props);
+      expect(search.props.url).toBe("test search url");
+      expect(link.props.text).toBe("test");
+      expect(link.props.url).toBe("test url");
+    });
+
+    it("treats links in the header as top-level", () => {
+      let header = TestUtils.findRenderedComponentWithType(root, Header);
+      let search = TestUtils.findRenderedComponentWithType(header, Search);
+      let link = TestUtils.findRenderedDOMComponentWithTag(header, "a");
+      TestUtils.Simulate.click(link);
+      expect(setCollectionAndBook.mock.calls.length).toBe(1);
+      expect(setCollectionAndBook.mock.calls[0][3]).toBe(true);
+    });
+
+    it("treats serach in the header as top-level", () => {
+      let header = TestUtils.findRenderedComponentWithType(root, Header);
+      let button = TestUtils.findRenderedDOMComponentWithTag(header, "button");
+      TestUtils.Simulate.click(button);
+      expect(setCollectionAndBook.mock.calls.length).toBe(1);
+      expect(setCollectionAndBook.mock.calls[0][3]).toBe(true);
+    });
   });
 
   describe("connected to store", () => {
