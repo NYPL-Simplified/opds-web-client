@@ -20,7 +20,6 @@ export class Root extends React.Component<RootProps, any> {
     let BookDetailsContainer = this.props.BookDetailsContainer;
     let Header = this.props.header;
 
-    let pageTitleTemplate = this.props.pageTitleTemplate || (() => "OPDS Browser");
     let headerTitle = this.props.headerTitle || (this.props.collectionData ? this.props.collectionData.title : null);
 
     let showCollection = this.props.collectionData;
