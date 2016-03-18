@@ -64,6 +64,7 @@
         window.history.pushState.apply(window.history, historyArgs(collectionUrl, bookUrl));
       };
 
+      var title = document.title;
       var startCollection = getParam("collection");
       var startBook = getParam("book");
       var browser = new OPDSBrowserApp({
@@ -76,8 +77,8 @@
           return serializeParams({collection: collectionUrl, book: bookUrl});
         },
         pageTitleTemplate: function(collectionTitle, bookTitle) {
-          var title = "OPDS Browser" + (collectionTitle ? " - " + collectionTitle : "");
-          return title + (bookTitle ? " - " + bookTitle : "");
+          var details = bookTitle || collectionTitle;
+          return title + (details ? " - " + details : "");
         }
       }, "opds-browser");
 
