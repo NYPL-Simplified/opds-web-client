@@ -175,11 +175,23 @@ export class Root extends React.Component<RootProps, any> {
     if (this.props.collection || this.props.book) {
       this.props.setCollectionAndBook(this.props.collection, this.props.book, true);
     }
+
+    this.updatePageTitle(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.collection !== this.props.collection || nextProps.book !== this.props.book) {
       this.props.setCollectionAndBook(nextProps.collection, nextProps.book, true);
+    }
+
+    this.updatePageTitle(nextProps);
+  }
+
+  updatePageTitle(props) {
+    if (props.pageTitleTemplate) {
+      let collectionTitle = props.collectionData && props.collectionData.title;
+      let bookTitle = props.bookData && props.bookData.title;
+      document.title = props.pageTitleTemplate(collectionTitle, bookTitle);
     }
   }
 }

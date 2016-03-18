@@ -202,6 +202,40 @@ describe("Root", () => {
     expect(root.bookDetailsContainer.props).toEqual(container.props);
   });
 
+  it("sets page title after updating", () => {
+    let elem = document.createElement("div");
+    let collectionData = ungroupedCollectionData;
+    let bookData = collectionData.books[0];
+    let pageTitleTemplate = jest.genMockFunction();
+    pageTitleTemplate.mockImplementation((collectionTitle, bookTitle) => {
+      return "testing " + collectionTitle + ", " + bookTitle;
+    });
+    let root = ReactDOM.render(
+      <Root
+        collectionData={collectionData}
+        bookData={bookData}
+        pageTitleTemplate={pageTitleTemplate} />,
+      elem
+    );
+
+    // template should be invoked by componentWillMount
+    expect(pageTitleTemplate.mock.calls.length).toBe(1);
+    expect(pageTitleTemplate.mock.calls[0][0]).toBe(collectionData.title);
+    expect(pageTitleTemplate.mock.calls[0][1]).toBe(bookData.title);
+    expect(document.title).toBe("testing " + collectionData.title + ", " + bookData.title);
+
+    ReactDOM.render(
+      <Root collectionData={null} bookData={null} pageTitleTemplate={pageTitleTemplate} />,
+      elem
+    );
+
+    // template should be invoked again by componentWillUpdate
+    expect(pageTitleTemplate.mock.calls.length).toBe(2);
+    expect(pageTitleTemplate.mock.calls[1][0]).toBe(null);
+    expect(pageTitleTemplate.mock.calls[1][1]).toBe(null);
+    expect(document.title).toBe("testing null, null");
+  });
+
   describe("when given a header component", () => {
     let root;
     let collectionData = Object.assign({}, ungroupedCollectionData, {
