@@ -53,6 +53,9 @@
     ],
     "unmockedModulePathPatterns": [
       "../node_modules/*"
-    ]
+    ],
+    "globals": {
+      "fetch": true
+    }
   }
 }

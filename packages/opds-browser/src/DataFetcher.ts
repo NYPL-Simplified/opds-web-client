@@ -71,7 +71,7 @@ export default class DataFetcher {
   fetch(url: string, options = {}) {
     if (this.proxyUrl) {
       let formData = new FormData();
-      formData.append("url", url);
+      formData.append("url", encodeURIComponent(url));
       options = Object.assign(options, {
         method: "POST",
         body: formData
