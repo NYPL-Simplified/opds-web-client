@@ -61,10 +61,18 @@ describe("book reducer", () => {
   });
 
   it("should handle FETCH_BOOK_FAILURE", () => {
-    let action = actions.fetchBookFailure("test error");
+    let action = actions.fetchBookFailure({
+      status: 500,
+      response: "test error",
+      url: "error url"
+    });
     let newState = Object.assign({}, fetchingState, {
       isFetching: false,
-      error: "test error"
+      error: {
+        status: 500,
+        response: "test error",
+        url: "error url"
+      }
     });
 
     expect(reducer(fetchingState, action)).toEqual(newState);

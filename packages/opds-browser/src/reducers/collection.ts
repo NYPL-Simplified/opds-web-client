@@ -19,7 +19,7 @@ const collection = (state = initialState, action) => {
     case "FETCH_COLLECTION_FAILURE":
       return Object.assign({}, state, {
         isFetching: false,
-        error: action.message
+        error: action.error
       });
 
     case "LOAD_COLLECTION":
@@ -100,7 +100,7 @@ const collection = (state = initialState, action) => {
     case "FETCH_PAGE_FAILURE":
       return Object.assign({}, state, {
         isFetchingPage: false,
-        error: action.message
+        error: action.error
       });
 
     case "LOAD_PAGE":

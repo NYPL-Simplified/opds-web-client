@@ -86,7 +86,7 @@ export class Root extends React.Component<RootProps, any> {
         { this.props.isFetching && <LoadingIndicator /> }
         { this.props.error &&
           <ErrorMessage
-            message={this.props.error}
+            message={"Could not fetch data: " + this.props.error.url}
             retry={() => this.props.setCollectionAndBook(this.props.collectionUrl, null)} />
         }
 

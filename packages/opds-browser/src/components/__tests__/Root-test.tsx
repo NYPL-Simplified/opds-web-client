@@ -126,12 +126,17 @@ describe("Root", () => {
   });
 
   it("shows error message", () => {
+    let fetchError = {
+      status: 500,
+      response: "test error",
+      url: "test error url"
+    };
     let root = TestUtils.renderIntoDocument(
-      <Root error={"test error"} />
+      <Root error={fetchError} />
     );
 
     let error = TestUtils.findRenderedDOMComponentWithClass(root, "error");
-    expect(error.textContent).toContain("test error");
+    expect(error.textContent).toContain("test error url");
   });
 
   it("shows book detail", () => {

@@ -48,7 +48,11 @@ export default class DataFetcher {
           if (httpRequest.status === 200) {
             resolve(httpRequest.responseText);
           } else {
-            reject("Could not fetch data: " + url);
+            reject({
+              status: httpRequest.status,
+              response: httpRequest.response,
+              url: url
+            });
           }
         }
       };
