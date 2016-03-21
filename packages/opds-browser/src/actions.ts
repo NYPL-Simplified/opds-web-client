@@ -94,8 +94,8 @@ export default class ActionCreator {
     return { type: this.FETCH_COLLECTION_SUCCESS };
   }
 
-  fetchCollectionFailure(message?: string) {
-    return { type: this.FETCH_COLLECTION_FAILURE, message };
+  fetchCollectionFailure(error?: FetchError) {
+    return { type: this.FETCH_COLLECTION_FAILURE, error };
   }
 
   loadCollection(data: CollectionData, url?: string) {
@@ -110,8 +110,8 @@ export default class ActionCreator {
     return { type: this.FETCH_PAGE_SUCCESS };
   }
 
-  fetchPageFailure(message?: string) {
-    return { type: this.FETCH_PAGE_FAILURE, message };
+  fetchPageFailure(error?: FetchError) {
+    return { type: this.FETCH_PAGE_FAILURE, error };
   }
 
   loadPage(data: CollectionData) {
@@ -138,8 +138,8 @@ export default class ActionCreator {
     return { type: this.FETCH_BOOK_SUCCESS };
   }
 
-  fetchBookFailure(message?: string) {
-    return { type: this.FETCH_BOOK_FAILURE, message };
+  fetchBookFailure(error?: FetchError) {
+    return { type: this.FETCH_BOOK_FAILURE, error };
   }
 
   loadBook(data: BookData, url: string) {

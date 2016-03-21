@@ -248,8 +248,13 @@ describe("Collection", () => {
     });
 
     it("does not scroll when there's an error", () => {
+      let error = {
+        status: 500,
+        response: "error",
+        url: "url"
+      };
       ReactDOM.render(
-        <Collection collection={collectionData} isFetching={false} error={"error"}/>,
+        <Collection collection={collectionData} isFetching={false} error={error}/>,
         node
       );
 

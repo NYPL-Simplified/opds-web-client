@@ -17,7 +17,7 @@ const book = (state = initialState, action) => {
     case "FETCH_BOOK_FAILURE":
       return Object.assign({}, state, {
         isFetching: false,
-        error: action.message
+        error: action.error
       });
 
     case "LOAD_BOOK":

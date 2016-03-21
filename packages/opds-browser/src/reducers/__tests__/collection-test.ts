@@ -60,7 +60,11 @@ describe("collection reducer", () => {
     data: null,
     isFetching: false,
     isFetchingPage: false,
-    error: "test error",
+    error: {
+      status: 500,
+      response: "test error",
+      url: "some url"
+    },
     history: []
   };
 
@@ -79,10 +83,18 @@ describe("collection reducer", () => {
   });
 
   it("should handle FETCH_COLLECTION_FAILURE", () => {
-    let action = actions.fetchCollectionFailure("test error");
+    let action = actions.fetchCollectionFailure({
+      status: 500,
+      response: "test error",
+      url: "error url"
+    });
     let newState = Object.assign({}, fetchingState, {
       isFetching: false,
-      error: "test error"
+      error: {
+        status: 500,
+        response: "test error",
+        url: "error url"
+      }
     });
 
     expect(reducer(fetchingState, action)).toEqual(newState);
@@ -312,10 +324,18 @@ describe("collection reducer", () => {
   });
 
   it("should handle FETCH_PAGE_FAILURE", () => {
-    let action = actions.fetchPageFailure("test error");
+    let action = actions.fetchPageFailure({
+      status: 500,
+      response: "test error",
+      url: "error url"
+    });
     let newState = Object.assign({}, fetchingPageState, {
       isFetchingPage: false,
-      error: "test error"
+      error: {
+        status: 500,
+        response: "test error",
+        url: "error url"
+      }
     });
 
     expect(reducer(fetchingPageState, action)).toEqual(newState);

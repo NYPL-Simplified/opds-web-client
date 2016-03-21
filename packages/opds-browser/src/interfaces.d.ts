@@ -91,7 +91,7 @@ interface CollectionProps extends CollectionActionProps, BookActionProps, BasePr
   collection: CollectionData;
   isFetching?: boolean;
   isFetchingPage?: boolean;
-  error?: string;
+  error?: FetchError;
   fetchSearchDescription?: (url: string) => void;
   history?: LinkData[];
 }
@@ -103,7 +103,7 @@ interface State {
   collectionData?: CollectionData;
   collectionUrl?: string;
   isFetching?: boolean;
-  error?: string;
+  error?: FetchError;
   bookData?: BookData;
   bookUrl?: string;
   isFetchingPage?: boolean;
@@ -155,6 +155,12 @@ interface BookPreviewLinkProps extends LinkProps, BookActionProps, BaseProps {
 interface ErrorMessageProps {
   message: string;
   retry?: () => void;
+}
+
+interface FetchError {
+  status: number;
+  response: string;
+  url: string;
 }
 
 interface BreadcrumbsProps extends BaseProps, CollectionActionProps {
