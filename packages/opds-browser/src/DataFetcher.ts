@@ -6,7 +6,7 @@ export default class DataFetcher {
   private proxyUrl: string;
   private adapter: any;
 
-  constructor(proxyUrl: string, adapter: any) {
+  constructor(proxyUrl?: string, adapter?: any) {
     this.proxyUrl = proxyUrl;
     this.adapter = adapter;
   }
@@ -57,14 +57,28 @@ export default class DataFetcher {
         }
       };
 
-    if (this.proxyUrl) {
-      httpRequest.open("POST", this.proxyUrl, true);
-      httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      httpRequest.send("url=" + encodeURIComponent(url));
-    } else {
-      httpRequest.open("GET", url);
-      httpRequest.send();
-    }
+      if (this.proxyUrl) {
+        httpRequest.open("POST", this.proxyUrl, true);
+        httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        httpRequest.send("url=" + encodeURIComponent(url));
+      } else {
+        httpRequest.open("GET", url);
+        httpRequest.send();
+      }
     });
+  }
+
+  fetch(url: string, options = {}) {
+    if (this.proxyUrl) {
+      let formData = new FormData();
+      formData.append("url", url);
+      options = Object.assign(options, {
+        method: "POST",
+        body: formData
+      });
+      return fetch(this.proxyUrl, options);
+    } else {
+      return fetch(url, options);
+    }
   }
 }

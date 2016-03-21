@@ -24,6 +24,7 @@
     "redux": "^3.2.1",
     "redux-thunk": "^1.0.3",
     "sanitize-html": "^1.11.3",
+    "whatwg-fetch": "^0.11.0",
     "xml2js": "^0.4.16"
   },
   "devDependencies": {
