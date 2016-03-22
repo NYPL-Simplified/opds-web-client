@@ -9,6 +9,7 @@
     "redux": "github:DefinitelyTyped/DefinitelyTyped/redux/redux.d.ts#d4f3ed0cc7f7aba3b47dc6dbc68ead8a97052fe4",
     "redux-thunk": "github:DefinitelyTyped/DefinitelyTyped/redux-thunk/redux-thunk.d.ts#75249b97104d00c1ca2451ac29369009a5f2b101",
     "sanitize-html": "github:DefinitelyTyped/DefinitelyTyped/sanitize-html/sanitize-html.d.ts#71b9e552eab0e66ccb1385babb2f2b95e73afcb1",
-    "xml2js": "github:DefinitelyTyped/DefinitelyTyped/xml2js/xml2js.d.ts#7304e0770d53762f89af7fcf14517d5f45a04cc2"
+    "xml2js": "github:DefinitelyTyped/DefinitelyTyped/xml2js/xml2js.d.ts#7304e0770d53762f89af7fcf14517d5f45a04cc2",
+    "whatwg-fetch": "github:DefinitelyTyped/DefinitelyTyped/whatwg-fetch/whatwg-fetch.d.ts#91d963959f52ba696d74627d92bbb32350549993"
   }
 }
