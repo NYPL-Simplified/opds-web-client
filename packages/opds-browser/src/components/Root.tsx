@@ -162,7 +162,6 @@ export class Root extends React.Component<RootProps, any> {
               isFetchingPage={this.props.isFetchingPage}
               error={this.props.error}
               fetchSearchDescription={this.props.fetchSearchDescription}
-              setBook={this.props.setBook}
               pathFor={this.props.pathFor}
               history={this.props.history} />
           }
@@ -172,19 +171,35 @@ export class Root extends React.Component<RootProps, any> {
   }
 
   componentWillMount() {
-    if (this.props.collection || this.props.book) {
-      this.props.setCollectionAndBook(this.props.collection, this.props.book, true);
+    if (this.props.collectionUrl || this.props.bookUrl) {
+      this.updateCollectionAndBook(this.props.collectionUrl, this.props.bookUrl);
     }
 
     this.updatePageTitle(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.collection !== this.props.collection || nextProps.book !== this.props.book) {
-      this.props.setCollectionAndBook(nextProps.collection, nextProps.book, true);
+    if (nextProps.collectionUrl !== this.props.collectionUrl || nextProps.bookUrl !== this.props.bookUrl) {
+      this.updateCollectionAndBook(nextProps.collectionUrl, nextProps.bookUrl);
     }
 
     this.updatePageTitle(nextProps);
+  }
+
+  updateCollectionAndBook(collectionUrl: string, book: string) {
+    return new Promise((resolve, reject) => {
+      // skip onNavigate for both fetches, but call it at the end
+      // either collectionUrl or bookUrl can be null
+      this.props.setCollection(collectionUrl, true).then(collectionData => {
+        this.props.setBook(book, true).then(bookData => {
+          resolve({ collectionData, bookData });
+        }).catch(err => reject(err));
+      }).catch(err => reject(err));
+
+      if (this.props.onNavigate) {
+        this.props.onNavigate(collectionUrl, book);
+      }
+    });
   }
 
   updatePageTitle(props) {

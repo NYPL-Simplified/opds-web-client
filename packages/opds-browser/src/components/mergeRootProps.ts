@@ -35,7 +35,10 @@ export function mapDispatchToProps(dispatch) {
         clearCollection: () => dispatch(actions.clearCollection()),
         clearBook: () => dispatch(actions.clearBook()),
         fetchSearchDescription: (url: string) => dispatch(actions.fetchSearchDescription(url)),
-        closeError: () => dispatch(actions.closeError())
+        closeError: () => dispatch(actions.closeError()),
+        setCollectionAndBook: (collectionUrl: string, bookUrl: string, isTopLevel: boolean = false) => {
+          dispatch(actions.setCollectionAndBook(collectionUrl, bookUrl, isTopLevel));
+        }
       };
     }
   };
@@ -55,7 +58,7 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
   let fetcher = new DataFetcher(componentProps.proxyUrl, adapter);
   let dispatchProps = createDispatchProps.createDispatchProps(fetcher);
 
-  let setCollection = (url: string, skipOnNavigate: boolean = false, isTopLevel: boolean = false) => {
+  let setCollection = (url: string, isTopLevel: boolean = false) => {
     return new Promise((resolve, reject) => {
       if (!url) {
         dispatchProps.clearCollection();
@@ -66,14 +69,10 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
         // only fetch collection if url has changed
         dispatchProps.fetchCollection(url, isTopLevel).then(data => resolve(data));
       }
-
-      if (!skipOnNavigate && onNavigate) {
-        onNavigate(url, stateProps.bookUrl);
-      }
     });
   };
 
-  let setBook = (book: BookData|string, skipOnNavigate: boolean = false) => {
+  let setBook = (book: BookData|string) => {
     return new Promise((resolve, reject) => {
       let url = null;
       let bookData = null;
@@ -108,10 +107,6 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
           dispatchProps.fetchBook(url).then(data => resolve(data));
         }
       }
-
-      if (!skipOnNavigate && onNavigate) {
-        onNavigate(stateProps.collectionUrl, url);
-      }
     });
   };
 
@@ -123,26 +118,6 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
     setCollection: setCollection,
     setBook: setBook,
     refreshBook: refreshBook,
-    setCollectionAndBook: (
-      collectionUrl: string,
-      book: BookData|string,
-      skipOnNavigate: boolean = false,
-      isTopLevel: boolean = false) => {
-      return new Promise((resolve, reject) => {
-        // skip onNavigate for both fetches, but call it at the end
-        // either collectionUrl or bookUrl can be null
-        setCollection(collectionUrl, true, isTopLevel).then(collectionData => {
-          setBook(book, true).then(bookData => {
-            resolve({ collectionData, bookData });
-          }).catch(err => reject(err));
-        }).catch(err => reject(err));
-
-        if (!skipOnNavigate && onNavigate) {
-          let bookUrl = (typeof book === "string" ? book : (book ? book.url : null));
-          onNavigate(collectionUrl, bookUrl);
-        }
-      });
-    },
     clearCollection: () => {
       setCollection(null);
     },

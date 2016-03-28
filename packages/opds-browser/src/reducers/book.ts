@@ -1,4 +1,4 @@
-const initialState = {
+export const initialState = {
   url: null,
   data: null,
   isFetching: false,
@@ -7,9 +7,13 @@ const initialState = {
 
 const book = (state = initialState, action) => {
   switch (action.type) {
+    case "SET_COLLECTION_AND_BOOK":
+      return Object.assign({}, state, {
+        url: action.bookUrl
+      });
+
     case "FETCH_BOOK_REQUEST":
       return Object.assign({}, state, {
-        url: action.url,
         isFetching: true,
         error: null
       });

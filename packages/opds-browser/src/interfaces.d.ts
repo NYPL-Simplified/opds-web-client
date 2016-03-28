@@ -8,7 +8,7 @@ interface CollectionActionProps {
 }
 
 interface BookActionProps {
-  setBook?: (book: BookData|string, skipOnNavigate?: boolean) => Promise<BookData>;
+  setCollectionAndBook?: (collectionUrl: string, book: BookData|string, skipOnNavigate?: boolean, isTopLevel?: boolean) => Promise<any>;
   clearBook?: () => void;
   book?: BookData;
   collectionUrl?: string;
@@ -124,6 +124,7 @@ interface RootProps extends State, CollectionActionProps, BaseProps {
   onNavigate?: (collectionUrl: string, bookUrl?: string) => any;
   BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
   dispatch?: any;
+  setCollection: (collectionUrl: string, skipOnNavigate?: boolean) => Promise<CollectionData>;
   setBook?: (book: BookData|string, skipOnNavigate?: boolean) => Promise<BookData>;
   clearCollection?: () => void;
   clearBook?: () => void;

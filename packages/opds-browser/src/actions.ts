@@ -3,6 +3,8 @@ import DataFetcher from "./DataFetcher";
 export default class ActionCreator {
   private fetcher: DataFetcher;
 
+  SET_COLLECTION_AND_BOOK = "SET_COLLECTION_AND_BOOK";
+
   FETCH_COLLECTION_REQUEST = "FETCH_COLLECTION_REQUEST";
   FETCH_COLLECTION_SUCCESS = "FETCH_COLLECTION_SUCCESS";
   FETCH_COLLECTION_FAILURE = "FETCH_COLLECTION_FAILURE";
@@ -25,6 +27,10 @@ export default class ActionCreator {
 
   constructor(fetcher: DataFetcher) {
     this.fetcher = fetcher;
+  }
+
+  setCollectionAndBook(collectionUrl: string, bookUrl: string, isTopLevel: boolean) {
+    return { type: this.SET_COLLECTION_AND_BOOK, collectionUrl, bookUrl, isTopLevel };
   }
 
   fetchCollection(url: string, isTopLevel: boolean = false) {

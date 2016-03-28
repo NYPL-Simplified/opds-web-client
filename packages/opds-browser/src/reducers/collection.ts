@@ -1,17 +1,23 @@
-const initialState = {
+export const initialState = {
   url: null,
   data: null,
   isFetching: false,
   isFetchingPage: false,
   error: null,
-  history: []
+  history: [],
+  isTopLevel: false
 };
 
 const collection = (state = initialState, action) => {
   switch (action.type) {
+    case "SET_COLLECTION_AND_BOOK":
+      return Object.assign({}, state, {
+        url: action.collectionUrl,
+        isTopLevel: action.isTopLevel
+      });
+
     case "FETCH_COLLECTION_REQUEST":
       return Object.assign({}, state, {
-        url: action.url,
         isFetching: true,
         error: null
       });
@@ -26,7 +32,7 @@ const collection = (state = initialState, action) => {
       let newHistory;
       let oldHistory = state.history;
 
-      if (action.isTopLevel) {
+      if (state.isTopLevel) {
         newHistory = [{
           text: "Catalog",
           url: action.data.catalogRootUrl,

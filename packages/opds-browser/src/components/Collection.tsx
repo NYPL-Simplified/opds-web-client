@@ -73,7 +73,6 @@ export default class Collection extends React.Component<CollectionProps, any> {
                 <Lane
                   lane={lane}
                   setCollectionAndBook={this.props.setCollectionAndBook}
-                  setBook={this.props.setBook}
                   pathFor={this.props.pathFor}
                   collectionUrl={this.props.collection.url} />
               </li>
@@ -87,7 +86,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
               <li key={book.id}>
                 <Book
                   book={book}
-                  setBook={this.props.setBook}
+                  setCollectionAndBook={this.props.setCollectionAndBook}
                   pathFor={this.props.pathFor}
                   collectionUrl={this.props.collection.url} />
               </li>

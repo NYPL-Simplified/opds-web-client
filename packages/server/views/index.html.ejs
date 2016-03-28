@@ -55,24 +55,35 @@
           book = event.state.book || null;
         }
 
+        currentCollectionUrl = collection;
+        currentBookUrl = book;
+
         // call setCollectionAndBook with skipOnNavigate = true
         // so that state isn't pushed every time it's popped
-        browser.setCollectionAndBook(collection, book, true);
+        browser.setCollectionAndBook(collection, book);
       };
 
       var pushHistory = function(collectionUrl, bookUrl) {
         window.history.pushState.apply(window.history, historyArgs(collectionUrl, bookUrl));
       };
+      var currentCollectionUrl, currentBookUrl;
 
       var title = document.title;
-      var startCollection = getParam("collection");
-      var startBook = getParam("book");
+      var startCollection = currentCollectionUrl = getParam("collection");
+      var startBook = currentBookUrl = getParam("book");
       var browser = new OPDSBrowserApp({
         headerTitle: "OPDS Browser",
-        collection: startCollection,
-        book: startBook,
+        collectionUrl: startCollection,
+        bookUrl: startBook,
         proxyUrl: "/proxy",
-        onNavigate: pushHistory,
+        onNavigate: (collectionUrl, bookUrl) => {
+          console.log(collectionUrl, bookUrl);
+          if (collectionUrl !== currentCollectionUrl || bookUrl !== currentBookUrl) {
+            currentCollectionUrl = collectionUrl;
+            currentBookUrl = bookUrl;
+            pushHistory(collectionUrl, bookUrl);
+          }
+        },
         pathFor: function(collectionUrl, bookUrl) {
           return serializeParams({collection: collectionUrl, book: bookUrl});
         },

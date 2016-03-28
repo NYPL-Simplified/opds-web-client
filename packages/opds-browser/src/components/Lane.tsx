@@ -33,8 +33,8 @@ export default class Lane extends React.Component<LaneProps, any> {
             <li key={book.id} style={{ display: "inline-block" }}>
               <LaneBook
                 book={book}
+                setCollectionAndBook={this.props.setCollectionAndBook}
                 collectionUrl={this.props.collectionUrl}
-                setBook={this.props.setBook}
                 pathFor={this.props.pathFor} />
             </li>
           ) }
