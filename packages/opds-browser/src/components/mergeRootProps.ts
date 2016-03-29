@@ -100,8 +100,8 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
     setCollection: setCollection,
     setBook: setBook,
     setCollectionAndBook: (collectionUrl: string, book: string, isTopLevel: boolean = false) => {
-      this.props.setCollection(collectionUrl, isTopLevel).then(collectionData => {
-        this.props.setBook(book);
+      setCollection(collectionUrl, isTopLevel).then(collectionData => {
+        setBook(book);
       });
     },
     refreshBook: refreshBook,
