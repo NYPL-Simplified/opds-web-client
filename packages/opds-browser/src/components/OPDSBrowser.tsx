@@ -49,8 +49,4 @@ export default class OPDSBrowser extends React.Component<RootProps, any> {
   refreshBook() {
     return this.root.getWrappedInstance().props.refreshBook();
   }
-
-  setCollectionAndBook(collectionUrl: string, bookUrl: string) {
-    return this.root.getWrappedInstance().props.setCollectionAndBook(collectionUrl, bookUrl);
-  }
 }
