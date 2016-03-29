@@ -187,7 +187,6 @@ export class Root extends React.Component<RootProps, any> {
   }
 
   updateCollectionAndBook(collectionUrl: string, book: string, isTopLevel: boolean = false) {
-    console.log(isTopLevel);
     return new Promise((resolve, reject) => {
       this.props.setCollection(collectionUrl, isTopLevel).then(collectionData => {
         this.props.setBook(book).then(bookData => {
