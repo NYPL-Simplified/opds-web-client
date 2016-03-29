@@ -46,18 +46,25 @@ describe("book reducer", () => {
     error: null
   };
 
+  let errorState = {
+    url: null,
+    data: null,
+    isFetching: false,
+    error: "test error"
+  };
+
   it("should return the initial state", () => {
     expect(reducer(undefined, {})).toEqual(initState);
   });
 
   it("should handle FETCH_BOOK_REQUEST", () => {
     let action = actions.fetchBookRequest("some other url");
-    let newState = Object.assign({}, bookState, {
-      url: action.url,
-      isFetching: true
+    let newState = Object.assign({}, errorState, {
+      isFetching: true,
+      error: null
     });
 
-    expect(reducer(bookState, action)).toEqual(newState);
+    expect(reducer(errorState, action)).toEqual(newState);
   });
 
   it("should handle FETCH_BOOK_FAILURE", () => {

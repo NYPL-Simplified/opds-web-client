@@ -56,7 +56,7 @@ describe("collection reducer", () => {
   };
 
   let errorState = {
-    url: "some url",
+    url: null,
     data: null,
     isFetching: false,
     isFetchingPage: false,
@@ -79,7 +79,7 @@ describe("collection reducer", () => {
       error: null
     });
 
-    expect(reducer(currentState, action)).toEqual(newState);
+    expect(reducer(errorState, action)).toEqual(newState);
   });
 
   it("should handle FETCH_COLLECTION_FAILURE", () => {
