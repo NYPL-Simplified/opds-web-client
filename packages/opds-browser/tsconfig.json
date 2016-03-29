@@ -11,6 +11,9 @@
   "exclude": [
     "lib",
     "node_modules",
+    "src/__tests__",
+    "src/components/__tests__",
+    "src/reducers/__tests__",
     "typings/main.d.ts",
     "typings/main"
   ]

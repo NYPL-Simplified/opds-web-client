@@ -66,8 +66,8 @@ export class Root extends React.Component<RootProps, any> {
       overflowY: "scroll"
     };
 
-    let setTopLevelCollectionAndBook = (collection, book, skipOnNavigate): Promise<any> => {
-      return this.props.setCollectionAndBook(collection, book, skipOnNavigate, true);
+    let setTopLevelCollectionAndBook = (collection: string, book: string): Promise<any> => {
+      return this.props.setCollectionAndBook(collection, book, true);
     };
 
     let renderCollectionLink = (text: string, url: string) => (
@@ -129,7 +129,7 @@ export class Root extends React.Component<RootProps, any> {
               history={this.props.history}
               collection={this.props.collectionData}
               pathFor={this.props.pathFor}
-              setCollectionAndBook={this.props.setCollectionAndBook}
+              setCollectionAndBook={setTopLevelCollectionAndBook}
               showCurrentLink={!!this.props.bookData} />
           </div>
         }
@@ -180,25 +180,19 @@ export class Root extends React.Component<RootProps, any> {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.collectionUrl !== this.props.collectionUrl || nextProps.bookUrl !== this.props.bookUrl) {
-      this.updateCollectionAndBook(nextProps.collectionUrl, nextProps.bookUrl);
+      this.updateCollectionAndBook(nextProps.collectionUrl, nextProps.bookUrl, nextProps.isTopLevel);
     }
 
     this.updatePageTitle(nextProps);
   }
 
-  updateCollectionAndBook(collectionUrl: string, book: string) {
+  updateCollectionAndBook(collectionUrl: string, book: string, isTopLevel: boolean = false) {
     return new Promise((resolve, reject) => {
-      // skip onNavigate for both fetches, but call it at the end
-      // either collectionUrl or bookUrl can be null
-      this.props.setCollection(collectionUrl, true).then(collectionData => {
-        this.props.setBook(book, true).then(bookData => {
+      this.props.setCollection(collectionUrl, isTopLevel).then(collectionData => {
+        this.props.setBook(book).then(bookData => {
           resolve({ collectionData, bookData });
         }).catch(err => reject(err));
       }).catch(err => reject(err));
-
-      if (this.props.onNavigate) {
-        this.props.onNavigate(collectionUrl, book);
-      }
     });
   }
 

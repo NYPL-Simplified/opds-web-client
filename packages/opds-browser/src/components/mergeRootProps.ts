@@ -12,14 +12,15 @@ export function findBookInCollection(collection: CollectionData, bookUrl: string
 
 export function mapStateToProps(state, ownProps) {
   return {
-    collectionData: state.collection.data || ownProps.collectionData,
-    collectionUrl: state.collection.url,
-    isFetching: (state.collection.isFetching || state.book.isFetching),
-    isFetchingPage: state.collection.isFetchingPage,
-    error: (state.collection.error || state.book.error),
-    bookData: state.book.data || ownProps.bookData,
-    bookUrl: state.book.url,
-    history: state.collection.history
+    collectionData: state.browser.collection.data || ownProps.collectionData,
+    isFetching: (state.browser.collection.isFetching || state.browser.book.isFetching),
+    isFetchingPage: state.browser.collection.isFetchingPage,
+    error: (state.browser.collection.error || state.browser.book.error),
+    bookData: state.browser.book.data || ownProps.bookData,
+    history: state.browser.collection.history,
+    pathFor: ownProps.pathFor || ((collectionUrl: string, bookUrl: string) => "#"),
+    currentCollectionUrl: state.browser.collection.url,
+    currentBookUrl: state.browser.book.url
   };
 };
 
@@ -35,10 +36,7 @@ export function mapDispatchToProps(dispatch) {
         clearCollection: () => dispatch(actions.clearCollection()),
         clearBook: () => dispatch(actions.clearBook()),
         fetchSearchDescription: (url: string) => dispatch(actions.fetchSearchDescription(url)),
-        closeError: () => dispatch(actions.closeError()),
-        setCollectionAndBook: (collectionUrl: string, bookUrl: string, isTopLevel: boolean = false) => {
-          dispatch(actions.setCollectionAndBook(collectionUrl, bookUrl, isTopLevel));
-        }
+        closeError: () => dispatch(actions.closeError())
       };
     }
   };
@@ -46,15 +44,6 @@ export function mapDispatchToProps(dispatch) {
 
 // define setCollection and setBook here so that they can call onNavigate from component props
 export function mergeRootProps(stateProps, createDispatchProps, componentProps) {
-  // wrap componentProps.onNavigate so it only fires when collection or book url changes
-  let onNavigate = componentProps.onNavigate ? (collectionUrl: string, bookUrl: string): void => {
-    if (collectionUrl !== stateProps.collectionUrl || bookUrl !== stateProps.bookUrl) {
-      componentProps.onNavigate(collectionUrl, bookUrl);
-    }
-  } : undefined;
-
-  let pathFor = componentProps.pathFor ? componentProps.pathFor : (collectionUrl: string, bookUrl: string) => { return "#"; };
-
   let fetcher = new DataFetcher(componentProps.proxyUrl, adapter);
   let dispatchProps = createDispatchProps.createDispatchProps(fetcher);
 
@@ -63,7 +52,7 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
       if (!url) {
         dispatchProps.clearCollection();
         resolve(null);
-      } else if (!stateProps.error && stateProps.collectionData && url === stateProps.collectionUrl) {
+      } else if (!stateProps.error && stateProps.collectionData && url === stateProps.currentCollectionUrl) {
         resolve(stateProps.collectionData);
       } else {
         // only fetch collection if url has changed
@@ -93,7 +82,7 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
       } else if (bookData) {
         dispatchProps.loadBook(bookData, url);
         resolve(bookData);
-      } else if (!stateProps.error && stateProps.bookData && url === stateProps.bookUrl) {
+      } else if (!stateProps.error && stateProps.bookData && url === stateProps.currentBookUrl) {
         resolve(stateProps.bookData);
       } else {
         if (stateProps.collectionData) {
@@ -117,13 +106,15 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
   return Object.assign({}, componentProps, stateProps, dispatchProps, {
     setCollection: setCollection,
     setBook: setBook,
+    setCollectionAndBook: (collectionUrl: string, bookUrl: string, isTopLevel: boolean = false) => {
+      componentProps.onNavigate(collectionUrl, bookUrl, isTopLevel);
+    },
     refreshBook: refreshBook,
     clearCollection: () => {
       setCollection(null);
     },
     clearBook: () => {
       setBook(null);
-    },
-    pathFor: pathFor
+    }
   });
 };

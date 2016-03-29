@@ -4,8 +4,7 @@ export const initialState = {
   isFetching: false,
   isFetchingPage: false,
   error: null,
-  history: [],
-  isTopLevel: false
+  history: []
 };
 
 const collection = (state = initialState, action) => {
@@ -32,7 +31,7 @@ const collection = (state = initialState, action) => {
       let newHistory;
       let oldHistory = state.history;
 
-      if (state.isTopLevel) {
+      if (action.isTopLevel) {
         newHistory = [{
           text: "Catalog",
           url: action.data.catalogRootUrl,

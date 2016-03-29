@@ -29,10 +29,6 @@ export default class ActionCreator {
     this.fetcher = fetcher;
   }
 
-  setCollectionAndBook(collectionUrl: string, bookUrl: string, isTopLevel: boolean) {
-    return { type: this.SET_COLLECTION_AND_BOOK, collectionUrl, bookUrl, isTopLevel };
-  }
-
   fetchCollection(url: string, isTopLevel: boolean = false) {
     return (function(dispatch) {
       dispatch(this.fetchCollectionRequest(url));

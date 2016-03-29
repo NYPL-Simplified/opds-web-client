@@ -58,32 +58,35 @@
         currentCollectionUrl = collection;
         currentBookUrl = book;
 
-        // call setCollectionAndBook with skipOnNavigate = true
-        // so that state isn't pushed every time it's popped
-        browser.setCollectionAndBook(collection, book);
+        browser.render(collection, book);
       };
 
       var pushHistory = function(collectionUrl, bookUrl) {
         window.history.pushState.apply(window.history, historyArgs(collectionUrl, bookUrl));
       };
-      var currentCollectionUrl, currentBookUrl;
 
+      var onNavigate = function(collectionUrl, bookUrl, isTopLevel) {
+        if (collectionUrl !== currentCollectionUrl || bookUrl !== currentBookUrl) {
+          currentCollectionUrl = collectionUrl;
+          currentBookUrl = bookUrl;
+          pushHistory(collectionUrl, bookUrl);
+          browser.render(collectionUrl, bookUrl, isTopLevel);
+        }
+      };
+
+      var currentCollectionUrl, currentBookUrl;
       var title = document.title;
-      var startCollection = currentCollectionUrl = getParam("collection");
-      var startBook = currentBookUrl = getParam("book");
-      var browser = new OPDSBrowserApp({
+      var browser;
+
+      currentCollectionUrl = getParam("collection");
+      currentBookUrl = getParam("book");
+
+      browser = new OPDSBrowserApp({
         headerTitle: "OPDS Browser",
-        collectionUrl: startCollection,
-        bookUrl: startBook,
+        collectionUrl: currentCollectionUrl,
+        bookUrl: currentBookUrl,
         proxyUrl: "/proxy",
-        onNavigate: (collectionUrl, bookUrl) => {
-          console.log(collectionUrl, bookUrl);
-          if (collectionUrl !== currentCollectionUrl || bookUrl !== currentBookUrl) {
-            currentCollectionUrl = collectionUrl;
-            currentBookUrl = bookUrl;
-            pushHistory(collectionUrl, bookUrl);
-          }
-        },
+        onNavigate: onNavigate,
         pathFor: function(collectionUrl, bookUrl) {
           return serializeParams({collection: collectionUrl, book: bookUrl});
         },
@@ -93,8 +96,8 @@
         }
       }, "opds-browser");
 
-      if (startCollection || startBook) {
-        window.history.replaceState.apply(window.history, historyArgs(startCollection, startBook));
+      if (currentCollectionUrl || currentBookUrl) {
+        window.history.replaceState.apply(window.history, historyArgs(currentCollectionUrl, currentBookUrl));
       }
     </script>
   </body>
