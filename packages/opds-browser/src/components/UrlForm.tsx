@@ -25,7 +25,7 @@ export default class UrlForm extends React.Component<UrlFormProps, any> {
 
   onSubmit(event) {
     let url = this.refs["input"]["value"];
-    this.props.setCollectionAndBook(url, null);
+    this.props.navigate(url, null);
     event.preventDefault();
   }
 }

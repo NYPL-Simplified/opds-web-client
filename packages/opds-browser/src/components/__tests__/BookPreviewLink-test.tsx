@@ -27,15 +27,15 @@ let linkProps: BookPreviewLinkProps = {
 
 describe("BookPreviewLink", () => {
   let link;
-  let setBook;
+  let navigate;
   let pathFor;
 
   beforeEach(() => {
-    setBook = jest.genMockFunction();
+    navigate = jest.genMockFunction();
     pathFor = jest.genMockFunction();
     pathFor.mockReturnValue("path");
     link = TestUtils.renderIntoDocument(
-      <BookPreviewLink {...linkProps} setBook={setBook} pathFor={pathFor} />
+      <BookPreviewLink {...linkProps} navigate={navigate} pathFor={pathFor} />
     );
   });
 
@@ -56,15 +56,15 @@ describe("BookPreviewLink", () => {
   it("shows the book preview if clicked normally", () => {
     let element = TestUtils.findRenderedDOMComponentWithTag(link, "a");
     TestUtils.Simulate.click(element);
-    expect(setBook.mock.calls.length).toBe(1);
-    expect(setBook.mock.calls[0][0]).toBe(linkProps.book);
+    expect(navigate.mock.calls.length).toBe(1);
+    expect(navigate.mock.calls[0][1]).toBe(linkProps.book.url);
   });
 
   it("does not show the book preview if clicked with alt, ctrl, cmd, or shift key", () => {
     let element = TestUtils.findRenderedDOMComponentWithTag(link, "a");
     ["altKey", "ctrlKey", "metaKey", "shiftKey"].forEach(key => {
       TestUtils.Simulate.click(element, { [key]: true });
-      expect(setBook.mock.calls.length).toBe(0);
+      expect(navigate.mock.calls.length).toBe(0);
     });
   });
 });

@@ -66,15 +66,12 @@ export class Root extends React.Component<RootProps, any> {
       overflowY: "scroll"
     };
 
-    let setTopLevelCollectionAndBook = (collection: string, book: string): Promise<any> => {
-      return this.props.setCollectionAndBook(collection, book, true);
-    };
-
     let renderCollectionLink = (text: string, url: string) => (
       <CollectionLink
         text={text}
         url={url}
-        setCollectionAndBook={setTopLevelCollectionAndBook}
+        navigate={this.props.navigate}
+        isTopLevel={true}
         pathFor={this.props.pathFor}
         />
     );
@@ -87,11 +84,11 @@ export class Root extends React.Component<RootProps, any> {
         { this.props.error &&
           <ErrorMessage
             message={"Could not fetch data: " + this.props.error.url}
-            retry={() => this.props.setCollectionAndBook(this.props.collectionUrl, null)} />
+            retry={() => this.props.navigate(this.props.collectionUrl, null)} />
         }
 
         { showUrlForm &&
-          <UrlForm setCollectionAndBook={this.props.setCollectionAndBook} url={this.props.collectionUrl} />
+          <UrlForm navigate={this.props.navigate} url={this.props.collectionUrl} />
         }
 
         { Header ?
@@ -103,7 +100,9 @@ export class Root extends React.Component<RootProps, any> {
                 url={this.props.collectionData.search.url}
                 searchData={this.props.collectionData.search.searchData}
                 fetchSearchDescription={this.props.fetchSearchDescription}
-                setCollectionAndBook={setTopLevelCollectionAndBook}/>
+                navigate={this.props.navigate}
+                isTopLevel={true}
+                />
             }
           </Header> :
           <nav className="header navbar navbar-default navbar-fixed-top">
@@ -117,7 +116,9 @@ export class Root extends React.Component<RootProps, any> {
                   url={this.props.collectionData.search.url}
                   searchData={this.props.collectionData.search.searchData}
                   fetchSearchDescription={this.props.fetchSearchDescription}
-                  setCollectionAndBook={setTopLevelCollectionAndBook}/>
+                  navigate={this.props.navigate}
+                  isTopLevel={true}
+                  />
               }
             </div>
           </nav>
@@ -129,7 +130,7 @@ export class Root extends React.Component<RootProps, any> {
               history={this.props.history}
               collection={this.props.collectionData}
               pathFor={this.props.pathFor}
-              setCollectionAndBook={this.props.setCollectionAndBook}
+              navigate={this.props.navigate}
               showCurrentLink={!!this.props.bookData} />
           </div>
         }
@@ -156,7 +157,7 @@ export class Root extends React.Component<RootProps, any> {
           { showCollection &&
             <Collection
               collection={this.props.collectionData}
-              setCollectionAndBook={this.props.setCollectionAndBook}
+              navigate={this.props.navigate}
               fetchPage={this.props.fetchPage}
               isFetching={this.props.isFetching}
               isFetchingPage={this.props.isFetchingPage}
@@ -172,7 +173,7 @@ export class Root extends React.Component<RootProps, any> {
 
   componentWillMount() {
     if (this.props.collectionUrl || this.props.bookUrl) {
-      this.updateCollectionAndBook(this.props.collectionUrl, this.props.bookUrl);
+      this.props.setCollectionAndBook(this.props.collectionUrl, this.props.bookUrl);
     }
 
     this.updatePageTitle(this.props);
@@ -180,20 +181,10 @@ export class Root extends React.Component<RootProps, any> {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.collectionUrl !== this.props.collectionUrl || nextProps.bookUrl !== this.props.bookUrl) {
-      this.updateCollectionAndBook(nextProps.collectionUrl, nextProps.bookUrl, nextProps.isTopLevel);
+      this.props.setCollectionAndBook(nextProps.collectionUrl, nextProps.bookUrl, nextProps.isTopLevel);
     }
 
     this.updatePageTitle(nextProps);
-  }
-
-  updateCollectionAndBook(collectionUrl: string, book: string, isTopLevel: boolean = false) {
-    return new Promise((resolve, reject) => {
-      this.props.setCollection(collectionUrl, isTopLevel).then(collectionData => {
-        this.props.setBook(book).then(bookData => {
-          resolve({ collectionData, bookData });
-        }).catch(err => reject(err));
-      }).catch(err => reject(err));
-    });
   }
 
   updatePageTitle(props) {

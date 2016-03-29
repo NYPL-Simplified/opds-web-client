@@ -22,7 +22,7 @@ export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> 
                 text={breadcrumb.text}
                 url={breadcrumb.url}
                 pathFor={this.props.pathFor}
-                setCollectionAndBook={this.props.setCollectionAndBook} />
+                navigate={this.props.navigate} />
             </li>
           ) }
 
@@ -33,7 +33,7 @@ export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> 
                 text={this.props.collection.title}
                 url={this.props.collection.url}
                 pathFor={this.props.pathFor}
-                setCollectionAndBook={this.props.setCollectionAndBook}/> :
+                navigate={this.props.navigate}/> :
               this.props.collection.title
             }
           </li>

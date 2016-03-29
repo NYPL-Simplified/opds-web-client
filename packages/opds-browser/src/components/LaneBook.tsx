@@ -31,7 +31,7 @@ export default class LaneBook extends Book {
           className="laneBookLink"
           url={this.props.book.url}
           book={this.props.book}
-          setCollectionAndBook={this.props.setCollectionAndBook}
+          navigate={this.props.navigate}
           pathFor={this.props.pathFor}
           collectionUrl={this.props.collectionUrl}
           style={{ color: "black", textDecoration: "none" }}>

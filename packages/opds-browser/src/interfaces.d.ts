@@ -3,12 +3,13 @@ interface BaseProps extends __React.HTMLProps<any> {
 }
 
 interface CollectionActionProps {
-  setCollectionAndBook?: (collectionUrl: string, book: BookData|string, skipOnNavigate?: boolean, isTopLevel?: boolean) => Promise<any>;
+  navigate?: (collectionUrl: string, book: BookData|string, isTopLevel?: boolean) => Promise<any>;
   fetchPage?: (url: string) => void;
+  isTopLevel?: boolean;
 }
 
 interface BookActionProps {
-  setCollectionAndBook?: (collectionUrl: string, book: BookData|string, skipOnNavigate?: boolean, isTopLevel?: boolean) => Promise<any>;
+  navigate?: (collectionUrl: string, book: BookData|string, isTopLevel?: boolean) => Promise<any>;
   clearBook?: () => void;
   book?: BookData;
   collectionUrl?: string;
@@ -116,16 +117,12 @@ interface HeaderProps extends BaseProps {
 
 interface RootProps extends State, CollectionActionProps, BaseProps {
   store?: Redux.Store;
-  collection?: string;
-  book?: string;
   collectionUrl?: string;
   bookUrl?: string;
   proxyUrl?: string;
-  onNavigate?: (collectionUrl: string, bookUrl: string, isTopLevel: string) => any;
   BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
   dispatch?: any;
-  setCollection: (collectionUrl: string, skipOnNavigate?: boolean) => Promise<CollectionData>;
-  setBook?: (book: BookData|string, skipOnNavigate?: boolean) => Promise<BookData>;
+  setCollectionAndBook?: (collectionUrl: string, bookUrl: string, isToplevel?: boolean) => void;
   clearCollection?: () => void;
   clearBook?: () => void;
   ref?: any;

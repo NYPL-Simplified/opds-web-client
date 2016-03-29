@@ -33,7 +33,7 @@ const collection = (state = initialState, action) => {
             text: "Catalog",
             url: action.data.catalogRootUrl,
             id: null
-          }];          
+          }];
         }
       } else {
         if ((state.data && state.data.catalogRootUrl && state.data.catalogRootUrl === action.url) ||

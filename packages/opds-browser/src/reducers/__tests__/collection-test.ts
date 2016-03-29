@@ -74,9 +74,9 @@ describe("collection reducer", () => {
 
   it("should handle FETCH_COLLECTION_REQUEST", () => {
     let action = actions.fetchCollectionRequest("some other url");
-    let newState = Object.assign({}, currentState, {
-      url: action.url,
-      isFetching: true
+    let newState = Object.assign({}, errorState, {
+      isFetching: true,
+      error: null
     });
 
     expect(reducer(currentState, action)).toEqual(newState);

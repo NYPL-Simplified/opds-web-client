@@ -62,7 +62,7 @@
         window.history.pushState.apply(window.history, historyArgs(collectionUrl, bookUrl));
       };
 
-      var onNavigate = function(collectionUrl, bookUrl, isTopLevel) {
+      var navigate = function(collectionUrl, bookUrl, isTopLevel) {
         pushHistory(collectionUrl, bookUrl);
         browser.render(collectionUrl, bookUrl, isTopLevel);
       };
@@ -78,7 +78,7 @@
         collectionUrl: startCollection,
         bookUrl: startBook,
         proxyUrl: "/proxy",
-        onNavigate: onNavigate,
+        navigate: navigate,
         pathFor: function(collectionUrl, bookUrl) {
           return serializeParams({collection: collectionUrl, book: bookUrl});
         },
