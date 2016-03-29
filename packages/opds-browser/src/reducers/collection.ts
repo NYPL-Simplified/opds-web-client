@@ -9,12 +9,6 @@ export const initialState = {
 
 const collection = (state = initialState, action) => {
   switch (action.type) {
-    case "SET_COLLECTION_AND_BOOK":
-      return Object.assign({}, state, {
-        url: action.collectionUrl,
-        isTopLevel: action.isTopLevel
-      });
-
     case "FETCH_COLLECTION_REQUEST":
       return Object.assign({}, state, {
         isFetching: true,
