@@ -26,11 +26,15 @@ const collection = (state = initialState, action) => {
       let oldHistory = state.history;
 
       if (action.isTopLevel) {
-        newHistory = [{
-          text: "Catalog",
-          url: action.data.catalogRootUrl,
-          id: null
-        }];
+        if (action.url === action.data.catalogRootUrl) {
+          newHistory = [];
+        } else {
+          newHistory = [{
+            text: "Catalog",
+            url: action.data.catalogRootUrl,
+            id: null
+          }];          
+        }
       } else {
         if ((state.data && state.data.catalogRootUrl && state.data.catalogRootUrl === action.url) ||
             (action.data.catalogRootUrl && action.data.catalogRootUrl === action.url)) {

@@ -129,7 +129,7 @@ export class Root extends React.Component<RootProps, any> {
               history={this.props.history}
               collection={this.props.collectionData}
               pathFor={this.props.pathFor}
-              setCollectionAndBook={setTopLevelCollectionAndBook}
+              setCollectionAndBook={this.props.setCollectionAndBook}
               showCurrentLink={!!this.props.bookData} />
           </div>
         }
@@ -187,6 +187,7 @@ export class Root extends React.Component<RootProps, any> {
   }
 
   updateCollectionAndBook(collectionUrl: string, book: string, isTopLevel: boolean = false) {
+    console.log(isTopLevel);
     return new Promise((resolve, reject) => {
       this.props.setCollection(collectionUrl, isTopLevel).then(collectionData => {
         this.props.setBook(book).then(bookData => {

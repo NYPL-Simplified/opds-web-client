@@ -55,9 +55,6 @@
           book = event.state.book || null;
         }
 
-        currentCollectionUrl = collection;
-        currentBookUrl = book;
-
         browser.render(collection, book);
       };
 
@@ -66,25 +63,20 @@
       };
 
       var onNavigate = function(collectionUrl, bookUrl, isTopLevel) {
-        if (collectionUrl !== currentCollectionUrl || bookUrl !== currentBookUrl) {
-          currentCollectionUrl = collectionUrl;
-          currentBookUrl = bookUrl;
-          pushHistory(collectionUrl, bookUrl);
-          browser.render(collectionUrl, bookUrl, isTopLevel);
-        }
+        pushHistory(collectionUrl, bookUrl);
+        browser.render(collectionUrl, bookUrl, isTopLevel);
       };
 
-      var currentCollectionUrl, currentBookUrl;
       var title = document.title;
       var browser;
 
-      currentCollectionUrl = getParam("collection");
-      currentBookUrl = getParam("book");
+      var startCollection = getParam("collection");
+      var startBook = getParam("book");
 
       browser = new OPDSBrowserApp({
         headerTitle: "OPDS Browser",
-        collectionUrl: currentCollectionUrl,
-        bookUrl: currentBookUrl,
+        collectionUrl: startCollection,
+        bookUrl: startBook,
         proxyUrl: "/proxy",
         onNavigate: onNavigate,
         pathFor: function(collectionUrl, bookUrl) {
@@ -96,8 +88,8 @@
         }
       }, "opds-browser");
 
-      if (currentCollectionUrl || currentBookUrl) {
-        window.history.replaceState.apply(window.history, historyArgs(currentCollectionUrl, currentBookUrl));
+      if (startCollection || startBook) {
+        window.history.replaceState.apply(window.history, historyArgs(startCollection, startBook));
       }
     </script>
   </body>
