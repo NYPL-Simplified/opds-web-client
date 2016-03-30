@@ -1,4 +1,4 @@
-export const initialState = {
+const initialState = {
   url: null,
   data: null,
   isFetching: false,

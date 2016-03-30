@@ -125,7 +125,6 @@ interface RootProps extends State, CollectionActionProps, BaseProps {
   setCollectionAndBook?: (collectionUrl: string, bookUrl: string, isToplevel?: boolean) => void;
   clearCollection?: () => void;
   clearBook?: () => void;
-  ref?: any;
   fetchSearchDescription?: (url: string) => void;
   closeError?: () => void;
   fetchBook?: (bookUrl: string) => void;
