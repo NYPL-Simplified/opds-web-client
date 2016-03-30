@@ -19,8 +19,7 @@ export function mapStateToProps(state, ownProps) {
     bookData: state.browser.book.data || ownProps.bookData,
     history: state.browser.collection.history,
     pathFor: ownProps.pathFor || ((collectionUrl: string, bookUrl: string) => "#"),
-    currentCollectionUrl: state.browser.collection.url,
-    currentBookUrl: state.browser.book.url
+    loadedCollectionUrl: state.browser.collection.url
   };
 };
 
@@ -48,7 +47,7 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
 
   let setCollection = (url: string, isTopLevel: boolean = false) => {
     return new Promise((resolve, reject) => {
-      if (url === stateProps.currentCollectionUrl) {
+      if (url === stateProps.loadedCollectionUrl) {
         // if url is same, do nothing unless there's currently error
         if (stateProps.error) {
           dispatchProps.fetchCollection(url, isTopLevel).then(data => resolve(data));

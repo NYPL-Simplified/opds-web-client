@@ -7,7 +7,7 @@ import * as TestUtils from "react-addons-test-utils";
 
 import OPDSBrowser from "../OPDSBrowser";
 import Root from "../Root";
-
+import buildStore from "../../store";
 
 class TestContainer extends React.Component<BookDetailsContainerProps, any> {
   render(): JSX.Element {
@@ -44,9 +44,20 @@ describe("OPDSBrowser", () => {
     );
   });
 
-  it("passes a store to Root", () => {
+  it("creates a store for Root if not given one", () => {
     let root = TestUtils.findRenderedComponentWithType(browser, Root);
     expect(root.props.store).toBeTruthy();
+  });
+
+  it("passes store to Root if given one", () => {
+    let store = buildStore();
+
+    browser = TestUtils.renderIntoDocument(
+      <OPDSBrowser {...props} store={store} />
+    );
+
+    let root = TestUtils.findRenderedComponentWithType(browser, Root);
+    expect(root.props.store.getState()).toBe(store.getState());
   });
 
   it("passes props to Root", () => {

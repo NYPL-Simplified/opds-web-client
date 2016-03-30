@@ -62,9 +62,8 @@ describe("mergeRootProps", () => {
 
     beforeEach(() => {
       stateProps = {
-        currentCollectionUrl: "test url",
+        loadedCollectionUrl: "test url",
         collectionData: groupedCollectionData,
-        currentBookUrl: null,
         bookData: null
       };
       props = mergeRootProps(stateProps, dispatchProps, componentProps);

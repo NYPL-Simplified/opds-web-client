@@ -13,9 +13,7 @@ import SkipNavigationLink from "../SkipNavigationLink";
 import CollectionLink from "../CollectionLink";
 import Search from "../Search";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
-import { createStore, combineReducers, applyMiddleware } from "redux";
-import * as thunk from "redux-thunk";
-import reducers from "../../reducers/index";
+import buildStore from "../../store";
 
 describe("Root", () => {
   it("shows skip navigation link", () => {
@@ -67,13 +65,31 @@ describe("Root", () => {
     expect(collections[0].props.collection.title).toBe(collectionData.title);
   });
 
-  it("shows a url form if props do not include collectionData", () => {
+  it("shows a url form if no collection url or book url", () => {
     let root = TestUtils.renderIntoDocument(
       <Root />
     );
 
     let urlForms = TestUtils.scryRenderedComponentsWithType(root, UrlForm);
     expect(urlForms.length).toBe(1);
+  });
+
+  it("doesn't show a url form if collection url", () => {
+    let root = TestUtils.renderIntoDocument(
+      <Root collectionUrl="test" setCollectionAndBook={jest.genMockFunction()} />
+    );
+
+    let urlForms = TestUtils.scryRenderedComponentsWithType(root, UrlForm);
+    expect(urlForms.length).toBe(0);
+  });
+
+  it("doesn't show a url form if book url", () => {
+    let root = TestUtils.renderIntoDocument(
+      <Root bookUrl="test" setCollectionAndBook={jest.genMockFunction()} />
+    );
+
+    let urlForms = TestUtils.scryRenderedComponentsWithType(root, UrlForm);
+    expect(urlForms.length).toBe(0);
   });
 
   it("fetches a collection url on mount", () => {
@@ -313,7 +329,7 @@ describe("Root", () => {
     let root, rootInstance;
 
     beforeEach(() => {
-      store = createStore(combineReducers({ browser: reducers }), applyMiddleware(thunk));
+      store = buildStore();
       navigate = jest.genMockFunction();
       let pathFor = (collectionUrl, bookUrl) => {
         let path = "?collection=" + encodeURIComponent(collectionUrl);

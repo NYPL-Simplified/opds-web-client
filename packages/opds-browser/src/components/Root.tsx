@@ -25,7 +25,7 @@ export class Root extends React.Component<RootProps, any> {
     let showCollection = this.props.collectionData;
     let showBook = this.props.bookData;
     let showBookWrapper = this.props.bookUrl || this.props.bookData;
-    let showUrlForm = !this.props.collectionData && !this.props.bookData && !this.props.isFetching;
+    let showUrlForm = !this.props.collectionUrl && !this.props.bookUrl;
     let showBreadcrumbs = showCollection && (this.props.bookData || this.props.history && this.props.history.length > 0);
 
     let padding = 10;

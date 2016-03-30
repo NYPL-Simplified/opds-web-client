@@ -1,9 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { createStore, combineReducers, applyMiddleware } from "redux";
-import * as thunk from "redux-thunk";
-import reducers from "../reducers/index";
 import Root from "./Root";
+import buildStore from "../store";
 
 export default class OPDSBrowser extends React.Component<RootProps, any> {
   store: Redux.Store;
@@ -11,15 +9,7 @@ export default class OPDSBrowser extends React.Component<RootProps, any> {
 
   constructor(props) {
     super(props);
-
-    if (this.props.store) {
-      this.store = this.props.store;
-    } else {
-      this.store = createStore(
-        combineReducers({ browser: reducers }),
-        applyMiddleware(thunk)
-      );
-    }
+    this.store = this.props.store || buildStore();
   }
 
   render(): JSX.Element {

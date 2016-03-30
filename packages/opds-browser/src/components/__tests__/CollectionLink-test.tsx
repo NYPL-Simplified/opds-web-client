@@ -10,7 +10,8 @@ import CollectionLink from "../CollectionLink";
 let linkProps = {
   text: "test text",
   url: "http://example.com",
-  className: "test class"
+  className: "test class",
+  isTopLevel: true
 };
 
 describe("CollectionLink", () => {
@@ -41,7 +42,7 @@ describe("CollectionLink", () => {
     expect(pathFor.mock.calls[0][1]).toBeFalsy();
   });
 
-  it("fetches the url if clicked normally", () => {
+  it("navigates to the url if clicked normally", () => {
     let link = TestUtils.findRenderedDOMComponentWithTag(collectionLink, "a");
     TestUtils.Simulate.click(link);
     expect(navigate.mock.calls.length).toBe(1);
@@ -49,11 +50,17 @@ describe("CollectionLink", () => {
     expect(navigate.mock.calls[0][1]).toBe(null);
   });
 
-  it("does not fetch the url if clicked with alt, ctrl, cmd, or shift key", () => {
+  it("does not navigate to the url if clicked with alt, ctrl, cmd, or shift key", () => {
     let link = TestUtils.findRenderedDOMComponentWithTag(collectionLink, "a");
     ["altKey", "ctrlKey", "metaKey", "shiftKey"].forEach(key => {
       TestUtils.Simulate.click(link, { [key]: true });
       expect(navigate.mock.calls.length).toBe(0);
     });
+  });
+
+  it("passes isTopLevel prop to navigate()", () => {
+    let link = TestUtils.findRenderedDOMComponentWithTag(collectionLink, "a");
+    TestUtils.Simulate.click(link);
+    expect(navigate.mock.calls[0][2]).toBe(true);
   });
 });
