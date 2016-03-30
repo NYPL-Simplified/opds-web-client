@@ -5,6 +5,28 @@ jest.dontMock("../../actions");
 import { mergeRootProps, findBookInCollection } from "../mergeRootProps";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 
+describe("findBookInCollection", () => {
+  it("finds a book in the collection by url", () => {
+    let collection = groupedCollectionData;
+    let book = groupedCollectionData.lanes[0].books[0];
+    let result = findBookInCollection(collection, book.url);
+    expect(result).toEqual(book);
+  });
+
+  it("finds a book in the collection by id", () => {
+    let collection = groupedCollectionData;
+    let book = groupedCollectionData.lanes[0].books[0];
+    let result = findBookInCollection(collection, book.id);
+    expect(result).toEqual(book);
+  });
+
+  it("returns nothing if given a book url/id not in the collection", () => {
+    let collection = groupedCollectionData;
+    let result = findBookInCollection(collection, "nonexistent");
+    expect(result).toBeFalsy();
+  });
+});
+
 describe("mergeRootProps", () => {
   let stateProps, dispatchProps, componentProps;
   let fetchCollection, clearCollection, fetchBook, loadBook, clearBook, navigate;

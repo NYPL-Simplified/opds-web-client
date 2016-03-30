@@ -53,11 +53,23 @@ describe("BookPreviewLink", () => {
     expect(pathFor.mock.calls[0][1]).toBe(linkProps.url);
   });
 
-  it("shows the book preview if clicked normally", () => {
+  it("calls navigate() if clicked normally", () => {
     let element = TestUtils.findRenderedDOMComponentWithTag(link, "a");
     TestUtils.Simulate.click(element);
     expect(navigate.mock.calls.length).toBe(1);
     expect(navigate.mock.calls[0][1]).toBe(linkProps.book.url);
+  });
+
+  it("calls navigate() with the book id for books without a url", () => {
+    let bookWithoutUrl = Object.assign({}, book, { url: null});
+    let linkPropsWithoutBookUrl = Object.assign({}, linkProps, { book: bookWithoutUrl });
+    link = TestUtils.renderIntoDocument(
+      <BookPreviewLink {...linkPropsWithoutBookUrl} navigate={navigate} pathFor={pathFor} />
+    );
+    let element = TestUtils.findRenderedDOMComponentWithTag(link, "a");
+    TestUtils.Simulate.click(element);
+    expect(navigate.mock.calls.length).toBe(1);
+    expect(navigate.mock.calls[0][1]).toBe(bookWithoutUrl.id);
   });
 
   it("does not show the book preview if clicked with alt, ctrl, cmd, or shift key", () => {
