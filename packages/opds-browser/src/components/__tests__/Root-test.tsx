@@ -101,6 +101,7 @@ describe("Root", () => {
 
     expect(setCollectionAndBook.mock.calls.length).toBe(1);
     expect(setCollectionAndBook.mock.calls[0][0]).toBe(collectionUrl);
+    expect(setCollectionAndBook.mock.calls[0][1]).toBeFalsy();
   });
 
   it("fetches a book url on mount", () => {
@@ -111,6 +112,7 @@ describe("Root", () => {
     );
 
     expect(setCollectionAndBook.mock.calls.length).toBe(1);
+    expect(setCollectionAndBook.mock.calls[0][0]).toBeFalsy();
     expect(setCollectionAndBook.mock.calls[0][1]).toBe(bookUrl);
   });
 
@@ -120,16 +122,18 @@ describe("Root", () => {
     let newCollection = "new collection url";
     let setCollectionAndBook = jest.genMockFunction();
     let root = ReactDOM.render(
-      <Root collectionUrl={collectionUrl} setCollectionAndBook={setCollectionAndBook}/>,
+      <Root collectionUrl={collectionUrl} setCollectionAndBook={setCollectionAndBook} />,
       elem
     );
     ReactDOM.render(
-      <Root collectionUrl={newCollection} setCollectionAndBook={setCollectionAndBook}/>,
+      <Root collectionUrl={newCollection} setCollectionAndBook={setCollectionAndBook} isTopLevel={true} />,
       elem
     );
 
     expect(setCollectionAndBook.mock.calls.length).toBe(2);
     expect(setCollectionAndBook.mock.calls[1][0]).toBe(newCollection);
+    expect(setCollectionAndBook.mock.calls[1][1]).toBeFalsy();
+    expect(setCollectionAndBook.mock.calls[1][2]).toBe(true);
   });
 
   it("shows loading message", () => {

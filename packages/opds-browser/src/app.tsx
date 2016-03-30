@@ -12,7 +12,7 @@ class OPDSBrowserApp {
     this.render(config.collectionUrl, config.bookUrl, false);
   }
 
-  render(collectionUrl: string, bookUrl: string, isTopLevel: boolean) {
+  render(collectionUrl: string = null, bookUrl: string = null, isTopLevel: boolean = false) {
     let props = Object.assign({}, this.props, { collectionUrl, bookUrl, isTopLevel });
     ReactDOM.render(
       <OPDSBrowser {...props} />,

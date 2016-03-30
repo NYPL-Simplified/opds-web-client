@@ -2,12 +2,16 @@ import ActionsCreator from "../actions";
 import DataFetcher from "../DataFetcher";
 import { adapter } from "../OPDSDataAdapter";
 
-export function findBookInCollection(collection: CollectionData, bookUrl: string) {
-  let allBooks = collection.lanes.reduce((books, lane) => {
-    return books.concat(lane.books);
-  }, collection.books);
+export function findBookInCollection(collection: CollectionData, book: string) {
+  if (collection) {
+    let allBooks = collection.lanes.reduce((books, lane) => {
+      return books.concat(lane.books);
+    }, collection.books);
 
-  return allBooks.find(book => book.url === bookUrl || book.id === bookUrl);
+    return allBooks.find(b => b.url === book || b.id === book);
+  } else {
+    return null;
+  }
 }
 
 export function mapStateToProps(state, ownProps) {
@@ -66,14 +70,14 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
     });
   };
 
-  let setBook = (book: BookData|string) => {
+  let setBook = (book: BookData|string, collectionData: CollectionData = null) => {
     return new Promise((resolve, reject) => {
       let url = null;
       let bookData = null;
 
       if (typeof book === "string") {
         url = book;
-        bookData = findBookInCollection(stateProps.collectionData, url);
+        bookData = findBookInCollection(collectionData, url);
       } else if (book && typeof book === "object") {
         url = book.url;
         bookData = book;
@@ -99,8 +103,12 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
     setCollection: setCollection,
     setBook: setBook,
     setCollectionAndBook: (collectionUrl: string, book: string, isTopLevel: boolean = false) => {
-      setCollection(collectionUrl, isTopLevel).then(collectionData => {
-        setBook(book);
+      return new Promise((resolve, reject) => {
+        setCollection(collectionUrl, isTopLevel).then((collectionData: CollectionData) => {
+          setBook(book, collectionData).then((bookData: BookData) => {
+            resolve({ collectionData, bookData });
+          }).catch(err => reject(err));
+        }).catch(err => reject(err));
       });
     },
     refreshBook: refreshBook,
