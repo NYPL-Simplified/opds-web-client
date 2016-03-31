@@ -208,25 +208,6 @@ describe("Root", () => {
     expect(container.textContent).toContain(bookData.title);
   });
 
-  it("creates a ref for book detail container", () => {
-    class Container extends React.Component<BookDetailsContainerProps, any> {
-      render(): JSX.Element {
-        return (
-          <div className="container">
-            {this.props.children}
-          </div>
-        );
-      }
-    }
-
-    let bookData = groupedCollectionData.lanes[0].books[0];
-    let root = TestUtils.renderIntoDocument(
-      <Root bookData={bookData} BookDetailsContainer={Container} />
-    ) as Root;
-    let container = TestUtils.findRenderedComponentWithType(root, Container);
-    expect(root.bookDetailsContainer.props).toEqual(container.props);
-  });
-
   it("sets page title after updating", () => {
     let elem = document.createElement("div");
     let collectionData = ungroupedCollectionData;
@@ -301,7 +282,7 @@ describe("Root", () => {
       let header = TestUtils.findRenderedComponentWithType(root, Header);
       let search = TestUtils.findRenderedComponentWithType(header, Search);
       let link = TestUtils.findRenderedComponentWithType(header, CollectionLink);
-      expect(root.header.props).toEqual(header.props);
+      expect(header).toBeTruthy();
       expect(search.props.url).toBe("test search url");
       expect(link.props.text).toBe("test");
       expect(link.props.url).toBe("test url");

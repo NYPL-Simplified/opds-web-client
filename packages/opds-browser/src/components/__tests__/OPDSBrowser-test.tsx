@@ -67,26 +67,5 @@ describe("OPDSBrowser", () => {
       expect(root.props[key]).toEqual(props[key]);
     });
   });
-
-  it("puts Root in a 'root' ref", () => {
-    Object.keys(props).forEach(key => {
-      expect(browser.root.props[key]).toEqual(props[key]);
-    });
-  });
-
-  it("provides access to the BookDetailsContainer component", () => {
-    let root = TestUtils.findRenderedComponentWithType(browser, Root) as any;
-    let container = browser.getBookDetailsContainer();
-    expect(container).toBeTruthy();
-    expect(container.constructor.name).toBe("TestContainer");
-    expect(container.testMethod()).toBe("test");
-  });
-
-  it("provides function to refresh book", (done) => {
-    browser.refreshBook().then(data => {
-      expect(data).toEqual("test");
-      done();
-    });
-  });
 });
 

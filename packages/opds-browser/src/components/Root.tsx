@@ -13,7 +13,6 @@ import SkipNavigationLink from "./SkipNavigationLink";
 import CollectionLink from "./CollectionLink";
 
 export class Root extends React.Component<RootProps, any> {
-  bookDetailsContainer: any;
   header: any;
 
   render(): JSX.Element {
@@ -93,7 +92,6 @@ export class Root extends React.Component<RootProps, any> {
 
         { Header ?
           <Header
-            ref={c => this.header = c}
             renderCollectionLink={renderCollectionLink.bind(this)}>
             { this.props.collectionData && this.props.collectionData.search &&
               <Search
@@ -141,7 +139,6 @@ export class Root extends React.Component<RootProps, any> {
               { showBook &&
                 ( BookDetailsContainer ?
                   <BookDetailsContainer
-                    ref={c => this.bookDetailsContainer = c}
                     book={this.props.bookData}
                     collection={this.props.collectionUrl}>
                     <BookDetails book={this.props.bookData} />
@@ -196,7 +193,7 @@ export class Root extends React.Component<RootProps, any> {
   }
 }
 
-let connectOptions = { withRef: true, pure: true };
+let connectOptions = { withRef: true, pure: false };
 const ConnectedRoot = connect(
   mapStateToProps,
   mapDispatchToProps,

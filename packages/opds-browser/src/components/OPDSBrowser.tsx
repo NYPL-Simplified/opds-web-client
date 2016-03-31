@@ -5,7 +5,6 @@ import buildStore from "../store";
 
 export default class OPDSBrowser extends React.Component<RootProps, any> {
   store: Redux.Store;
-  root: any;
 
   constructor(props) {
     super(props);
@@ -15,17 +14,8 @@ export default class OPDSBrowser extends React.Component<RootProps, any> {
   render(): JSX.Element {
     return (
       <Root
-        ref={c => this.root = c}
         store={this.store}
         {...this.props} />
     );
-  }
-
-  getBookDetailsContainer() {
-    return this.root.getWrappedInstance().bookDetailsContainer;
-  }
-
-  refreshBook() {
-    return this.root.getWrappedInstance().props.refreshBook();
   }
 }
