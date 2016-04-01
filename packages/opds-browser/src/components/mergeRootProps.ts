@@ -2,24 +2,28 @@ import ActionsCreator from "../actions";
 import DataFetcher from "../DataFetcher";
 import { adapter } from "../OPDSDataAdapter";
 
-export function findBookInCollection(collection: CollectionData, bookUrl: string) {
-  let allBooks = collection.lanes.reduce((books, lane) => {
-    return books.concat(lane.books);
-  }, collection.books);
+export function findBookInCollection(collection: CollectionData, book: string) {
+  if (collection) {
+    let allBooks = collection.lanes.reduce((books, lane) => {
+      return books.concat(lane.books);
+    }, collection.books);
 
-  return allBooks.find(book => book.url === bookUrl);
+    return allBooks.find(b => b.url === book || b.id === book);
+  } else {
+    return null;
+  }
 }
 
 export function mapStateToProps(state, ownProps) {
   return {
-    collectionData: state.collection.data || ownProps.collectionData,
-    collectionUrl: state.collection.url,
-    isFetching: (state.collection.isFetching || state.book.isFetching),
-    isFetchingPage: state.collection.isFetchingPage,
-    error: (state.collection.error || state.book.error),
-    bookData: state.book.data || ownProps.bookData,
-    bookUrl: state.book.url,
-    history: state.collection.history
+    collectionData: state.browser.collection.data || ownProps.collectionData,
+    isFetching: (state.browser.collection.isFetching || state.browser.book.isFetching),
+    isFetchingPage: state.browser.collection.isFetchingPage,
+    error: (state.browser.collection.error || state.browser.book.error),
+    bookData: state.browser.book.data || ownProps.bookData,
+    history: state.browser.collection.history,
+    pathFor: ownProps.pathFor || ((collectionUrl: string, bookUrl: string) => "#"),
+    loadedCollectionUrl: state.browser.collection.url
   };
 };
 
@@ -41,76 +45,52 @@ export function mapDispatchToProps(dispatch) {
   };
 };
 
-// define setCollection and setBook here so that they can call onNavigate from component props
 export function mergeRootProps(stateProps, createDispatchProps, componentProps) {
-  // wrap componentProps.onNavigate so it only fires when collection or book url changes
-  let onNavigate = componentProps.onNavigate ? (collectionUrl: string, bookUrl: string): void => {
-    if (collectionUrl !== stateProps.collectionUrl || bookUrl !== stateProps.bookUrl) {
-      componentProps.onNavigate(collectionUrl, bookUrl);
-    }
-  } : undefined;
-
-  let pathFor = componentProps.pathFor ? componentProps.pathFor : (collectionUrl: string, bookUrl: string) => { return "#"; };
-
   let fetcher = new DataFetcher(componentProps.proxyUrl, adapter);
   let dispatchProps = createDispatchProps.createDispatchProps(fetcher);
 
-  let setCollection = (url: string, skipOnNavigate: boolean = false, isTopLevel: boolean = false) => {
+  let setCollection = (url: string, isTopLevel: boolean = false) => {
     return new Promise((resolve, reject) => {
-      if (!url) {
-        dispatchProps.clearCollection();
-        resolve(null);
-      } else if (!stateProps.error && stateProps.collectionData && url === stateProps.collectionUrl) {
-        resolve(stateProps.collectionData);
+      if (url === stateProps.loadedCollectionUrl) {
+        // if url is same, do nothing unless there's currently error
+        if (stateProps.error) {
+          dispatchProps.fetchCollection(url, isTopLevel).then(data => resolve(data));
+        } else {
+          resolve(stateProps.collectionData);
+        }
       } else {
-        // only fetch collection if url has changed
-        dispatchProps.fetchCollection(url, isTopLevel).then(data => resolve(data));
-      }
-
-      if (!skipOnNavigate && onNavigate) {
-        onNavigate(url, stateProps.bookUrl);
+        // if url is changed, either fetch or clear collection
+        if (url) {
+          dispatchProps.fetchCollection(url, isTopLevel).then(data => resolve(data));
+        } else {
+          dispatchProps.clearCollection();
+          resolve(null);
+        }
       }
     });
   };
 
-  let setBook = (book: BookData|string, skipOnNavigate: boolean = false) => {
+  let setBook = (book: BookData|string, collectionData: CollectionData = null) => {
     return new Promise((resolve, reject) => {
       let url = null;
       let bookData = null;
 
       if (typeof book === "string") {
         url = book;
+        bookData = findBookInCollection(collectionData, url);
       } else if (book && typeof book === "object") {
+        url = book.url;
         bookData = book;
-
-        if (book.url) {
-          url = book.url;
-        }
       }
 
-      if (!url && !bookData) {
-        dispatchProps.clearBook();
-        resolve(null);
-      } else if (bookData) {
+      if (bookData) {
         dispatchProps.loadBook(bookData, url);
         resolve(bookData);
-      } else if (!stateProps.error && stateProps.bookData && url === stateProps.bookUrl) {
-        resolve(stateProps.bookData);
+      } else if (url) {
+        dispatchProps.fetchBook(url).then(data => resolve(data));
       } else {
-        if (stateProps.collectionData) {
-          bookData = findBookInCollection(stateProps.collectionData, url);
-        }
-
-        if (bookData) {
-          dispatchProps.loadBook(bookData, url);
-          resolve(bookData);
-        } else {
-          dispatchProps.fetchBook(url).then(data => resolve(data));
-        }
-      }
-
-      if (!skipOnNavigate && onNavigate) {
-        onNavigate(stateProps.collectionUrl, url);
+        dispatchProps.clearBook();
+        resolve(null);
       }
     });
   };
@@ -122,33 +102,21 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
   return Object.assign({}, componentProps, stateProps, dispatchProps, {
     setCollection: setCollection,
     setBook: setBook,
-    refreshBook: refreshBook,
-    setCollectionAndBook: (
-      collectionUrl: string,
-      book: BookData|string,
-      skipOnNavigate: boolean = false,
-      isTopLevel: boolean = false) => {
+    setCollectionAndBook: (collectionUrl: string, book: string, isTopLevel: boolean = false) => {
       return new Promise((resolve, reject) => {
-        // skip onNavigate for both fetches, but call it at the end
-        // either collectionUrl or bookUrl can be null
-        setCollection(collectionUrl, true, isTopLevel).then(collectionData => {
-          setBook(book, true).then(bookData => {
+        setCollection(collectionUrl, isTopLevel).then((collectionData: CollectionData) => {
+          setBook(book, collectionData).then((bookData: BookData) => {
             resolve({ collectionData, bookData });
           }).catch(err => reject(err));
         }).catch(err => reject(err));
-
-        if (!skipOnNavigate && onNavigate) {
-          let bookUrl = (typeof book === "string" ? book : (book ? book.url : null));
-          onNavigate(collectionUrl, bookUrl);
-        }
       });
     },
+    refreshBook: refreshBook,
     clearCollection: () => {
       setCollection(null);
     },
     clearBook: () => {
       setBook(null);
-    },
-    pathFor: pathFor
+    }
   });
 };

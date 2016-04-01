@@ -54,7 +54,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
                   key={facetGroup.label}
                   facetGroup={facetGroup}
                   pathFor={this.props.pathFor}
-                  setCollectionAndBook={this.props.setCollectionAndBook} />
+                  navigate={this.props.navigate} />
             ) }
           </div>
         )}
@@ -72,8 +72,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
               <li key={lane.title}>
                 <Lane
                   lane={lane}
-                  setCollectionAndBook={this.props.setCollectionAndBook}
-                  setBook={this.props.setBook}
+                  navigate={this.props.navigate}
                   pathFor={this.props.pathFor}
                   collectionUrl={this.props.collection.url} />
               </li>
@@ -87,7 +86,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
               <li key={book.id}>
                 <Book
                   book={book}
-                  setBook={this.props.setBook}
+                  navigate={this.props.navigate}
                   pathFor={this.props.pathFor}
                   collectionUrl={this.props.collection.url} />
               </li>
@@ -102,7 +101,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
                 <CollectionLink
                   text={link.text}
                   url={link.url}
-                  setCollectionAndBook={this.props.setCollectionAndBook}
+                  navigate={this.props.navigate}
                   pathFor={this.props.pathFor}
                   style={linkStyle} />
               </li>) }

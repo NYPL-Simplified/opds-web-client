@@ -13,9 +13,7 @@ import SkipNavigationLink from "../SkipNavigationLink";
 import CollectionLink from "../CollectionLink";
 import Search from "../Search";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
-import { createStore, applyMiddleware } from "redux";
-let thunk: any = require("redux-thunk");
-import reducers from "../../reducers/index";
+import buildStore from "../../store";
 
 describe("Root", () => {
   it("shows skip navigation link", () => {
@@ -38,22 +36,22 @@ describe("Root", () => {
         }
       }
     });
-    let setCollectionAndBook = jest.genMockFunction();
+    let navigate = jest.genMockFunction();
 
     let root = TestUtils.renderIntoDocument(
       <Root
         collectionData={collectionData}
         fetchSearchDescription={(url: string) => {}}
-        setCollectionAndBook={setCollectionAndBook}
+        navigate={navigate}
         />
     );
     let search = TestUtils.findRenderedComponentWithType(root, Search);
     let form = TestUtils.findRenderedDOMComponentWithTag(search, "form");
     TestUtils.Simulate.submit(form);
     expect(search).toBeTruthy();
+    expect(search.props.isTopLevel).toBe(true);
     expect(form).toBeTruthy();
-    expect(setCollectionAndBook.mock.calls.length).toBe(1);
-    expect(setCollectionAndBook.mock.calls[0][3]).toBe(true);
+    expect(navigate.mock.calls.length).toBe(1);
   });
 
   it("shows a collection if props include collectionData", () => {
@@ -67,7 +65,7 @@ describe("Root", () => {
     expect(collections[0].props.collection.title).toBe(collectionData.title);
   });
 
-  it("shows a url form if props do not include collectionData", () => {
+  it("shows a url form if no collection url or book url", () => {
     let root = TestUtils.renderIntoDocument(
       <Root />
     );
@@ -76,49 +74,71 @@ describe("Root", () => {
     expect(urlForms.length).toBe(1);
   });
 
+  it("doesn't show a url form if collection url", () => {
+    let root = TestUtils.renderIntoDocument(
+      <Root collectionUrl="test" setCollectionAndBook={jest.genMockFunction()} />
+    );
+
+    let urlForms = TestUtils.scryRenderedComponentsWithType(root, UrlForm);
+    expect(urlForms.length).toBe(0);
+  });
+
+  it("doesn't show a url form if book url", () => {
+    let root = TestUtils.renderIntoDocument(
+      <Root bookUrl="test" setCollectionAndBook={jest.genMockFunction()} />
+    );
+
+    let urlForms = TestUtils.scryRenderedComponentsWithType(root, UrlForm);
+    expect(urlForms.length).toBe(0);
+  });
+
   it("fetches a collection url on mount", () => {
-    let startCollection = "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/blocks.xml";
+    let collectionUrl = "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/blocks.xml";
     let setCollectionAndBook = jest.genMockFunction();
     let root = TestUtils.renderIntoDocument(
-      <Root collection={startCollection} setCollectionAndBook={setCollectionAndBook} />
+      <Root collectionUrl={collectionUrl} setCollectionAndBook={setCollectionAndBook}/>
     );
 
     expect(setCollectionAndBook.mock.calls.length).toBe(1);
-    expect(setCollectionAndBook.mock.calls[0][0]).toBe(startCollection);
+    expect(setCollectionAndBook.mock.calls[0][0]).toBe(collectionUrl);
+    expect(setCollectionAndBook.mock.calls[0][1]).toBeFalsy();
   });
 
   it("fetches a book url on mount", () => {
-    let startBook = "http://example.com/book";
+    let bookUrl = "http://example.com/book";
     let setCollectionAndBook = jest.genMockFunction();
     let root = TestUtils.renderIntoDocument(
-      <Root book={startBook} setCollectionAndBook={setCollectionAndBook} />
+      <Root bookUrl={bookUrl} setCollectionAndBook={setCollectionAndBook}/>
     );
 
     expect(setCollectionAndBook.mock.calls.length).toBe(1);
-    expect(setCollectionAndBook.mock.calls[0][1]).toBe(startBook);
+    expect(setCollectionAndBook.mock.calls[0][0]).toBeFalsy();
+    expect(setCollectionAndBook.mock.calls[0][1]).toBe(bookUrl);
   });
 
   it("fetches a collection url when updated", () => {
     let elem = document.createElement("div");
-    let startCollection = "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/blocks.xml";
+    let collectionUrl = "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/blocks.xml";
     let newCollection = "new collection url";
     let setCollectionAndBook = jest.genMockFunction();
     let root = ReactDOM.render(
-      <Root collection={startCollection} setCollectionAndBook={setCollectionAndBook} />,
+      <Root collectionUrl={collectionUrl} setCollectionAndBook={setCollectionAndBook} />,
       elem
     );
     ReactDOM.render(
-      <Root collection={newCollection} setCollectionAndBook={setCollectionAndBook} />,
+      <Root collectionUrl={newCollection} setCollectionAndBook={setCollectionAndBook} isTopLevel={true} />,
       elem
     );
 
     expect(setCollectionAndBook.mock.calls.length).toBe(2);
     expect(setCollectionAndBook.mock.calls[1][0]).toBe(newCollection);
+    expect(setCollectionAndBook.mock.calls[1][1]).toBeFalsy();
+    expect(setCollectionAndBook.mock.calls[1][2]).toBe(true);
   });
 
   it("shows loading message", () => {
     let root = TestUtils.renderIntoDocument(
-      <Root isFetching={true} />
+      <Root isFetching={true}/>
     );
 
     let loading = TestUtils.findRenderedDOMComponentWithClass(root, "loading");
@@ -132,7 +152,7 @@ describe("Root", () => {
       url: "test error url"
     };
     let root = TestUtils.renderIntoDocument(
-      <Root error={fetchError} />
+      <Root error={fetchError}/>
     );
 
     let error = TestUtils.findRenderedDOMComponentWithClass(root, "error");
@@ -142,7 +162,7 @@ describe("Root", () => {
   it("shows book detail", () => {
     let bookData = groupedCollectionData.lanes[0].books[0];
     let root = TestUtils.renderIntoDocument(
-      <Root bookUrl={bookData.url} bookData={bookData} />
+      <Root bookData={bookData}/>
     );
     let book = TestUtils.findRenderedDOMComponentWithClass(root, "bookDetails");
 
@@ -182,29 +202,10 @@ describe("Root", () => {
 
     let bookData = groupedCollectionData.lanes[0].books[0];
     let root = TestUtils.renderIntoDocument(
-      <Root bookUrl={bookData.url} bookData={bookData} BookDetailsContainer={Container} />
+      <Root bookData={bookData} BookDetailsContainer={Container} />
     );
     let container = TestUtils.findRenderedDOMComponentWithClass(root, "container");
     expect(container.textContent).toContain(bookData.title);
-  });
-
-  it("creates a ref for book detail container", () => {
-    class Container extends React.Component<BookDetailsContainerProps, any> {
-      render(): JSX.Element {
-        return (
-          <div className="container">
-            {this.props.children}
-          </div>
-        );
-      }
-    }
-
-    let bookData = groupedCollectionData.lanes[0].books[0];
-    let root = TestUtils.renderIntoDocument(
-      <Root bookUrl={bookData.url} bookData={bookData} BookDetailsContainer={Container} />
-    ) as Root;
-    let container = TestUtils.findRenderedComponentWithType(root, Container);
-    expect(root.bookDetailsContainer.props).toEqual(container.props);
   });
 
   it("sets page title after updating", () => {
@@ -253,7 +254,7 @@ describe("Root", () => {
         }
       }
     });
-    let setCollectionAndBook = jest.genMockFunction();
+    let navigate = jest.genMockFunction();
 
     class Header extends React.Component<HeaderProps, any> {
       render(): JSX.Element {
@@ -272,7 +273,7 @@ describe("Root", () => {
           header={Header}
           collectionData={collectionData}
           fetchSearchDescription={(url: string) => {}}
-          setCollectionAndBook={setCollectionAndBook}
+          navigate={navigate}
           />
       ) as Root;
     });
@@ -281,7 +282,7 @@ describe("Root", () => {
       let header = TestUtils.findRenderedComponentWithType(root, Header);
       let search = TestUtils.findRenderedComponentWithType(header, Search);
       let link = TestUtils.findRenderedComponentWithType(header, CollectionLink);
-      expect(root.header.props).toEqual(header.props);
+      expect(header).toBeTruthy();
       expect(search.props.url).toBe("test search url");
       expect(link.props.text).toBe("test");
       expect(link.props.url).toBe("test url");
@@ -292,28 +293,29 @@ describe("Root", () => {
       let search = TestUtils.findRenderedComponentWithType(header, Search);
       let link = TestUtils.findRenderedDOMComponentWithTag(header, "a");
       TestUtils.Simulate.click(link);
-      expect(setCollectionAndBook.mock.calls.length).toBe(1);
-      expect(setCollectionAndBook.mock.calls[0][3]).toBe(true);
+      expect(navigate.mock.calls.length).toBe(1);
+      expect(navigate.mock.calls[0][2]).toBe(true);
     });
 
-    it("treats serach in the header as top-level", () => {
+    it("treats search in the header as top-level", () => {
       let header = TestUtils.findRenderedComponentWithType(root, Header);
       let button = TestUtils.findRenderedDOMComponentWithTag(header, "button");
       TestUtils.Simulate.click(button);
-      expect(setCollectionAndBook.mock.calls.length).toBe(1);
-      expect(setCollectionAndBook.mock.calls[0][3]).toBe(true);
+      expect(navigate.mock.calls.length).toBe(1);
+      expect(navigate.mock.calls[0][2]).toBe(true);
     });
   });
 
   describe("connected to store", () => {
     let store: Redux.Store;
     let collectionData: CollectionData = groupedCollectionData;
-    let onNavigate;
+    let bookData: BookData = groupedCollectionData.lanes[0].books[0];
+    let navigate;
     let root, rootInstance;
 
     beforeEach(() => {
-      store = createStore(reducers, applyMiddleware(thunk));
-      onNavigate = jest.genMockFunction();
+      store = buildStore();
+      navigate = jest.genMockFunction();
       let pathFor = (collectionUrl, bookUrl) => {
         let path = "?collection=" + encodeURIComponent(collectionUrl);
         if (bookUrl) {
@@ -325,39 +327,49 @@ describe("Root", () => {
         <ConnectedRoot
           store={store}
           ref={(c) => root = c}
-          onNavigate={onNavigate}
+          navigate={navigate}
           pathFor={pathFor}
           collectionData={collectionData} />
       );
       rootInstance = root.getWrappedInstance();
     });
 
-    it("calls onNavigate when fetching collection", () => {
+    it("calls navigate when showing a collection", () => {
       let collectionLink = TestUtils.scryRenderedDOMComponentsWithClass(rootInstance, "laneTitle")[0];
       let collectionUrl = decodeURIComponent(collectionLink.getAttribute("href").split("collection=")[1]);
       TestUtils.Simulate.click(collectionLink);
 
-      expect(onNavigate.mock.calls.length).toBe(1);
-      expect(onNavigate.mock.calls[0][0]).toBe(collectionUrl);
+      expect(navigate.mock.calls.length).toBe(1);
+      expect(navigate.mock.calls[0][0]).toBe(collectionUrl);
     });
 
-    it("calls onNavigate when showing or hiding a book", () => {
+    it("calls navigate when showing or hiding a book", () => {
       let bookLink =  TestUtils.scryRenderedDOMComponentsWithClass(rootInstance, "laneBookLink")[0];
       let url = bookLink.getAttribute("href");
       let parts = url.slice(1).split("&");
       let collectionUrl = decodeURIComponent(parts[0].split("=")[1]);
       let bookUrl = decodeURIComponent(parts[1].split("=")[1]);
       TestUtils.Simulate.click(bookLink);
-      let links = TestUtils.scryRenderedDOMComponentsWithClass(rootInstance, "currentCollectionLink");
-      TestUtils.Simulate.click(links[0]);
 
-      expect(onNavigate.mock.calls.length).toBe(2);
-      // can't test collectionUrl because it comes from Root's props,
-      // which only get set asynchronously from a fetch, which is too
-      // much for this test:
-      // expect(onNavigate.mock.calls[0][0]).toBe(collectionUrl);
-      expect(onNavigate.mock.calls[0][1]).toBe(bookUrl);
-      expect(onNavigate.mock.calls[1][1]).toBeFalsy();
+      expect(navigate.mock.calls.length).toBe(1);
+      expect(navigate.mock.calls[0][0]).toBe(collectionUrl);
+      expect(navigate.mock.calls[0][1]).toBe(bookUrl);
+
+      TestUtils.renderIntoDocument(
+        <ConnectedRoot
+          store={store}
+          ref={(c) => root = c}
+          navigate={navigate}
+          collectionData={collectionData}
+          bookData={bookData} />
+      );
+      rootInstance = root.getWrappedInstance();
+      let collectionLink = TestUtils.findRenderedDOMComponentWithClass(rootInstance, "currentCollectionLink");
+      TestUtils.Simulate.click(collectionLink);
+
+      expect(navigate.mock.calls.length).toBe(2);
+      expect(navigate.mock.calls[1][0]).toBe(collectionUrl);
+      expect(navigate.mock.calls[1][1]).toBe(null);
     });
   });
 });

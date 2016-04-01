@@ -9,7 +9,6 @@ const book = (state = initialState, action) => {
   switch (action.type) {
     case "FETCH_BOOK_REQUEST":
       return Object.assign({}, state, {
-        url: action.url,
         isFetching: true,
         error: null
       });

@@ -8,9 +8,9 @@ import UrlForm from "../UrlForm";
 
 describe("UrlForm", () => {
   it("shows the form with bootstrap classes", () => {
-    let setCollectionAndBook = jest.genMockFunction();
+    let navigate = jest.genMockFunction();
     let form = TestUtils.renderIntoDocument(
-      <UrlForm setCollectionAndBook={setCollectionAndBook} />
+      <UrlForm navigate={navigate} />
     );
 
     let formNode = TestUtils.findRenderedDOMComponentWithTag(form, "form");
@@ -25,9 +25,9 @@ describe("UrlForm", () => {
   });
 
   it("fetches the url", () => {
-    let setCollectionAndBook = jest.genMockFunction();
+    let navigate = jest.genMockFunction();
     let urlForm = TestUtils.renderIntoDocument(
-      <UrlForm setCollectionAndBook={setCollectionAndBook} />
+      <UrlForm navigate={navigate} />
     );
 
     let form = TestUtils.findRenderedDOMComponentWithTag(urlForm, "form");
@@ -36,7 +36,7 @@ describe("UrlForm", () => {
     input["value"] = "some url";
     TestUtils.Simulate.submit(form);
 
-    expect(setCollectionAndBook.mock.calls.length).toEqual(1);
-    expect(setCollectionAndBook.mock.calls[0][0]).toEqual("some url");
+    expect(navigate.mock.calls.length).toEqual(1);
+    expect(navigate.mock.calls[0][0]).toEqual("some url");
   });
 });

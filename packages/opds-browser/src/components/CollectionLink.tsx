@@ -3,7 +3,7 @@ import Link from "./Link";
 
 export default class CollectionLink extends Link<CollectionLinkProps> {
   processClick() {
-    this.props.setCollectionAndBook(this.props.url, null);
+    this.props.navigate(this.props.url, null, this.props.isTopLevel);
   }
 
   href() {

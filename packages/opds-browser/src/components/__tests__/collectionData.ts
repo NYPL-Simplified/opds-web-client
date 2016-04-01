@@ -57,5 +57,6 @@ ungroupedCollectionData.books = ungroupedCollectionData.lanes.reduce((results, l
   return results.concat(lane.books);
 }, []);
 ungroupedCollectionData.lanes = [];
+ungroupedCollectionData.url = "http://circulation.librarysimplified.org/lane/";
 
 export { groupedCollectionData, ungroupedCollectionData };

@@ -3,19 +3,21 @@ import * as ReactDOM from "react-dom";
 import OPDSBrowser from "./components/OPDSBrowser";
 
 class OPDSBrowserApp {
-  browser: OPDSBrowser;
+  elementId: string;
+  props: RootProps;
 
   constructor(config: any, elementId: string) {
-    ReactDOM.render(
-      <OPDSBrowser
-        ref={(c) => this.browser = c}
-        {...config} />,
-      document.getElementById(elementId)
-    );
+    this.elementId = elementId;
+    this.props = config;
+    this.render(config.collectionUrl, config.bookUrl, false);
   }
 
-  setCollectionAndBook(collectionUrl: string, bookUrl: string, skipOnNavigate: boolean = false) {
-    this.browser.root.getWrappedInstance().props.setCollectionAndBook(collectionUrl, bookUrl, skipOnNavigate);
+  render(collectionUrl: string = null, bookUrl: string = null, isTopLevel: boolean = false) {
+    let props = Object.assign({}, this.props, { collectionUrl, bookUrl, isTopLevel });
+    ReactDOM.render(
+      <OPDSBrowser {...props} />,
+      document.getElementById(this.elementId)
+    );
   }
 }
 
