@@ -27,7 +27,7 @@ export default class Search extends React.Component<SearchProps, any> {
   }
 
   componentWillUpdate(props) {
-    if (props.url) {
+    if (props.url && props.url !== this.props.url) {
       props.fetchSearchDescription(props.url);
     }
   }

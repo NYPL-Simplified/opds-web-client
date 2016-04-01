@@ -17,6 +17,26 @@ describe("Search", () => {
     expect(fetchSearchDescription.mock.calls[0][0]).toEqual("test url");
   });
 
+  it("does not fetch the search description again if url doesn't change", () => {
+    let fetchSearchDescription = jest.genMockFunction();
+    let url = "test url";
+    let searchData = {
+      description: "description",
+      shortName: "shortName",
+      template: (s) => s
+    };
+    let element = document.createElement("div");
+    ReactDOM.render(
+      <Search url={url} fetchSearchDescription={fetchSearchDescription} />,
+      element
+    );
+    ReactDOM.render(
+      <Search url={url} searchData={searchData} fetchSearchDescription={fetchSearchDescription} />,
+      element
+    );
+    expect(fetchSearchDescription.mock.calls.length).toEqual(1);
+  });
+
   it("shows the search form with bootstrap classes", () => {
     let searchData = {
       description: "description",
