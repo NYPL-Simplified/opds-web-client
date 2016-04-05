@@ -28,7 +28,9 @@ export default class BookDetails extends React.Component<BookProps, any> {
               ""
             }
             <div style={{ marginTop: "2em", color: "#888", fontSize: "0.9em" }}>
-              <div className="bookDetailsPublished">Published: {this.props.book.published}</div>
+              { this.props.book.published &&
+                <div className="bookDetailsPublished">Published: {this.props.book.published}</div>
+              }
               {
                 this.props.book.publisher ?
                 <div className="bookDetailsPublisher">Publisher: {this.props.book.publisher}</div> :
