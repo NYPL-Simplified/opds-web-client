@@ -130,7 +130,7 @@ interface RootProps extends State, CollectionActionProps, BaseProps {
   fetchSearchDescription?: (url: string) => void;
   closeError?: () => void;
   fetchBook?: (bookUrl: string) => Promise<any>;
-  refresh: () => void;
+  refreshCollectionAndBook?: () => void;
   pageTitleTemplate?: (collectionTitle: string, bookTitle: string) => string;
   headerTitle?: string;
   header?: new () => __React.Component<HeaderProps, any>;

@@ -265,4 +265,30 @@ describe("mergeRootProps", () => {
       }).catch(err => done.fail(err));
     });
   });
+
+  describe("refresh", () => {
+    let props;
+
+    beforeEach(() => {
+      stateProps = {
+        loadedCollectionUrl: "test collection",
+        loadedBookUrl: "test book"
+      };
+      props = mergeRootProps(stateProps, dispatchProps, componentProps);
+    });
+
+    it("calls fetchCollection", () => {
+      props.refreshCollectionAndBook();
+      expect(fetchCollection.mock.calls.length).toBe(1);
+      expect(fetchCollection.mock.calls[0][0]).toBe("test collection");
+    });
+
+    it("calls fetchBook", (done) => {
+      props.refreshCollectionAndBook().then(data => {
+        expect(fetchBook.mock.calls.length).toBe(1);
+        expect(fetchBook.mock.calls[0][0]).toBe("test book");
+        done();
+      });
+    });
+  });
 });

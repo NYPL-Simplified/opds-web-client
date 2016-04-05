@@ -112,12 +112,15 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
         }).catch(err => reject(err));
       });
     },
-    refresh: () => {
-      dispatchProps.fetchCollection(stateProps.loadedCollectionUrl).then(data => {
-        dispatchProps.fetchBook(stateProps.loadedBookUrl);
+    refreshCollectionAndBook: () => {
+      return new Promise((resolve, reject) => {
+        dispatchProps.fetchCollection(stateProps.loadedCollectionUrl).then(collectionData => {
+          dispatchProps.fetchBook(stateProps.loadedBookUrl).then(bookData => {
+            resolve({ collectionData, bookData });
+          }).catch(err => reject(err));
+        }).catch(err => reject(err));
       });
     },
-    refreshBook: refreshBook,
     clearCollection: () => {
       setCollection(null);
     },
