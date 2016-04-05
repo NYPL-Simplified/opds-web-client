@@ -139,8 +139,9 @@ export class Root extends React.Component<RootProps, any> {
               { showBook &&
                 ( BookDetailsContainer ?
                   <BookDetailsContainer
-                    book={this.props.bookData}
-                    collection={this.props.collectionUrl}>
+                    bookUrl={this.props.bookUrl}
+                    collectionUrl={this.props.collectionUrl}
+                    refreshBrowser={this.props.refreshCollectionAndBook}>
                     <BookDetails book={this.props.bookData} />
                   </BookDetailsContainer> :
                   <div style={{ padding: "40px", maxWidth: "700px", margin: "0 auto" }}>

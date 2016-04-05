@@ -29,7 +29,7 @@ describe("OPDSBrowser", () => {
     bookUrl: "book url",
     proxyUrl: "proxy url",
     navigate: jest.genMockFunction(),
-    pathFor: function(collectionUrl: string, bookUrl: string): string { return "path"; },
+    pathFor: (collectionUrl: string, bookUrl: string): string => { return "path"; },
     BookDetailsContainer: TestContainer,
     bookData: {
       id: "book id",

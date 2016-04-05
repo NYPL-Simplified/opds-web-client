@@ -23,7 +23,8 @@ export function mapStateToProps(state, ownProps) {
     bookData: state.browser.book.data || ownProps.bookData,
     history: state.browser.collection.history,
     pathFor: ownProps.pathFor || ((collectionUrl: string, bookUrl: string) => "#"),
-    loadedCollectionUrl: state.browser.collection.url
+    loadedCollectionUrl: state.browser.collection.url,
+    loadedBookUrl: state.browser.book.url
   };
 };
 
@@ -32,7 +33,7 @@ export function mapDispatchToProps(dispatch) {
     createDispatchProps: (fetcher) => {
       let actions = new ActionsCreator(fetcher);
       return {
-        fetchCollection: (url: string, isTopLevel) => dispatch(actions.fetchCollection(url, isTopLevel)),
+        fetchCollection: (url: string, isTopLevel?: boolean) => dispatch(actions.fetchCollection(url, isTopLevel)),
         fetchPage: (url: string) => dispatch(actions.fetchPage(url)),
         fetchBook: (url: string) => dispatch(actions.fetchBook(url)),
         loadBook: (book: BookData, url: string) => dispatch(actions.loadBook(book, url)),
@@ -102,16 +103,24 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
   return Object.assign({}, componentProps, stateProps, dispatchProps, {
     setCollection: setCollection,
     setBook: setBook,
-    setCollectionAndBook: (collectionUrl: string, book: string, isTopLevel: boolean = false) => {
+    setCollectionAndBook: (collectionUrl: string, bookUrl: string, isTopLevel: boolean = false) => {
       return new Promise((resolve, reject) => {
         setCollection(collectionUrl, isTopLevel).then((collectionData: CollectionData) => {
-          setBook(book, collectionData).then((bookData: BookData) => {
+          setBook(bookUrl, collectionData).then((bookData: BookData) => {
             resolve({ collectionData, bookData });
           }).catch(err => reject(err));
         }).catch(err => reject(err));
       });
     },
-    refreshBook: refreshBook,
+    refreshCollectionAndBook: () => {
+      return new Promise((resolve, reject) => {
+        dispatchProps.fetchCollection(stateProps.loadedCollectionUrl).then(collectionData => {
+          dispatchProps.fetchBook(stateProps.loadedBookUrl).then(bookData => {
+            resolve({ collectionData, bookData });
+          }).catch(err => reject(err));
+        }).catch(err => reject(err));
+      });
+    },
     clearCollection: () => {
       setCollection(null);
     },
