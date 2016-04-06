@@ -4,7 +4,7 @@ jest.dontMock("./OPDSFactory");
 import { OPDSArtworkLink, OPDSCollectionLink, OPDSFacetLink } from "opds-feed-parser";
 import * as factory from "./OPDSFactory";
 import { feedToCollection } from "../OPDSDataAdapter";
-const sanitizeHtml = require("sanitize-html");
+const sanitizeHtml = require("dompurify").sanitize;
 
 describe("OPDSDataAdapter", () => {
   it("extracts book info", () => {
