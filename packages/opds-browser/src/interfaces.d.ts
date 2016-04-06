@@ -134,6 +134,8 @@ interface RootProps extends State, CollectionActionProps, BaseProps {
   pageTitleTemplate?: (collectionTitle: string, bookTitle: string) => string;
   headerTitle?: string;
   header?: new () => __React.Component<HeaderProps, any>;
+  showNextBook?: () => void;
+  showPrevBook?: () => void;
 }
 
 interface UrlFormProps extends CollectionActionProps, BaseProps {

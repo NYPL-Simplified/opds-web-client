@@ -133,7 +133,7 @@ export class Root extends React.Component<RootProps, any> {
           </div>
         }
 
-        <div className="body" style={bodyStyle}>
+        <div className="body" style={bodyStyle} onKeyDown={() => { console.log("keypress"); } }>
           { showBookWrapper &&
             <div className="bookDetailsWrapper" style={bookWrapperStyle}>
               { showBook &&
@@ -177,6 +177,10 @@ export class Root extends React.Component<RootProps, any> {
     this.updatePageTitle(this.props);
   }
 
+  componentDidMount() {
+    window.onkeydown = this.handleKeyDown.bind(this);
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.collectionUrl !== this.props.collectionUrl || nextProps.bookUrl !== this.props.bookUrl) {
       this.props.setCollectionAndBook(nextProps.collectionUrl, nextProps.bookUrl, nextProps.isTopLevel);
@@ -191,6 +195,22 @@ export class Root extends React.Component<RootProps, any> {
       let bookTitle = props.bookData && props.bookData.title;
       document.title = props.pageTitleTemplate(collectionTitle, bookTitle);
     }
+  }
+
+  handleKeyDown(event) {
+    if (event.keyCode === 37) {
+      this.showPrevBook();
+    } else if (event.keyCode === 39) {
+      this.showNextBook();
+    }
+  }
+
+  showNextBook() {
+    this.props.showNextBook();
+  }
+
+  showPrevBook() {
+    this.props.showPrevBook();
   }
 }
 

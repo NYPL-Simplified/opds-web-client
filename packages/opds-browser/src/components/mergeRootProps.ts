@@ -96,22 +96,43 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
     });
   };
 
+  let setCollectionAndBook = (collectionUrl: string, bookUrl: string, isTopLevel: boolean = false) => {
+    return new Promise((resolve, reject) => {
+      setCollection(collectionUrl, isTopLevel).then((collectionData: CollectionData) => {
+        setBook(bookUrl, collectionData).then((bookData: BookData) => {
+          resolve({ collectionData, bookData });
+        }).catch(err => reject(err));
+      }).catch(err => reject(err));
+    });
+  };
+
   let refreshBook = () => {
     return dispatchProps.fetchBook(stateProps.bookUrl);
+  };
+
+  let showRelativeBook = (collection: CollectionData, book: BookData, relativeIndex: number) => {
+    if (collection && book) {
+      let books = collection.lanes.reduce((books, lane) => {
+        return books.concat(lane.books);
+      }, collection.books);
+      let bookIds = books.map(book => book.id);
+      let currentBookIndex = bookIds.indexOf(book.id);
+
+      if (currentBookIndex !== -1) {
+        // wrap index at start and end of bookIds array
+        let nextBookIndex = (currentBookIndex + relativeIndex + bookIds.length) % bookIds.length;
+        setCollectionAndBook(
+          stateProps.collectionData.url,
+          books[nextBookIndex].url
+        );
+      }
+    }
   };
 
   return Object.assign({}, componentProps, stateProps, dispatchProps, {
     setCollection: setCollection,
     setBook: setBook,
-    setCollectionAndBook: (collectionUrl: string, bookUrl: string, isTopLevel: boolean = false) => {
-      return new Promise((resolve, reject) => {
-        setCollection(collectionUrl, isTopLevel).then((collectionData: CollectionData) => {
-          setBook(bookUrl, collectionData).then((bookData: BookData) => {
-            resolve({ collectionData, bookData });
-          }).catch(err => reject(err));
-        }).catch(err => reject(err));
-      });
-    },
+    setCollectionAndBook: setCollectionAndBook,
     refreshCollectionAndBook: () => {
       return new Promise((resolve, reject) => {
         dispatchProps.fetchCollection(stateProps.loadedCollectionUrl).then(collectionData => {
@@ -126,6 +147,13 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
     },
     clearBook: () => {
       setBook(null);
+    },
+    showNextBook: () => {
+      showRelativeBook(stateProps.collectionData, stateProps.bookData, 1);
+    },
+    showPrevBook: () => {
+      showRelativeBook(stateProps.collectionData, stateProps.bookData, -1);
+
     }
   });
 };
