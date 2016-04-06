@@ -197,6 +197,28 @@ export class Root extends React.Component<RootProps, any> {
     }
   }
 
+  showRelativeBook (relativeIndex: number) {
+    if (this.props.collectionData && this.props.bookData) {
+      let books = this.props.collectionData.lanes.reduce((books, lane) => {
+        return books.concat(lane.books);
+      }, this.props.collectionData.books);
+      let bookIds = books.map(book => book.id);
+      let currentBookIndex = bookIds.indexOf(this.props.bookData.id);
+
+      if (currentBookIndex !== -1) {
+        // wrap index at start and end of bookIds array
+        let nextBookIndex = (currentBookIndex + relativeIndex + bookIds.length) % bookIds.length;
+        this.props.setCollectionAndBook(
+          this.props.collectionData.url,
+          books[nextBookIndex].url
+        );
+
+        // call navigate to make sure history is updated
+        this.props.navigate(this.props.collectionData.url, books[nextBookIndex].url);
+      }
+    }
+  };
+
   handleKeyDown(event) {
     if (event.keyCode === 37) {
       this.showPrevBook();
@@ -205,12 +227,12 @@ export class Root extends React.Component<RootProps, any> {
     }
   }
 
-  showNextBook() {
-    this.props.showNextBook();
+  showPrevBook() {
+    this.showRelativeBook(-1);
   }
 
-  showPrevBook() {
-    this.props.showPrevBook();
+  showNextBook() {
+    this.showRelativeBook(1);
   }
 }
 

@@ -318,6 +318,114 @@ describe("Root", () => {
     });
   });
 
+  describe("showNextBook()", () => {
+    let setCollectionAndBook;
+    let navigate;
+    let collectionData;
+    let bookData;
+    let nextBookData;
+    let prevBookData;
+    let root;
+
+    beforeEach(() => {
+      setCollectionAndBook = jest.genMockFunction();
+      navigate = jest.genMockFunction();
+      collectionData = groupedCollectionData;
+
+    });
+
+    it("navigates to second book if currently showing first book", () => {
+      bookData = groupedCollectionData.lanes[0].books[0];
+      nextBookData = groupedCollectionData.lanes[0].books[1];
+      root = TestUtils.renderIntoDocument<Root>(
+        <Root
+          navigate={navigate}
+          setCollectionAndBook={setCollectionAndBook}
+          collectionData={collectionData}
+          bookData={bookData}
+          />
+      );
+      root.showNextBook();
+
+      expect(setCollectionAndBook.mock.calls.length).toBe(1);
+      expect(setCollectionAndBook.mock.calls[0][0]).toBe(collectionData.url);
+      expect(setCollectionAndBook.mock.calls[0][1]).toBe(nextBookData.url);
+    });
+
+    it("navigates to first book if currently showing last book", () => {
+      let lastIndex = groupedCollectionData.lanes[0].books.length - 1;
+      bookData = groupedCollectionData.lanes[0].books[lastIndex];
+      nextBookData = groupedCollectionData.lanes[0].books[0];
+      root = TestUtils.renderIntoDocument<Root>(
+        <Root
+          navigate={navigate}
+          setCollectionAndBook={setCollectionAndBook}
+          collectionData={collectionData}
+          bookData={bookData}
+          />
+      );
+      root.showNextBook();
+
+      expect(setCollectionAndBook.mock.calls.length).toBe(1);
+      expect(setCollectionAndBook.mock.calls[0][0]).toBe(collectionData.url);
+      expect(setCollectionAndBook.mock.calls[0][1]).toBe(nextBookData.url);
+    });
+  });
+
+  describe("showPrevBook()", () => {
+    let setCollectionAndBook;
+    let navigate;
+    let collectionData;
+    let bookData;
+    let nextBookData;
+    let prevBookData;
+    let root;
+
+    beforeEach(() => {
+      setCollectionAndBook = jest.genMockFunction();
+      navigate = jest.genMockFunction();
+      collectionData = groupedCollectionData;
+
+    });
+
+    it("navigates to last book if currently showing first book", () => {
+      let lastIndex = groupedCollectionData.lanes[0].books.length - 1;
+      bookData = groupedCollectionData.lanes[0].books[0];
+      nextBookData = groupedCollectionData.lanes[0].books[lastIndex];
+      root = TestUtils.renderIntoDocument<Root>(
+        <Root
+          navigate={navigate}
+          setCollectionAndBook={setCollectionAndBook}
+          collectionData={collectionData}
+          bookData={bookData}
+          />
+      );
+      root.showPrevBook();
+
+      expect(setCollectionAndBook.mock.calls.length).toBe(1);
+      expect(setCollectionAndBook.mock.calls[0][0]).toBe(collectionData.url);
+      expect(setCollectionAndBook.mock.calls[0][1]).toBe(nextBookData.url);
+    });
+
+    it("navigates to first book if currently showing second book", () => {
+      bookData = groupedCollectionData.lanes[0].books[1];
+      nextBookData = groupedCollectionData.lanes[0].books[0];
+      root = TestUtils.renderIntoDocument<Root>(
+        <Root
+          navigate={navigate}
+          setCollectionAndBook={setCollectionAndBook}
+          collectionData={collectionData}
+          bookData={bookData}
+          />
+      );
+      root.showPrevBook();
+
+      expect(setCollectionAndBook.mock.calls.length).toBe(1);
+      expect(setCollectionAndBook.mock.calls[0][0]).toBe(collectionData.url);
+      expect(setCollectionAndBook.mock.calls[0][1]).toBe(nextBookData.url);
+    });
+  });
+
   describe("connected to store", () => {
     let store: Redux.Store;
     let collectionData: CollectionData = groupedCollectionData;
