@@ -331,7 +331,6 @@ describe("Root", () => {
       setCollectionAndBook = jest.genMockFunction();
       navigate = jest.genMockFunction();
       collectionData = groupedCollectionData;
-
     });
 
     it("navigates to second book if currently showing first book", () => {

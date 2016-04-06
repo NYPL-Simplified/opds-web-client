@@ -220,10 +220,12 @@ export class Root extends React.Component<RootProps, any> {
   };
 
   handleKeyDown(event) {
-    if (event.keyCode === 37) {
-      this.showPrevBook();
-    } else if (event.keyCode === 39) {
-      this.showNextBook();
+    if (!event.metaKey && !event.altKey && !event.ctrlKey && !event.shiftKey) {
+      if (event.keyCode === 37) {
+        this.showPrevBook();
+      } else if (event.keyCode === 39) {
+        this.showNextBook();
+      }
     }
   }
 
