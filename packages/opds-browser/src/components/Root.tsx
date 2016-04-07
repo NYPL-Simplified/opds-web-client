@@ -177,6 +177,10 @@ export class Root extends React.Component<RootProps, any> {
     this.updatePageTitle(this.props);
   }
 
+  componentDidMount() {
+    document.addEventListener("keydown", this.handleKeyDown.bind(this));
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.collectionUrl !== this.props.collectionUrl || nextProps.bookUrl !== this.props.bookUrl) {
       this.props.setCollectionAndBook(nextProps.collectionUrl, nextProps.bookUrl, nextProps.isTopLevel);
@@ -192,6 +196,44 @@ export class Root extends React.Component<RootProps, any> {
       document.title = props.pageTitleTemplate(collectionTitle, bookTitle);
     }
   }
+
+  handleKeyDown(event) {
+    if (!event.metaKey && !event.altKey && !event.ctrlKey && !event.shiftKey) {
+      // event.keyCode is deprecated but not all browsers support event.code
+      if (event.code === "ArrowLeft" || event.keyCode === 37) {
+        this.showPrevBook();
+      } else if (event.code === "ArrowRight" || event.keyCode === 39) {
+        this.showNextBook();
+      }
+    }
+  }
+
+  showPrevBook() {
+    this.showRelativeBook(-1);
+  }
+
+  showNextBook() {
+    this.showRelativeBook(1);
+  }
+
+  showRelativeBook (relativeIndex: number) {
+    if (this.props.collectionData && this.props.bookData) {
+      let books = this.props.collectionData.lanes.reduce((books, lane) => {
+        return books.concat(lane.books);
+      }, this.props.collectionData.books);
+      let bookIds = books.map(book => book.id);
+      let currentBookIndex = bookIds.indexOf(this.props.bookData.id);
+
+      if (currentBookIndex !== -1) {
+        // wrap index at start and end of bookIds array
+        let nextBookIndex = (currentBookIndex + relativeIndex + bookIds.length) % bookIds.length;
+        let nextBookUrl = books[nextBookIndex].url || books[nextBookIndex].id;
+
+        // call navigate to make sure history is updated
+        this.props.navigate(this.props.collectionData.url, nextBookUrl);
+      }
+    }
+  };
 }
 
 let connectOptions = { withRef: true, pure: false };

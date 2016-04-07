@@ -96,6 +96,16 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
     });
   };
 
+  let setCollectionAndBook = (collectionUrl: string, bookUrl: string, isTopLevel: boolean = false) => {
+    return new Promise((resolve, reject) => {
+      setCollection(collectionUrl, isTopLevel).then((collectionData: CollectionData) => {
+        setBook(bookUrl, collectionData).then((bookData: BookData) => {
+          resolve({ collectionData, bookData });
+        }).catch(err => reject(err));
+      }).catch(err => reject(err));
+    });
+  };
+
   let refreshBook = () => {
     return dispatchProps.fetchBook(stateProps.bookUrl);
   };
@@ -103,15 +113,7 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
   return Object.assign({}, componentProps, stateProps, dispatchProps, {
     setCollection: setCollection,
     setBook: setBook,
-    setCollectionAndBook: (collectionUrl: string, bookUrl: string, isTopLevel: boolean = false) => {
-      return new Promise((resolve, reject) => {
-        setCollection(collectionUrl, isTopLevel).then((collectionData: CollectionData) => {
-          setBook(bookUrl, collectionData).then((bookData: BookData) => {
-            resolve({ collectionData, bookData });
-          }).catch(err => reject(err));
-        }).catch(err => reject(err));
-      });
-    },
+    setCollectionAndBook: setCollectionAndBook,
     refreshCollectionAndBook: () => {
       return new Promise((resolve, reject) => {
         dispatchProps.fetchCollection(stateProps.loadedCollectionUrl).then(collectionData => {
