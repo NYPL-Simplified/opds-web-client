@@ -199,9 +199,10 @@ export class Root extends React.Component<RootProps, any> {
 
   handleKeyDown(event) {
     if (!event.metaKey && !event.altKey && !event.ctrlKey && !event.shiftKey) {
-      if (event.code === "ArrowLeft") {
+      // event.keyCode is deprecated but not all browsers support event.code
+      if (event.code === "ArrowLeft" || event.keyCode === 37) {
         this.showPrevBook();
-      } else if (event.code === "ArrowRight") {
+      } else if (event.code === "ArrowRight" || event.keyCode === 39) {
         this.showNextBook();
       }
     }
