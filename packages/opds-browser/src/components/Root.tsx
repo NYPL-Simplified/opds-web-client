@@ -62,6 +62,7 @@ export class Root extends React.Component<RootProps, any> {
       height: `calc(100% - ${marginTop}px)`,
       backgroundColor: "white",
       zIndex: 100,
+      transform: "translateZ(0)",
       overflowY: "scroll"
     };
 
