@@ -60,7 +60,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
     title: entry.title,
     authors: authors,
     contributors: contributors,
-    summary: sanitizeHtml(entry.summary.content),
+    summary: entry.summary.content && sanitizeHtml(entry.summary.content),
     imageUrl: imageUrl,
     publisher: entry.publisher,
     published: entry.published && formatDate(entry.published),
