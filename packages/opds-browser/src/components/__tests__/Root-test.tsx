@@ -254,7 +254,7 @@ describe("Root", () => {
     expect(document.title).toBe("testing null, null");
   });
 
-  it("calls showPrevBook() on right key press but not if meta key is also presssed", () => {
+  it("calls showPrevBook() on left key press but not if meta key is also presssed", () => {
     let showPrevBook = jest.genMockFunction();
     let root = TestUtils.renderIntoDocument<Root>(
       <Root
@@ -279,7 +279,7 @@ describe("Root", () => {
     expect(showPrevBook.mock.calls.length).toBe(1);
   });
 
-  it("calls showNextBook() on left key press", () => {
+  it("calls showNextBook() on right key press but not if meta key is also presssed", () => {
     let showNextBook = jest.genMockFunction();
     let root = TestUtils.renderIntoDocument<Root>(
       <Root
