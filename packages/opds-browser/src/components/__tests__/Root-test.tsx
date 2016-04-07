@@ -254,7 +254,7 @@ describe("Root", () => {
     expect(document.title).toBe("testing null, null");
   });
 
-  it("calls showPrevBook() on right key press", () => {
+  it("calls showPrevBook() on right key press but not if meta key is also presssed", () => {
     let showPrevBook = jest.genMockFunction();
     let root = TestUtils.renderIntoDocument<Root>(
       <Root
@@ -267,6 +267,13 @@ describe("Root", () => {
 
     document.dispatchEvent(new KeyboardEvent("keydown", {
       code: "ArrowLeft"
+    } as any));
+
+    expect(showPrevBook.mock.calls.length).toBe(1);
+
+    document.dispatchEvent(new KeyboardEvent("keydown", {
+      code: "ArrowLeft",
+      ctrlKey: true
     } as any));
 
     expect(showPrevBook.mock.calls.length).toBe(1);
@@ -285,6 +292,13 @@ describe("Root", () => {
 
     document.dispatchEvent(new KeyboardEvent("keydown", {
       code: "ArrowRight"
+    } as any));
+
+    expect(showNextBook.mock.calls.length).toBe(1);
+
+    document.dispatchEvent(new KeyboardEvent("keydown", {
+      code: "ArrowRight",
+      altKey: true
     } as any));
 
     expect(showNextBook.mock.calls.length).toBe(1);

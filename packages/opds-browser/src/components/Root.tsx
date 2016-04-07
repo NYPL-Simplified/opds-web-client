@@ -133,7 +133,7 @@ export class Root extends React.Component<RootProps, any> {
           </div>
         }
 
-        <div className="body" style={bodyStyle} onKeyDown={() => { console.log("keypress"); } }>
+        <div className="body" style={bodyStyle}>
           { showBookWrapper &&
             <div className="bookDetailsWrapper" style={bookWrapperStyle}>
               { showBook &&
