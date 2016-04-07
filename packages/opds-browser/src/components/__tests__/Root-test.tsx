@@ -254,6 +254,42 @@ describe("Root", () => {
     expect(document.title).toBe("testing null, null");
   });
 
+  it("calls showPrevBook() on right key press", () => {
+    let showPrevBook = jest.genMockFunction();
+    let root = TestUtils.renderIntoDocument<Root>(
+      <Root
+        bookUrl="test book"
+        collectionUrl="test collection"
+        setCollectionAndBook={jest.genMockFunction()}
+        />
+    );
+    root.showPrevBook = showPrevBook;
+
+    document.dispatchEvent(new KeyboardEvent("keydown", {
+      code: "ArrowLeft"
+    } as any));
+
+    expect(showPrevBook.mock.calls.length).toBe(1);
+  });
+
+  it("calls showNextBook() on left key press", () => {
+    let showNextBook = jest.genMockFunction();
+    let root = TestUtils.renderIntoDocument<Root>(
+      <Root
+        bookUrl="test book"
+        collectionUrl="test collection"
+        setCollectionAndBook={jest.genMockFunction()}
+        />
+    );
+    root.showNextBook = showNextBook;
+
+    document.dispatchEvent(new KeyboardEvent("keydown", {
+      code: "ArrowRight"
+    } as any));
+
+    expect(showNextBook.mock.calls.length).toBe(1);
+  });
+
   describe("when given a header component", () => {
     let root;
     let collectionData = Object.assign({}, ungroupedCollectionData, {
@@ -401,9 +437,11 @@ describe("Root", () => {
       );
       root.showPrevBook();
 
-      expect(setCollectionAndBook.mock.calls.length).toBe(1);
-      expect(setCollectionAndBook.mock.calls[0][0]).toBe(collectionData.url);
-      expect(setCollectionAndBook.mock.calls[0][1]).toBe(nextBookData.url);
+      [setCollectionAndBook, navigate].forEach(func => {
+        expect(func.mock.calls.length).toBe(1);
+        expect(func.mock.calls[0][0]).toBe(collectionData.url);
+        expect(func.mock.calls[0][1]).toBe(nextBookData.url);
+      });
     });
 
     it("navigates to first book if currently showing second book", () => {
@@ -419,9 +457,11 @@ describe("Root", () => {
       );
       root.showPrevBook();
 
-      expect(setCollectionAndBook.mock.calls.length).toBe(1);
-      expect(setCollectionAndBook.mock.calls[0][0]).toBe(collectionData.url);
-      expect(setCollectionAndBook.mock.calls[0][1]).toBe(nextBookData.url);
+      [setCollectionAndBook, navigate].forEach(func => {
+        expect(func.mock.calls.length).toBe(1);
+        expect(func.mock.calls[0][0]).toBe(collectionData.url);
+        expect(func.mock.calls[0][1]).toBe(nextBookData.url);
+      });
     });
   });
 

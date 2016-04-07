@@ -178,7 +178,7 @@ export class Root extends React.Component<RootProps, any> {
   }
 
   componentDidMount() {
-    window.onkeydown = this.handleKeyDown.bind(this);
+    document.addEventListener("keydown", this.handleKeyDown.bind(this));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -195,6 +195,24 @@ export class Root extends React.Component<RootProps, any> {
       let bookTitle = props.bookData && props.bookData.title;
       document.title = props.pageTitleTemplate(collectionTitle, bookTitle);
     }
+  }
+
+  handleKeyDown(event) {
+    if (!event.metaKey && !event.altKey && !event.ctrlKey && !event.shiftKey) {
+      if (event.code === "ArrowLeft") {
+        this.showPrevBook();
+      } else if (event.code === "ArrowRight") {
+        this.showNextBook();
+      }
+    }
+  }
+
+  showPrevBook() {
+    this.showRelativeBook(-1);
+  }
+
+  showNextBook() {
+    this.showRelativeBook(1);
   }
 
   showRelativeBook (relativeIndex: number) {
@@ -218,24 +236,6 @@ export class Root extends React.Component<RootProps, any> {
       }
     }
   };
-
-  handleKeyDown(event) {
-    if (!event.metaKey && !event.altKey && !event.ctrlKey && !event.shiftKey) {
-      if (event.keyCode === 37) {
-        this.showPrevBook();
-      } else if (event.keyCode === 39) {
-        this.showNextBook();
-      }
-    }
-  }
-
-  showPrevBook() {
-    this.showRelativeBook(-1);
-  }
-
-  showNextBook() {
-    this.showRelativeBook(1);
-  }
 }
 
 let connectOptions = { withRef: true, pure: false };
