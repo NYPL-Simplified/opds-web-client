@@ -369,7 +369,6 @@ describe("Root", () => {
   });
 
   describe("showNextBook()", () => {
-    let setCollectionAndBook;
     let navigate;
     let collectionData;
     let bookData;
@@ -378,7 +377,6 @@ describe("Root", () => {
     let root;
 
     beforeEach(() => {
-      setCollectionAndBook = jest.genMockFunction();
       navigate = jest.genMockFunction();
       collectionData = groupedCollectionData;
     });
@@ -389,16 +387,16 @@ describe("Root", () => {
       root = TestUtils.renderIntoDocument<Root>(
         <Root
           navigate={navigate}
-          setCollectionAndBook={setCollectionAndBook}
           collectionData={collectionData}
           bookData={bookData}
+          setCollectionAndBook={jest.genMockFunction()}
           />
       );
       root.showNextBook();
 
-      expect(setCollectionAndBook.mock.calls.length).toBe(1);
-      expect(setCollectionAndBook.mock.calls[0][0]).toBe(collectionData.url);
-      expect(setCollectionAndBook.mock.calls[0][1]).toBe(nextBookData.url);
+      expect(navigate.mock.calls.length).toBe(1);
+      expect(navigate.mock.calls[0][0]).toBe(collectionData.url);
+      expect(navigate.mock.calls[0][1]).toBe(nextBookData.url);
     });
 
     it("navigates to first book if currently showing last book", () => {
@@ -408,21 +406,20 @@ describe("Root", () => {
       root = TestUtils.renderIntoDocument<Root>(
         <Root
           navigate={navigate}
-          setCollectionAndBook={setCollectionAndBook}
           collectionData={collectionData}
           bookData={bookData}
+          setCollectionAndBook={jest.genMockFunction()}
           />
       );
       root.showNextBook();
 
-      expect(setCollectionAndBook.mock.calls.length).toBe(1);
-      expect(setCollectionAndBook.mock.calls[0][0]).toBe(collectionData.url);
-      expect(setCollectionAndBook.mock.calls[0][1]).toBe(nextBookData.url);
+      expect(navigate.mock.calls.length).toBe(1);
+      expect(navigate.mock.calls[0][0]).toBe(collectionData.url);
+      expect(navigate.mock.calls[0][1]).toBe(nextBookData.url);
     });
   });
 
   describe("showPrevBook()", () => {
-    let setCollectionAndBook;
     let navigate;
     let collectionData;
     let bookData;
@@ -431,10 +428,8 @@ describe("Root", () => {
     let root;
 
     beforeEach(() => {
-      setCollectionAndBook = jest.genMockFunction();
       navigate = jest.genMockFunction();
       collectionData = groupedCollectionData;
-
     });
 
     it("navigates to last book if currently showing first book", () => {
@@ -444,18 +439,16 @@ describe("Root", () => {
       root = TestUtils.renderIntoDocument<Root>(
         <Root
           navigate={navigate}
-          setCollectionAndBook={setCollectionAndBook}
           collectionData={collectionData}
           bookData={bookData}
+          setCollectionAndBook={jest.genMockFunction()}
           />
       );
       root.showPrevBook();
 
-      [setCollectionAndBook, navigate].forEach(func => {
-        expect(func.mock.calls.length).toBe(1);
-        expect(func.mock.calls[0][0]).toBe(collectionData.url);
-        expect(func.mock.calls[0][1]).toBe(nextBookData.url);
-      });
+      expect(navigate.mock.calls.length).toBe(1);
+      expect(navigate.mock.calls[0][0]).toBe(collectionData.url);
+      expect(navigate.mock.calls[0][1]).toBe(nextBookData.url);
     });
 
     it("navigates to first book if currently showing second book", () => {
@@ -464,18 +457,16 @@ describe("Root", () => {
       root = TestUtils.renderIntoDocument<Root>(
         <Root
           navigate={navigate}
-          setCollectionAndBook={setCollectionAndBook}
           collectionData={collectionData}
           bookData={bookData}
+          setCollectionAndBook={jest.genMockFunction()}
           />
       );
       root.showPrevBook();
 
-      [setCollectionAndBook, navigate].forEach(func => {
-        expect(func.mock.calls.length).toBe(1);
-        expect(func.mock.calls[0][0]).toBe(collectionData.url);
-        expect(func.mock.calls[0][1]).toBe(nextBookData.url);
-      });
+      expect(navigate.mock.calls.length).toBe(1);
+      expect(navigate.mock.calls[0][0]).toBe(collectionData.url);
+      expect(navigate.mock.calls[0][1]).toBe(nextBookData.url);
     });
   });
 

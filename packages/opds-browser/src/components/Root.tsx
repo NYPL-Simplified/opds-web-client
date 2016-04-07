@@ -227,13 +227,9 @@ export class Root extends React.Component<RootProps, any> {
       if (currentBookIndex !== -1) {
         // wrap index at start and end of bookIds array
         let nextBookIndex = (currentBookIndex + relativeIndex + bookIds.length) % bookIds.length;
-        this.props.setCollectionAndBook(
-          this.props.collectionData.url,
-          books[nextBookIndex].url
-        );
 
         // call navigate to make sure history is updated
-        this.props.navigate(this.props.collectionData.url, books[nextBookIndex].url);
+        this.props.navigate(this.props.collectionData.url, (books[nextBookIndex].url || books[nextBookIndex].id));
       }
     }
   };
