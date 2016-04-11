@@ -11,8 +11,7 @@ import HeaderCollectionLink from "../HeaderCollectionLink";
 let linkProps = {
   text: "test text",
   url: "http://example.com",
-  className: "test class",
-  isTopLevel: true
+  className: "test class"
 };
 
 describe("HeaderCollectionLink", () => {
