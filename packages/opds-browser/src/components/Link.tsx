@@ -1,5 +1,10 @@
 import * as React from "react";
 
+export interface LinkProps extends BaseProps {
+  text?: string; // optional because link can have child elements instead of text
+  url: string;
+}
+
 abstract class Link<P extends LinkProps> extends React.Component<P, any> {
   render(): JSX.Element {
     return (

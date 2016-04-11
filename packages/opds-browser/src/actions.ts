@@ -78,7 +78,7 @@ export default class ActionCreator {
   fetchSearchDescription(url: string) {
     return (function(dispatch) {
       return new Promise((resolve, reject) => {
-        this.fetcher.fetchSearchDescriptionData(url).then((data: SearchProps) => {
+        this.fetcher.fetchSearchDescriptionData(url).then((data: SearchData) => {
           dispatch(this.loadSearchDescription(data));
           resolve(data);
         }).catch(err => reject(err));
@@ -122,7 +122,7 @@ export default class ActionCreator {
     return { type: this.CLEAR_COLLECTION };
   }
 
-  loadSearchDescription(data: SearchProps) {
+  loadSearchDescription(data: SearchData) {
     return { type: this.LOAD_SEARCH_DESCRIPTION, data };
   }
 

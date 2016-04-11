@@ -4,13 +4,14 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
 
-import ConnectedRoot, { Root } from "../Root";
+import ConnectedRoot, { Root, BookDetailsContainerProps, HeaderProps } from "../Root";
 import Breadcrumbs from "../Breadcrumbs";
 import Collection from "../Collection";
 import UrlForm from "../UrlForm";
 import BookDetails from "../BookDetails";
 import SkipNavigationLink from "../SkipNavigationLink";
 import CollectionLink from "../CollectionLink";
+import HeaderCollectionLink from "../HeaderCollectionLink";
 import Search from "../Search";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 import buildStore from "../../store";
@@ -320,10 +321,16 @@ describe("Root", () => {
 
     class Header extends React.Component<HeaderProps, any> {
       render(): JSX.Element {
+        let TestCollectionLink = this.props.CollectionLink;
         return (
           <div className="header">
             { this.props.children }
-            { this.props.renderCollectionLink("test", "test url") }
+            <TestCollectionLink
+              text="test"
+              url="test url"
+              navigate={navigate}
+              pathFor={(collection, book) => "#"}
+              />
           </div>
         );
       }
@@ -343,7 +350,7 @@ describe("Root", () => {
     it("shows the given header", () => {
       let header = TestUtils.findRenderedComponentWithType(root, Header);
       let search = TestUtils.findRenderedComponentWithType(header, Search);
-      let link = TestUtils.findRenderedComponentWithType(header, CollectionLink);
+      let link = TestUtils.findRenderedComponentWithType(header, HeaderCollectionLink);
       expect(header).toBeTruthy();
       expect(search.props.url).toBe("test search url");
       expect(link.props.text).toBe("test");

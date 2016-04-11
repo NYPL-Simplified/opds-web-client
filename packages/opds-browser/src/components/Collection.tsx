@@ -7,6 +7,15 @@ import Search from "./Search";
 import SkipNavigationLink from "./SkipNavigationLink";
 import { visuallyHiddenStyle, subtleListStyle } from "./styles";
 
+export interface CollectionProps extends CollectionActionProps, BookActionProps, BaseProps {
+  collection: CollectionData;
+  isFetching?: boolean;
+  isFetchingPage?: boolean;
+  error?: FetchError;
+  fetchSearchDescription?: (url: string) => void;
+  history?: LinkData[];
+}
+
 export default class Collection extends React.Component<CollectionProps, any> {
   render(): JSX.Element {
     let leftPanelWidth = 190;

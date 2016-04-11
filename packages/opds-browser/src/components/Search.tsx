@@ -1,5 +1,9 @@
 import * as React from "react";
 
+export interface SearchProps extends SearchData {
+  fetchSearchDescription?: (url: string) => void;
+}
+
 export default class Search extends React.Component<SearchProps, any> {
   render(): JSX.Element {
     return (

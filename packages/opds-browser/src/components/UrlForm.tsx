@@ -1,5 +1,9 @@
 import * as React from "react";
 
+export interface UrlFormProps extends CollectionActionProps, BaseProps {
+  url?: string;
+}
+
 export default class UrlForm extends React.Component<UrlFormProps, any> {
   render(): JSX.Element {
     let placeholder = "e.g. http://feedbooks.github.io/opds-test-catalog/catalog/root.xml";

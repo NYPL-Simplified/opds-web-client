@@ -2,6 +2,12 @@ import * as React from "react";
 import CollectionLink from "./CollectionLink";
 import { subtleListStyle } from "./styles";
 
+export interface BreadcrumbsProps extends BaseProps, CollectionActionProps {
+  history: LinkData[];
+  collection: CollectionData;
+  showCurrentLink?: Boolean;
+}
+
 export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> {
   render(): JSX.Element {
     let linkStyle = {

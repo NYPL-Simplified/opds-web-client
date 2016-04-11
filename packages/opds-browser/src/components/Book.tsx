@@ -1,6 +1,10 @@
 import * as React from "react";
 import BookPreviewLink from "./BookPreviewLink";
 
+export interface BookProps extends BookActionProps, BaseProps {
+  book: BookData;
+}
+
 export default class Book extends React.Component<BookProps, any> {
   render(): JSX.Element {
     let bookStyle = {

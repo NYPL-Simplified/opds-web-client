@@ -6,7 +6,7 @@ import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
 
 import OPDSBrowser from "../OPDSBrowser";
-import Root from "../Root";
+import Root, { RootProps, BookDetailsContainerProps, HeaderProps } from "../Root";
 import buildStore from "../../store";
 
 class TestContainer extends React.Component<BookDetailsContainerProps, any> {

@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import OPDSBrowser from "./components/OPDSBrowser";
+import { RootProps } from "./components/Root";
 
 class OPDSBrowserApp {
   elementId: string;

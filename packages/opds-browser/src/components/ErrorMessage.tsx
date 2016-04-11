@@ -1,6 +1,11 @@
 import * as React from "react";
 import { popupStyle } from "./styles";
 
+export interface ErrorMessageProps {
+  message: string;
+  retry?: () => void;
+}
+
 export default class ErrorMessage extends React.Component<ErrorMessageProps, any> {
   render(): JSX.Element {
     let errorWidth = Math.max(400, this.maxWordLength() * 5);

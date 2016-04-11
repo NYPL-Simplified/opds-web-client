@@ -4,7 +4,7 @@ import * as url from "url";
 let xmlParser = new xml2js.Parser({xmlns: true});
 
 export default class OpenSearchDescriptionParser {
-  parse(xml: string, descriptionUrl: string): Promise<SearchProps> {
+  parse(xml: string, descriptionUrl: string): Promise<SearchData> {
     return new Promise((resolve, reject) => {
       xmlParser.parseString(xml, (err, result) => {
         if (err) {

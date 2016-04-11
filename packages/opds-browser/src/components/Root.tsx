@@ -11,6 +11,36 @@ import Collection from "./Collection";
 import UrlForm from "./UrlForm";
 import SkipNavigationLink from "./SkipNavigationLink";
 import CollectionLink from "./CollectionLink";
+import HeaderCollectionLink from "./HeaderCollectionLink";
+
+export interface HeaderProps extends BaseProps {
+  CollectionLink: typeof HeaderCollectionLink;
+}
+
+export interface BookDetailsContainerProps extends BaseProps {
+  bookUrl: string;
+  collectionUrl: string;
+  refreshBrowser: () => void;
+}
+
+export interface RootProps extends State, CollectionActionProps, BaseProps {
+  store?: Redux.Store;
+  collectionUrl?: string;
+  bookUrl?: string;
+  proxyUrl?: string;
+  BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
+  dispatch?: any;
+  setCollectionAndBook?: (collectionUrl: string, bookUrl: string, isToplevel?: boolean) => void;
+  clearCollection?: () => void;
+  clearBook?: () => void;
+  fetchSearchDescription?: (url: string) => void;
+  closeError?: () => void;
+  fetchBook?: (bookUrl: string) => Promise<any>;
+  refreshCollectionAndBook?: () => void;
+  pageTitleTemplate?: (collectionTitle: string, bookTitle: string) => string;
+  headerTitle?: string;
+  header?: new () => __React.Component<HeaderProps, any>;
+}
 
 export class Root extends React.Component<RootProps, any> {
   header: any;
@@ -66,16 +96,6 @@ export class Root extends React.Component<RootProps, any> {
       overflowY: "scroll"
     };
 
-    let renderCollectionLink = (text: string, url: string) => (
-      <CollectionLink
-        text={text}
-        url={url}
-        navigate={this.props.navigate}
-        isTopLevel={true}
-        pathFor={this.props.pathFor}
-        />
-    );
-
     return (
       <div className="browser" style={{ fontFamily: "Arial, sans-serif" }}>
         <SkipNavigationLink />
@@ -93,7 +113,7 @@ export class Root extends React.Component<RootProps, any> {
 
         { Header ?
           <Header
-            renderCollectionLink={renderCollectionLink.bind(this)}>
+            CollectionLink={HeaderCollectionLink}>
             { this.props.collectionData && this.props.collectionData.search &&
               <Search
                 url={this.props.collectionData.search.url}

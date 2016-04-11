@@ -2,6 +2,10 @@ import * as React from "react";
 import LaneBook from "./LaneBook";
 import CollectionLink from "./CollectionLink";
 
+export interface LaneProps extends CollectionActionProps, BookActionProps, BaseProps {
+  lane: LaneData;
+}
+
 export default class Lane extends React.Component<LaneProps, any> {
   render(): JSX.Element {
     let laneBooksStyle = {
