@@ -1,7 +1,7 @@
 import * as React from "react";
 import Link, { LinkProps} from "./Link";
 
-export interface CollectionLinkProps extends LinkProps, CollectionActionProps, BaseProps {
+export interface CollectionLinkProps extends LinkProps, CollectionActionProps {
 }
 
 export default class CollectionLink extends Link<CollectionLinkProps> {
