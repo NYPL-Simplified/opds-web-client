@@ -1,5 +1,9 @@
 import * as React from "react";
-import Link from "./Link";
+import Link, { LinkProps } from "./Link";
+
+export interface BookPreviewLinkProps extends LinkProps, BookActionProps, BaseProps {
+  book?: BookData;
+}
 
 export default class BookPreviewLink extends Link<BookPreviewLinkProps> {
   processClick() {

@@ -5,7 +5,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
 
-import BookPreviewLink from "../BookPreviewLink";
+import BookPreviewLink, { BookPreviewLinkProps } from "../BookPreviewLink";
 
 let book = {
   id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",

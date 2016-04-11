@@ -1,5 +1,8 @@
 import * as React from "react";
-import Link from "./Link";
+import Link, { LinkProps} from "./Link";
+
+export interface CollectionLinkProps extends LinkProps, CollectionActionProps, BaseProps {
+}
 
 export default class CollectionLink extends Link<CollectionLinkProps> {
   processClick() {

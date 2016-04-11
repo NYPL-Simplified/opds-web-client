@@ -146,18 +146,6 @@ interface LinkData {
   url: string;
 }
 
-interface LinkProps extends BaseProps {
-  text?: string; // optional because link can have child elements instead of text
-  url: string;
-}
-
-interface CollectionLinkProps extends LinkProps, CollectionActionProps, BaseProps {
-}
-
-interface BookPreviewLinkProps extends LinkProps, BookActionProps, BaseProps {
-  book?: BookData;
-}
-
 interface ErrorMessageProps {
   message: string;
   retry?: () => void;
