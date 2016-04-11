@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Root from "./Root";
+import Root, { RootProps } from "./Root";
 import buildStore from "../store";
 
 export default class OPDSBrowser extends React.Component<RootProps, any> {

@@ -28,24 +28,10 @@ interface BookData {
   categories?: string[];
 }
 
-interface BookProps extends BookActionProps, BaseProps {
-  book: BookData;
-}
-
-interface BookDetailsContainerProps extends BaseProps {
-  bookUrl: string;
-  collectionUrl: string;
-  refreshBrowser: () => void;
-}
-
 interface LaneData {
   title: string;
   url: string;
   books: BookData[];
-}
-
-interface LaneProps extends CollectionActionProps, BookActionProps, BaseProps {
-  lane: LaneData;
 }
 
 interface FacetData {
@@ -54,27 +40,9 @@ interface FacetData {
   active: boolean;
 }
 
-interface FacetProps extends CollectionActionProps, BaseProps {
-  facet: FacetData;
-}
-
 interface FacetGroupData {
   label: string;
   facets: FacetData[];
-}
-
-interface FacetGroupProps extends CollectionActionProps, BaseProps {
-  facetGroup: FacetGroupData;
-}
-
-interface SearchProps extends CollectionActionProps, BaseProps {
-  url?: string;
-  searchData?: {
-    description: string;
-    shortName: string;
-    template: (searchTerms: string) => string;
-  };
-  fetchSearchDescription?: (url: string) => void;
 }
 
 interface CollectionData {
@@ -85,18 +53,18 @@ interface CollectionData {
   books: BookData[];
   links: LinkData[];
   facetGroups?: FacetGroupData[];
-  search?: SearchProps;
+  search?: SearchData;
   nextPageUrl?: string;
   catalogRootUrl?: string;
 }
 
-interface CollectionProps extends CollectionActionProps, BookActionProps, BaseProps {
-  collection: CollectionData;
-  isFetching?: boolean;
-  isFetchingPage?: boolean;
-  error?: FetchError;
-  fetchSearchDescription?: (url: string) => void;
-  history?: LinkData[];
+interface SearchData extends CollectionActionProps, BaseProps {
+  url?: string;
+  searchData?: {
+    description: string;
+    shortName: string;
+    template: (searchTerms: string) => string;
+  };
 }
 
 // these properties need to be optional because they're used by RootProps,
@@ -111,29 +79,6 @@ interface State {
   bookUrl?: string;
   isFetchingPage?: boolean;
   history?: LinkData[];
-}
-
-interface HeaderProps extends BaseProps {
-  renderCollectionLink: (text: string, url: string) => JSX.Element;
-}
-
-interface RootProps extends State, CollectionActionProps, BaseProps {
-  store?: Redux.Store;
-  collectionUrl?: string;
-  bookUrl?: string;
-  proxyUrl?: string;
-  BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
-  dispatch?: any;
-  setCollectionAndBook?: (collectionUrl: string, bookUrl: string, isToplevel?: boolean) => void;
-  clearCollection?: () => void;
-  clearBook?: () => void;
-  fetchSearchDescription?: (url: string) => void;
-  closeError?: () => void;
-  fetchBook?: (bookUrl: string) => Promise<any>;
-  refreshCollectionAndBook?: () => void;
-  pageTitleTemplate?: (collectionTitle: string, bookTitle: string) => string;
-  headerTitle?: string;
-  header?: new () => __React.Component<HeaderProps, any>;
 }
 
 interface UrlFormProps extends CollectionActionProps, BaseProps {

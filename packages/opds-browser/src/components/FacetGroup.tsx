@@ -2,6 +2,10 @@ import * as React from "react";
 import CollectionLink from "./CollectionLink";
 import { subtleListStyle } from "./styles";
 
+export interface FacetGroupProps extends CollectionActionProps, BaseProps {
+  facetGroup: FacetGroupData;
+}
+
 export default class FacetGroup extends React.Component<FacetGroupProps, any> {
   render(): JSX.Element {
     return (

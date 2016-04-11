@@ -1,6 +1,10 @@
 import * as React from "react";
+import { BookProps } from "./Book";
 
-export default class BookDetails extends React.Component<BookProps, any> {
+export interface BookDetailsProps extends BookProps {
+}
+
+export default class BookDetails extends React.Component<BookDetailsProps, any> {
   render(): JSX.Element {
     let bookSummaryStyle = {
       paddingTop: "2em",

@@ -121,7 +121,7 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
   let laneTitles = [];
   let laneIndex = [];
   let facetGroups: FacetGroupData[] = [];
-  let search: SearchProps;
+  let search: SearchData;
   let nextPageUrl: string;
   let catalogRootUrl: string;
 
