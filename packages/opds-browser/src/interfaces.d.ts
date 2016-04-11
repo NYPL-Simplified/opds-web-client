@@ -81,29 +81,14 @@ interface State {
   history?: LinkData[];
 }
 
-interface UrlFormProps extends CollectionActionProps, BaseProps {
-  url?: string;
-}
-
 interface LinkData {
   id: string;
   text: string;
   url: string;
 }
 
-interface ErrorMessageProps {
-  message: string;
-  retry?: () => void;
-}
-
 interface FetchError {
   status: number;
   response: string;
   url: string;
-}
-
-interface BreadcrumbsProps extends BaseProps, CollectionActionProps {
-  history: LinkData[];
-  collection: CollectionData;
-  showCurrentLink?: Boolean;
 }
