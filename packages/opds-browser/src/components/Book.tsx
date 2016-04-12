@@ -65,6 +65,6 @@ export default class Book extends React.Component<BookProps, any> {
           </div>
         </BookPreviewLink>
       </div>
-    ) as React.ComponentElement<any, Book>;
+    );
   }
 }
