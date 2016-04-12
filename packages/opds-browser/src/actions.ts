@@ -28,7 +28,7 @@ export default class ActionCreator {
   }
 
   fetchCollection(url: string, isTopLevel: boolean = false) {
-    return (function(dispatch) {
+    return (dispatch) => {
       dispatch(this.fetchCollectionRequest(url));
       return new Promise((resolve, reject) => {
         this.fetcher.fetchOPDSData(url).then((data: CollectionData) => {
@@ -40,11 +40,11 @@ export default class ActionCreator {
           reject(err);
         });
       });
-    }).bind(this);
+    };
   }
 
   fetchPage(url: string) {
-    return (function(dispatch) {
+    return (dispatch) => {
       dispatch(this.fetchPageRequest(url));
       return new Promise((resolve, reject) => {
         this.fetcher.fetchOPDSData(url).then((data: CollectionData) => {
@@ -56,11 +56,11 @@ export default class ActionCreator {
           reject(err);
         });
       });
-    }).bind(this);
+    };
   }
 
   fetchBook(url: string) {
-    return (function(dispatch) {
+    return (dispatch) => {
       dispatch(this.fetchBookRequest(url));
       return new Promise((resolve, reject) => {
         this.fetcher.fetchOPDSData(url).then((data: BookData) => {
@@ -72,18 +72,18 @@ export default class ActionCreator {
           reject(err);
         });
       });
-    }).bind(this);
+    };
   }
 
   fetchSearchDescription(url: string) {
-    return (function(dispatch) {
+    return (dispatch) => {
       return new Promise((resolve, reject) => {
         this.fetcher.fetchSearchDescriptionData(url).then((data: SearchData) => {
           dispatch(this.loadSearchDescription(data));
           resolve(data);
         }).catch(err => reject(err));
       });
-    }).bind(this);
+    };
   }
 
   fetchCollectionRequest(url: string) {

@@ -190,7 +190,7 @@ describe("Root", () => {
     expect(breadcrumbs.props.history).toEqual(history);
   });
 
-  it("uses book details container from config", () => {
+  describe("provided a BookDetailsContainer", () => {
     class Container extends React.Component<BookDetailsContainerProps, any> {
       render(): JSX.Element {
         return (
@@ -201,24 +201,42 @@ describe("Root", () => {
       }
     }
 
-    let bookData = groupedCollectionData.lanes[0].books[0];
-    let refresh = jest.genMockFunction();
-    let root = TestUtils.renderIntoDocument(
-      <Root
-        bookData={bookData}
-        bookUrl={bookData.url}
-        collectionUrl="test collection"
-        refreshCollectionAndBook={refresh}
-        setCollectionAndBook={jest.genMockFunction()}
-        BookDetailsContainer={Container} />
-    );
-    let container = TestUtils.findRenderedComponentWithType(root, Container);
-    let element = TestUtils.findRenderedDOMComponentWithClass(root, "container");
-    container.props.refreshBrowser();
-    expect(container.props.bookUrl).toBe(bookData.url);
-    expect(container.props.collectionUrl).toBe("test collection");
-    expect(refresh.mock.calls.length).toBe(1);
-    expect(element.textContent).toContain(bookData.title);
+    it("passes props to BookDetailsContainer and renders it", () => {
+      let bookData = groupedCollectionData.lanes[0].books[0];
+      let refresh = jest.genMockFunction();
+      let root = TestUtils.renderIntoDocument(
+        <Root
+          bookData={bookData}
+          bookUrl={bookData.url}
+          collectionUrl="test collection"
+          refreshCollectionAndBook={refresh}
+          setCollectionAndBook={jest.genMockFunction()}
+          BookDetailsContainer={Container} />
+      );
+      let container = TestUtils.findRenderedComponentWithType(root, Container);
+      let element = TestUtils.findRenderedDOMComponentWithClass(root, "container");
+      container.props.refreshBrowser();
+      expect(container.props.bookUrl).toBe(bookData.url);
+      expect(container.props.collectionUrl).toBe("test collection");
+      expect(refresh.mock.calls.length).toBe(1);
+      expect(element.textContent).toContain(bookData.title);
+    });
+
+    it("does not render BookDetailsContainer if bookUrl is missing", () => {
+      let bookData = groupedCollectionData.lanes[0].books[0];
+      let refresh = jest.genMockFunction();
+      let root = TestUtils.renderIntoDocument(
+        <Root
+          bookData={bookData}
+          bookUrl={null}
+          collectionUrl="test collection"
+          refreshCollectionAndBook={refresh}
+          setCollectionAndBook={jest.genMockFunction()}
+          BookDetailsContainer={Container} />
+      );
+      let containers = TestUtils.scryRenderedComponentsWithType(root, Container);
+      expect(containers.length).toBe(0);
+    });
   });
 
   it("sets page title after updating", () => {

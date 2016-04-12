@@ -24,7 +24,9 @@ export function mapStateToProps(state, ownProps) {
     history: state.browser.collection.history,
     pathFor: ownProps.pathFor || ((collectionUrl: string, bookUrl: string) => "#"),
     loadedCollectionUrl: state.browser.collection.url,
-    loadedBookUrl: state.browser.book.url
+    loadedBookUrl: state.browser.book.url,
+    collectionUrl: ownProps.collectionUrl,
+    bookUrl: ownProps.bookUrl
   };
 };
 
@@ -106,8 +108,14 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
     });
   };
 
-  let refreshBook = () => {
-    return dispatchProps.fetchBook(stateProps.bookUrl);
+  let fetchCollectionAndBook = (collectionUrl: string, bookUrl: string) => {
+    return new Promise((resolve, reject) => {
+      dispatchProps.fetchCollection(collectionUrl).then(collectionData => {
+        dispatchProps.fetchBook(bookUrl).then(bookData => {
+          resolve({ collectionData, bookData });
+        }).catch(err => reject(err));
+      }).catch(err => reject(err));
+    });
   };
 
   return Object.assign({}, componentProps, stateProps, dispatchProps, {
@@ -115,13 +123,10 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
     setBook: setBook,
     setCollectionAndBook: setCollectionAndBook,
     refreshCollectionAndBook: () => {
-      return new Promise((resolve, reject) => {
-        dispatchProps.fetchCollection(stateProps.loadedCollectionUrl).then(collectionData => {
-          dispatchProps.fetchBook(stateProps.loadedBookUrl).then(bookData => {
-            resolve({ collectionData, bookData });
-          }).catch(err => reject(err));
-        }).catch(err => reject(err));
-      });
+      return fetchCollectionAndBook(stateProps.loadedCollectionUrl, stateProps.loadedBookUrl);
+    },
+    retryCollectionAndBook: () => {
+      return fetchCollectionAndBook(stateProps.collectionUrl, stateProps.bookUrl);
     },
     clearCollection: () => {
       setCollection(null);

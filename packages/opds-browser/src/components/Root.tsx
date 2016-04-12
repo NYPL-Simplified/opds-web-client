@@ -36,7 +36,8 @@ export interface RootProps extends State, CollectionActionProps, BaseProps {
   fetchSearchDescription?: (url: string) => void;
   closeError?: () => void;
   fetchBook?: (bookUrl: string) => Promise<any>;
-  refreshCollectionAndBook?: () => void;
+  refreshCollectionAndBook?: () => Promise<any>;
+  retryCollectionAndBook?: () => Promise<any>;
   pageTitleTemplate?: (collectionTitle: string, bookTitle: string) => string;
   headerTitle?: string;
   header?: new () => __React.Component<HeaderProps, any>;
@@ -100,12 +101,13 @@ export class Root extends React.Component<RootProps, any> {
       <div className="browser" style={{ fontFamily: "Arial, sans-serif" }}>
         <SkipNavigationLink />
 
-        { this.props.isFetching && <LoadingIndicator /> }
         { this.props.error &&
           <ErrorMessage
             message={"Could not fetch data: " + this.props.error.url}
-            retry={() => this.props.navigate(this.props.collectionUrl, null)} />
+            retry={this.props.retryCollectionAndBook} />
         }
+
+        { this.props.isFetching && <LoadingIndicator /> }
 
         { showUrlForm &&
           <UrlForm navigate={this.props.navigate} url={this.props.collectionUrl} />
@@ -158,7 +160,7 @@ export class Root extends React.Component<RootProps, any> {
           { showBookWrapper &&
             <div className="bookDetailsWrapper" style={bookWrapperStyle}>
               { showBook &&
-                ( BookDetailsContainer ?
+                ( BookDetailsContainer && this.props.bookUrl ?
                   <BookDetailsContainer
                     bookUrl={this.props.bookUrl}
                     collectionUrl={this.props.collectionUrl}
