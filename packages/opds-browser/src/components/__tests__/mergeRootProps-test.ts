@@ -266,7 +266,7 @@ describe("mergeRootProps", () => {
     });
   });
 
-  describe("refresh", () => {
+  describe("refreshCollectionAndBook", () => {
     let props;
 
     beforeEach(() => {
@@ -285,6 +285,34 @@ describe("mergeRootProps", () => {
 
     it("calls fetchBook", (done) => {
       props.refreshCollectionAndBook().then(data => {
+        expect(fetchBook.mock.calls.length).toBe(1);
+        expect(fetchBook.mock.calls[0][0]).toBe("test book");
+        done();
+      });
+    });
+  });
+
+  describe("retryCollectionAndBook", () => {
+    let props;
+
+    beforeEach(() => {
+      stateProps = {
+        collectionUrl: "test collection",
+        bookUrl: "test book",
+        loadedCollectionUrl: null,
+        loadedBookUrl: null
+      };
+      props = mergeRootProps(stateProps, dispatchProps, componentProps);
+    });
+
+    it("calls fetchCollection", () => {
+      props.retryCollectionAndBook();
+      expect(fetchCollection.mock.calls.length).toBe(1);
+      expect(fetchCollection.mock.calls[0][0]).toBe("test collection");
+    });
+
+    it("calls fetchBook", (done) => {
+      props.retryCollectionAndBook().then(data => {
         expect(fetchBook.mock.calls.length).toBe(1);
         expect(fetchBook.mock.calls[0][0]).toBe("test book");
         done();
