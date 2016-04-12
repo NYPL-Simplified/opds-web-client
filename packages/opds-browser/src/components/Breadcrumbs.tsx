@@ -1,11 +1,14 @@
 import * as React from "react";
 import CollectionLink from "./CollectionLink";
+import { CollectionData, LinkData, Navigate, PathFor } from "../interfaces";
 import { subtleListStyle } from "./styles";
 
-export interface BreadcrumbsProps extends BaseProps, CollectionActionProps {
+export interface BreadcrumbsProps {
   history: LinkData[];
   collection: CollectionData;
   showCurrentLink?: Boolean;
+  navigate?: Navigate;
+  pathFor?: PathFor;
 }
 
 export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> {

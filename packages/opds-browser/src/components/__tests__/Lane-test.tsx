@@ -10,6 +10,7 @@ import * as TestUtils from "react-addons-test-utils";
 import Lane from "../Lane";
 import CollectionLink from "../CollectionLink";
 import Book from "../Book";
+import { LaneData, BookData } from "../../interfaces";
 
 let books: BookData[] = [1, 2, 3].map((i) => {
   return {

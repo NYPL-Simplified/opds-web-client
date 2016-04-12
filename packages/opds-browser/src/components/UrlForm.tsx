@@ -1,7 +1,9 @@
 import * as React from "react";
+import { Navigate } from "../interfaces";
 
-export interface UrlFormProps extends CollectionActionProps, BaseProps {
+export interface UrlFormProps {
   url?: string;
+  navigate: Navigate;
 }
 
 export default class UrlForm extends React.Component<UrlFormProps, any> {

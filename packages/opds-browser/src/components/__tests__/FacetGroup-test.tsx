@@ -9,6 +9,7 @@ import * as TestUtils from "react-addons-test-utils";
 
 import FacetGroup from "../FacetGroup";
 import SkipNavigationLink from "../SkipNavigationLink";
+import { FacetGroupData } from "../../interfaces";
 
 describe("FacetGroup", () => {
   it("shows facet group label", () => {

@@ -15,6 +15,7 @@ import HeaderCollectionLink from "../HeaderCollectionLink";
 import Search from "../Search";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 import buildStore from "../../store";
+import { CollectionData, BookData } from "../../interfaces";
 
 describe("Root", () => {
   it("shows skip navigation link", () => {
@@ -44,6 +45,7 @@ describe("Root", () => {
         collectionData={collectionData}
         fetchSearchDescription={(url: string) => {}}
         navigate={navigate}
+        pathFor={jest.genMockFunction()}
         />
     );
     let search = TestUtils.findRenderedComponentWithType(root, Search);
@@ -58,7 +60,11 @@ describe("Root", () => {
   it("shows a collection if props include collectionData", () => {
     let collectionData: CollectionData = groupedCollectionData;
     let root = TestUtils.renderIntoDocument(
-      <Root collectionData={collectionData} />
+      <Root
+        collectionData={collectionData}
+        navigate={jest.genMockFunction()}
+        pathFor={jest.genMockFunction()}
+        />
     );
 
     let collections = TestUtils.scryRenderedComponentsWithType(root, Collection);

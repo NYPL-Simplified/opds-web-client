@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export interface LinkProps extends BaseProps {
+export interface LinkProps extends React.HTMLProps<any> {
   text?: string; // optional because link can have child elements instead of text
   url: string;
 }

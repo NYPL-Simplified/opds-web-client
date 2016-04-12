@@ -19,6 +19,7 @@ import FacetGroup from "../FacetGroup";
 import CollectionLink from "../CollectionLink";
 import SkipNavigationLink from "../SkipNavigationLink";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
+import { CollectionData } from "../../interfaces";
 
 describe("Collection", () => {
   describe("collection with lanes", () => {
@@ -51,7 +52,7 @@ describe("Collection", () => {
 
     it("shows lanes in order", () => {
       let lanes = TestUtils.scryRenderedComponentsWithType(collection, Lane);
-      let laneTitles = lanes.map(lane => lane.props.title);
+      let laneTitles = lanes.map(lane => lane.props.lane.title);
       expect(laneTitles).toEqual(collectionData.lanes.map(lane => lane.title));
     });
   });
@@ -88,7 +89,7 @@ describe("Collection", () => {
         <Collection collection={collectionData} />
       );
       let books: Book[] = TestUtils.scryRenderedComponentsWithType(collection, Book);
-      let bookTitles = books.map(book => book.props.title);
+      let bookTitles = books.map(book => book.props.book.title);
       expect(bookTitles).toEqual(collectionData.books.map(book => book.title));
     });
   });

@@ -5,15 +5,19 @@ import Lane from "./Lane";
 import FacetGroup from "./FacetGroup";
 import Search from "./Search";
 import SkipNavigationLink from "./SkipNavigationLink";
+import { CollectionData, LinkData, Navigate, PathFor, FetchError } from "../interfaces";
 import { visuallyHiddenStyle, subtleListStyle } from "./styles";
 
-export interface CollectionProps extends CollectionActionProps, BookActionProps, BaseProps {
+export interface CollectionProps extends React.HTMLProps<Collection> {
   collection: CollectionData;
   isFetching?: boolean;
   isFetchingPage?: boolean;
   error?: FetchError;
   fetchSearchDescription?: (url: string) => void;
   history?: LinkData[];
+  navigate?: Navigate;
+  pathFor?: PathFor;
+  fetchPage?: (url: string) => Promise<any>;
 }
 
 export default class Collection extends React.Component<CollectionProps, any> {

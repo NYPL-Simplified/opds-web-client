@@ -9,6 +9,7 @@ import * as TestUtils from "react-addons-test-utils";
 import Breadcrumbs from "../Breadcrumbs";
 import CollectionLink from "../CollectionLink";
 import { ungroupedCollectionData } from "./collectionData";
+import { LinkData } from "../../interfaces";
 
 describe("Breadcrumbs", () => {
   let history: LinkData[];

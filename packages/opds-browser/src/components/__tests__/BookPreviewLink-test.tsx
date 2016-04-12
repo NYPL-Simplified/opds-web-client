@@ -5,7 +5,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
 
-import BookPreviewLink, { BookPreviewLinkProps } from "../BookPreviewLink";
+import BookPreviewLink from "../BookPreviewLink";
 
 let book = {
   id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
@@ -17,7 +17,7 @@ let book = {
   publisher: "Penguin Publishing Group"
 };
 
-let linkProps: BookPreviewLinkProps = {
+let linkProps = {
   text: "test text",
   url: "http://circulation.librarysimplified.org/works/3M/crrmnr9",
   collectionUrl: "http://example.com/feed",

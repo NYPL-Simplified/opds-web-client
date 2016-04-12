@@ -11,7 +11,11 @@ describe("Search", () => {
     let fetchSearchDescription = jest.genMockFunction();
     let url = "test url";
     let search = TestUtils.renderIntoDocument(
-      <Search url={url} fetchSearchDescription={fetchSearchDescription} />
+      <Search
+        url={url}
+        fetchSearchDescription={fetchSearchDescription}
+        navigate={jest.genMockFunction()}
+        />
     );
     expect(fetchSearchDescription.mock.calls.length).toEqual(1);
     expect(fetchSearchDescription.mock.calls[0][0]).toEqual("test url");
@@ -27,11 +31,20 @@ describe("Search", () => {
     };
     let element = document.createElement("div");
     ReactDOM.render(
-      <Search url={url} fetchSearchDescription={fetchSearchDescription} />,
+      <Search
+        url={url}
+        fetchSearchDescription={fetchSearchDescription}
+        navigate={jest.genMockFunction()}
+        />,
       element
     );
     ReactDOM.render(
-      <Search url={url} searchData={searchData} fetchSearchDescription={fetchSearchDescription} />,
+      <Search
+        url={url}
+        searchData={searchData}
+        fetchSearchDescription={fetchSearchDescription}
+        navigate={jest.genMockFunction()}
+        />,
       element
     );
     expect(fetchSearchDescription.mock.calls.length).toEqual(1);
@@ -44,7 +57,7 @@ describe("Search", () => {
       template: (s) => s
     };
     let search = TestUtils.renderIntoDocument(
-      <Search searchData={searchData} />
+      <Search searchData={searchData} navigate={jest.genMockFunction()} />
     );
 
     let form = TestUtils.findRenderedDOMComponentWithTag(search, "form");

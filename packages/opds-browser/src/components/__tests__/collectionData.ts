@@ -1,3 +1,5 @@
+import { CollectionData } from "../../interfaces";
+
 let groupedCollectionData: CollectionData = {
   id: "/groups/",
   url: "http://circulation.librarysimplified.org/groups/",

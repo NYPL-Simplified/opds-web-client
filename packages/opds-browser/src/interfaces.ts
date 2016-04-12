@@ -1,21 +1,4 @@
-interface BaseProps extends __React.HTMLProps<any> {
-  pathFor?: (collectionUrl: string, bookUrl: string) => string;
-}
-
-interface CollectionActionProps {
-  navigate?: (collectionUrl: string, book: BookData|string, isTopLevel?: boolean) => Promise<any>;
-  fetchPage?: (url: string) => void;
-  isTopLevel?: boolean;
-}
-
-interface BookActionProps {
-  navigate?: (collectionUrl: string, book: BookData|string, isTopLevel?: boolean) => Promise<any>;
-  clearBook?: () => void;
-  book?: BookData;
-  collectionUrl?: string;
-}
-
-interface BookData {
+export interface BookData {
   id: string;
   title: string;
   authors?: string[];
@@ -28,24 +11,24 @@ interface BookData {
   categories?: string[];
 }
 
-interface LaneData {
+export interface LaneData {
   title: string;
   url: string;
   books: BookData[];
 }
 
-interface FacetData {
+export interface FacetData {
   label: string;
   href: string;
   active: boolean;
 }
 
-interface FacetGroupData {
+export interface FacetGroupData {
   label: string;
   facets: FacetData[];
 }
 
-interface CollectionData {
+export interface CollectionData {
   id: string;
   url: string;
   title: string;
@@ -58,7 +41,7 @@ interface CollectionData {
   catalogRootUrl?: string;
 }
 
-interface SearchData extends CollectionActionProps, BaseProps {
+export interface SearchData {
   url?: string;
   searchData?: {
     description: string;
@@ -67,10 +50,16 @@ interface SearchData extends CollectionActionProps, BaseProps {
   };
 }
 
+export interface LinkData {
+  id: string;
+  text: string;
+  url: string;
+}
+
 // these properties need to be optional because they're used by RootProps,
 // which doesn't implement them until Root is connected to the state by redux;
 // initially, Root isn't provided most of these props
-interface State {
+export interface State {
   collectionData?: CollectionData;
   collectionUrl?: string;
   isFetching?: boolean;
@@ -81,13 +70,15 @@ interface State {
   history?: LinkData[];
 }
 
-interface LinkData {
-  id: string;
-  text: string;
-  url: string;
+export interface Navigate {
+  (collectionUrl: string, book: BookData|string, isTopLevel?: boolean): Promise<any>;
 }
 
-interface FetchError {
+export interface PathFor {
+  (collectionUrl: string, bookUrl: string): string;
+}
+
+export interface FetchError {
   status: number;
   response: string;
   url: string;

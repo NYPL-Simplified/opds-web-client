@@ -1,4 +1,5 @@
 import DataFetcher from "./DataFetcher";
+import { CollectionData, BookData, SearchData, FetchError } from "./interfaces";
 
 export default class ActionCreator {
   private fetcher: DataFetcher;
