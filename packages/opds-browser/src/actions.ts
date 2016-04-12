@@ -1,5 +1,5 @@
 import DataFetcher from "./DataFetcher";
-import { CollectionData, BookData, SearchData, FetchError } from "./interfaces";
+import { CollectionData, BookData, SearchData, FetchErrorData } from "./interfaces";
 
 export default class ActionCreator {
   private fetcher: DataFetcher;
@@ -95,7 +95,7 @@ export default class ActionCreator {
     return { type: this.FETCH_COLLECTION_SUCCESS };
   }
 
-  fetchCollectionFailure(error?: FetchError) {
+  fetchCollectionFailure(error?: FetchErrorData) {
     return { type: this.FETCH_COLLECTION_FAILURE, error };
   }
 
@@ -111,7 +111,7 @@ export default class ActionCreator {
     return { type: this.FETCH_PAGE_SUCCESS };
   }
 
-  fetchPageFailure(error?: FetchError) {
+  fetchPageFailure(error?: FetchErrorData) {
     return { type: this.FETCH_PAGE_FAILURE, error };
   }
 
@@ -139,7 +139,7 @@ export default class ActionCreator {
     return { type: this.FETCH_BOOK_SUCCESS };
   }
 
-  fetchBookFailure(error?: FetchError) {
+  fetchBookFailure(error?: FetchErrorData) {
     return { type: this.FETCH_BOOK_FAILURE, error };
   }
 

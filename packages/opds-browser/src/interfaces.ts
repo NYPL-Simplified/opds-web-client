@@ -63,7 +63,7 @@ export interface State {
   collectionData?: CollectionData;
   collectionUrl?: string;
   isFetching?: boolean;
-  error?: FetchError;
+  error?: FetchErrorData;
   bookData?: BookData;
   bookUrl?: string;
   isFetchingPage?: boolean;
@@ -78,7 +78,7 @@ export interface PathFor {
   (collectionUrl: string, bookUrl: string): string;
 }
 
-export interface FetchError {
+export interface FetchErrorData {
   status: number;
   response: string;
   url: string;
