@@ -27,7 +27,7 @@ describe("Link", () => {
 
     let link = TestUtils.renderIntoDocument(
       <SpecificLink {...linkProps} />
-    );
+    ) as SpecificLink;
 
     let element = TestUtils.findRenderedDOMComponentWithTag(link, "a");
     TestUtils.Simulate.click(element);

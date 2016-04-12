@@ -30,7 +30,7 @@ describe("Breadcrumbs", () => {
   it("shows breadcrumbs with bootstrap classes", () => {
     let breadcrumbs = TestUtils.renderIntoDocument(
       <Breadcrumbs collection={collectionData} history={history} />
-    );
+    ) as Breadcrumbs;
 
     let list = TestUtils.findRenderedDOMComponentWithTag(breadcrumbs, "ol");
     let links = TestUtils.scryRenderedComponentsWithType(breadcrumbs, CollectionLink);
@@ -51,7 +51,7 @@ describe("Breadcrumbs", () => {
         history={history}
         pathFor={pathFor}
         showCurrentLink={true} />
-    );
+    ) as Breadcrumbs;
 
     let currentLink = TestUtils.findRenderedDOMComponentWithClass(breadcrumbs, "currentCollectionLink");
     expect(currentLink.textContent).toBe(collectionData.title);

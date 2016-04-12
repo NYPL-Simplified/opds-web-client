@@ -16,7 +16,7 @@ describe("Search", () => {
         fetchSearchDescription={fetchSearchDescription}
         navigate={jest.genMockFunction()}
         />
-    );
+    ) as Search;
     expect(fetchSearchDescription.mock.calls.length).toEqual(1);
     expect(fetchSearchDescription.mock.calls[0][0]).toEqual("test url");
   });
@@ -37,7 +37,7 @@ describe("Search", () => {
         navigate={jest.genMockFunction()}
         />,
       element
-    );
+    ) as Search;
     ReactDOM.render(
       <Search
         url={url}
@@ -58,7 +58,7 @@ describe("Search", () => {
     };
     let search = TestUtils.renderIntoDocument(
       <Search searchData={searchData} navigate={jest.genMockFunction()} />
-    );
+    ) as Search;
 
     let form = TestUtils.findRenderedDOMComponentWithTag(search, "form");
     let input = TestUtils.findRenderedDOMComponentWithTag(search, "input");
@@ -81,7 +81,7 @@ describe("Search", () => {
     };
     let search = TestUtils.renderIntoDocument(
       <Search searchData={searchData} navigate={navigate} />
-    );
+    ) as Search;
 
     let form = TestUtils.findRenderedDOMComponentWithTag(search, "form");
     expect(form).toBeTruthy();
@@ -103,7 +103,7 @@ describe("Search", () => {
     };
     let search = TestUtils.renderIntoDocument(
       <Search searchData={searchData} navigate={navigate} />
-    );
+    ) as Search;
 
     let form = TestUtils.findRenderedDOMComponentWithTag(search, "form");
     expect(form).toBeTruthy();

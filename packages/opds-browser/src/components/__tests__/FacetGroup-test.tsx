@@ -20,7 +20,7 @@ describe("FacetGroup", () => {
 
     let renderedFacetGroup = TestUtils.renderIntoDocument(
       <FacetGroup facetGroup={facetGroup} />
-    );
+    ) as FacetGroup;
 
     let label = TestUtils.findRenderedDOMComponentWithClass(renderedFacetGroup, "facet-group-label");
     expect(label.textContent).toEqual(facetGroup.label + ":");
@@ -45,7 +45,7 @@ describe("FacetGroup", () => {
 
     let renderedFacetGroup = TestUtils.renderIntoDocument(
       <FacetGroup facetGroup={facetGroup} />
-    );
+    ) as FacetGroup;
 
     let facets = TestUtils.scryRenderedDOMComponentsWithClass(renderedFacetGroup, "facetLink");
     expect(facets.length).toEqual(2);

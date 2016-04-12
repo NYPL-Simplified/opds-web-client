@@ -10,7 +10,7 @@ describe("ErrorMessage", () => {
   it("shows the message", () => {
     let error = TestUtils.renderIntoDocument(
       <ErrorMessage message="test error" />
-    );
+    ) as ErrorMessage;
 
     let element = ReactDOM.findDOMNode(error);
     expect(element.textContent).toContain("test error");
@@ -19,7 +19,7 @@ describe("ErrorMessage", () => {
   it("goes back", () => {
     let error = TestUtils.renderIntoDocument(
       <ErrorMessage message="test error" />
-    );
+    ) as ErrorMessage;
 
     let button = TestUtils.findRenderedDOMComponentWithClass(error, "errorCloseButton");
     spyOn(window.history, "back");
@@ -32,7 +32,7 @@ describe("ErrorMessage", () => {
     let retry = jest.genMockFunction();
     let error = TestUtils.renderIntoDocument(
       <ErrorMessage message="test error" retry={retry} />
-    );
+    ) as ErrorMessage;
 
     let button = TestUtils.findRenderedDOMComponentWithClass(error, "retryButton");
     TestUtils.Simulate.click(button);
@@ -43,7 +43,7 @@ describe("ErrorMessage", () => {
   it("uses bootstrap classes", () => {
     let error = TestUtils.renderIntoDocument(
       <ErrorMessage message="test error" />
-    );
+    ) as ErrorMessage;
 
     let buttons = TestUtils.scryRenderedDOMComponentsWithClass(error, "btn");
     expect(buttons.length).toBe(2);
