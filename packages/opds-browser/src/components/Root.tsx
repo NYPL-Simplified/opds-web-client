@@ -21,7 +21,7 @@ export interface HeaderProps extends React.Props<any> {
 export interface BookDetailsContainerProps extends React.Props<any> {
   bookUrl: string;
   collectionUrl: string;
-  refreshBrowser: () => void;
+  refreshBrowser: () => Promise<any>;
 }
 
 export interface RootProps extends State {

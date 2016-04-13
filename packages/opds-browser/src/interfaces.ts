@@ -71,7 +71,7 @@ export interface State {
 }
 
 export interface Navigate {
-  (collectionUrl: string, book: BookData|string, isTopLevel?: boolean): Promise<any>;
+  (collectionUrl: string, book: BookData|string, isTopLevel?: boolean): void;
 }
 
 export interface PathFor {
