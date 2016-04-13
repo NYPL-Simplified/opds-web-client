@@ -1,7 +1,10 @@
 import * as React from "react";
+import { SearchData, Navigate } from "../interfaces";
 
-export interface SearchProps extends SearchData {
+export interface SearchProps extends SearchData, React.HTMLProps<Search> {
   fetchSearchDescription?: (url: string) => void;
+  navigate: Navigate;
+  isTopLevel?: boolean;
 }
 
 export default class Search extends React.Component<SearchProps, any> {

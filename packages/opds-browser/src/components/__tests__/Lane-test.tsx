@@ -10,6 +10,7 @@ import * as TestUtils from "react-addons-test-utils";
 import Lane from "../Lane";
 import CollectionLink from "../CollectionLink";
 import Book from "../Book";
+import { LaneData, BookData } from "../../interfaces";
 
 let books: BookData[] = [1, 2, 3].map((i) => {
   return {
@@ -31,7 +32,7 @@ describe("Lane", () => {
   it("shows the lane title", () => {
     let lane = TestUtils.renderIntoDocument(
       <Lane lane={laneData} />
-    );
+    ) as Lane;
 
     let titleLink = TestUtils.findRenderedDOMComponentWithClass(lane, "laneTitle");
     expect(titleLink.textContent).toBe(laneData.title);
@@ -40,7 +41,7 @@ describe("Lane", () => {
   it("shows the books", () => {
     let lane = TestUtils.renderIntoDocument(
       <Lane lane={laneData} />
-    );
+    ) as Lane;
 
     let books = TestUtils.scryRenderedComponentsWithType(lane, Book);
     expect(books.length).toBe(books.length);

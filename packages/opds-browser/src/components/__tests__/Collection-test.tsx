@@ -19,6 +19,7 @@ import FacetGroup from "../FacetGroup";
 import CollectionLink from "../CollectionLink";
 import SkipNavigationLink from "../SkipNavigationLink";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
+import { CollectionData } from "../../interfaces";
 
 describe("Collection", () => {
   describe("collection with lanes", () => {
@@ -28,7 +29,7 @@ describe("Collection", () => {
     beforeEach(() => {
       collection = TestUtils.renderIntoDocument(
         <Collection collection={collectionData} />
-      );
+      ) as Collection;
     });
 
     it("contains #main anchor", () => {
@@ -51,7 +52,7 @@ describe("Collection", () => {
 
     it("shows lanes in order", () => {
       let lanes = TestUtils.scryRenderedComponentsWithType(collection, Lane);
-      let laneTitles = lanes.map(lane => lane.props.title);
+      let laneTitles = lanes.map(lane => lane.props.lane.title);
       expect(laneTitles).toEqual(collectionData.lanes.map(lane => lane.title));
     });
   });
@@ -63,7 +64,7 @@ describe("Collection", () => {
     beforeEach(() => {
       collection = TestUtils.renderIntoDocument(
         <Collection collection={collectionData} />
-      );
+      ) as Collection;
     });
 
     it("shows #main anchor", () => {
@@ -74,7 +75,7 @@ describe("Collection", () => {
     it("shows books", () => {
       let collection = TestUtils.renderIntoDocument(
         <Collection collection={collectionData} />
-      );
+      ) as Collection;
       let books: LaneBook[] = TestUtils.scryRenderedComponentsWithType(collection, LaneBook);
       // count books in all lanes plus books directly belonging to this collection
       let bookCount = collectionData.lanes.reduce((count, lane) => {
@@ -86,9 +87,9 @@ describe("Collection", () => {
     it("shows books in order", () => {
       let collection = TestUtils.renderIntoDocument(
         <Collection collection={collectionData} />
-      );
+      ) as Collection;
       let books: Book[] = TestUtils.scryRenderedComponentsWithType(collection, Book);
-      let bookTitles = books.map(book => book.props.title);
+      let bookTitles = books.map(book => book.props.book.title);
       expect(bookTitles).toEqual(collectionData.books.map(book => book.title));
     });
   });
@@ -112,7 +113,7 @@ describe("Collection", () => {
 
       collection = TestUtils.renderIntoDocument(
         <Collection collection={collectionData} />
-      );
+      ) as Collection;
     });
 
     it("shows facet groups", () => {
@@ -142,7 +143,7 @@ describe("Collection", () => {
 
       let collection = TestUtils.renderIntoDocument(
         <Collection collection={collectionData} fetchPage={fetchPage} />
-      );
+      ) as Collection;
 
       document.body.scrollTop = 1000;
       document.body.scrollHeight = 1;
@@ -179,7 +180,7 @@ describe("Collection", () => {
 
       let collection = TestUtils.renderIntoDocument(
         <Collection collection={collectionData} fetchPage={fetchPage} />
-      );
+      ) as Collection;
 
       expect(fetchPage.mock.calls.length).toEqual(1);
       expect(fetchPage.mock.calls[0][0]).toEqual("next");
@@ -197,7 +198,7 @@ describe("Collection", () => {
 
       let collection = TestUtils.renderIntoDocument(
         <Collection collection={collectionData} isFetchingPage={true} />
-      );
+      ) as Collection;
 
       let loading = TestUtils.findRenderedDOMComponentWithClass(collection, "loadingNextPage");
       expect(loading.textContent).toContain("Loading");
@@ -210,7 +211,7 @@ describe("Collection", () => {
       });
       let collection = TestUtils.renderIntoDocument(
         <Collection collection={collectionData} isFetchingPage={false} fetchPage={fetchPage} />
-      );
+      ) as Collection;
 
       let link = TestUtils.findRenderedDOMComponentWithClass(collection, "nextPageLink");
       expect(link.textContent).toBe("Load more books");

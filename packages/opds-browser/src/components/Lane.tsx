@@ -1,9 +1,13 @@
 import * as React from "react";
 import LaneBook from "./LaneBook";
 import CollectionLink from "./CollectionLink";
+import { LaneData, Navigate, PathFor } from "../interfaces";
 
-export interface LaneProps extends CollectionActionProps, BookActionProps, BaseProps {
+export interface LaneProps {
   lane: LaneData;
+  navigate?: Navigate;
+  pathFor?: PathFor;
+  collectionUrl?: string;
 }
 
 export default class Lane extends React.Component<LaneProps, any> {

@@ -9,7 +9,7 @@ describe("SkipNavigationLink", () => {
   it("shows link", () => {
     let component = TestUtils.renderIntoDocument(
       <SkipNavigationLink />
-    );
+    ) as SkipNavigationLink;
 
     let element = TestUtils.findRenderedDOMComponentWithClass(component, "skipNavigation");
     expect(element.textContent).toBe("Skip Navigation");

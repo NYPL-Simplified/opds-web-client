@@ -1,9 +1,12 @@
 import * as React from "react";
 import CollectionLink from "./CollectionLink";
+import { FacetGroupData, Navigate, PathFor } from "../interfaces";
 import { subtleListStyle } from "./styles";
 
-export interface FacetGroupProps extends CollectionActionProps, BaseProps {
+export interface FacetGroupProps {
   facetGroup: FacetGroupData;
+  navigate?: Navigate;
+  pathFor?: PathFor;
 }
 
 export default class FacetGroup extends React.Component<FacetGroupProps, any> {

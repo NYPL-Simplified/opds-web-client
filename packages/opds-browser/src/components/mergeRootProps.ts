@@ -1,6 +1,7 @@
 import ActionsCreator from "../actions";
 import DataFetcher from "../DataFetcher";
 import { adapter } from "../OPDSDataAdapter";
+import { CollectionData, BookData } from "../interfaces";
 
 export function findBookInCollection(collection: CollectionData, book: string) {
   if (collection) {

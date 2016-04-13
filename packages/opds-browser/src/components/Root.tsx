@@ -12,18 +12,19 @@ import UrlForm from "./UrlForm";
 import SkipNavigationLink from "./SkipNavigationLink";
 import CollectionLink from "./CollectionLink";
 import HeaderCollectionLink from "./HeaderCollectionLink";
+import { State, Navigate, PathFor } from "../interfaces";
 
-export interface HeaderProps extends BaseProps {
+export interface HeaderProps extends React.Props<any> {
   CollectionLink: typeof HeaderCollectionLink;
 }
 
-export interface BookDetailsContainerProps extends BaseProps {
+export interface BookDetailsContainerProps extends React.Props<any> {
   bookUrl: string;
   collectionUrl: string;
-  refreshBrowser: () => void;
+  refreshBrowser: () => Promise<any>;
 }
 
-export interface RootProps extends State, CollectionActionProps, BaseProps {
+export interface RootProps extends State {
   store?: Redux.Store;
   collectionUrl?: string;
   bookUrl?: string;
@@ -41,6 +42,10 @@ export interface RootProps extends State, CollectionActionProps, BaseProps {
   pageTitleTemplate?: (collectionTitle: string, bookTitle: string) => string;
   headerTitle?: string;
   header?: new () => __React.Component<HeaderProps, any>;
+  navigate?: Navigate;
+  pathFor?: PathFor;
+  fetchPage?: (url: string) => Promise<any>;
+  isTopLevel?: boolean;
 }
 
 export class Root extends React.Component<RootProps, any> {
@@ -204,7 +209,7 @@ export class Root extends React.Component<RootProps, any> {
     document.addEventListener("keydown", this.handleKeyDown.bind(this));
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: RootProps) {
     if (nextProps.collectionUrl !== this.props.collectionUrl || nextProps.bookUrl !== this.props.bookUrl) {
       this.props.setCollectionAndBook(nextProps.collectionUrl, nextProps.bookUrl, nextProps.isTopLevel);
     }

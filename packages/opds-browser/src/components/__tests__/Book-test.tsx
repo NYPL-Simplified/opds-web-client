@@ -7,6 +7,7 @@ import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
 
 import Book from "../Book";
+import { BookData } from "../../interfaces";
 
 let book: BookData = {
   id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
@@ -21,7 +22,7 @@ describe("Book", () => {
   it("shows the book cover with empty alt", () => {
     let renderedBook = TestUtils.renderIntoDocument(
       <Book book={book} />
-    );
+    ) as Book;
 
     let coverImage = TestUtils.findRenderedDOMComponentWithTag(renderedBook, "img");
     expect(coverImage.getAttribute("src")).toEqual(book.imageUrl);
@@ -32,7 +33,7 @@ describe("Book", () => {
   it("shows book info", () => {
     let renderedBook = TestUtils.renderIntoDocument(
       <Book book={book} />
-    );
+    ) as Book;
 
     let title = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookTitle");
     expect(title.textContent).toEqual(book.title);
@@ -48,7 +49,7 @@ describe("Book", () => {
     });
     let renderedBook = TestUtils.renderIntoDocument(
       <Book book={bookCopy} />
-    );
+    ) as Book;
 
     let authors = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookAuthors");
     expect(authors.textContent).toEqual(bookCopy.contributors[0]);

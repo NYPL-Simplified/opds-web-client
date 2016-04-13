@@ -11,7 +11,7 @@ describe("UrlForm", () => {
     let navigate = jest.genMockFunction();
     let form = TestUtils.renderIntoDocument(
       <UrlForm navigate={navigate} />
-    );
+    ) as UrlForm;
 
     let formNode = TestUtils.findRenderedDOMComponentWithTag(form, "form");
     let input = TestUtils.findRenderedDOMComponentWithTag(form, "input");
@@ -28,7 +28,7 @@ describe("UrlForm", () => {
     let navigate = jest.genMockFunction();
     let urlForm = TestUtils.renderIntoDocument(
       <UrlForm navigate={navigate} />
-    );
+    ) as UrlForm;
 
     let form = TestUtils.findRenderedDOMComponentWithTag(urlForm, "form");
     let input = TestUtils.findRenderedDOMComponentWithTag(urlForm, "input");

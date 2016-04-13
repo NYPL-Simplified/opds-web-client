@@ -8,6 +8,7 @@ import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
 
 import LaneBook from "../LaneBook";
+import { BookData } from "../../interfaces";
 
 let book: BookData = {
   id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
@@ -22,7 +23,7 @@ describe("LaneBook", () => {
   it("shows the book cover with empty alt", () => {
     let renderedBook = TestUtils.renderIntoDocument(
       <LaneBook book={book} />
-    );
+    ) as LaneBook;
 
     let coverImage = TestUtils.findRenderedDOMComponentWithTag(renderedBook, "img");
     expect(coverImage.getAttribute("src")).toBe(book.imageUrl);
@@ -33,7 +34,7 @@ describe("LaneBook", () => {
   it("shows book title", () => {
     let renderedBook = TestUtils.renderIntoDocument(
       <LaneBook book={book} />
-    );
+    ) as LaneBook;
 
     let title = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookTitle");
     expect(title.textContent).toBe(book.title);

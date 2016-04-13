@@ -1,8 +1,12 @@
 import * as React from "react";
 import BookPreviewLink from "./BookPreviewLink";
+import { BookData, Navigate, PathFor } from "../interfaces";
 
-export interface BookProps extends BookActionProps, BaseProps {
+export interface BookProps {
   book: BookData;
+  navigate?: Navigate;
+  pathFor?: PathFor;
+  collectionUrl?: string;
 }
 
 export default class Book extends React.Component<BookProps, any> {

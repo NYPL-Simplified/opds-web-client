@@ -15,12 +15,13 @@ import HeaderCollectionLink from "../HeaderCollectionLink";
 import Search from "../Search";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 import buildStore from "../../store";
+import { CollectionData, BookData } from "../../interfaces";
 
 describe("Root", () => {
   it("shows skip navigation link", () => {
     let root = TestUtils.renderIntoDocument(
       <Root />
-    );
+    ) as Root;
 
     let link = TestUtils.findRenderedComponentWithType(root, SkipNavigationLink);
     expect(link).toBeTruthy();
@@ -44,8 +45,9 @@ describe("Root", () => {
         collectionData={collectionData}
         fetchSearchDescription={(url: string) => {}}
         navigate={navigate}
+        pathFor={jest.genMockFunction()}
         />
-    );
+    ) as Root;
     let search = TestUtils.findRenderedComponentWithType(root, Search);
     let form = TestUtils.findRenderedDOMComponentWithTag(search, "form");
     TestUtils.Simulate.submit(form);
@@ -58,8 +60,12 @@ describe("Root", () => {
   it("shows a collection if props include collectionData", () => {
     let collectionData: CollectionData = groupedCollectionData;
     let root = TestUtils.renderIntoDocument(
-      <Root collectionData={collectionData} />
-    );
+      <Root
+        collectionData={collectionData}
+        navigate={jest.genMockFunction()}
+        pathFor={jest.genMockFunction()}
+        />
+    ) as Root;
 
     let collections = TestUtils.scryRenderedComponentsWithType(root, Collection);
     expect(collections.length).toBe(1);
@@ -69,7 +75,7 @@ describe("Root", () => {
   it("shows a url form if no collection url or book url", () => {
     let root = TestUtils.renderIntoDocument(
       <Root />
-    );
+    ) as Root;
 
     let urlForms = TestUtils.scryRenderedComponentsWithType(root, UrlForm);
     expect(urlForms.length).toBe(1);
@@ -78,7 +84,7 @@ describe("Root", () => {
   it("doesn't show a url form if collection url", () => {
     let root = TestUtils.renderIntoDocument(
       <Root collectionUrl="test" setCollectionAndBook={jest.genMockFunction()} />
-    );
+    ) as Root;
 
     let urlForms = TestUtils.scryRenderedComponentsWithType(root, UrlForm);
     expect(urlForms.length).toBe(0);
@@ -87,7 +93,7 @@ describe("Root", () => {
   it("doesn't show a url form if book url", () => {
     let root = TestUtils.renderIntoDocument(
       <Root bookUrl="test" setCollectionAndBook={jest.genMockFunction()} />
-    );
+    ) as Root;
 
     let urlForms = TestUtils.scryRenderedComponentsWithType(root, UrlForm);
     expect(urlForms.length).toBe(0);
@@ -98,7 +104,7 @@ describe("Root", () => {
     let setCollectionAndBook = jest.genMockFunction();
     let root = TestUtils.renderIntoDocument(
       <Root collectionUrl={collectionUrl} setCollectionAndBook={setCollectionAndBook}/>
-    );
+    ) as Root;
 
     expect(setCollectionAndBook.mock.calls.length).toBe(1);
     expect(setCollectionAndBook.mock.calls[0][0]).toBe(collectionUrl);
@@ -110,7 +116,7 @@ describe("Root", () => {
     let setCollectionAndBook = jest.genMockFunction();
     let root = TestUtils.renderIntoDocument(
       <Root bookUrl={bookUrl} setCollectionAndBook={setCollectionAndBook}/>
-    );
+    ) as Root;
 
     expect(setCollectionAndBook.mock.calls.length).toBe(1);
     expect(setCollectionAndBook.mock.calls[0][0]).toBeFalsy();
@@ -125,11 +131,11 @@ describe("Root", () => {
     let root = ReactDOM.render(
       <Root collectionUrl={collectionUrl} setCollectionAndBook={setCollectionAndBook} />,
       elem
-    );
+    ) as Root;
     ReactDOM.render(
       <Root collectionUrl={newCollection} setCollectionAndBook={setCollectionAndBook} isTopLevel={true} />,
       elem
-    );
+    ) as Root;
 
     expect(setCollectionAndBook.mock.calls.length).toBe(2);
     expect(setCollectionAndBook.mock.calls[1][0]).toBe(newCollection);
@@ -140,7 +146,7 @@ describe("Root", () => {
   it("shows loading message", () => {
     let root = TestUtils.renderIntoDocument(
       <Root isFetching={true}/>
-    );
+    ) as Root;
 
     let loading = TestUtils.findRenderedDOMComponentWithClass(root, "loading");
     expect(loading.textContent).toBeTruthy();
@@ -154,7 +160,7 @@ describe("Root", () => {
     };
     let root = TestUtils.renderIntoDocument(
       <Root error={fetchError}/>
-    );
+    ) as Root;
 
     let error = TestUtils.findRenderedDOMComponentWithClass(root, "error");
     expect(error.textContent).toContain("test error url");
@@ -164,7 +170,7 @@ describe("Root", () => {
     let bookData = groupedCollectionData.lanes[0].books[0];
     let root = TestUtils.renderIntoDocument(
       <Root bookData={bookData}/>
-    );
+    ) as Root;
     let book = TestUtils.findRenderedDOMComponentWithClass(root, "bookDetails");
 
     expect(book.textContent).toContain(bookData.title);
@@ -184,7 +190,7 @@ describe("Root", () => {
 
     let root = TestUtils.renderIntoDocument(
       <Root collectionData={ungroupedCollectionData} history={history} />
-    );
+    ) as Root;
 
     let breadcrumbs = TestUtils.findRenderedComponentWithType(root, Breadcrumbs);
     expect(breadcrumbs.props.history).toEqual(history);
@@ -212,7 +218,7 @@ describe("Root", () => {
           refreshCollectionAndBook={refresh}
           setCollectionAndBook={jest.genMockFunction()}
           BookDetailsContainer={Container} />
-      );
+      ) as Root;
       let container = TestUtils.findRenderedComponentWithType(root, Container);
       let element = TestUtils.findRenderedDOMComponentWithClass(root, "container");
       container.props.refreshBrowser();
@@ -233,7 +239,7 @@ describe("Root", () => {
           refreshCollectionAndBook={refresh}
           setCollectionAndBook={jest.genMockFunction()}
           BookDetailsContainer={Container} />
-      );
+      ) as Root;
       let containers = TestUtils.scryRenderedComponentsWithType(root, Container);
       expect(containers.length).toBe(0);
     });
@@ -253,7 +259,7 @@ describe("Root", () => {
         bookData={bookData}
         pageTitleTemplate={pageTitleTemplate} />,
       elem
-    );
+    ) as Root;
 
     // template should be invoked by componentWillMount
     expect(pageTitleTemplate.mock.calls.length).toBe(1);
@@ -264,7 +270,7 @@ describe("Root", () => {
     ReactDOM.render(
       <Root collectionData={null} bookData={null} pageTitleTemplate={pageTitleTemplate} />,
       elem
-    );
+    ) as Root;
 
     // template should be invoked again by componentWillUpdate
     expect(pageTitleTemplate.mock.calls.length).toBe(2);
@@ -275,13 +281,13 @@ describe("Root", () => {
 
   it("calls showPrevBook() on left key press but not if meta key is also presssed", () => {
     let showPrevBook = jest.genMockFunction();
-    let root = TestUtils.renderIntoDocument<Root>(
+    let root = TestUtils.renderIntoDocument(
       <Root
         bookUrl="test book"
         collectionUrl="test collection"
         setCollectionAndBook={jest.genMockFunction()}
         />
-    );
+    ) as Root;
     root.showPrevBook = showPrevBook;
 
     document.dispatchEvent(new KeyboardEvent("keydown", {
@@ -300,13 +306,13 @@ describe("Root", () => {
 
   it("calls showNextBook() on right key press but not if meta key is also presssed", () => {
     let showNextBook = jest.genMockFunction();
-    let root = TestUtils.renderIntoDocument<Root>(
+    let root = TestUtils.renderIntoDocument(
       <Root
         bookUrl="test book"
         collectionUrl="test collection"
         setCollectionAndBook={jest.genMockFunction()}
         />
-    );
+    ) as Root;
     root.showNextBook = showNextBook;
 
     document.dispatchEvent(new KeyboardEvent("keydown", {
@@ -409,14 +415,14 @@ describe("Root", () => {
     it("navigates to second book if currently showing first book", () => {
       bookData = groupedCollectionData.lanes[0].books[0];
       nextBookData = groupedCollectionData.lanes[0].books[1];
-      root = TestUtils.renderIntoDocument<Root>(
+      root = TestUtils.renderIntoDocument(
         <Root
           navigate={navigate}
           collectionData={collectionData}
           bookData={bookData}
           setCollectionAndBook={jest.genMockFunction()}
           />
-      );
+      ) as Root;
       root.showNextBook();
 
       expect(navigate.mock.calls.length).toBe(1);
@@ -428,14 +434,14 @@ describe("Root", () => {
       let lastIndex = groupedCollectionData.lanes[0].books.length - 1;
       bookData = groupedCollectionData.lanes[0].books[lastIndex];
       nextBookData = groupedCollectionData.lanes[0].books[0];
-      root = TestUtils.renderIntoDocument<Root>(
+      root = TestUtils.renderIntoDocument(
         <Root
           navigate={navigate}
           collectionData={collectionData}
           bookData={bookData}
           setCollectionAndBook={jest.genMockFunction()}
           />
-      );
+      ) as Root;
       root.showNextBook();
 
       expect(navigate.mock.calls.length).toBe(1);
@@ -461,14 +467,14 @@ describe("Root", () => {
       let lastIndex = groupedCollectionData.lanes[0].books.length - 1;
       bookData = groupedCollectionData.lanes[0].books[0];
       nextBookData = groupedCollectionData.lanes[0].books[lastIndex];
-      root = TestUtils.renderIntoDocument<Root>(
+      root = TestUtils.renderIntoDocument(
         <Root
           navigate={navigate}
           collectionData={collectionData}
           bookData={bookData}
           setCollectionAndBook={jest.genMockFunction()}
           />
-      );
+      ) as Root;
       root.showPrevBook();
 
       expect(navigate.mock.calls.length).toBe(1);
@@ -479,14 +485,14 @@ describe("Root", () => {
     it("navigates to first book if currently showing second book", () => {
       bookData = groupedCollectionData.lanes[0].books[1];
       nextBookData = groupedCollectionData.lanes[0].books[0];
-      root = TestUtils.renderIntoDocument<Root>(
+      root = TestUtils.renderIntoDocument(
         <Root
           navigate={navigate}
           collectionData={collectionData}
           bookData={bookData}
           setCollectionAndBook={jest.genMockFunction()}
           />
-      );
+      ) as Root;
       root.showPrevBook();
 
       expect(navigate.mock.calls.length).toBe(1);
@@ -519,7 +525,7 @@ describe("Root", () => {
           navigate={navigate}
           pathFor={pathFor}
           collectionData={collectionData} />
-      );
+      ) as React.Component<any, any>;
       rootInstance = root.getWrappedInstance();
     });
 
@@ -551,7 +557,7 @@ describe("Root", () => {
           navigate={navigate}
           collectionData={collectionData}
           bookData={bookData} />
-      );
+      ) as React.Component<any, any>;
       rootInstance = root.getWrappedInstance();
       let collectionLink = TestUtils.findRenderedDOMComponentWithClass(rootInstance, "currentCollectionLink");
       TestUtils.Simulate.click(collectionLink);

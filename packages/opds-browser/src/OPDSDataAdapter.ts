@@ -10,6 +10,14 @@ import {
   OPDSCatalogRootLink
 } from "opds-feed-parser";
 import * as url from "url";
+import {
+  CollectionData,
+  LaneData,
+  BookData,
+  LinkData,
+  FacetGroupData,
+  SearchData
+} from "./interfaces";
 const sanitizeHtml = require("dompurify").sanitize;
 
 export function adapter(data: OPDSFeed|OPDSEntry, url: string): CollectionData|BookData {
