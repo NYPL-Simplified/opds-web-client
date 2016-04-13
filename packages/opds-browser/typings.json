@@ -6,6 +6,8 @@
     "react-addons-test-utils": "registry:dt/react-addons-test-utils#0.14.0+20160316155526",
     "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
     "react-redux": "github:DefinitelyTyped/DefinitelyTyped/react-redux/react-redux.d.ts#a513c4df6eb8505da8eef432891c8b69b73535d9",
+    "react-router": "registry:dt/react-router#2.0.0+20160330124659",
+    "react-router/history": "registry:dt/react-router/history#2.0.0+20160316155526",
     "redux": "registry:dt/redux#3.3.1+20160326112656",
     "redux-thunk": "github:DefinitelyTyped/DefinitelyTyped/redux-thunk/redux-thunk.d.ts#75249b97104d00c1ca2451ac29369009a5f2b101",
     "sanitize-html": "github:DefinitelyTyped/DefinitelyTyped/sanitize-html/sanitize-html.d.ts#71b9e552eab0e66ccb1385babb2f2b95e73afcb1",
