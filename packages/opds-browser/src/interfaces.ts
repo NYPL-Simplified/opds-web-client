@@ -83,3 +83,13 @@ export interface FetchErrorData {
   response: string;
   url: string;
 }
+
+export interface NavigateContext {
+  router?: {
+    push: (location: string|{
+      pathname: string,
+      state?: any
+    })=> any;
+  };
+  pathFor: (collectionUrl: string, bookUrl: string) => string;
+}

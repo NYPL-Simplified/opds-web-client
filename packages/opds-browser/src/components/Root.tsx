@@ -115,7 +115,7 @@ export class Root extends React.Component<RootProps, any> {
         { this.props.isFetching && <LoadingIndicator /> }
 
         { showUrlForm &&
-          <UrlForm navigate={this.props.navigate} url={this.props.collectionUrl} />
+          <UrlForm collectionUrl={this.props.collectionUrl} />
         }
 
         { Header ?

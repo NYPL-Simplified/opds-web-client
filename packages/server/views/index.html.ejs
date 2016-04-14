@@ -100,9 +100,13 @@
           var details = bookTitle || collectionTitle;
           return title + (details ? " - " + details : "");
         },
-        // navigate: () => {},
-        baseCollectionUrl: "https://circulation.librarysimplified.org/",
-        baseBookUrl: "https://circulation.librarysimplified.org/works/"
+        pathFor: (collectionUrl, bookUrl) => {
+          let path = "/";
+          path += collectionUrl ? `collection/${encodeURIComponent(collectionUrl)}/` : "";
+          path += bookUrl ? `book/${encodeURIComponent(bookUrl)}/` : "";
+          return path;
+        },
+        urlPattern: "/(collection/:collectionUrl/)(book/:bookUrl/)"
       }, "opds-browser");
     </script>
   </body>
