@@ -1,41 +1,30 @@
-jest.autoMockOff();
-jest.mock("../../DataFetcher");
+jest.dontMock("../OPDSBrowser");
+jest.setMock("../../store", {
+  default: () => "test store"
+});
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
 
 import OPDSBrowser from "../OPDSBrowser";
-import Root, { RootProps, BookDetailsContainerProps, HeaderProps } from "../Root";
+import Root from "../Root";
 import buildStore from "../../store";
-
-class TestContainer extends React.Component<BookDetailsContainerProps, any> {
-  render(): JSX.Element {
-    return (
-      <div className="container">
-        {this.props.children}
-      </div>
-    );
-  }
-  testMethod() {
-    return "test";
-  }
-}
 
 describe("OPDSBrowser", () => {
   let browser;
-  let props: RootProps = {
+  let props = {
     collectionUrl: "collection url",
     bookUrl: "book url",
     proxyUrl: "proxy url",
     navigate: jest.genMockFunction(),
     pathFor: (collectionUrl: string, bookUrl: string): string => { return "path"; },
-    BookDetailsContainer: TestContainer,
     bookData: {
       id: "book id",
       title: "book title",
       url: "book url"
-    }
+    },
+    pageTitleTemplate: (c, b) => "test title"
   };
 
   beforeEach(() => {
@@ -57,7 +46,7 @@ describe("OPDSBrowser", () => {
     );
 
     let root = TestUtils.findRenderedComponentWithType(browser, Root);
-    expect(root.props.store.getState()).toBe(store.getState());
+    expect(root.props.store).toBe(store);
   });
 
   it("passes props to Root", () => {
@@ -68,4 +57,3 @@ describe("OPDSBrowser", () => {
     });
   });
 });
-

@@ -5,6 +5,8 @@ import buildStore from "../store";
 import { NavigateContext } from "../interfaces";
 
 export interface OPDSBrowserProps {
+  collectionUrl?: string;
+  bookUrl?: string;
   headerTitle?: string;
   pageTitleTemplate: (collectionTitle: string, bookTitle: string) => string;
   proxyUrl?: string;
@@ -18,16 +20,6 @@ export default class OPDSBrowser extends React.Component<OPDSBrowserProps, any> 
   constructor(props) {
     super(props);
     this.store = this.props.store || buildStore();
-  }
-
-  static childContextTypes = {
-    pathFor: React.PropTypes.func.isRequired
-  };
-
-  getChildContext(): NavigateContext {
-    return {
-      pathFor: this.props.pathFor
-    };
   }
 
   render(): JSX.Element {

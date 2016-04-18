@@ -1,15 +1,15 @@
 jest.dontMock("../Breadcrumbs");
-jest.dontMock("../CollectionLink");
-jest.dontMock("../Link");
+jest.dontMock("./routing");
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
 
 import Breadcrumbs from "../Breadcrumbs";
-import CollectionLink from "../CollectionLink";
+import BrowserLink from "../BrowserLink";
 import { ungroupedCollectionData } from "./collectionData";
 import { LinkData } from "../../interfaces";
+import withRouterContext from "./routing";
 
 describe("Breadcrumbs", () => {
   let history: LinkData[];
@@ -33,28 +33,26 @@ describe("Breadcrumbs", () => {
     ) as Breadcrumbs;
 
     let list = TestUtils.findRenderedDOMComponentWithTag(breadcrumbs, "ol");
-    let links = TestUtils.scryRenderedComponentsWithType(breadcrumbs, CollectionLink);
+    let links = TestUtils.scryRenderedComponentsWithType<BrowserLink, any>(breadcrumbs, BrowserLink);
     expect(list.getAttribute("class")).toBe("breadcrumb");
-    expect(links[0].props.text).toContain("2nd title");
-    expect(links[0].props.url).toEqual("2nd url");
-    expect(links[1].props.text).toContain("last title");
-    expect(links[1].props.url).toEqual("last url");
+    expect(links[0].props.children).toContain("2nd title");
+    expect(links[0].props.collectionUrl).toEqual("2nd url");
+    expect(links[1].props.children).toContain("last title");
+    expect(links[1].props.collectionUrl).toEqual("last url");
   });
 
   it("links to current selection if specified", () => {
-    let pathFor = (collection, book) => {
-      return `path for ${collection} and ${book}`;
-    };
     let breadcrumbs = TestUtils.renderIntoDocument(
       <Breadcrumbs
         collection={collectionData}
         history={history}
-        pathFor={pathFor}
         showCurrentLink={true} />
     ) as Breadcrumbs;
 
-    let currentLink = TestUtils.findRenderedDOMComponentWithClass(breadcrumbs, "currentCollectionLink");
-    expect(currentLink.textContent).toBe(collectionData.title);
-    expect(currentLink.getAttribute("href")).toBe(pathFor(collectionData.url, null));
+    let links = TestUtils.scryRenderedComponentsWithType<BrowserLink, any>(breadcrumbs, BrowserLink);
+    let lastLink = links[links.length - 1];
+    expect(links.length).toBe(history.length + 1);
+    expect(lastLink.props.collectionUrl).toBe(collectionData.url);
+    expect(lastLink.props.className).toBe("currentCollectionLink");
   });
 });

@@ -1,16 +1,20 @@
 jest.dontMock("../Lane");
 jest.dontMock("../Link");
-jest.dontMock("../CollectionLink");
+jest.dontMock("../BrowserLink");
 jest.dontMock("../Book");
+jest.dontMock("./routing");
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
 
-import Lane from "../Lane";
-import CollectionLink from "../CollectionLink";
+import Lane, { LaneProps } from "../Lane";
 import Book from "../Book";
 import { LaneData, BookData } from "../../interfaces";
+
+import withRouterContext from "./routing";
+
+const LaneWithContext = withRouterContext<LaneProps>(Lane);
 
 let books: BookData[] = [1, 2, 3].map((i) => {
   return {
@@ -31,7 +35,7 @@ let laneData: LaneData = {
 describe("Lane", () => {
   it("shows the lane title", () => {
     let lane = TestUtils.renderIntoDocument(
-      <Lane lane={laneData} />
+      <LaneWithContext lane={laneData} />
     ) as Lane;
 
     let titleLink = TestUtils.findRenderedDOMComponentWithClass(lane, "laneTitle");
@@ -40,7 +44,7 @@ describe("Lane", () => {
 
   it("shows the books", () => {
     let lane = TestUtils.renderIntoDocument(
-      <Lane lane={laneData} />
+      <LaneWithContext lane={laneData} />
     ) as Lane;
 
     let books = TestUtils.scryRenderedComponentsWithType(lane, Book);

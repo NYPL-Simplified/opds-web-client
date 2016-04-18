@@ -7,7 +7,7 @@ let groupedCollectionData: CollectionData = {
   lanes: [
     {
       title: "Best Sellers",
-      url: "http://circulation.alpha.librarysimplified.org/feed/eng/English%20-%20Best%20Sellers?order=author",
+      url: "http://circulation.librarysimplified.org/feed/eng/English%20-%20Best%20Sellers?order=author",
       books: [
         {
           id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",

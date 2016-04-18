@@ -1,16 +1,20 @@
 jest.dontMock("../UrlForm");
+jest.dontMock("./routing");
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
 
-import UrlForm from "../UrlForm";
+import UrlForm, { UrlFormProps} from "../UrlForm";
+import withRouterContext from "./routing";
+
+const UrlFormWithContext = withRouterContext<UrlFormProps>(UrlForm);
 
 describe("UrlForm", () => {
   it("shows the form with bootstrap classes", () => {
     let navigate = jest.genMockFunction();
     let form = TestUtils.renderIntoDocument(
-      <UrlForm navigate={navigate} />
+      <UrlFormWithContext />
     ) as UrlForm;
 
     let formNode = TestUtils.findRenderedDOMComponentWithTag(form, "form");
@@ -25,9 +29,10 @@ describe("UrlForm", () => {
   });
 
   it("fetches the url", () => {
-    let navigate = jest.genMockFunction();
+    let push = jest.genMockFunction();
+    let pathFor = (c, b) => c + "::" + b;
     let urlForm = TestUtils.renderIntoDocument(
-      <UrlForm navigate={navigate} />
+      <UrlFormWithContext push={push} pathFor={pathFor} />
     ) as UrlForm;
 
     let form = TestUtils.findRenderedDOMComponentWithTag(urlForm, "form");
@@ -36,7 +41,7 @@ describe("UrlForm", () => {
     input["value"] = "some url";
     TestUtils.Simulate.submit(form);
 
-    expect(navigate.mock.calls.length).toEqual(1);
-    expect(navigate.mock.calls[0][0]).toEqual("some url");
+    expect(push.mock.calls.length).toEqual(1);
+    expect(push.mock.calls[0][0]).toEqual(pathFor("some url", null));
   });
 });

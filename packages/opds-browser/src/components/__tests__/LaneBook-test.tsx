@@ -1,14 +1,19 @@
 jest.dontMock("../Book");  // because LaneBook inherits Book
 jest.dontMock("../LaneBook");
-jest.dontMock("../Link");
-jest.dontMock("../BookPreviewLink");
+jest.dontMock("../BrowserLink");
+jest.dontMock("./routing");
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
 
 import LaneBook from "../LaneBook";
+import { BookProps } from "../Book";
+import BrowserLink from "../BrowserLink";
 import { BookData } from "../../interfaces";
+import withRouterContext from "./routing";
+
+const LaneBookWithContext = withRouterContext<BookProps>(LaneBook);
 
 let book: BookData = {
   id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
@@ -22,7 +27,7 @@ let book: BookData = {
 describe("LaneBook", () => {
   it("shows the book cover with empty alt", () => {
     let renderedBook = TestUtils.renderIntoDocument(
-      <LaneBook book={book} />
+      <LaneBookWithContext book={book} />
     ) as LaneBook;
 
     let coverImage = TestUtils.findRenderedDOMComponentWithTag(renderedBook, "img");
@@ -33,7 +38,7 @@ describe("LaneBook", () => {
 
   it("shows book title", () => {
     let renderedBook = TestUtils.renderIntoDocument(
-      <LaneBook book={book} />
+      <LaneBookWithContext book={book} />
     ) as LaneBook;
 
     let title = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookTitle");

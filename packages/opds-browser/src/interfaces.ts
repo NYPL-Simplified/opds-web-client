@@ -84,12 +84,18 @@ export interface FetchErrorData {
   url: string;
 }
 
+export interface Location {
+  pathname: string;
+  state?: any;
+}
+
+export interface Router {
+  push: (location: string|Location) => any;
+  createHref: (location: string|Location) => string;
+  isActive: (location: string|Location, onlyActiveOnIndex?: boolean) => boolean;
+}
+
 export interface NavigateContext {
-  router?: {
-    push: (location: string|{
-      pathname: string,
-      state?: any
-    })=> any;
-  };
+  router?: Router;
   pathFor: (collectionUrl: string, bookUrl: string) => string;
 }

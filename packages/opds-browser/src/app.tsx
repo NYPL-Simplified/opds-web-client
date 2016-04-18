@@ -25,6 +25,14 @@ class OPDSBrowserApp {
       contextTypes: {
         router: React.PropTypes.object.isRequired
       },
+      childContextTypes: {
+        pathFor: React.PropTypes.func.isRequired
+      },
+      getChildContext: function() {
+        return {
+          pathFor: config.pathFor
+        };
+      },
       render: function() {
         let { collectionUrl, bookUrl } = this.props.params;
         let isTopLevel = (this.props.location.state && this.props.location.state.isTopLevel) || false;

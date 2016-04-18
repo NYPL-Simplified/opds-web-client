@@ -12,7 +12,7 @@ import UrlForm from "./UrlForm";
 import SkipNavigationLink from "./SkipNavigationLink";
 import CollectionLink from "./CollectionLink";
 import HeaderCollectionLink from "./HeaderCollectionLink";
-import { State, Navigate, PathFor } from "../interfaces";
+import { State, Navigate, PathFor, NavigateContext } from "../interfaces";
 
 export interface HeaderProps extends React.Props<any> {
   CollectionLink: typeof HeaderCollectionLink;
@@ -50,6 +50,12 @@ export interface RootProps extends State {
 
 export class Root extends React.Component<RootProps, any> {
   header: any;
+  context: NavigateContext;
+
+  static contextTypes: React.ValidationMap<RootProps> = {
+    router: React.PropTypes.object,
+    pathFor: React.PropTypes.func
+  };
 
   render(): JSX.Element {
     let BookDetailsContainer = this.props.BookDetailsContainer;
@@ -155,8 +161,6 @@ export class Root extends React.Component<RootProps, any> {
             <Breadcrumbs
               history={this.props.history}
               collection={this.props.collectionData}
-              pathFor={this.props.pathFor}
-              navigate={this.props.navigate}
               showCurrentLink={!!this.props.bookData} />
           </div>
         }
@@ -258,7 +262,7 @@ export class Root extends React.Component<RootProps, any> {
         let nextBookUrl = books[nextBookIndex].url || books[nextBookIndex].id;
 
         // call navigate to make sure history is updated
-        this.props.navigate(this.props.collectionData.url, nextBookUrl);
+        this.context.router.push(this.context.pathFor(this.props.collectionData.url, nextBookUrl));
       }
     }
   };
