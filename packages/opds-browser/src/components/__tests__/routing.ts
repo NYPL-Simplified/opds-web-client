@@ -1,10 +1,17 @@
 import * as React from "react";
 
-const mockRouter = (push) => {
+export const mockRouter = (push) => {
   return {
     push,
     createHref: (location) => "test href",
     isActive: (location, onlyActiveOnIndex) => true
+  };
+};
+
+export const mockRouterContext = (push?, pathFor?) => {
+  return {
+    router: mockRouter(push || jest.genMockFunction()),
+    pathFor: pathFor || ((collectionUrl, bookUrl) => collectionUrl + "::" + bookUrl)
   };
 };
 
@@ -24,10 +31,7 @@ function withRouterContext<P>(ComposedComponent: React.ComponentClass<P>): React
     },
 
     getChildContext: function() {
-      return {
-        router: mockRouter(this.props.push),
-        pathFor: this.props.pathFor || ((collectionUrl, bookUrl) => "test path")
-      };
+      return mockRouterContext(this.props.push, this.props.pathFor);
     },
 
     render: function(): JSX.Element {

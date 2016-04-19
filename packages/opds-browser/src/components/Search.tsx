@@ -1,13 +1,19 @@
 import * as React from "react";
-import { SearchData, Navigate } from "../interfaces";
+import { SearchData, NavigateContext } from "../interfaces";
 
 export interface SearchProps extends SearchData, React.HTMLProps<Search> {
   fetchSearchDescription?: (url: string) => void;
-  navigate: Navigate;
   isTopLevel?: boolean;
 }
 
 export default class Search extends React.Component<SearchProps, any> {
+  context: NavigateContext;
+
+  static contextTypes: React.ValidationMap<NavigateContext> = {
+    router: React.PropTypes.object.isRequired,
+    pathFor: React.PropTypes.func.isRequired
+  };
+
   render(): JSX.Element {
     return (
       <div className="search">
@@ -42,7 +48,12 @@ export default class Search extends React.Component<SearchProps, any> {
   onSubmit(event) {
     let searchTerms = encodeURIComponent(this.refs["input"]["value"]);
     let url = this.props.searchData.template(searchTerms);
-    this.props.navigate(url, null, this.props.isTopLevel);
+    this.context.router.push({
+      pathname: this.context.pathFor(url, null),
+      state: {
+        isTopLevel: this.props.isTopLevel
+      }
+    });
     event.preventDefault();
   }
 }

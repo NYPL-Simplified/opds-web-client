@@ -1,15 +1,12 @@
-jest.dontMock("../Breadcrumbs");
-jest.dontMock("./routing");
+jest.autoMockOff();
 
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import * as TestUtils from "react-addons-test-utils";
+import { shallow } from "enzyme";
 
 import Breadcrumbs from "../Breadcrumbs";
-import BrowserLink from "../BrowserLink";
+import BrowserLink, { BrowserLinkProps } from "../BrowserLink";
 import { ungroupedCollectionData } from "./collectionData";
 import { LinkData } from "../../interfaces";
-import withRouterContext from "./routing";
 
 describe("Breadcrumbs", () => {
   let history: LinkData[];
@@ -28,31 +25,33 @@ describe("Breadcrumbs", () => {
   });
 
   it("shows breadcrumbs with bootstrap classes", () => {
-    let breadcrumbs = TestUtils.renderIntoDocument(
+    let wrapper = shallow(
       <Breadcrumbs collection={collectionData} history={history} />
-    ) as Breadcrumbs;
+    );
 
-    let list = TestUtils.findRenderedDOMComponentWithTag(breadcrumbs, "ol");
-    let links = TestUtils.scryRenderedComponentsWithType<BrowserLink, any>(breadcrumbs, BrowserLink);
-    expect(list.getAttribute("class")).toBe("breadcrumb");
-    expect(links[0].props.children).toContain("2nd title");
-    expect(links[0].props.collectionUrl).toEqual("2nd url");
-    expect(links[1].props.children).toContain("last title");
-    expect(links[1].props.collectionUrl).toEqual("last url");
+    let list = wrapper.find("ol");
+    let links = wrapper.find<BrowserLinkProps>(BrowserLink);
+    expect(list.hasClass("breadcrumb")).toBe(true);
+    expect(links.length).toBe(2);
+    expect(links.at(0).props().children).toContain("2nd title");
+    expect(links.at(0).props().collectionUrl).toEqual("2nd url");
+    expect(links.at(1).props().children).toContain("last title");
+    expect(links.at(1).props().collectionUrl).toEqual("last url");
   });
 
   it("links to current selection if specified", () => {
-    let breadcrumbs = TestUtils.renderIntoDocument(
+    let wrapper = shallow(
       <Breadcrumbs
         collection={collectionData}
         history={history}
         showCurrentLink={true} />
-    ) as Breadcrumbs;
+    );
 
-    let links = TestUtils.scryRenderedComponentsWithType<BrowserLink, any>(breadcrumbs, BrowserLink);
-    let lastLink = links[links.length - 1];
+    let links = wrapper.find<BrowserLinkProps>(BrowserLink);
+    let lastLink = links.last();
     expect(links.length).toBe(history.length + 1);
-    expect(lastLink.props.collectionUrl).toBe(collectionData.url);
-    expect(lastLink.props.className).toBe("currentCollectionLink");
+    expect(lastLink.props().children).toContain(collectionData.title);
+    expect(lastLink.props().collectionUrl).toBe(collectionData.url);
+    expect(lastLink.hasClass("currentCollectionLink")).toBe(true);
   });
 });

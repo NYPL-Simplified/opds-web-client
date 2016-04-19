@@ -11,7 +11,7 @@ export interface BrowserLinkProps extends React.HTMLProps<any> {
 export default class BrowserLink extends React.Component<BrowserLinkProps, any> {
   context: NavigateContext;
 
-  static contextTypes = {
+  static contextTypes: React.ValidationMap<NavigateContext> = {
     pathFor: React.PropTypes.func.isRequired
   };
 

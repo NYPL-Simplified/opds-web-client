@@ -11,7 +11,7 @@ import UrlForm from "../UrlForm";
 import BookDetails from "../BookDetails";
 import SkipNavigationLink from "../SkipNavigationLink";
 import CollectionLink from "../CollectionLink";
-import HeaderCollectionLink from "../HeaderCollectionLink";
+import HeaderBrowserLink from "../HeaderBrowserLink";
 import BrowserLink, { BrowserLinkProps } from "../BrowserLink";
 import Search from "../Search";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
@@ -354,7 +354,7 @@ describe("Root", () => {
 
     class Header extends React.Component<HeaderProps, any> {
       render(): JSX.Element {
-        let TestCollectionLink = this.props.CollectionLink;
+        let TestCollectionLink = this.props.BrowserLink;
         return (
           <div className="header">
             { this.props.children }
@@ -383,11 +383,11 @@ describe("Root", () => {
     it("shows the given header", () => {
       let header = TestUtils.findRenderedComponentWithType(root, Header);
       let search = TestUtils.findRenderedComponentWithType(header, Search);
-      let link = TestUtils.findRenderedComponentWithType(header, HeaderCollectionLink);
+      let link = TestUtils.findRenderedComponentWithType(header, HeaderBrowserLink);
       expect(header).toBeTruthy();
       expect(search.props.url).toBe("test search url");
-      expect(link.props.text).toBe("test");
-      expect(link.props.url).toBe("test url");
+      expect(link.props.children).toContain("test");
+      expect(link.props.collectionUrl).toBe("test url");
     });
 
     it("treats links in the header as top-level", () => {

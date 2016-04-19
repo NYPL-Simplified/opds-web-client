@@ -10,12 +10,11 @@ import Breadcrumbs from "./Breadcrumbs";
 import Collection from "./Collection";
 import UrlForm from "./UrlForm";
 import SkipNavigationLink from "./SkipNavigationLink";
-import CollectionLink from "./CollectionLink";
-import HeaderCollectionLink from "./HeaderCollectionLink";
+import HeaderBrowserLink from "./HeaderBrowserLink";
 import { State, Navigate, PathFor, NavigateContext } from "../interfaces";
 
 export interface HeaderProps extends React.Props<any> {
-  CollectionLink: typeof HeaderCollectionLink;
+  BrowserLink: typeof HeaderBrowserLink;
 }
 
 export interface BookDetailsContainerProps extends React.Props<any> {
@@ -42,8 +41,6 @@ export interface RootProps extends State {
   pageTitleTemplate?: (collectionTitle: string, bookTitle: string) => string;
   headerTitle?: string;
   header?: new () => __React.Component<HeaderProps, any>;
-  navigate?: Navigate;
-  pathFor?: PathFor;
   fetchPage?: (url: string) => Promise<any>;
   isTopLevel?: boolean;
 }
@@ -126,13 +123,12 @@ export class Root extends React.Component<RootProps, any> {
 
         { Header ?
           <Header
-            CollectionLink={HeaderCollectionLink}>
+            BrowserLink={HeaderBrowserLink}>
             { this.props.collectionData && this.props.collectionData.search &&
               <Search
                 url={this.props.collectionData.search.url}
                 searchData={this.props.collectionData.search.searchData}
                 fetchSearchDescription={this.props.fetchSearchDescription}
-                navigate={this.props.navigate}
                 isTopLevel={true}
                 />
             }
@@ -148,7 +144,6 @@ export class Root extends React.Component<RootProps, any> {
                   url={this.props.collectionData.search.url}
                   searchData={this.props.collectionData.search.searchData}
                   fetchSearchDescription={this.props.fetchSearchDescription}
-                  navigate={this.props.navigate}
                   isTopLevel={true}
                   />
               }
@@ -187,13 +182,11 @@ export class Root extends React.Component<RootProps, any> {
           { showCollection &&
             <Collection
               collection={this.props.collectionData}
-              navigate={this.props.navigate}
               fetchPage={this.props.fetchPage}
               isFetching={this.props.isFetching}
               isFetchingPage={this.props.isFetchingPage}
               error={this.props.error}
               fetchSearchDescription={this.props.fetchSearchDescription}
-              pathFor={this.props.pathFor}
               history={this.props.history} />
           }
         </div>

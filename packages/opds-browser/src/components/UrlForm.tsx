@@ -8,7 +8,7 @@ export interface UrlFormProps {
 export default class UrlForm extends React.Component<UrlFormProps, any> {
   context: NavigateContext;
 
-  static contextTypes: React.ValidationMap<UrlFormProps> = {
+  static contextTypes: React.ValidationMap<NavigateContext> = {
     router: React.PropTypes.object.isRequired,
     pathFor: React.PropTypes.func.isRequired
   };
