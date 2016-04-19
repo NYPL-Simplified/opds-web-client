@@ -1,5 +1,4 @@
 jest.dontMock("../Lane");
-jest.dontMock("../Link");
 jest.dontMock("../BrowserLink");
 jest.dontMock("../Book");
 jest.dontMock("./routing");
