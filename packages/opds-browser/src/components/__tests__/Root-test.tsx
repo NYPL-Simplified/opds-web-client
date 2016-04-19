@@ -3,6 +3,7 @@ jest.autoMockOff();
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
+import { shallow, mount } from "enzyme";
 
 import ConnectedRoot, { Root, BookDetailsContainerProps, HeaderProps, RootProps } from "../Root";
 import Breadcrumbs from "../Breadcrumbs";
@@ -17,17 +18,19 @@ import Search from "../Search";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 import buildStore from "../../store";
 import { CollectionData, BookData } from "../../interfaces";
-import withRouterContext from "./routing";
+import withRouterContext, { mockRouterContext } from "./routing";
 
 const RootWithContext = withRouterContext<RootProps>(Root);
 
 describe("Root", () => {
   it("shows skip navigation link", () => {
-    let root = TestUtils.renderIntoDocument(
-      <RootWithContext />
-    ) as Root;
+    let context = mockRouterContext();
+    let wrapper = shallow(
+      <Root />,
+      { context }
+    );
 
-    let link = TestUtils.findRenderedComponentWithType(root, SkipNavigationLink);
+    let link = wrapper.find(SkipNavigationLink);
     expect(link).toBeTruthy();
   });
 
@@ -42,23 +45,20 @@ describe("Root", () => {
         }
       }
     });
-    let navigate = jest.genMockFunction();
+    let push = jest.genMockFunction();
+    let context = mockRouterContext(push);
 
-    let root = TestUtils.renderIntoDocument(
-      <RootWithContext
+    let wrapper = shallow(
+      <Root
         collectionData={collectionData}
         fetchSearchDescription={(url: string) => {}}
-        navigate={navigate}
-        pathFor={jest.genMockFunction()}
-        />
-    ) as Root;
-    let search = TestUtils.findRenderedComponentWithType(root, Search);
-    let form = TestUtils.findRenderedDOMComponentWithTag(search, "form");
-    TestUtils.Simulate.submit(form);
+        />,
+      { context }
+    );
+
+    let search = wrapper.find(Search);
     expect(search).toBeTruthy();
-    expect(search.props.isTopLevel).toBe(true);
-    expect(form).toBeTruthy();
-    expect(navigate.mock.calls.length).toBe(1);
+    expect(search.props().isTopLevel).toBe(true);
   });
 
   it("shows a collection if props include collectionData", () => {
@@ -339,7 +339,7 @@ describe("Root", () => {
   });
 
   describe("when given a header component", () => {
-    let root;
+    let wrapper;
     let collectionData = Object.assign({}, ungroupedCollectionData, {
       search: {
         url: "test search url",
@@ -350,61 +350,41 @@ describe("Root", () => {
         }
       }
     });
-    let navigate = jest.genMockFunction();
+    let push = jest.genMockFunction();
+    let context;
 
     class Header extends React.Component<HeaderProps, any> {
       render(): JSX.Element {
-        let TestCollectionLink = this.props.BrowserLink;
+        let TestBrowserLink = this.props.BrowserLink;
         return (
           <div className="header">
             { this.props.children }
-            <TestCollectionLink
-              text="test"
-              url="test url"
-              navigate={navigate}
-              pathFor={(collection, book) => "#"}
-              />
+            <TestBrowserLink collectionUrl="test url">
+              test
+            </TestBrowserLink>
           </div>
         );
       }
     }
 
     beforeEach(() => {
-      root = TestUtils.renderIntoDocument(
-        <RootWithContext
+      context = mockRouterContext(push);
+      wrapper = shallow(
+        <Root
           header={Header}
           collectionData={collectionData}
           fetchSearchDescription={(url: string) => {}}
-          navigate={navigate}
-          />
-      ) as Root;
+          />,
+        { context }
+      );
     });
 
-    it("shows the given header", () => {
-      let header = TestUtils.findRenderedComponentWithType(root, Header);
-      let search = TestUtils.findRenderedComponentWithType(header, Search);
-      let link = TestUtils.findRenderedComponentWithType(header, HeaderBrowserLink);
+    it("renders the header with HeaderBrowserLink and top-level Search", () => {
+      let header = wrapper.find(Header);
+      let search = header.childAt(0);
       expect(header).toBeTruthy();
-      expect(search.props.url).toBe("test search url");
-      expect(link.props.children).toContain("test");
-      expect(link.props.collectionUrl).toBe("test url");
-    });
-
-    it("treats links in the header as top-level", () => {
-      let header = TestUtils.findRenderedComponentWithType(root, Header);
-      let search = TestUtils.findRenderedComponentWithType(header, Search);
-      let link = TestUtils.findRenderedDOMComponentWithTag(header, "a");
-      TestUtils.Simulate.click(link);
-      expect(navigate.mock.calls.length).toBe(1);
-      expect(navigate.mock.calls[0][2]).toBe(true);
-    });
-
-    it("treats search in the header as top-level", () => {
-      let header = TestUtils.findRenderedComponentWithType(root, Header);
-      let button = TestUtils.findRenderedDOMComponentWithTag(header, "button");
-      TestUtils.Simulate.click(button);
-      expect(navigate.mock.calls.length).toBe(1);
-      expect(navigate.mock.calls[0][2]).toBe(true);
+      expect(header.props().BrowserLink).toBe(HeaderBrowserLink);
+      expect(search.props().isTopLevel).toBe(true);
     });
   });
 
