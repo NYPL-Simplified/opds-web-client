@@ -40,9 +40,8 @@ export default class Lane extends React.Component<LaneProps, any> {
             <li key={book.id} style={{ display: "inline-block" }}>
               <LaneBook
                 book={book}
-                navigate={this.props.navigate}
                 collectionUrl={this.props.collectionUrl}
-                pathFor={this.props.pathFor} />
+                />
             </li>
           ) }
           </ul>

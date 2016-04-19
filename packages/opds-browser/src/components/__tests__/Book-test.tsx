@@ -1,13 +1,13 @@
-jest.dontMock("../Book");
-jest.dontMock("../Link");
-jest.dontMock("../BookPreviewLink");
+jest.autoMockOff();
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-addons-test-utils";
+import { shallow } from "enzyme";
 
 import Book from "../Book";
 import { BookData } from "../../interfaces";
+import BrowserLink from "../BrowserLink";
 
 let book: BookData = {
   id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
@@ -20,26 +20,30 @@ let book: BookData = {
 
 describe("Book", () => {
   it("shows the book cover with empty alt", () => {
-    let renderedBook = TestUtils.renderIntoDocument(
+    let wrapper = shallow(
       <Book book={book} />
-    ) as Book;
+    );
 
-    let coverImage = TestUtils.findRenderedDOMComponentWithTag(renderedBook, "img");
-    expect(coverImage.getAttribute("src")).toEqual(book.imageUrl);
-    // alt is blank so screen readers don't read image filename
-    expect(coverImage.getAttribute("alt")).toEqual("");
+    let link = wrapper.find(BrowserLink);
+    let coverImage = link.children().at(0);
+    expect(coverImage.type()).toBe("img");
+    expect(coverImage.props().src).toBe(book.imageUrl);
+    expect(coverImage.props().alt).toBe("");
   });
 
   it("shows book info", () => {
-    let renderedBook = TestUtils.renderIntoDocument(
+    let wrapper = shallow(
       <Book book={book} />
-    ) as Book;
+    );
 
-    let title = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookTitle");
-    expect(title.textContent).toEqual(book.title);
+    let link = wrapper.find(BrowserLink);
+    let bookInfo = link.children().at(1);
+    let title = bookInfo.find(".bookTitle");
+    let authors = bookInfo.find(".bookAuthors");
 
-    let authors = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookAuthors");
-    expect(authors.textContent).toEqual(book.authors.join(", "));
+    expect(bookInfo.hasClass("bookInfo")).toBe(true);
+    expect(title.text()).toEqual(book.title);
+    expect(authors.text()).toEqual(book.authors.join(", "));
   });
 
   it("shows contributors when there's no author", () => {
@@ -47,11 +51,13 @@ describe("Book", () => {
       authors: [],
       contributors: ["contributor"]
     });
-    let renderedBook = TestUtils.renderIntoDocument(
+    let wrapper = shallow(
       <Book book={bookCopy} />
-    ) as Book;
+    );
 
-    let authors = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookAuthors");
-    expect(authors.textContent).toEqual(bookCopy.contributors[0]);
+    let link = wrapper.find(BrowserLink);
+    let bookInfo = link.children().at(1);
+    let authors = bookInfo.find(".bookAuthors");
+    expect(authors.text()).toEqual(bookCopy.contributors[0]);
   });
 });
