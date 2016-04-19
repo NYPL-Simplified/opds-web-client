@@ -2,8 +2,6 @@ jest.dontMock("../Collection");
 jest.dontMock("../Lane");
 jest.dontMock("../Book");
 jest.dontMock("../LaneBook");
-jest.dontMock("../Link");
-jest.dontMock("../CollectionLink");
 jest.dontMock("../FacetGroup");
 jest.dontMock("../SkipNavigationLink");
 
@@ -16,7 +14,6 @@ import Lane from "../Lane";
 import Book from "../Book";
 import LaneBook from "../LaneBook";
 import FacetGroup from "../FacetGroup";
-import CollectionLink from "../CollectionLink";
 import SkipNavigationLink from "../SkipNavigationLink";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 import { CollectionData } from "../../interfaces";

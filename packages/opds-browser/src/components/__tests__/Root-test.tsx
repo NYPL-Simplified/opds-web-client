@@ -11,7 +11,6 @@ import Collection from "../Collection";
 import UrlForm from "../UrlForm";
 import BookDetails from "../BookDetails";
 import SkipNavigationLink from "../SkipNavigationLink";
-import CollectionLink from "../CollectionLink";
 import HeaderBrowserLink from "../HeaderBrowserLink";
 import BrowserLink, { BrowserLinkProps } from "../BrowserLink";
 import Search from "../Search";

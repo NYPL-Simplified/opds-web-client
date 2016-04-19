@@ -66,8 +66,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
                 <FacetGroup
                   key={facetGroup.label}
                   facetGroup={facetGroup}
-                  pathFor={this.props.pathFor}
-                  navigate={this.props.navigate} />
+                  />
             ) }
           </div>
         )}
