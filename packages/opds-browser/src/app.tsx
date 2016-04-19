@@ -3,22 +3,20 @@ import * as ReactDOM from "react-dom";
 import { Router, Route, browserHistory } from "react-router";
 import OPDSBrowser from "./components/OPDSBrowser";
 import { RootProps } from "./components/Root";
-
-// interface AppProps {
-//   headerTitle?: string;
-//   proxyUrl?: string;
-//   pageTitleTemplate?: (collectionTitle: string, bookTitle: string) => string;
-//   baseCollectionUrl?: string;
-//   baseBookUrl?: string;
-//   navigate?: any;
-// }
+import { PathFor } from "./interfaces";
 
 class OPDSBrowserApp {
   elementId: string;
   pathPattern: string;
   BrowserRouteHandler: any;
 
-  constructor(config: any, elementId: string) {
+  constructor(config: {
+    headerTitle?: string;
+    proxyUrl?: string;
+    pageTitleTemplate?: (collectionTitle: string, bookTitle: string) => string;
+    pathPattern?: string;
+    pathFor: PathFor
+  }, elementId: string) {
     this.elementId = elementId;
     this.pathPattern = config.pathPattern || "/(collection/:collectionUrl/)(book/:bookUrl/)";
     this.BrowserRouteHandler = React.createClass({
