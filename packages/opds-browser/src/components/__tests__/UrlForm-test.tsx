@@ -1,47 +1,43 @@
-jest.dontMock("../UrlForm");
-jest.dontMock("./routing");
+jest.autoMockOff();
 
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import * as TestUtils from "react-addons-test-utils";
+import { shallow, mount } from "enzyme";
 
-import UrlForm, { UrlFormProps} from "../UrlForm";
-import withRouterContext from "./routing";
-
-const UrlFormWithContext = withRouterContext<UrlFormProps>(UrlForm);
+import UrlForm from "../UrlForm";
+import { mockRouterContext } from "./routing";
 
 describe("UrlForm", () => {
   it("shows the form with bootstrap classes", () => {
-    let navigate = jest.genMockFunction();
-    let form = TestUtils.renderIntoDocument(
-      <UrlFormWithContext />
-    ) as UrlForm;
+    let context = mockRouterContext();
+    let wrapper = shallow(
+      <UrlForm />,
+      { context }
+    );
 
-    let formNode = TestUtils.findRenderedDOMComponentWithTag(form, "form");
-    let input = TestUtils.findRenderedDOMComponentWithTag(form, "input");
-    let button = TestUtils.findRenderedDOMComponentWithTag(form, "button");
+    let form = wrapper.find("form");
+    let input = wrapper.find("input");
+    let button = wrapper.find("button");
 
-    expect(formNode.getAttribute("class")).toContain("form-inline");
-    expect(input).toBeTruthy();
-    expect(input.getAttribute("class")).toContain("form-control");
-    expect(button).toBeTruthy();
-    expect(button.getAttribute("class").split(" ")).toContain("btn");
+    expect(form.hasClass("form-inline")).toBe(true);
+    expect(input.hasClass("form-control")).toBe(true);
+    expect(button.hasClass("btn")).toBe(true);
   });
 
   it("fetches the url", () => {
     let push = jest.genMockFunction();
-    let pathFor = (c, b) => c + "::" + b;
-    let urlForm = TestUtils.renderIntoDocument(
-      <UrlFormWithContext push={push} pathFor={pathFor} />
-    ) as UrlForm;
+    let context = mockRouterContext(push);
+    let wrapper = mount(
+      <UrlForm />,
+      { context }
+    );
 
-    let form = TestUtils.findRenderedDOMComponentWithTag(urlForm, "form");
-    let input = TestUtils.findRenderedDOMComponentWithTag(urlForm, "input");
+    let form = wrapper.find("form");
+    let input = wrapper.find("input").get(0) as any;
 
-    input["value"] = "some url";
-    TestUtils.Simulate.submit(form);
+    input.value = "some url";
+    form.simulate("submit");
 
     expect(push.mock.calls.length).toEqual(1);
-    expect(push.mock.calls[0][0]).toEqual(pathFor("some url", null));
+    expect(push.mock.calls[0][0]).toEqual(context.pathFor("some url", null));
   });
 });

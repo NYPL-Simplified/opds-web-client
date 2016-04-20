@@ -1,4 +1,4 @@
-jest.dontMock("../BookDetails");
+jest.autoMockOff();
 
 import * as React from "react";
 import { shallow } from "enzyme";
