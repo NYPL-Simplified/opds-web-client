@@ -1,15 +1,11 @@
-jest.dontMock("../Lane");
-jest.dontMock("../Link");
-jest.dontMock("../CollectionLink");
-jest.dontMock("../Book");
+jest.autoMockOff();
 
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import * as TestUtils from "react-addons-test-utils";
+import { shallow } from "enzyme";
 
 import Lane from "../Lane";
-import CollectionLink from "../CollectionLink";
-import Book from "../Book";
+import LaneBook from "../LaneBook";
+import BrowserLink from "../BrowserLink";
 import { LaneData, BookData } from "../../interfaces";
 
 let books: BookData[] = [1, 2, 3].map((i) => {
@@ -29,21 +25,26 @@ let laneData: LaneData = {
 };
 
 describe("Lane", () => {
-  it("shows the lane title", () => {
-    let lane = TestUtils.renderIntoDocument(
+  it("shows the lane title in a BrowserLink", () => {
+    let wrapper = shallow(
       <Lane lane={laneData} />
-    ) as Lane;
+    );
 
-    let titleLink = TestUtils.findRenderedDOMComponentWithClass(lane, "laneTitle");
-    expect(titleLink.textContent).toBe(laneData.title);
+    let titleLink = wrapper.find(BrowserLink);
+    expect(titleLink.first().children().get(0)).toBe(laneData.title);
   });
 
-  it("shows the books", () => {
-    let lane = TestUtils.renderIntoDocument(
-      <Lane lane={laneData} />
-    ) as Lane;
+  it("shows LaneBooks", () => {
+    let wrapper = shallow(
+      <Lane lane={laneData} collectionUrl="test collection" />
+    );
 
-    let books = TestUtils.scryRenderedComponentsWithType(lane, Book);
-    expect(books.length).toBe(books.length);
+    let laneBooks = wrapper.find(LaneBook);
+    let bookDatas = laneBooks.map(book => book.props().book);
+    let uniqueCollectionUrls = Array.from(new Set(laneBooks.map(book => book.props().collectionUrl)));
+
+    expect(laneBooks.length).toBe(books.length);
+    expect(bookDatas).toEqual(books);
+    expect(uniqueCollectionUrls).toEqual(["test collection"]);
   });
 });

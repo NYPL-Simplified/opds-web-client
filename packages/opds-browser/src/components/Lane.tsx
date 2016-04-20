@@ -1,12 +1,10 @@
 import * as React from "react";
 import LaneBook from "./LaneBook";
-import CollectionLink from "./CollectionLink";
-import { LaneData, Navigate, PathFor } from "../interfaces";
+import BrowserLink from "./BrowserLink";
+import { LaneData } from "../interfaces";
 
 export interface LaneProps {
   lane: LaneData;
-  navigate?: Navigate;
-  pathFor?: PathFor;
   collectionUrl?: string;
 }
 
@@ -27,12 +25,11 @@ export default class Lane extends React.Component<LaneProps, any> {
     return (
       <div className="lane">
         <h2 style={{ clear: "both", cursor: "pointer" }}>
-          <CollectionLink
+          <BrowserLink
             className="laneTitle"
-            text={this.props.lane.title}
-            url={this.props.lane.url}
-            navigate={this.props.navigate}
-            pathFor={this.props.pathFor} />
+            collectionUrl={this.props.lane.url}>
+            {this.props.lane.title}
+          </BrowserLink>
         </h2>
 
         { this.props.lane.books &&
@@ -41,9 +38,8 @@ export default class Lane extends React.Component<LaneProps, any> {
             <li key={book.id} style={{ display: "inline-block" }}>
               <LaneBook
                 book={book}
-                navigate={this.props.navigate}
                 collectionUrl={this.props.collectionUrl}
-                pathFor={this.props.pathFor} />
+                />
             </li>
           ) }
           </ul>

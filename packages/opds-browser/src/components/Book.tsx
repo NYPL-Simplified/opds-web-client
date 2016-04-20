@@ -1,11 +1,9 @@
 import * as React from "react";
-import BookPreviewLink from "./BookPreviewLink";
-import { BookData, Navigate, PathFor } from "../interfaces";
+import BrowserLink from "./BrowserLink";
+import { BookData } from "../interfaces";
 
 export interface BookProps {
   book: BookData;
-  navigate?: Navigate;
-  pathFor?: PathFor;
   collectionUrl?: string;
 }
 
@@ -43,12 +41,9 @@ export default class Book extends React.Component<BookProps, any> {
 
     return (
       <div className="book" style={ bookStyle }>
-        <BookPreviewLink
-          url={this.props.book.url}
-          book={this.props.book}
-          navigate={this.props.navigate}
-          pathFor={this.props.pathFor}
+        <BrowserLink
           collectionUrl={this.props.collectionUrl}
+          bookUrl={this.props.book.url || this.props.book.id}
           style={{ color: "black", textDecoration: "none" }}>
           <img src={this.props.book.imageUrl} style={bookCoverStyle} alt=""/>
           <div className="bookInfo" style={ bookInfoStyle }>
@@ -63,7 +58,7 @@ export default class Book extends React.Component<BookProps, any> {
               }
             </div>
           </div>
-        </BookPreviewLink>
+        </BrowserLink>
       </div>
     );
   }

@@ -19,78 +19,22 @@
     <script src="/opds-browser.js"></script>
     <% } %>
     <script>
-      var getParam = function(name) {
-        var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
-        return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
-      };
-
-      var serializeParams = function(params) {
-        if (Object.keys(params).length === 0) {
-          return "";
-        }
-
-        return "?" + Object.keys(params).reduce(function(keys, key) {
-          if (params[key]) {
-            keys.push(key + "=" + encodeURIComponent(params[key]));
-          }
-          return keys;
-        }, []).join("&");
-      };
-
-      var historyArgs = function(collectionUrl, bookUrl) {
-        var params = {
-          collection: collectionUrl,
-          book: bookUrl
-        };
-
-        return [params, "", serializeParams(params)];
-      }
-
-      window.onpopstate = function(event) {
-        var collection = null,
-            book = null;
-
-        if (event.state) {
-          collection = event.state.collection || null;
-          book = event.state.book || null;
-        }
-
-        browser.render(collection, book);
-      };
-
-      var pushHistory = function(collectionUrl, bookUrl) {
-        window.history.pushState.apply(window.history, historyArgs(collectionUrl, bookUrl));
-      };
-
-      var navigate = function(collectionUrl, bookUrl, isTopLevel) {
-        pushHistory(collectionUrl, bookUrl);
-        browser.render(collectionUrl, bookUrl, isTopLevel);
-      };
-
       var title = document.title;
-      var browser;
-
-      var startCollection = getParam("collection");
-      var startBook = getParam("book");
-
-      browser = new OPDSBrowserApp({
+      var browser = new OPDSBrowserApp({
         headerTitle: "OPDS Browser",
-        collectionUrl: startCollection,
-        bookUrl: startBook,
         proxyUrl: "/proxy",
-        navigate: navigate,
-        pathFor: function(collectionUrl, bookUrl) {
-          return serializeParams({collection: collectionUrl, book: bookUrl});
-        },
         pageTitleTemplate: function(collectionTitle, bookTitle) {
           var details = bookTitle || collectionTitle;
           return title + (details ? " - " + details : "");
-        }
+        },
+        pathFor: (collectionUrl, bookUrl) => {
+          var path = "/";
+          path += collectionUrl ? `collection/${encodeURIComponent(collectionUrl)}/` : "";
+          path += bookUrl ? `book/${encodeURIComponent(bookUrl)}/` : "";
+          return path;
+        },
+        urlPattern: "/(collection/:collectionUrl/)(book/:bookUrl/)"
       }, "opds-browser");
-
-      if (startCollection || startBook) {
-        window.history.replaceState.apply(window.history, historyArgs(startCollection, startBook));
-      }
     </script>
   </body>
 </html>

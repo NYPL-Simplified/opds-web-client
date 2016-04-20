@@ -1,14 +1,12 @@
 import * as React from "react";
-import CollectionLink from "./CollectionLink";
-import { CollectionData, LinkData, Navigate, PathFor } from "../interfaces";
+import BrowserLink from "./BrowserLink";
+import { CollectionData, LinkData } from "../interfaces";
 import { subtleListStyle } from "./styles";
 
 export interface BreadcrumbsProps {
   history: LinkData[];
   collection: CollectionData;
   showCurrentLink?: Boolean;
-  navigate?: Navigate;
-  pathFor?: PathFor;
 }
 
 export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> {
@@ -27,22 +25,22 @@ export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> 
         <ol className="breadcrumb" style={{ fontSize: "1.2em", height: "40px" }} aria-label="breadcrumbs" role="navigation">
           { this.props.history && this.props.history.map(breadcrumb =>
             <li key={breadcrumb.id}>
-              <CollectionLink
-                text={breadcrumb.text}
-                url={breadcrumb.url}
-                pathFor={this.props.pathFor}
-                navigate={this.props.navigate} />
+              <BrowserLink
+                collectionUrl={breadcrumb.url}
+                bookUrl={null}>
+                { breadcrumb.text }
+              </BrowserLink>
             </li>
           ) }
 
           <li className="currentCollection" style={currentCollectionStyle}>
             { this.props.showCurrentLink ?
-              <CollectionLink
+              <BrowserLink
                 className="currentCollectionLink"
-                text={this.props.collection.title}
-                url={this.props.collection.url}
-                pathFor={this.props.pathFor}
-                navigate={this.props.navigate}/> :
+                collectionUrl={this.props.collection.url}
+                bookUrl={null}>
+                {this.props.collection.title}
+              </BrowserLink> :
               this.props.collection.title
             }
           </li>

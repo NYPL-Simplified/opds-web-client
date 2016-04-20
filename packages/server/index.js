@@ -15,10 +15,6 @@ app.listen(port, function() {
   console.log("Server listening on port " + port);
 });
 
-app.get("/", function(req, res, next) {
-  res.render("index.html.ejs");
-});
-
 app.post("/proxy", function(req, res, next) {
   var options = {
     uri: req.body.url,
@@ -32,4 +28,8 @@ app.post("/proxy", function(req, res, next) {
       next("proxy request error: " + req.body.url + " " + err);
     })
     .pipe(res);
+});
+
+app.get("/*", function(req, res, next) {
+  res.render("index.html.ejs");
 });

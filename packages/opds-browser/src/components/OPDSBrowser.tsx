@@ -3,7 +3,17 @@ import * as ReactDOM from "react-dom";
 import Root, { RootProps } from "./Root";
 import buildStore from "../store";
 
-export default class OPDSBrowser extends React.Component<RootProps, any> {
+export interface OPDSBrowserProps {
+  collectionUrl?: string;
+  bookUrl?: string;
+  headerTitle?: string;
+  pageTitleTemplate: (collectionTitle: string, bookTitle: string) => string;
+  proxyUrl?: string;
+  pathFor?: (collectionUrl: string, bookUrl: string) => string;
+  store?: Redux.Store;
+}
+
+export default class OPDSBrowser extends React.Component<OPDSBrowserProps, any> {
   store: Redux.Store;
 
   constructor(props) {

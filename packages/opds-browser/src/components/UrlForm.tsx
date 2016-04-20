@@ -1,12 +1,18 @@
 import * as React from "react";
-import { Navigate } from "../interfaces";
+import { NavigateContext } from "../interfaces";
 
 export interface UrlFormProps {
-  url?: string;
-  navigate: Navigate;
+  collectionUrl?: string;
 }
 
 export default class UrlForm extends React.Component<UrlFormProps, any> {
+  context: NavigateContext;
+
+  static contextTypes: React.ValidationMap<NavigateContext> = {
+    router: React.PropTypes.object.isRequired,
+    pathFor: React.PropTypes.func.isRequired
+  };
+
   render(): JSX.Element {
     let placeholder = "e.g. http://feedbooks.github.io/opds-test-catalog/catalog/root.xml";
 
@@ -20,7 +26,7 @@ export default class UrlForm extends React.Component<UrlFormProps, any> {
             type="text"
             className="form-control input-lg"
             style={{ width: "650px" }}
-            defaultValue={this.props.url}
+            defaultValue={this.props.collectionUrl}
             placeholder={placeholder} />
           &nbsp;
           <button type="submit" className="btn btn-lg btn-default">Browse</button>
@@ -31,7 +37,7 @@ export default class UrlForm extends React.Component<UrlFormProps, any> {
 
   onSubmit(event) {
     let url = this.refs["input"]["value"];
-    this.props.navigate(url, null);
+    this.context.router.push(this.context.pathFor(url, null));
     event.preventDefault();
   }
 }

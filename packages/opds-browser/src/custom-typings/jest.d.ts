@@ -26,7 +26,9 @@ interface NodeRequire {
 declare namespace jest {
   function autoMockOff(): void;
   function dontMock(moduleName: string): void;
+  function fn(fn: any): any;
   function genMockFunction(): any;
+  function genMockFromModule(moduleName: any): any;
   function mock(moduleName: string): void;
   function setMock(moduleName: string, fn: any): void;
 }

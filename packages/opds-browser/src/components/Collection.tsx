@@ -1,11 +1,11 @@
 import * as React from "react";
 import Book from "./Book";
-import CollectionLink from "./CollectionLink";
+import BrowserLink from "./BrowserLink";
 import Lane from "./Lane";
 import FacetGroup from "./FacetGroup";
 import Search from "./Search";
 import SkipNavigationLink from "./SkipNavigationLink";
-import { CollectionData, LinkData, Navigate, PathFor, FetchErrorData } from "../interfaces";
+import { CollectionData, LinkData, FetchErrorData } from "../interfaces";
 import { visuallyHiddenStyle, subtleListStyle } from "./styles";
 
 export interface CollectionProps extends React.HTMLProps<Collection> {
@@ -13,10 +13,6 @@ export interface CollectionProps extends React.HTMLProps<Collection> {
   isFetching?: boolean;
   isFetchingPage?: boolean;
   error?: FetchErrorData;
-  fetchSearchDescription?: (url: string) => void;
-  history?: LinkData[];
-  navigate?: Navigate;
-  pathFor?: PathFor;
   fetchPage?: (url: string) => Promise<any>;
 }
 
@@ -66,8 +62,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
                 <FacetGroup
                   key={facetGroup.label}
                   facetGroup={facetGroup}
-                  pathFor={this.props.pathFor}
-                  navigate={this.props.navigate} />
+                  />
             ) }
           </div>
         )}
@@ -85,8 +80,6 @@ export default class Collection extends React.Component<CollectionProps, any> {
               <li key={lane.title}>
                 <Lane
                   lane={lane}
-                  navigate={this.props.navigate}
-                  pathFor={this.props.pathFor}
                   collectionUrl={this.props.collection.url} />
               </li>
             ) }
@@ -99,8 +92,6 @@ export default class Collection extends React.Component<CollectionProps, any> {
               <li key={book.id}>
                 <Book
                   book={book}
-                  navigate={this.props.navigate}
-                  pathFor={this.props.pathFor}
                   collectionUrl={this.props.collection.url} />
               </li>
             ) }
@@ -111,12 +102,11 @@ export default class Collection extends React.Component<CollectionProps, any> {
             <ul aria-label="navigation links" style={subtleListStyle} role="navigation">
             { this.props.collection.links.map(link =>
               <li key={link.id}>
-                <CollectionLink
-                  text={link.text}
-                  url={link.url}
-                  navigate={this.props.navigate}
-                  pathFor={this.props.pathFor}
-                  style={linkStyle} />
+                <BrowserLink
+                  collectionUrl={link.url}
+                  style={linkStyle}>
+                  {link.text}
+                </BrowserLink>
               </li>) }
             </ul>
           }

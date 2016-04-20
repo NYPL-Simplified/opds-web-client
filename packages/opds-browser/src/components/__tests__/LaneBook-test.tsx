@@ -1,13 +1,11 @@
-jest.dontMock("../Book");  // because LaneBook inherits Book
-jest.dontMock("../LaneBook");
-jest.dontMock("../Link");
-jest.dontMock("../BookPreviewLink");
+jest.autoMockOff();
 
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import * as TestUtils from "react-addons-test-utils";
+import { shallow } from "enzyme";
 
 import LaneBook from "../LaneBook";
+import { BookProps } from "../Book";
+import BrowserLink, { BrowserLinkProps } from "../BrowserLink";
 import { BookData } from "../../interfaces";
 
 let book: BookData = {
@@ -21,22 +19,24 @@ let book: BookData = {
 
 describe("LaneBook", () => {
   it("shows the book cover with empty alt", () => {
-    let renderedBook = TestUtils.renderIntoDocument(
+    let wrapper = shallow(
       <LaneBook book={book} />
-    ) as LaneBook;
+    );
 
-    let coverImage = TestUtils.findRenderedDOMComponentWithTag(renderedBook, "img");
-    expect(coverImage.getAttribute("src")).toBe(book.imageUrl);
-    // alt is blank so screen readers don't read image filename
-    expect(coverImage.getAttribute("alt")).toEqual("");
+    let coverImage = wrapper.find("img");
+    expect(coverImage.props().src).toBe(book.imageUrl);
+    expect(coverImage.props().alt).toEqual("");
   });
 
-  it("shows book title", () => {
-    let renderedBook = TestUtils.renderIntoDocument(
+  it("shows book title in a BrowserLink", () => {
+    let wrapper = shallow(
       <LaneBook book={book} />
-    ) as LaneBook;
+    );
 
-    let title = TestUtils.findRenderedDOMComponentWithClass(renderedBook, "bookTitle");
-    expect(title.textContent).toBe(book.title);
+    let link = wrapper.find<BrowserLinkProps>(BrowserLink);
+    let title = link.find(".bookTitle");
+
+    expect(link.props().bookUrl).toBe(book.url);
+    expect(title.text()).toBe(book.title);
   });
 });

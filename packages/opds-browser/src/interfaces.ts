@@ -70,10 +70,6 @@ export interface State {
   history?: LinkData[];
 }
 
-export interface Navigate {
-  (collectionUrl: string, book: BookData|string, isTopLevel?: boolean): void;
-}
-
 export interface PathFor {
   (collectionUrl: string, bookUrl: string): string;
 }
@@ -82,4 +78,20 @@ export interface FetchErrorData {
   status: number;
   response: string;
   url: string;
+}
+
+export interface Location {
+  pathname: string;
+  state?: any;
+}
+
+export interface Router {
+  push: (location: string|Location) => any;
+  createHref: (location: string|Location) => string;
+  isActive: (location: string|Location, onlyActiveOnIndex?: boolean) => boolean;
+}
+
+export interface NavigateContext {
+  router?: Router;
+  pathFor: PathFor;
 }

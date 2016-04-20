@@ -1,22 +1,23 @@
-jest.dontMock("../Search");
+jest.autoMockOff();
 
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import * as TestUtils from "react-addons-test-utils";
+import { shallow, mount } from "enzyme";
 
 import Search from "../Search";
+import { mockRouterContext } from "./routing";
 
 describe("Search", () => {
   it("fetches the search description", () => {
     let fetchSearchDescription = jest.genMockFunction();
     let url = "test url";
-    let search = TestUtils.renderIntoDocument(
+    let context = mockRouterContext();
+    let search = shallow(
       <Search
         url={url}
         fetchSearchDescription={fetchSearchDescription}
-        navigate={jest.genMockFunction()}
-        />
-    ) as Search;
+        />,
+      { context }
+    );
     expect(fetchSearchDescription.mock.calls.length).toEqual(1);
     expect(fetchSearchDescription.mock.calls[0][0]).toEqual("test url");
   });
@@ -29,24 +30,15 @@ describe("Search", () => {
       shortName: "shortName",
       template: (s) => s
     };
-    let element = document.createElement("div");
-    ReactDOM.render(
+    let context = mockRouterContext();
+    let wrapper = shallow(
       <Search
         url={url}
         fetchSearchDescription={fetchSearchDescription}
-        navigate={jest.genMockFunction()}
         />,
-      element
-    ) as Search;
-    ReactDOM.render(
-      <Search
-        url={url}
-        searchData={searchData}
-        fetchSearchDescription={fetchSearchDescription}
-        navigate={jest.genMockFunction()}
-        />,
-      element
+      { context }
     );
+    wrapper.setProps({ url, searchData });
     expect(fetchSearchDescription.mock.calls.length).toEqual(1);
   });
 
@@ -56,20 +48,22 @@ describe("Search", () => {
       shortName: "shortName",
       template: (s) => s
     };
-    let search = TestUtils.renderIntoDocument(
-      <Search searchData={searchData} navigate={jest.genMockFunction()} />
-    ) as Search;
+    let context = mockRouterContext();
+    let wrapper = shallow(
+      <Search searchData={searchData} navigate={jest.genMockFunction()} />,
+      { context }
+    );
 
-    let form = TestUtils.findRenderedDOMComponentWithTag(search, "form");
-    let input = TestUtils.findRenderedDOMComponentWithTag(search, "input");
-    let button = TestUtils.findRenderedDOMComponentWithTag(search, "button");
+    let form = wrapper.find("form");
+    let input = wrapper.find("input");
+    let button = wrapper.find("button");
 
-    expect(form.getAttribute("class")).toContain("form-inline");
+    expect(form.hasClass("form-inline")).toBe(true);
     expect(input).toBeTruthy();
-    expect(input.getAttribute("placeholder")).toEqual("shortName");
-    expect(input.getAttribute("class")).toContain("form-control");
+    expect(input.props().placeholder).toBe("shortName");
+    expect(input.hasClass("form-control")).toBe(true);
     expect(button).toBeTruthy();
-    expect(button.getAttribute("class").split(" ")).toContain("btn");
+    expect(button.hasClass("btn")).toBe(true);
   });
 
   it("fetches the search feed", () => {
@@ -79,19 +73,23 @@ describe("Search", () => {
       shortName: "shortName",
       template: (s) => s + " template"
     };
-    let search = TestUtils.renderIntoDocument(
-      <Search searchData={searchData} navigate={navigate} />
-    ) as Search;
+    let push = jest.genMockFunction();
+    let context = mockRouterContext(push);
+    let wrapper = mount(
+      <Search searchData={searchData} navigate={navigate} isTopLevel={true} />,
+      { context }
+    );
 
-    let form = TestUtils.findRenderedDOMComponentWithTag(search, "form");
+    let form = wrapper.find("form").first();
     expect(form).toBeTruthy();
 
-    let input = TestUtils.findRenderedDOMComponentWithTag(search, "input");
-    input["value"] = "test";
-    TestUtils.Simulate.submit(form);
+    let input = wrapper.find("input").get(0) as any;
+    input.value = "test";
+    form.simulate("submit");
 
-    expect(navigate.mock.calls.length).toEqual(1);
-    expect(navigate.mock.calls[0][0]).toEqual("test template");
+    expect(push.mock.calls.length).toEqual(1);
+    expect(push.mock.calls[0][0].pathname).toBe(context.pathFor("test template", null));
+    expect(push.mock.calls[0][0].state.isTopLevel).toBe(true);
   });
 
   it("escapes search terms", () => {
@@ -101,18 +99,21 @@ describe("Search", () => {
       shortName: "shortName",
       template: (s) => s + " template"
     };
-    let search = TestUtils.renderIntoDocument(
-      <Search searchData={searchData} navigate={navigate} />
-    ) as Search;
+    let push = jest.genMockFunction();
+    let context = mockRouterContext(push);
+    let wrapper = mount(
+      <Search searchData={searchData} navigate={navigate} />,
+      { context }
+    );
 
-    let form = TestUtils.findRenderedDOMComponentWithTag(search, "form");
+    let form = wrapper.find("form").first();
     expect(form).toBeTruthy();
 
-    let input = TestUtils.findRenderedDOMComponentWithTag(search, "input");
-    input["value"] = "Indésirable";
-    TestUtils.Simulate.submit(form);
+    let input = wrapper.find("input").get(0) as any;
+    input.value = "Indésirable";
+    form.simulate("submit");
 
-    expect(navigate.mock.calls.length).toEqual(1);
-    expect(navigate.mock.calls[0][0]).toEqual("Ind%C3%A9sirable template");
+    expect(push.mock.calls.length).toEqual(1);
+    expect(push.mock.calls[0][0].pathname).toBe(context.pathFor("Ind%C3%A9sirable template", null));
   });
 });

@@ -1,101 +1,74 @@
-jest.dontMock("../Collection");
-jest.dontMock("../Lane");
-jest.dontMock("../Book");
-jest.dontMock("../LaneBook");
-jest.dontMock("../Link");
-jest.dontMock("../CollectionLink");
-jest.dontMock("../FacetGroup");
-jest.dontMock("../SkipNavigationLink");
+jest.autoMockOff();
 
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import * as TestUtils from "react-addons-test-utils";
+import { shallow, mount } from "enzyme";
 
 import Collection from "../Collection";
 import Lane from "../Lane";
 import Book from "../Book";
 import LaneBook from "../LaneBook";
 import FacetGroup from "../FacetGroup";
-import CollectionLink from "../CollectionLink";
 import SkipNavigationLink from "../SkipNavigationLink";
+import LoadingIndicator from "../LoadingIndicator";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 import { CollectionData } from "../../interfaces";
+import { mockRouterContext } from "./routing";
 
 describe("Collection", () => {
   describe("collection with lanes", () => {
     let collectionData: CollectionData = groupedCollectionData;
-    let collection;
+    let wrapper;
 
     beforeEach(() => {
-      collection = TestUtils.renderIntoDocument(
+      wrapper = shallow(
         <Collection collection={collectionData} />
-      ) as Collection;
+      );
     });
 
     it("contains #main anchor", () => {
-      let link = TestUtils.findRenderedDOMComponentWithClass(collection, "mainAnchor");
-      expect(link.getAttribute("name")).toBe("main");
-    });
-
-    it("shows books", () => {
-      let books = TestUtils.scryRenderedComponentsWithType(collection, Book);
-      let bookCount = collectionData.lanes.reduce((count, lane) => {
-        return count + lane.books.length;
-      }, 0);
-      expect(books.length).toEqual(bookCount);
+      let link = wrapper.find(".mainAnchor");
+      expect(link.props().name).toBe("main");
     });
 
     it("shows lanes in order", () => {
-      let lanes = TestUtils.scryRenderedComponentsWithType(collection, Lane);
-      expect(lanes.length).toEqual(collectionData.lanes.length);
-    });
+      let lanes = wrapper.find(Lane);
+      let laneDatas = lanes.map(lane => lane.props().lane);
+      let uniqueCollectionUrls = Array.from(new Set(lanes.map(lane => lane.props().collectionUrl)));
 
-    it("shows lanes in order", () => {
-      let lanes = TestUtils.scryRenderedComponentsWithType(collection, Lane);
-      let laneTitles = lanes.map(lane => lane.props.lane.title);
-      expect(laneTitles).toEqual(collectionData.lanes.map(lane => lane.title));
+      expect(lanes.length).toBe(collectionData.lanes.length);
+      expect(laneDatas).toEqual(collectionData.lanes);
+      expect(uniqueCollectionUrls).toEqual([collectionData.url]);
     });
   });
 
   describe("collection without lanes", () => {
     let collectionData = ungroupedCollectionData;
-    let collection;
+    let wrapper;
 
     beforeEach(() => {
-      collection = TestUtils.renderIntoDocument(
+      wrapper = shallow(
         <Collection collection={collectionData} />
-      ) as Collection;
+      );
     });
 
     it("shows #main anchor", () => {
-      let link = TestUtils.findRenderedDOMComponentWithClass(collection, "mainAnchor");
-      expect(link.getAttribute("name")).toBe("main");
-    });
-
-    it("shows books", () => {
-      let collection = TestUtils.renderIntoDocument(
-        <Collection collection={collectionData} />
-      ) as Collection;
-      let books: LaneBook[] = TestUtils.scryRenderedComponentsWithType(collection, LaneBook);
-      // count books in all lanes plus books directly belonging to this collection
-      let bookCount = collectionData.lanes.reduce((count, lane) => {
-        return count + lane.books.length;
-      }, collectionData.books.length);
-      expect(books.length).toEqual(bookCount);
+      let link = wrapper.find(".mainAnchor");
+      expect(link.props().name).toBe("main");
     });
 
     it("shows books in order", () => {
-      let collection = TestUtils.renderIntoDocument(
-        <Collection collection={collectionData} />
-      ) as Collection;
-      let books: Book[] = TestUtils.scryRenderedComponentsWithType(collection, Book);
-      let bookTitles = books.map(book => book.props.book.title);
-      expect(bookTitles).toEqual(collectionData.books.map(book => book.title));
+      let books = wrapper.find(Book);
+      let bookDatas = books.map(book => book.props().book);
+      let uniqueCollectionUrls = Array.from(new Set(books.map(book => book.props().collectionUrl)));
+
+      expect(books.length).toBe(collectionData.books.length);
+      expect(bookDatas).toEqual(collectionData.books);
+      expect(uniqueCollectionUrls).toEqual([collectionData.url]);
     });
   });
 
   describe("collection with facetGroups", () => {
-    let collectionData, collection;
+    let collectionData, wrapper;
 
     beforeEach(() => {
       collectionData = {
@@ -111,19 +84,21 @@ describe("Collection", () => {
         }]
       };
 
-      collection = TestUtils.renderIntoDocument(
+      wrapper = shallow(
         <Collection collection={collectionData} />
-      ) as Collection;
+      );
     });
 
     it("shows facet groups", () => {
-      let facetGroups: FacetGroup[] = TestUtils.scryRenderedComponentsWithType(collection, FacetGroup);
+      let facetGroups = wrapper.find(FacetGroup);
+      let facetGroupDatas = facetGroups.map(group => group.props().facetGroup);
       expect(facetGroups.length).toEqual(1);
+      expect(facetGroupDatas).toEqual(collectionData.facetGroups);
     });
 
     it("shows skip navigation link for facet groups", () => {
-      let link = TestUtils.findRenderedComponentWithType(collection, SkipNavigationLink);
-      expect(link).toBeTruthy();
+      let links = wrapper.find(SkipNavigationLink);
+      expect(links.length).toBe(1);
     });
 
   });
@@ -140,14 +115,15 @@ describe("Collection", () => {
         links: [],
         nextPageUrl: "next"
       };
-
-      let collection = TestUtils.renderIntoDocument(
-        <Collection collection={collectionData} fetchPage={fetchPage} />
-      ) as Collection;
+      let context = mockRouterContext();
+      let wrapper = mount(
+        <Collection collection={collectionData} fetchPage={fetchPage} />,
+        { context }
+      );
 
       document.body.scrollTop = 1000;
       document.body.scrollHeight = 1;
-      window.dispatchEvent(new (window as any).UIEvent("scroll", {detail: 0}));
+      window.dispatchEvent(new UIEvent("scroll", {detail: 0}));
 
       expect(fetchPage.mock.calls.length).toEqual(1);
       expect(fetchPage.mock.calls[0][0]).toEqual("next");
@@ -156,11 +132,10 @@ describe("Collection", () => {
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 1000;
       document.body.scrollHeight = 1;
-      window.dispatchEvent(new (window as any).UIEvent("scroll", {detail: 0}));
+      window.dispatchEvent(new UIEvent("scroll", {detail: 0}));
 
       expect(fetchPage.mock.calls.length).toEqual(2);
       expect(fetchPage.mock.calls[1][0]).toEqual("next");
-
     });
 
     it("fetches next page if first page doesn't fill window", () => {
@@ -177,10 +152,11 @@ describe("Collection", () => {
         links: [],
         nextPageUrl: "next"
       };
-
-      let collection = TestUtils.renderIntoDocument(
-        <Collection collection={collectionData} fetchPage={fetchPage} />
-      ) as Collection;
+      let context = mockRouterContext();
+      let wrapper = mount(
+        <Collection collection={collectionData} fetchPage={fetchPage} />,
+        { context }
+      );
 
       expect(fetchPage.mock.calls.length).toEqual(1);
       expect(fetchPage.mock.calls[0][0]).toEqual("next");
@@ -196,12 +172,12 @@ describe("Collection", () => {
         links: [],
       };
 
-      let collection = TestUtils.renderIntoDocument(
+      let wrapper = shallow(
         <Collection collection={collectionData} isFetchingPage={true} />
-      ) as Collection;
+      );
 
-      let loading = TestUtils.findRenderedDOMComponentWithClass(collection, "loadingNextPage");
-      expect(loading.textContent).toContain("Loading");
+      let loadings = wrapper.find(".loadingNextPage");
+      expect(loadings.length).toBe(1);
     });
 
     it("contains next page button", () => {
@@ -209,12 +185,12 @@ describe("Collection", () => {
       let collectionData = Object.assign({}, ungroupedCollectionData, {
         nextPageUrl: "next page url"
       });
-      let collection = TestUtils.renderIntoDocument(
+      let wrapper = shallow(
         <Collection collection={collectionData} isFetchingPage={false} fetchPage={fetchPage} />
-      ) as Collection;
+      );
 
-      let link = TestUtils.findRenderedDOMComponentWithClass(collection, "nextPageLink");
-      expect(link.textContent).toBe("Load more books");
+      let link = wrapper.find(".nextPageLink");
+      expect(link.text()).toBe("Load more books");
     });
   });
 
@@ -227,23 +203,20 @@ describe("Collection", () => {
       lanes: [],
       links: []
     };
-    let collection;
-    let node;
+    let wrapper;
+    let context;
 
     beforeEach(() => {
-      node = document.createElement("div");
-      collection = ReactDOM.render(
+      context = mockRouterContext();
+      wrapper = mount(
         <Collection collection={collectionData} isFetching={true}/>,
-        node
+        { context }
       );
       document.body.scrollTop = 1000;
     });
 
     it("scrolls to top when new collection fetched successfully", () => {
-      ReactDOM.render(
-        <Collection collection={collectionData} isFetching={false}/>,
-        node
-      );
+      wrapper.setProps({ isFetching: false });
 
       expect(document.body.scrollTop).toEqual(0);
     });
@@ -254,9 +227,9 @@ describe("Collection", () => {
         response: "error",
         url: "url"
       };
-      ReactDOM.render(
+      wrapper = mount(
         <Collection collection={collectionData} isFetching={false} error={error}/>,
-        node
+        { context }
       );
 
       expect(document.body.scrollTop).toEqual(1000);
