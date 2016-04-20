@@ -1,7 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { mapStateToProps, mapDispatchToProps, mergeRootProps } from "./mergeRootProps";
-import Modal from "./Modal";
 import BookDetails from "./BookDetails";
 import LoadingIndicator from "./LoadingIndicator";
 import ErrorMessage from "./ErrorMessage";
