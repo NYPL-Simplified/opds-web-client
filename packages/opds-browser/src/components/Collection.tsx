@@ -5,7 +5,7 @@ import Lane from "./Lane";
 import FacetGroup from "./FacetGroup";
 import Search from "./Search";
 import SkipNavigationLink from "./SkipNavigationLink";
-import { CollectionData, LinkData, Navigate, PathFor, FetchErrorData } from "../interfaces";
+import { CollectionData, LinkData, FetchErrorData } from "../interfaces";
 import { visuallyHiddenStyle, subtleListStyle } from "./styles";
 
 export interface CollectionProps extends React.HTMLProps<Collection> {
@@ -13,8 +13,6 @@ export interface CollectionProps extends React.HTMLProps<Collection> {
   isFetching?: boolean;
   isFetchingPage?: boolean;
   error?: FetchErrorData;
-  navigate?: Navigate;
-  pathFor?: PathFor;
   fetchPage?: (url: string) => Promise<any>;
 }
 

@@ -10,7 +10,7 @@ import Collection from "./Collection";
 import UrlForm from "./UrlForm";
 import SkipNavigationLink from "./SkipNavigationLink";
 import HeaderBrowserLink from "./HeaderBrowserLink";
-import { State, Navigate, PathFor, NavigateContext } from "../interfaces";
+import { State, NavigateContext } from "../interfaces";
 
 export interface HeaderProps extends React.Props<any> {
   BrowserLink: typeof HeaderBrowserLink;
@@ -252,7 +252,6 @@ export class Root extends React.Component<RootProps, any> {
         let nextBookIndex = (currentBookIndex + relativeIndex + bookIds.length) % bookIds.length;
         let nextBookUrl = books[nextBookIndex].url || books[nextBookIndex].id;
 
-        // call navigate to make sure history is updated
         this.context.router.push(this.context.pathFor(this.props.collectionData.url, nextBookUrl));
       }
     }

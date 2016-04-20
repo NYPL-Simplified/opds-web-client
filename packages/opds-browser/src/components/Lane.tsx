@@ -1,7 +1,7 @@
 import * as React from "react";
 import LaneBook from "./LaneBook";
 import BrowserLink from "./BrowserLink";
-import { LaneData, Navigate, PathFor } from "../interfaces";
+import { LaneData } from "../interfaces";
 
 export interface LaneProps {
   lane: LaneData;

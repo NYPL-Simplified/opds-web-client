@@ -1,6 +1,6 @@
 import * as React from "react";
 import BrowserLink from "./BrowserLink";
-import { BookData, Navigate, PathFor } from "../interfaces";
+import { BookData } from "../interfaces";
 
 export interface BookProps {
   book: BookData;
