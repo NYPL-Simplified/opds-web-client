@@ -395,7 +395,6 @@ describe("Root", () => {
     it("navigates to second book if currently showing first book", () => {
       bookData = groupedCollectionData.lanes[0].books[0];
       nextBookData = groupedCollectionData.lanes[0].books[1];
-      // NOT WORKING B/C RootWithContext doesn't have showNextBook() defined
       wrapper = shallow(
         <Root
           collectionData={collectionData}

@@ -2,7 +2,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Root, { RootProps } from "./Root";
 import buildStore from "../store";
-import { NavigateContext } from "../interfaces";
 
 export interface OPDSBrowserProps {
   collectionUrl?: string;
