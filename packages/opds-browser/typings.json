@@ -4,7 +4,6 @@
     "enzyme": "registry:dt/enzyme#1.2.0+20160324040416",
     "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#86dbea8fc37d9473fee465da4f0a21bea4f8cbd9",
     "react": "registry:dt/react#0.14.0+20160412154040",
-    "react-addons-test-utils": "registry:dt/react-addons-test-utils#0.14.0+20160316155526",
     "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
     "react-redux": "github:DefinitelyTyped/DefinitelyTyped/react-redux/react-redux.d.ts#a513c4df6eb8505da8eef432891c8b69b73535d9",
     "react-router": "registry:dt/react-router#2.0.0+20160330124659",

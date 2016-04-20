@@ -8,7 +8,7 @@ import { Link } from "react-router";
 import { mockRouterContext } from "./routing";
 
 describe("BrowseLink", () => {
-  it("renders Link with location and props", () => {
+  it("renders Link with location and props and context", () => {
     let props = {
       className: "test-class",
       id: "test-id",
@@ -23,14 +23,22 @@ describe("BrowseLink", () => {
       state: { isTopLevel: true }
     };
     let linkProps = Object.assign({}, Link.defaultProps, props, { to: location });
+    let requiredRouterKeys = [
+      "push", "createHref", "isActive", "replace",
+      "go", "goBack", "goForward", "setRouteLeaveHook"
+    ];
 
     let wrapper = shallow(
       <BrowserLink {...props} />,
       { context }
     );
 
-    let link = wrapper.find(Link).first();
+    let link = wrapper.find(Link);
+    let instance = wrapper.instance() as any;
+    let linkContextRouterKeys = Object.keys(instance.getChildContext().router);
+
     expect(link.props()).toEqual(linkProps);
+    expect(linkContextRouterKeys).toEqual(requiredRouterKeys);
   });
 
   it("passes children to Link", () => {
