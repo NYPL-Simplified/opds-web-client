@@ -26,8 +26,8 @@ describe("Root", () => {
       <Root />
     );
 
-    let link = wrapper.find(SkipNavigationLink);
-    expect(link).toBeTruthy();
+    let links = wrapper.find(SkipNavigationLink);
+    expect(links.length).toBe(1);
   });
 
   it("shows search and treats it as top-level", () => {
@@ -41,15 +41,18 @@ describe("Root", () => {
         }
       }
     });
+    let fetchSearchDescription = (url: string) => {};
     let wrapper = shallow(
       <Root
         collectionData={collectionData}
-        fetchSearchDescription={(url: string) => {}}
+        fetchSearchDescription={fetchSearchDescription}
         />
     );
 
     let search = wrapper.find(Search);
-    expect(search).toBeTruthy();
+    expect(search.props().url).toBe(collectionData.search.url);
+    expect(search.props().searchData).toBe(collectionData.search.searchData);
+    expect(search.props().fetchSearchDescription).toBe(fetchSearchDescription);
     expect(search.props().isTopLevel).toBe(true);
   });
 
@@ -369,7 +372,6 @@ describe("Root", () => {
     it("renders the header with HeaderBrowserLink and top-level Search", () => {
       let header = wrapper.find(Header);
       let search = header.childAt(0);
-      expect(header).toBeTruthy();
       expect(header.props().BrowserLink).toBe(HeaderBrowserLink);
       expect(search.props().isTopLevel).toBe(true);
     });
