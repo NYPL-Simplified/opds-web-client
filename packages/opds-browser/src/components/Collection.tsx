@@ -82,8 +82,6 @@ export default class Collection extends React.Component<CollectionProps, any> {
               <li key={lane.title}>
                 <Lane
                   lane={lane}
-                  navigate={this.props.navigate}
-                  pathFor={this.props.pathFor}
                   collectionUrl={this.props.collection.url} />
               </li>
             ) }

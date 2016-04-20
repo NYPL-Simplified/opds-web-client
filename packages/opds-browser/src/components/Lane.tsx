@@ -5,8 +5,6 @@ import { LaneData, Navigate, PathFor } from "../interfaces";
 
 export interface LaneProps {
   lane: LaneData;
-  navigate?: Navigate;
-  pathFor?: PathFor;
   collectionUrl?: string;
 }
 
