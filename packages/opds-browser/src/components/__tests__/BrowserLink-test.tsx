@@ -29,7 +29,7 @@ describe("BrowseLink", () => {
       { context }
     );
 
-    let link = wrapper.find(Link);
+    let link = wrapper.find(Link).first();
     expect(link.props()).toEqual(linkProps);
   });
 
@@ -51,7 +51,7 @@ describe("BrowseLink", () => {
       { context }
     );
 
-    let child = wrapper.children().at(0);
+    let child = wrapper.children().first();
     expect(child.hasClass("child")).toBe(true);
   });
 });

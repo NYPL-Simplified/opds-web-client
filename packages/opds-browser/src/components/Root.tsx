@@ -186,8 +186,7 @@ export class Root extends React.Component<RootProps, any> {
               isFetching={this.props.isFetching}
               isFetchingPage={this.props.isFetchingPage}
               error={this.props.error}
-              fetchSearchDescription={this.props.fetchSearchDescription}
-              history={this.props.history} />
+              />
           }
         </div>
       </div>
@@ -242,7 +241,7 @@ export class Root extends React.Component<RootProps, any> {
   }
 
   showRelativeBook (relativeIndex: number) {
-    if (this.props.collectionData && this.props.bookData) {
+    if (this.context.router && this.props.collectionData && this.props.bookData) {
       let books = this.props.collectionData.lanes.reduce((books, lane) => {
         return books.concat(lane.books);
       }, this.props.collectionData.books);

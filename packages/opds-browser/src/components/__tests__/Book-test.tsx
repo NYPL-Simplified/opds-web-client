@@ -1,8 +1,6 @@
 jest.autoMockOff();
 
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import * as TestUtils from "react-addons-test-utils";
 import { shallow } from "enzyme";
 
 import Book from "../Book";

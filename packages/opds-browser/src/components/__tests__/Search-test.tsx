@@ -76,11 +76,11 @@ describe("Search", () => {
     let push = jest.genMockFunction();
     let context = mockRouterContext(push);
     let wrapper = mount(
-      <Search searchData={searchData} navigate={navigate} />,
+      <Search searchData={searchData} navigate={navigate} isTopLevel={true} />,
       { context }
     );
 
-    let form = wrapper.find("form");
+    let form = wrapper.find("form").first();
     expect(form).toBeTruthy();
 
     let input = wrapper.find("input").get(0) as any;
@@ -89,6 +89,7 @@ describe("Search", () => {
 
     expect(push.mock.calls.length).toEqual(1);
     expect(push.mock.calls[0][0].pathname).toBe(context.pathFor("test template", null));
+    expect(push.mock.calls[0][0].state.isTopLevel).toBe(true);
   });
 
   it("escapes search terms", () => {
@@ -105,7 +106,7 @@ describe("Search", () => {
       { context }
     );
 
-    let form = wrapper.find("form");
+    let form = wrapper.find("form").first();
     expect(form).toBeTruthy();
 
     let input = wrapper.find("input").get(0) as any;

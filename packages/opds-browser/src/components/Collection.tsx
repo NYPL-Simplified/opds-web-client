@@ -13,8 +13,6 @@ export interface CollectionProps extends React.HTMLProps<Collection> {
   isFetching?: boolean;
   isFetchingPage?: boolean;
   error?: FetchErrorData;
-  fetchSearchDescription?: (url: string) => void;
-  history?: LinkData[];
   navigate?: Navigate;
   pathFor?: PathFor;
   fetchPage?: (url: string) => Promise<any>;
