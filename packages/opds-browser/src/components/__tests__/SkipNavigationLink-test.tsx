@@ -1,18 +1,18 @@
-jest.dontMock("../SkipNavigationLink");
+jest.autoMockOff();
 
 import * as React from "react";
-import * as TestUtils from "react-addons-test-utils";
+import { shallow } from "enzyme";
 
 import SkipNavigationLink from "../SkipNavigationLink";
 
 describe("SkipNavigationLink", () => {
   it("shows link", () => {
-    let component = TestUtils.renderIntoDocument(
+    let wrapper = shallow(
       <SkipNavigationLink />
-    ) as SkipNavigationLink;
+    );
 
-    let element = TestUtils.findRenderedDOMComponentWithClass(component, "skipNavigation");
-    expect(element.textContent).toBe("Skip Navigation");
-    expect(element.getAttribute("href")).toBe("#main");
+    let element = wrapper.find(".skipNavigation");
+    expect(element.text()).toBe("Skip Navigation");
+    expect(element.props().href).toBe("#main");
   });
 });

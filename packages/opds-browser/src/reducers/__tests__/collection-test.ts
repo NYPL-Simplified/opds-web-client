@@ -1,10 +1,6 @@
 jest.dontMock("../collection");
 jest.dontMock("../../actions");
 
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import * as TestUtils from "react-addons-test-utils";
-
 import reducer from "../collection";
 import DataFetcher from "../../DataFetcher";
 import ActionsCreator from "../../actions";
