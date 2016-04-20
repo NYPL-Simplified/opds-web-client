@@ -1,7 +1,7 @@
 jest.autoMockOff();
 
 import * as React from "react";
-import { shallow, mount, ShallowWrapper } from "enzyme";
+import { shallow, mount } from "enzyme";
 
 import ConnectedRoot, { Root, BookDetailsContainerProps, HeaderProps } from "../Root";
 import Breadcrumbs from "../Breadcrumbs";
