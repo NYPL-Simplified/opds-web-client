@@ -9,7 +9,6 @@ export interface OPDSBrowserProps {
   headerTitle?: string;
   pageTitleTemplate: (collectionTitle: string, bookTitle: string) => string;
   proxyUrl?: string;
-  pathFor?: (collectionUrl: string, bookUrl: string) => string;
   store?: Redux.Store;
 }
 

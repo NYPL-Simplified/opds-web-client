@@ -110,11 +110,23 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
 
   let fetchCollectionAndBook = (collectionUrl: string, bookUrl: string) => {
     return new Promise((resolve, reject) => {
-      dispatchProps.fetchCollection(collectionUrl).then(collectionData => {
-        dispatchProps.fetchBook(bookUrl).then(bookData => {
-          resolve({ collectionData, bookData });
+      if (collectionUrl) {
+        dispatchProps.fetchCollection(collectionUrl).then(collectionData => {
+          if (bookUrl) {
+            dispatchProps.fetchBook(bookUrl).then(bookData => {
+              resolve({ collectionData, bookData });
+            }).catch(err => reject(err));
+          } else {
+            resolve({ collectionData, bookData: null });
+          }
         }).catch(err => reject(err));
-      }).catch(err => reject(err));
+      } else if (bookUrl) {
+        dispatchProps.fetchBook(bookUrl).then(bookData => {
+          resolve({ collectionData: null, bookData });
+        }).catch(err => reject(err));
+      } else {
+        resolve({ collectionData: null, bookData: null });
+      }
     });
   };
 
