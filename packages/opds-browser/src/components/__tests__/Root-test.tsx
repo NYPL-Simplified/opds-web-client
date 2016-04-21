@@ -362,7 +362,7 @@ describe("Root", () => {
     beforeEach(() => {
       wrapper = shallow(
         <Root
-          header={Header}
+          Header={Header}
           collectionData={collectionData}
           fetchSearchDescription={(url: string) => {}}
           />
