@@ -269,24 +269,70 @@ describe("mergeRootProps", () => {
   describe("refreshCollectionAndBook", () => {
     let props;
 
-    beforeEach(() => {
+    it("calls fetchCollection", () => {
       stateProps = {
         loadedCollectionUrl: "test collection",
         loadedBookUrl: "test book"
       };
       props = mergeRootProps(stateProps, dispatchProps, componentProps);
-    });
-
-    it("calls fetchCollection", () => {
       props.refreshCollectionAndBook();
+
       expect(fetchCollection.mock.calls.length).toBe(1);
       expect(fetchCollection.mock.calls[0][0]).toBe("test collection");
     });
 
     it("calls fetchBook", (done) => {
+      stateProps = {
+        loadedCollectionUrl: "test collection",
+        loadedBookUrl: "test book"
+      };
+      props = mergeRootProps(stateProps, dispatchProps, componentProps);
+
       props.refreshCollectionAndBook().then(data => {
         expect(fetchBook.mock.calls.length).toBe(1);
         expect(fetchBook.mock.calls[0][0]).toBe("test book");
+        done();
+      });
+    });
+
+    it("only fetches collection if only collection is loaded", () => {
+      stateProps = {
+        loadedCollectionUrl: "test collection",
+        loadedBookUrl: null
+      };
+      props = mergeRootProps(stateProps, dispatchProps, componentProps);
+      props.refreshCollectionAndBook();
+
+      expect(fetchCollection.mock.calls.length).toBe(1);
+      expect(fetchCollection.mock.calls[0][0]).toBe("test collection");
+      expect(fetchBook.mock.calls.length).toBe(0);
+    });
+
+    it("only fetches book if only book is loaded", (done) => {
+      stateProps = {
+        loadedCollectionUrl: null,
+        loadedBookUrl: "test book"
+      };
+      props = mergeRootProps(stateProps, dispatchProps, componentProps);
+
+      props.refreshCollectionAndBook().then(data => {
+        expect(fetchBook.mock.calls.length).toBe(1);
+        expect(fetchBook.mock.calls[0][0]).toBe("test book");
+        expect(fetchCollection.mock.calls.length).toBe(0);
+        done();
+      });
+    });
+
+    it("does not fetch if neither collection nor book are loaded", (done) => {
+      stateProps = {
+        loadedCollectionUrl: null,
+        loadedBookUrl: null
+      };
+      props = mergeRootProps(stateProps, dispatchProps, componentProps);
+
+      props.refreshCollectionAndBook().then(data => {
+        expect(fetchCollection.mock.calls.length).toBe(0);
+        expect(fetchBook.mock.calls.length).toBe(0);
         done();
       });
     });
@@ -295,7 +341,7 @@ describe("mergeRootProps", () => {
   describe("retryCollectionAndBook", () => {
     let props;
 
-    beforeEach(() => {
+    it("calls fetchCollection", () => {
       stateProps = {
         collectionUrl: "test collection",
         bookUrl: "test book",
@@ -303,18 +349,72 @@ describe("mergeRootProps", () => {
         loadedBookUrl: null
       };
       props = mergeRootProps(stateProps, dispatchProps, componentProps);
-    });
-
-    it("calls fetchCollection", () => {
       props.retryCollectionAndBook();
+
       expect(fetchCollection.mock.calls.length).toBe(1);
       expect(fetchCollection.mock.calls[0][0]).toBe("test collection");
     });
 
     it("calls fetchBook", (done) => {
+      stateProps = {
+        collectionUrl: "test collection",
+        bookUrl: "test book",
+        loadedCollectionUrl: null,
+        loadedBookUrl: null
+      };
+      props = mergeRootProps(stateProps, dispatchProps, componentProps);
+
       props.retryCollectionAndBook().then(data => {
         expect(fetchBook.mock.calls.length).toBe(1);
         expect(fetchBook.mock.calls[0][0]).toBe("test book");
+        done();
+      });
+    });
+
+    it("only fetches collection if only collectionUrl is present", () => {
+      stateProps = {
+        collectionUrl: "test collection",
+        bookUrl: null,
+        loadedCollectionUrl: null,
+        loadedBookUrl: null
+      };
+      props = mergeRootProps(stateProps, dispatchProps, componentProps);
+      props.retryCollectionAndBook();
+
+      expect(fetchCollection.mock.calls.length).toBe(1);
+      expect(fetchCollection.mock.calls[0][0]).toBe("test collection");
+      expect(fetchBook.mock.calls.length).toBe(0);
+    });
+
+    it("only fetches book if only book is loaded", (done) => {
+      stateProps = {
+        collectionUrl: null,
+        bookUrl: "test book",
+        loadedCollectionUrl: null,
+        loadedBookUrl: null
+      };
+      props = mergeRootProps(stateProps, dispatchProps, componentProps);
+
+      props.retryCollectionAndBook().then(data => {
+        expect(fetchBook.mock.calls.length).toBe(1);
+        expect(fetchBook.mock.calls[0][0]).toBe("test book");
+        expect(fetchCollection.mock.calls.length).toBe(0);
+        done();
+      });
+    });
+
+    it("does not fetch if neither collection nor book are loaded", (done) => {
+      stateProps = {
+        collectionUrl: null,
+        bookUrl: null,
+        loadedCollectionUrl: null,
+        loadedBookUrl: null
+      };
+      props = mergeRootProps(stateProps, dispatchProps, componentProps);
+
+      props.retryCollectionAndBook().then(data => {
+        expect(fetchCollection.mock.calls.length).toBe(0);
+        expect(fetchBook.mock.calls.length).toBe(0);
         done();
       });
     });
