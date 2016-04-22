@@ -39,13 +39,12 @@ export interface RootProps extends State {
   retryCollectionAndBook?: () => Promise<any>;
   pageTitleTemplate?: (collectionTitle: string, bookTitle: string) => string;
   headerTitle?: string;
-  header?: new () => __React.Component<HeaderProps, any>;
+  Header?: new () => __React.Component<HeaderProps, any>;
   fetchPage?: (url: string) => Promise<any>;
   isTopLevel?: boolean;
 }
 
 export class Root extends React.Component<RootProps, any> {
-  header: any;
   context: NavigateContext;
 
   static contextTypes: React.ValidationMap<RootProps> = {
@@ -55,7 +54,7 @@ export class Root extends React.Component<RootProps, any> {
 
   render(): JSX.Element {
     let BookDetailsContainer = this.props.BookDetailsContainer;
-    let Header = this.props.header;
+    let Header = this.props.Header;
 
     let headerTitle = this.props.headerTitle || (this.props.collectionData ? this.props.collectionData.title : null);
 
