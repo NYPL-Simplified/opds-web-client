@@ -5,6 +5,7 @@ import {
   AcquisitionFeed,
   OPDSCollectionLink,
   OPDSFacetLink,
+  OPDSLink,
   SearchLink,
   CompleteEntryLink,
   OPDSCatalogRootLink
@@ -132,6 +133,7 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
   let search: SearchData;
   let nextPageUrl: string;
   let catalogRootUrl: string;
+  let parentLink: OPDSLink;
 
   feed.entries.forEach(entry => {
     if (feed instanceof AcquisitionFeed) {
@@ -189,6 +191,8 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
     if (catalogRootLink) {
       catalogRootUrl = url.resolve(feedUrl, catalogRootLink.href);
     }
+
+    parentLink = feed.links.find(link => link.rel === "up");
   }
 
   facetGroups = facetLinks.reduce((result, link) => {
@@ -222,6 +226,12 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
   collection.search = search;
   collection.nextPageUrl = nextPageUrl;
   collection.catalogRootUrl = catalogRootUrl;
+  if (parentLink) {
+    collection.parentLink = {
+      text: parentLink.title,
+      url: parentLink.href
+    };
+  }
   Object.freeze(collection);
   return collection;
 }

@@ -1,6 +1,13 @@
 import DataFetcher from "./DataFetcher";
 import { CollectionData, BookData, SearchData, FetchErrorData } from "./interfaces";
 
+export interface LoadCollectionAction {
+  type: string;
+  data: CollectionData;
+  url?: string;
+  isTopLevel?: boolean;
+}
+
 export default class ActionCreator {
   private fetcher: DataFetcher;
 
@@ -99,7 +106,7 @@ export default class ActionCreator {
     return { type: this.FETCH_COLLECTION_FAILURE, error };
   }
 
-  loadCollection(data: CollectionData, url?: string, isTopLevel: boolean = false) {
+  loadCollection(data: CollectionData, url?: string, isTopLevel: boolean = false): LoadCollectionAction {
     return { type: this.LOAD_COLLECTION, data, url, isTopLevel };
   }
 
