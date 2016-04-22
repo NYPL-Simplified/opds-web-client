@@ -23,6 +23,7 @@ export function mapStateToProps(state, ownProps) {
     error: (state.browser.collection.error || state.browser.book.error),
     bookData: state.browser.book.data || ownProps.bookData,
     history: state.browser.collection.history,
+    hierarchy: state.browser.collection.hierarchy,
     loadedCollectionUrl: state.browser.collection.url,
     loadedBookUrl: state.browser.book.url,
     collectionUrl: ownProps.collectionUrl,
@@ -35,7 +36,7 @@ export function mapDispatchToProps(dispatch) {
     createDispatchProps: (fetcher) => {
       let actions = new ActionsCreator(fetcher);
       return {
-        fetchCollection: (url: string, isTopLevel?: boolean) => dispatch(actions.fetchCollection(url, isTopLevel)),
+        fetchCollection: (url: string) => dispatch(actions.fetchCollection(url)),
         fetchPage: (url: string) => dispatch(actions.fetchPage(url)),
         fetchBook: (url: string) => dispatch(actions.fetchBook(url)),
         loadBook: (book: BookData, url: string) => dispatch(actions.loadBook(book, url)),
@@ -52,19 +53,19 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
   let fetcher = new DataFetcher(componentProps.proxyUrl, adapter);
   let dispatchProps = createDispatchProps.createDispatchProps(fetcher);
 
-  let setCollection = (url: string, isTopLevel: boolean = false) => {
+  let setCollection = (url: string) => {
     return new Promise((resolve, reject) => {
       if (url === stateProps.loadedCollectionUrl) {
         // if url is same, do nothing unless there's currently error
         if (stateProps.error) {
-          dispatchProps.fetchCollection(url, isTopLevel).then(data => resolve(data));
+          dispatchProps.fetchCollection(url).then(data => resolve(data));
         } else {
           resolve(stateProps.collectionData);
         }
       } else {
         // if url is changed, either fetch or clear collection
         if (url) {
-          dispatchProps.fetchCollection(url, isTopLevel).then(data => resolve(data));
+          dispatchProps.fetchCollection(url).then(data => resolve(data));
         } else {
           dispatchProps.clearCollection();
           resolve(null);
@@ -98,9 +99,9 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
     });
   };
 
-  let setCollectionAndBook = (collectionUrl: string, bookUrl: string, isTopLevel: boolean = false) => {
+  let setCollectionAndBook = (collectionUrl: string, bookUrl: string) => {
     return new Promise((resolve, reject) => {
-      setCollection(collectionUrl, isTopLevel).then((collectionData: CollectionData) => {
+      setCollection(collectionUrl).then((collectionData: CollectionData) => {
         setBook(bookUrl, collectionData).then((bookData: BookData) => {
           resolve({ collectionData, bookData });
         }).catch(err => reject(err));

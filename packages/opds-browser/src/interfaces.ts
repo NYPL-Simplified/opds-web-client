@@ -69,6 +69,7 @@ export interface State {
   bookUrl?: string;
   isFetchingPage?: boolean;
   history?: LinkData[];
+  hierarchy?: LinkData[];
 }
 
 export interface PathFor {

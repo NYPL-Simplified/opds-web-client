@@ -4,9 +4,16 @@ import { CollectionData, LinkData } from "../interfaces";
 import { subtleListStyle } from "./styles";
 
 export interface BreadcrumbsProps {
+  mode: BreadcrumbMode;
   history: LinkData[];
+  hierarchy: LinkData[];
   collection: CollectionData;
   showCurrentLink?: Boolean;
+}
+
+export const enum BreadcrumbMode {
+  History,
+  Hierarchy
 }
 
 export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> {
@@ -21,9 +28,11 @@ export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> 
       fontWeight: "bold"
     };
 
+    let breadcrumbs = this.props.mode === BreadcrumbMode.Hierarchy ? this.props.hierarchy : this.props.history;
+
     return (
         <ol className="breadcrumb" style={{ fontSize: "1.2em", height: "40px" }} aria-label="breadcrumbs" role="navigation">
-          { this.props.history && this.props.history.map(breadcrumb =>
+          { breadcrumbs && breadcrumbs.map(breadcrumb =>
             <li key={breadcrumb.id}>
               <BrowserLink
                 collectionUrl={breadcrumb.url}
