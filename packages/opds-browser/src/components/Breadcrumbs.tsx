@@ -11,10 +11,7 @@ export interface BreadcrumbsProps {
   showCurrentLink?: Boolean;
 }
 
-export const enum BreadcrumbMode {
-  History,
-  Hierarchy
-}
+export type BreadcrumbMode = "history" | "hierarchy";
 
 export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> {
   render(): JSX.Element {
@@ -28,7 +25,7 @@ export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> 
       fontWeight: "bold"
     };
 
-    let breadcrumbs = this.props.mode === BreadcrumbMode.Hierarchy ? this.props.hierarchy : this.props.history;
+    let breadcrumbs = this.props.mode === "hierarchy" ? this.props.hierarchy : this.props.history;
 
     return (
         <ol className="breadcrumb" style={{ fontSize: "1.2em", height: "40px" }} aria-label="breadcrumbs" role="navigation">
