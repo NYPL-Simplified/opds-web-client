@@ -25,11 +25,9 @@ export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> 
       fontWeight: "bold"
     };
 
-    let breadcrumbs = this.props.mode === "hierarchy" ? this.props.hierarchy : this.props.history;
-
     return (
         <ol className="breadcrumb" style={{ fontSize: "1.2em", height: "40px" }} aria-label="breadcrumbs" role="navigation">
-          { breadcrumbs && breadcrumbs.map(breadcrumb =>
+          { this.props.history && this.props.history.map(breadcrumb =>
             <li key={breadcrumb.id}>
               <BrowserLink
                 collectionUrl={breadcrumb.url}

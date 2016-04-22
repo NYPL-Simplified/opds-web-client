@@ -14,7 +14,7 @@ export default (state: CollectionState, action: LoadCollectionAction) => {
   }
 
   if (parentLink && parentLink.url && parentLink.text &&
-      parentLink.url !== catalogRootUrl.url &&
+      parentLink.url !== catalogRootUrl &&
       parentLink.url !== action.url) {
     hierarchy.push({
       text: parentLink.text,

@@ -38,7 +38,8 @@ export interface CollectionData {
   facetGroups?: FacetGroupData[];
   search?: SearchData;
   nextPageUrl?: string;
-  catalogRootUrl?: string;
+  selfUrl?: string;
+  catalogRootLink?: LinkData;
   parentLink?: LinkData;
 }
 
