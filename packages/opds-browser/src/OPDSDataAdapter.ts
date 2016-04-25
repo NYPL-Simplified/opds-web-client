@@ -7,7 +7,8 @@ import {
   OPDSFacetLink,
   SearchLink,
   CompleteEntryLink,
-  OPDSCatalogRootLink
+  OPDSCatalogRootLink,
+  OPDSAcquisitionLink
 } from "opds-feed-parser";
 import * as url from "url";
 import {
@@ -63,6 +64,14 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
 
   let categories = entry.categories.filter(category => !!category.label).map(category => category.label);
 
+  let openAccessUrl;
+  let openAccessLink = entry.links.find(link => {
+    return link instanceof OPDSAcquisitionLink && link.rel === OPDSAcquisitionLink.OPEN_ACCESS_REL;
+  });
+  if (openAccessLink) {
+    openAccessUrl = url.resolve(feedUrl, openAccessLink.href);
+  }
+
   return <BookData>{
     id: entry.id,
     title: entry.title,
@@ -70,6 +79,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
     contributors: contributors,
     summary: entry.summary.content && sanitizeHtml(entry.summary.content),
     imageUrl: imageUrl,
+    openAccessUrl: openAccessUrl,
     publisher: entry.publisher,
     published: entry.published && formatDate(entry.published),
     categories: categories,

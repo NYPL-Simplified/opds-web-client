@@ -39,6 +39,10 @@ export default class Book extends React.Component<BookProps, any> {
       marginBottom: "5px"
     };
 
+    let bookLinksStyle = {
+      marginTop: "10px"
+    };
+
     return (
       <div className="book" style={ bookStyle }>
         <BrowserLink
@@ -46,19 +50,29 @@ export default class Book extends React.Component<BookProps, any> {
           bookUrl={this.props.book.url || this.props.book.id}
           style={{ color: "black", textDecoration: "none" }}>
           <img src={this.props.book.imageUrl} style={bookCoverStyle} alt=""/>
-          <div className="bookInfo" style={ bookInfoStyle }>
-            <div className="bookTitle" style={ bookTitleStyle }>{this.props.book.title}</div>
-            <div className="bookAuthors">
-              {
-                this.props.book.authors.length ?
-                this.props.book.authors.join(", ") :
-                  this.props.book.contributors && this.props.book.contributors.length ?
-                  this.props.book.contributors.join(", ") :
-                  ""
-              }
-            </div>
-          </div>
         </BrowserLink>
+        <div className="bookInfo" style={ bookInfoStyle }>
+          <BrowserLink
+            collectionUrl={this.props.collectionUrl}
+            bookUrl={this.props.book.url || this.props.book.id}
+            style={{ color: "black", textDecoration: "none" }}>
+              <div className="bookTitle" style={ bookTitleStyle }>{this.props.book.title}</div>
+              <div className="bookAuthors">
+                {
+                  this.props.book.authors.length ?
+                  this.props.book.authors.join(", ") :
+                    this.props.book.contributors && this.props.book.contributors.length ?
+                    this.props.book.contributors.join(", ") :
+                    ""
+                }
+              </div>
+          </BrowserLink>
+          { this.props.book.openAccessUrl &&
+            <div className="bookLinks" style={bookLinksStyle}>
+              <a href={this.props.book.openAccessUrl} className="btn btn-default">Get</a>
+            </div>
+          }
+        </div>
       </div>
     );
   }
