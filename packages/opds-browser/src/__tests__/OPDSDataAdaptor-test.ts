@@ -1,7 +1,7 @@
 jest.dontMock("../OPDSDataAdapter");
 jest.dontMock("./OPDSFactory");
 
-import { OPDSArtworkLink, OPDSCollectionLink, OPDSFacetLink } from "opds-feed-parser";
+import { OPDSArtworkLink, OPDSCollectionLink, OPDSFacetLink, OPDSAcquisitionLink } from "opds-feed-parser";
 import * as factory from "./OPDSFactory";
 import { feedToCollection } from "../OPDSDataAdapter";
 const sanitizeHtml = require("dompurify").sanitize;
@@ -18,6 +18,11 @@ describe("OPDSDataAdapter", () => {
       rel: "http://opds-spec.org/image/thumbnail",
     });
 
+    let openAccessLink = factory.acquisitionLink({
+      href: "http://example.com/open.epub",
+      rel: OPDSAcquisitionLink.OPEN_ACCESS_REL
+    });
+
     let entry = factory.entry({
       id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
       title: "The Mayan Secrets",
@@ -25,7 +30,7 @@ describe("OPDSDataAdapter", () => {
       contributors: [factory.contributor({name: "contributor"})],
       summary: factory.summary({content: "&lt;b&gt;Sam and Remi Fargo race for treasure&#8212;and survival&#8212;in this lightning-paced new adventure from #1&lt;i&gt; New York Times&lt;/i&gt; bestselling author Clive Cussler.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;Husband-and-wife team Sam and Remi Fargo are in Mexico when they come upon a remarkable discovery&#8212;the mummified remainsof a man clutching an ancient sealed pot. Within the pot is a Mayan book larger than any known before.&lt;br /&gt;&lt;br /&gt;The book contains astonishing information about the Mayans, their cities, and about mankind itself. The secrets are so powerful that some people would do anything to possess them&#8212;as the Fargos are about to find out. Many men and women are going to die for that book.<script>alert('danger!');</script>"}),
       categories: [factory.category({label: "label"}), factory.category({term: "no label"}), factory.category({label: "label 2"})],
-      links: [largeImageLink, thumbImageLink],
+      links: [largeImageLink, thumbImageLink, openAccessLink],
       published: "2014-06-08T22:45:58Z",
       publisher: "Fake Publisher"
     });
@@ -55,6 +60,7 @@ describe("OPDSDataAdapter", () => {
     expect(book.imageUrl).toEqual(thumbImageLink.href);
     expect(book.publisher).toBe("Fake Publisher");
     expect(book.published).toBe("June 8, 2014");
+    expect(book.openAccessUrl).toEqual(openAccessLink.href);
   });
 
   it("extracts link info", () => {

@@ -1,4 +1,5 @@
 import {
+  OPDSAcquisitionLink,
   OPDSArtworkLink,
   OPDSFacetLink,
   SearchLink,
@@ -17,6 +18,10 @@ Most of the constructor arguments use the class as their type,
 so casting arguments to the class lets us avoid including
 required arguments for properties we aren't testing.
 */
+
+export function acquisitionLink(props: any): OPDSAcquisitionLink {
+  return new OPDSAcquisitionLink(<OPDSAcquisitionLink>props);
+}
 
 export function artworkLink(props: any): OPDSArtworkLink {
   return new OPDSArtworkLink(<OPDSArtworkLink>props);
