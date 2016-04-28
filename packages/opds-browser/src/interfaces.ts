@@ -5,6 +5,7 @@ export interface BookData {
   contributors?: string[];
   summary?: string;
   imageUrl?: string;
+  openAccessUrl?: string;
   url?: string;
   publisher?: string;
   published?: string;

@@ -47,9 +47,15 @@ export default class BookDetails extends React.Component<BookProps, any> {
         </div>
         <div style={{ clear: "both", marginTop: "1em" }}></div>
         <div
-          className="bookDetailsSummary"
-          style={bookSummaryStyle}
-          dangerouslySetInnerHTML={{ __html: this.props.book.summary }}></div>
+          style={bookSummaryStyle}>
+          { this.props.book.openAccessUrl &&
+            <div style={{textAlign: "center", marginBottom: "30px"}}>
+              <a href={this.props.book.openAccessUrl} className="btn btn-default">Get</a>
+            </div>
+          }
+          <div className="bookDetailsSummary"
+               dangerouslySetInnerHTML={{ __html: this.props.book.summary }}></div>
+        </div>
       </div>
     );
   }
