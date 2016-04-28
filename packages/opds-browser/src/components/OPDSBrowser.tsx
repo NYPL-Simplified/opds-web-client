@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import Root, { RootProps } from "./Root";
-import { BreadcrumbMode } from "./Breadcrumbs";
 import buildStore from "../store";
 
 export interface OPDSBrowserProps {
@@ -11,7 +10,6 @@ export interface OPDSBrowserProps {
   pageTitleTemplate: (collectionTitle: string, bookTitle: string) => string;
   proxyUrl?: string;
   store?: Redux.Store;
-  breadcrumbMode?: BreadcrumbMode;
 }
 
 export default class OPDSBrowser extends React.Component<OPDSBrowserProps, any> {

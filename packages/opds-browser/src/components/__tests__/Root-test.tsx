@@ -9,7 +9,6 @@ import Collection from "../Collection";
 import UrlForm from "../UrlForm";
 import BookDetails from "../BookDetails";
 import SkipNavigationLink from "../SkipNavigationLink";
-import HeaderBrowserLink from "../HeaderBrowserLink";
 import BrowserLink, { BrowserLinkProps } from "../BrowserLink";
 import Search from "../Search";
 import LoadingIndicator from "../LoadingIndicator";
@@ -53,7 +52,6 @@ describe("Root", () => {
     expect(search.props().url).toBe(collectionData.search.url);
     expect(search.props().searchData).toBe(collectionData.search.searchData);
     expect(search.props().fetchSearchDescription).toBe(fetchSearchDescription);
-    expect(search.props().isTopLevel).toBe(true);
   });
 
   it("shows a collection if props include collectionData", () => {
@@ -127,14 +125,12 @@ describe("Root", () => {
       <Root collectionUrl={collectionUrl} setCollectionAndBook={setCollectionAndBook} />
     );
     wrapper.setProps({
-      collectionUrl: newCollection,
-      isTopLevel: true
+      collectionUrl: newCollection
     });
 
     expect(setCollectionAndBook.mock.calls.length).toBe(2);
     expect(setCollectionAndBook.mock.calls[1][0]).toBe(newCollection);
     expect(setCollectionAndBook.mock.calls[1][1]).toBeFalsy();
-    expect(setCollectionAndBook.mock.calls[1][2]).toBe(true);
   });
 
   it("shows loading message", () => {
@@ -369,11 +365,11 @@ describe("Root", () => {
       );
     });
 
-    it("renders the header with HeaderBrowserLink and top-level Search", () => {
+    it("renders the header with BrowserLink", () => {
       let header = wrapper.find(Header);
       let search = header.childAt(0);
-      expect(header.props().BrowserLink).toBe(HeaderBrowserLink);
-      expect(search.props().isTopLevel).toBe(true);
+      expect(header.props().BrowserLink).toBe(BrowserLink);
+      expect(search.type()).toBe(Search);
     });
   });
 
@@ -510,7 +506,7 @@ describe("Root", () => {
       collectionLink.simulate("click", { button: 0 });
 
       expect(push.mock.calls.length).toBe(1);
-      expect(push.mock.calls[0][0].pathname).toBe(context.pathFor(collectionUrl, null));
+      expect(push.mock.calls[0][0]).toBe(context.pathFor(collectionUrl, null));
     });
 
     it("uses router to show a book", () => {
@@ -520,7 +516,7 @@ describe("Root", () => {
       bookLink.simulate("click", { button: 0 });
 
       expect(push.mock.calls.length).toBe(1);
-      expect(push.mock.calls[0][0].pathname).toBe(context.pathFor(collectionUrl, bookUrl));
+      expect(push.mock.calls[0][0]).toBe(context.pathFor(collectionUrl, bookUrl));
     });
 
     it("uses router to hide a book", () => {
@@ -531,7 +527,7 @@ describe("Root", () => {
       collectionLink.simulate("click", { button: 0 });
 
       expect(push.mock.calls.length).toBe(1);
-      expect(push.mock.calls[0][0].pathname).toBe(context.pathFor(collectionUrl, null));
+      expect(push.mock.calls[0][0]).toBe(context.pathFor(collectionUrl, null));
     });
   });
 });

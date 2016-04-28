@@ -4,14 +4,10 @@ import { CollectionData, LinkData } from "../interfaces";
 import { subtleListStyle } from "./styles";
 
 export interface BreadcrumbsProps {
-  mode: BreadcrumbMode;
   history: LinkData[];
-  hierarchy: LinkData[];
   collection: CollectionData;
   showCurrentLink?: Boolean;
 }
-
-export type BreadcrumbMode = "history" | "hierarchy";
 
 export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> {
   render(): JSX.Element {

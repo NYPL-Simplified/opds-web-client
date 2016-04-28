@@ -5,7 +5,7 @@ export default (state: CollectionState, action: LoadCollectionAction) => {
   let newHistory;
   let oldHistory = state.history;
 
-  let { catalogRootLink, parentLink } = action.data
+  let { catalogRootLink, parentLink } = action.data;
   let previousUrl = state.data && (state.data.selfUrl || state.data.url);
 
   if (parentLink && parentLink.url && parentLink.text &&
@@ -17,7 +17,8 @@ export default (state: CollectionState, action: LoadCollectionAction) => {
       if (catalogRootLink && catalogRootLink.url !== action.url) {
         newHistory.push({
           text: catalogRootLink.text || "Catalog",
-          url: catalogRootLink.url
+          url: catalogRootLink.url,
+          id: null
         });
       }
 
@@ -25,7 +26,8 @@ export default (state: CollectionState, action: LoadCollectionAction) => {
           parentLink.url !== action.url) {
         newHistory.push({
           text: parentLink.text,
-          url: parentLink.url
+          url: parentLink.url,
+          id: null
         });
       }
   } else {

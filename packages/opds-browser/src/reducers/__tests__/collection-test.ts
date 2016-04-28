@@ -1,4 +1,5 @@
 jest.dontMock("../collection");
+jest.dontMock("../history");
 jest.dontMock("../../actions");
 
 import reducer from "../collection";
@@ -22,10 +23,20 @@ describe("collection reducer", () => {
   let currentState = {
     url: "some url",
     data: {
-      foo: "bar",
       id: "id",
       title: "title",
-      url: "url"
+      url: "url",
+      lanes: [],
+      books: [],
+      links: [],
+      catalogRootLink: {
+        url: "root url",
+        text: "root title"
+      },
+      parentLink: {
+        url: "parent url",
+        text: "parent title"
+      }
     },
     isFetching: false,
     isFetchingPage: false,
@@ -35,7 +46,7 @@ describe("collection reducer", () => {
 
   let fetchingState = {
     url: "some url",
-    data: { foo: "bar "},
+    data: null,
     isFetching: true,
     isFetchingPage: false,
     error: null,
@@ -44,7 +55,14 @@ describe("collection reducer", () => {
 
   let fetchingPageState = {
     url: "some url",
-    data: { foo: "bar ", books: []},
+    data: {
+      id: "id",
+      url: "some url",
+      title: "some title",
+      books: [],
+      lanes: [],
+      links: []
+    },
     isFetching: false,
     isFetchingPage: true,
     error: null,
@@ -164,15 +182,12 @@ describe("collection reducer", () => {
         id: "test id",
         url: "test url",
         title: "test title"
-      }],
-      data: Object.assign({}, currentState.data, {
-        catalogRootUrl: "root url"
-      })
+      }]
     });
     let data = {
       id: "some id",
       url: "root url",
-      title: "some title",
+      title: "root title",
       lanes: [],
       books: [],
       links: []
@@ -198,9 +213,12 @@ describe("collection reducer", () => {
     });
     let data = {
       id: "some id",
-      url: "root url",
+      url: "some url",
       title: "some title",
-      catalogRootUrl: "root url",
+      catalogRootLink: {
+        url: "new root url",
+        text: "new root title"
+      },
       lanes: [],
       books: [],
       links: []
@@ -216,7 +234,7 @@ describe("collection reducer", () => {
     expect(reducer(stateWithHistory, action)).toEqual(newState);
   });
 
-  it("should set history to catalog root on LOAD_COLLECTION if it's not there", () => {
+  it("should set history to root and parent on LOAD_COLLECTION if it's not there", () => {
     let data = {
       id: "some id",
       url: "some url",
@@ -224,7 +242,14 @@ describe("collection reducer", () => {
       lanes: [],
       books: [],
       links: [],
-      catalogRootUrl: "root"
+      catalogRootLink: {
+        url: "root url",
+        text: "root title"
+      },
+      parentLink: {
+        url: "parent url",
+        text: "parent title"
+      }
     };
     let action = actions.loadCollection(data, "some url");
     let newState = Object.assign({}, currentState, {
@@ -232,22 +257,26 @@ describe("collection reducer", () => {
       data: data,
       isFetching: false,
       history: [{
-        id: null,
-        text: "Catalog",
-        url: "root"
+        text: "root title",
+        url: "root url",
+        id: null
+      }, {
+        text: "parent title",
+        url: "parent url",
+        id: null
       }]
     });
 
     expect(reducer(currentState, action)).toEqual(newState);
   });
 
-  it("should set history to catalog root on LOAD_COLLECTION if it's top-level", () => {
+  it("should set history to root and parent if parent url is different than last history url", () => {
     let oldState = Object.assign({}, currentState, {
       history: [
         {
           id: null,
-          text: "Catalog",
-          url: "root"
+          text: "old root title",
+          url: "old root url"
         }, {
           id: "some other id",
           url: "some other url",
@@ -262,17 +291,28 @@ describe("collection reducer", () => {
       lanes: [],
       books: [],
       links: [],
-      catalogRootUrl: "root"
+      catalogRootLink: {
+        url: "root url",
+        text: "root title"
+      },
+      parentLink: {
+        url: "parent url",
+        text: "parent title"
+      }
     };
-    let action = actions.loadCollection(data, "some url", true);
+    let action = actions.loadCollection(data, "some url");
     let newState = Object.assign({}, oldState, {
       url: "some url",
       data: data,
       isFetching: false,
       history: [{
         id: null,
-        text: "Catalog",
-        url: "root"
+        text: "root title",
+        url: "root url"
+      }, {
+        id: null,
+        text: "parent title",
+        url: "parent url"
       }]
     });
 

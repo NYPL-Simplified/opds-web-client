@@ -5,7 +5,7 @@ import BookDetails from "./BookDetails";
 import LoadingIndicator from "./LoadingIndicator";
 import ErrorMessage from "./ErrorMessage";
 import Search from "./Search";
-import Breadcrumbs, { BreadcrumbMode } from "./Breadcrumbs";
+import Breadcrumbs from "./Breadcrumbs";
 import Collection from "./Collection";
 import UrlForm from "./UrlForm";
 import SkipNavigationLink from "./SkipNavigationLink";
@@ -41,7 +41,6 @@ export interface RootProps extends State {
   headerTitle?: string;
   Header?: new () => __React.Component<HeaderProps, any>;
   fetchPage?: (url: string) => Promise<any>;
-  breadcrumbMode?: BreadcrumbMode;
 }
 
 export class Root extends React.Component<RootProps, any> {
@@ -150,8 +149,6 @@ export class Root extends React.Component<RootProps, any> {
         { showBreadcrumbs &&
           <div className="breadcrumbsWrapper" style={breadcrumbsStyle}>
             <Breadcrumbs
-              mode={this.props.breadcrumbMode}
-              hierarchy={this.props.hierarchy}
               history={this.props.history}
               collection={this.props.collectionData}
               showCurrentLink={!!this.props.bookData} />

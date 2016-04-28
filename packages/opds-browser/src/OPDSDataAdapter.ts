@@ -70,7 +70,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
     return link instanceof OPDSAcquisitionLink && link.rel === OPDSAcquisitionLink.OPEN_ACCESS_REL;
   });
   if (openAccessLink) {
-    openAccessUrl = url.resolve(feedUrl, openAccessLink.href);
+    openAccessUrl = resolve(feedUrl, openAccessLink.href);
   }
 
   return <BookData>{

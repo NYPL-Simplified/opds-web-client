@@ -1,6 +1,5 @@
 jest.dontMock("../actions");
 
-
 let testData = {
   lanes: [],
   books: [{
@@ -46,17 +45,6 @@ describe("actions", () => {
         expect(err).toBe("test error");
         done();
       });
-    });
-
-    it("passes isTopLevel to loadCollection", (done) => {
-      let dispatch = jest.genMockFunction();
-      fetcher.resolve = true;
-
-      actions.fetchCollection(collectionUrl, true)(dispatch).then(data => {
-        expect(dispatch.mock.calls[2][0].type).toBe(actions.LOAD_COLLECTION);
-        expect(dispatch.mock.calls[2][0].isTopLevel).toBe(true);
-        done();
-      }).catch(err => done.fail(err));
     });
   });
 
