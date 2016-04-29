@@ -138,6 +138,46 @@ describe("collection reducer", () => {
     expect(reducer(currentState, action)).toEqual(newState);
   });
 
+  it("should handle LOAD_COLLECTION if new parent url is equal to previous colllection url", () => {
+    let stateWithHistory = Object.assign({}, currentState, {
+      history: [{
+        id: null,
+        url: "root url",
+        text: "root title"
+      }, {
+        id: "test id",
+        url: "test url",
+        text: "test title"
+      }]
+    });
+    let data = {
+      id: "some id",
+      url: "some url",
+      title: "some title",
+      lanes: [],
+      books: [],
+      links: [],
+      catalogRootLink: stateWithHistory.data.catalogRootLink,
+      parentLink: {
+        url: stateWithHistory.data.url,
+        text: stateWithHistory.data.title
+      }
+    };
+    let action = actions.loadCollection(data, "some url");
+    let newState = Object.assign({}, currentState, {
+      url: "some url",
+      data: data,
+      isFetching: false,
+      history: stateWithHistory.history.concat({
+        id: stateWithHistory.data.id,
+        text: stateWithHistory.data.title,
+        url: stateWithHistory.data.url
+      })
+    });
+
+    expect(reducer(stateWithHistory, action)).toEqual(newState);
+  });
+
   it("shouldn't change history on LOAD_COLLECTION with same id", () => {
     let data = {
       id: "id",
@@ -181,7 +221,7 @@ describe("collection reducer", () => {
       history: [{
         id: "test id",
         url: "test url",
-        title: "test title"
+        text: "test title"
       }]
     });
     let data = {
@@ -223,12 +263,16 @@ describe("collection reducer", () => {
       books: [],
       links: []
     };
-    let action = actions.loadCollection(data, "root url");
-    let newState = Object.assign({}, currentState, {
-      url: "root url",
+    let action = actions.loadCollection(data, "some url");
+    let newState = Object.assign({}, stateWithHistory, {
+      url: "some url",
       data: data,
       isFetching: false,
-      history: []
+      history: [{
+        id: null,
+        url: "new root url",
+        text: "new root title"
+      }]
     });
 
     expect(reducer(stateWithHistory, action)).toEqual(newState);

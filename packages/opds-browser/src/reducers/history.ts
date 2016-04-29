@@ -8,7 +8,7 @@ export default (state: CollectionState, action: LoadCollectionAction) => {
   let { catalogRootLink, parentLink } = action.data;
   let previousUrl = state.data && (state.data.selfUrl || state.data.url);
 
-  if (parentLink && parentLink.url && parentLink.text &&
+  if (parentLink && parentLink.url &&
       parentLink.url !== previousUrl) {
       // parent url is different than the previous url
       // so we only show the root and parent
