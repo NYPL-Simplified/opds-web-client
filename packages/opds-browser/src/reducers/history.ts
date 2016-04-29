@@ -56,7 +56,7 @@ export default (state: CollectionState, action: LoadCollectionAction) => {
       newHistory = newHistory.slice(0, newUrlIndex);
       return true;
     } else {
-
+      return false;
     }
   }
 
