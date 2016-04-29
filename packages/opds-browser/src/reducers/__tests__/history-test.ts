@@ -1,13 +1,167 @@
 jest.dontMock("../history");
 jest.dontMock("../../actions");
 
-import reducer from "../history";
+import reducer, { shouldClear, shorten, addLink, addCollection } from "../history";
 import DataFetcher from "../../DataFetcher";
 import ActionsCreator from "../../actions";
 import { adapter } from "../../OPDSDataAdapter";
 
 let fetcher = new DataFetcher(null, adapter);
 let actions = new ActionsCreator(fetcher);
+
+let rootLink = {
+  id: null,
+  url: "root url",
+  text: "root text"
+};
+
+let secondLink = {
+  id: "second id",
+  url: "second url",
+  text: "second text"
+};
+
+let thirdLink = {
+  id: "third id",
+  url: "third url",
+  text: "third text"
+};
+
+let fourthLink = {
+  id: "fourth id",
+  url: "fourth url",
+  text: "fourth text"
+};
+
+let longHistory = [
+  rootLink,
+  secondLink,
+  thirdLink
+];
+
+let basicCollection = {
+  id: "test id",
+  url: "test url",
+  title: "test title",
+  books: [],
+  lanes: [],
+  links: []
+};
+
+describe("shorten()", () => {
+  it("should shorten history if it contains new url", () => {
+    let newHistory = shorten(longHistory, longHistory[2].url);
+    expect(newHistory).toEqual([rootLink, secondLink]);
+  });
+
+  it("shouldn't shorten history if it doesn't contain new url", () => {
+    let newHistory = shorten(longHistory, "other url");
+    expect(newHistory).toBe(longHistory);
+  });
+});
+
+describe("shouldClear()", () => {
+  it("should return true if new parent is not old url", () => {
+    let newCollection = Object.assign(basicCollection, {
+      id: "new id",
+      url: "new url",
+      title: "new title",
+      parentLink: {
+        url: "other url",
+        text: "other text"
+      }
+    });
+    let clear = shouldClear(newCollection, newCollection.url, basicCollection);
+    expect(clear).toBe(true);
+  });
+
+  it("should return true if new collection is old root", () => {
+    let newCollection = Object.assign(basicCollection, {
+      id: "root id",
+      url: "root url",
+      title: "root title"
+    });
+    let oldCollection = Object.assign(basicCollection, {
+      id: "test id",
+      url: "test url",
+      title: "test title",
+      catalogRootLink: rootLink
+    });
+    let clear = shouldClear(newCollection, newCollection.url, oldCollection);
+    expect(clear).toBe(true);
+  });
+
+  it("should return true if new collection is new root", () => {
+    let newCollection = Object.assign(basicCollection, {
+      id: "test id",
+      url: "test url",
+      title: "test title",
+      catalogRootLink: {
+        url: "test url",
+        text: "some title"
+      }
+    });
+    let clear = shouldClear(newCollection, newCollection.url, basicCollection);
+    expect(clear).toBe(true);
+  });
+
+  it("should return true if new collection is old root", () => {
+    let newCollection = Object.assign(basicCollection, {
+      id: "root id",
+      url: "root url",
+      title: "root title",
+      catalogRootLink: {
+        url: "other url",
+        text: "other text"
+      }
+    });
+    let oldCollection = Object.assign(basicCollection, {
+      id: "test id",
+      url: "test url",
+      title: "test title",
+      catalogRootLink: rootLink
+    });
+    let clear = shouldClear(newCollection, newCollection.url, oldCollection);
+    expect(clear).toBe(true);
+  });
+
+  it("should return false otherwise", () => {
+    let newCollection = Object.assign(basicCollection, {
+      id: "other id",
+      url: "other url",
+      title: "other title",
+      catalogRootLink: rootLink,
+      parentLink: thirdLink
+    });
+    let oldCollection = Object.assign(basicCollection, {
+      id: "third id",
+      url: "third url",
+      title: "third title",
+      catalogRootLink: rootLink
+    });
+    let clear = shouldClear(newCollection, newCollection.url, oldCollection);
+    expect(clear).toBe(false);
+  });
+});
+
+describe("addLink", () => {
+  it("adds a link to a history", () => {
+    let newHistory = addLink(longHistory, fourthLink);
+    expect(newHistory).toEqual(longHistory.concat([fourthLink]));
+  });
+});
+
+describe("addCollection", () => {
+  it("adds a collection to a history", () => {
+    let collection = basicCollection;
+    let newHistory = addCollection(longHistory, collection);
+    expect(newHistory).toEqual(longHistory.concat([{
+      id: collection.id,
+      url: collection.url,
+      text: collection.title
+    }]));
+  });
+});
 
 describe("history reducer", () => {
   let initState = {
@@ -120,7 +274,6 @@ describe("history reducer", () => {
       links: []
     };
     let action = actions.loadCollection(data, "some other url");
-
     expect(reducer(currentState, action)).toEqual(currentState.history);
   });
 
@@ -141,7 +294,6 @@ describe("history reducer", () => {
       links: []
     };
     let action = actions.loadCollection(data, "root url");
-
     expect(reducer(stateWithHistory, action)).toEqual([]);
   });
 
@@ -255,21 +407,21 @@ describe("history reducer", () => {
       history: [{
         id: "first id",
         url: "first url",
-        title: "first title"
+        text: "first title"
       }, {
         id: "test id",
         url: "test url",
-        title: "test title"
+        text: "test title"
       }, {
         id: "other id",
         url: "other url",
-        title: "other title"
+        text: "other title"
       }]
     });
     let data = {
-      id: "some id",
+      id: "test id",
       url: "test url",
-      title: "some title",
+      title: "test title",
       lanes: [],
       books: [],
       links: []
@@ -278,7 +430,7 @@ describe("history reducer", () => {
     let newHistory = [{
       id: "first id",
       url: "first url",
-      title: "first title"
+      text: "first title"
     }];
 
     expect(reducer(stateWithHistory, action)).toEqual(newHistory);

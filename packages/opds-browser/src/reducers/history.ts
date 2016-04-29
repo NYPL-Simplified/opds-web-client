@@ -1,110 +1,111 @@
 import { CollectionState } from "./collection";
 import { LoadCollectionAction } from "../actions";
-import { LinkData} from "../interfaces";
+import { CollectionData, LinkData } from "../interfaces";
 
-export default (state: CollectionState, action: LoadCollectionAction) => {
-  let oldHistory = state.history.slice(0);
-  let oldCollection = state.data;
+function newCollectionIsOldCollection(newCollection: CollectionData, oldCollection: CollectionData): boolean {
+  return oldCollection && (
+           newCollection.url === oldCollection.url ||
+           newCollection.id === oldCollection.id
+         );
+}
+
+function newParentIsNotOldUrl(newCollection: CollectionData, oldUrl: string): boolean {
+  return newCollection.parentLink &&
+         newCollection.parentLink.url &&
+         newCollection.parentLink.url !== oldUrl;
+}
+
+function newCollectionIsOldRoot(newUrl: string, oldCollection: CollectionData): boolean {
+  return oldCollection &&
+         oldCollection.catalogRootLink &&
+         oldCollection.catalogRootLink.url &&
+         oldCollection.catalogRootLink.url === newUrl;
+}
+
+function newCollectionIsNewRoot(newCollection: CollectionData, newUrl: string): boolean {
+  return newCollection.catalogRootLink &&
+         newCollection.catalogRootLink.url === newUrl;
+}
+
+function newRootIsNotOldRoot(newCollection: CollectionData, oldCollection: CollectionData): boolean {
+  return newCollection.catalogRootLink &&
+         oldCollection.catalogRootLink &&
+         newCollection.catalogRootLink.url !== oldCollection.catalogRootLink.url;
+}
+
+export function shouldClear(newCollection: CollectionData, newUrl: string, oldCollection: CollectionData): boolean {
   let oldUrl = oldCollection && (oldCollection.selfUrl || oldCollection.url);
 
-  let newHistory = oldHistory;
-  let newCollection = action.data;
-  let newUrl = action.url;
+  return newParentIsNotOldUrl(newCollection, oldUrl) ||
+         newCollectionIsOldRoot(newUrl, oldCollection) ||
+         newCollectionIsNewRoot(newCollection, newUrl) ||
+         newRootIsNotOldRoot(newCollection, oldCollection);
+}
 
-  function newCollectionIsOldCollection() {
-    return oldCollection && (
-             newCollection.url === oldCollection.url ||
-             newCollection.id === oldCollection.id
-           );
+export function shorten(history: LinkData[], newUrl: string) {
+  let newUrlIndex = history.findIndex(link => link.url === newUrl);
+
+  if (newUrlIndex !== -1) {
+    return history.slice(0, newUrlIndex);
+  } else {
+    return history;
   }
+}
 
-  function newParentIsNotOldUrl() {
-    return newCollection.parentLink &&
-           newCollection.parentLink.url &&
-           newCollection.parentLink.url !== oldUrl;
-  }
+export function addLink(history: LinkData[], link: LinkData): LinkData[] {
+  return history.concat([Object.assign({ id: null }, link)]);
+}
 
-  function newCollectionIsOldRoot() {
-    return oldCollection &&
-           oldCollection.catalogRootLink &&
-           oldCollection.catalogRootLink.url &&
-           oldCollection.catalogRootLink.url === newUrl;
-  }
+export function addCollection(history: LinkData[], collection: CollectionData): LinkData[] {
+  return history.concat([{
+    id: collection.id,
+    url: collection.url,
+    text: collection.title
+  }]);
+}
 
-  function newCollectionIsNewRoot() {
-    return newCollection.catalogRootLink &&
-           newCollection.catalogRootLink.url === newUrl;
-  }
+export function clearWithRootAndParent(history: LinkData[], newCollection: CollectionData, newUrl: string): LinkData[] {
+  history = [];
 
-  function newRootIsNotOldRoot() {
-    return newCollection.catalogRootLink &&
-           oldCollection.catalogRootLink &&
-           newCollection.catalogRootLink.url !== oldCollection.catalogRootLink.url;
-  }
+  // if new url is new catalog root, history should remain clear
+  if (newCollection.catalogRootLink &&
+      newCollection.catalogRootLink.text &&
+      newCollection.catalogRootLink.url !== newUrl) {
+    history = addLink(history, newCollection.catalogRootLink);
 
-  function shouldClear() {
-    return newParentIsNotOldUrl() ||
-           newCollectionIsOldRoot() ||
-           newCollectionIsNewRoot() ||
-           newRootIsNotOldRoot();
-  }
-
-  function shorten() {
-    let newUrlIndex = oldHistory.findIndex(link => link.url === newUrl);
-
-    if (newUrlIndex !== -1) {
-      newHistory = newHistory.slice(0, newUrlIndex);
-      return true;
-    } else {
-      return false;
+    // only add parent if:
+    // there's a root
+    // there's a parent
+    // and parent isn't the root
+    // and parent isn't the new url
+    if (newCollection.parentLink &&
+        newCollection.parentLink.url !== newCollection.catalogRootLink.url &&
+        newCollection.parentLink.url !== newUrl) {
+      history = addLink(history, newCollection.parentLink);
     }
   }
 
-  function clear() {
-    newHistory = [];
-  }
+  return history;
+}
 
-  function add(link: LinkData) {
-    newHistory.push(Object.assign({ id: null }, link));
-  }
+export default (state: CollectionState, action: LoadCollectionAction) => {
+  let oldHistory = Object.freeze(state.history);
+  let oldCollection = Object.freeze(state.data);
+  let oldUrl = Object.freeze(oldCollection && (oldCollection.selfUrl || oldCollection.url));
 
-  function addRootAndParent() {
-    // if new url is new catalog root, history should remain clear
-    if (newCollection.catalogRootLink &&
-        newCollection.catalogRootLink.text &&
-        newCollection.catalogRootLink.url !== newUrl) {
-      add(newCollection.catalogRootLink);
+  let newHistory = oldHistory.slice(0);
+  let newCollection = Object.freeze(action.data);
+  let newUrl = Object.freeze(action.url);
 
-      // only add parent if:
-      // there's a root
-      // there's a parent
-      // and parent isn't the root
-      // and parent isn't the new url
-      if (newCollection.parentLink &&
-          newCollection.parentLink.url !== newCollection.catalogRootLink.url &&
-          newCollection.parentLink.url !== newUrl) {
-        add(newCollection.parentLink);
-      }
+  if (shouldClear(newCollection, newUrl, oldCollection)) {
+    newHistory = clearWithRootAndParent(newHistory, newCollection, newUrl);
+  } else {
+    let newHistoryCopy = newHistory.slice(0);
+    newHistory = shorten(newHistoryCopy, newUrl);
+
+    if (oldCollection && newHistory === newHistoryCopy && !newCollectionIsOldCollection(newCollection, oldCollection)) {
+      newHistory = addCollection(newHistory, oldCollection);
     }
-  }
-
-  function addOldCollection() {
-    if (oldCollection) {
-      newHistory.push({
-        id: oldCollection.id,
-        url: oldCollection.url,
-        text: oldCollection.title
-      });
-    }
-  }
-
-  // MAIN LOGIC BELOW
-
-  if (shouldClear()) {
-    clear();
-    addRootAndParent();
-  } else if (!shorten() && !newCollectionIsOldCollection()) {
-    addOldCollection();
   }
 
   return newHistory;
