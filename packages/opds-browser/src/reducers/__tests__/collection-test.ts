@@ -270,7 +270,7 @@ describe("collection reducer", () => {
     expect(reducer(currentState, action)).toEqual(newState);
   });
 
-  it("should set history to root and parent if parent url is different than last history url", () => {
+  it("should set history to root and parent on LOAD_COLLECTION if parent url is different than last history url", () => {
     let oldState = Object.assign({}, currentState, {
       history: [
         {

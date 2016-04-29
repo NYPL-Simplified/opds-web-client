@@ -23,7 +23,6 @@ export function mapStateToProps(state, ownProps) {
     error: (state.browser.collection.error || state.browser.book.error),
     bookData: state.browser.book.data || ownProps.bookData,
     history: state.browser.collection.history,
-    hierarchy: state.browser.collection.hierarchy,
     loadedCollectionUrl: state.browser.collection.url,
     loadedBookUrl: state.browser.book.url,
     collectionUrl: ownProps.collectionUrl,
