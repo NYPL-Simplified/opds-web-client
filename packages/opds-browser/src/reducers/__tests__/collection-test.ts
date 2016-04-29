@@ -197,25 +197,6 @@ describe("collection reducer", () => {
     expect(reducer(currentState, action)).toEqual(newState);
   });
 
-  it("shouldn't change history on LOAD_COLLECTION with same title", () => {
-    let data = {
-      id: "some id",
-      url: "some url",
-      title: "title",
-      lanes: [],
-      books: [],
-      links: []
-    };
-    let action = actions.loadCollection(data, "some other url");
-    let newState = Object.assign({}, currentState, {
-      url: "some other url",
-      data: data,
-      isFetching: false
-    });
-
-    expect(reducer(currentState, action)).toEqual(newState);
-  });
-
   it("should clear history on LOAD_COLLECTION with the old catalog root", () => {
     let stateWithHistory = Object.assign({}, currentState, {
       history: [{
@@ -411,11 +392,12 @@ describe("collection reducer", () => {
       books: [],
       links: []
     };
-    let action = actions.loadCollection(data, "some other url");
-    let newState = Object.assign({}, currentState, {
-      url: "some other url",
+    let action = actions.loadCollection(data, "some url");
+    let newState = Object.assign({}, errorState, {
+      url: "some url",
       data: data,
-      isFetching: false
+      isFetching: false,
+      error: null
     });
 
     expect(reducer(errorState, action)).toEqual(newState);
