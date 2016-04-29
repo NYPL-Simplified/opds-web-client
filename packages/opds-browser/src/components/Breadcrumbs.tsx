@@ -24,7 +24,7 @@ export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> 
     return (
         <ol className="breadcrumb" style={{ fontSize: "1.2em", height: "40px" }} aria-label="breadcrumbs" role="navigation">
           { this.props.history && this.props.history.map(breadcrumb =>
-            <li key={breadcrumb.id}>
+            <li key={breadcrumb.url}>
               <BrowserLink
                 collectionUrl={breadcrumb.url}
                 bookUrl={null}>
