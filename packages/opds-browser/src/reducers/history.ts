@@ -9,47 +9,29 @@ function newCollectionIsOldCollection(newCollection: CollectionData, oldCollecti
          );
 }
 
-function newParentIsNotOldUrl(newCollection: CollectionData, oldUrl: string): boolean {
-  return newCollection.parentLink &&
-         newCollection.parentLink.url &&
-         newCollection.parentLink.url !== oldUrl;
-}
-
-function newCollectionIsOldRoot(newUrl: string, oldCollection: CollectionData): boolean {
+function newCollectionIsOldRoot(newCollection: CollectionData, oldCollection: CollectionData): boolean {
   return oldCollection &&
          oldCollection.catalogRootLink &&
          oldCollection.catalogRootLink.url &&
-         oldCollection.catalogRootLink.url === newUrl;
+         oldCollection.catalogRootLink.url === newCollection.url;
 }
 
-function newCollectionIsNewRoot(newCollection: CollectionData, newUrl: string): boolean {
+function newCollectionIsNewRoot(newCollection: CollectionData): boolean {
   return newCollection.catalogRootLink &&
-         newCollection.catalogRootLink.url === newUrl;
+         newCollection.catalogRootLink.url === newCollection.url;
 }
 
 function newRootIsNotOldRoot(newCollection: CollectionData, oldCollection: CollectionData): boolean {
-  return newCollection.catalogRootLink &&
+  return oldCollection &&
+         newCollection.catalogRootLink &&
          oldCollection.catalogRootLink &&
          newCollection.catalogRootLink.url !== oldCollection.catalogRootLink.url;
 }
 
-export function shouldClear(newCollection: CollectionData, newUrl: string, oldCollection: CollectionData): boolean {
-  let oldUrl = oldCollection && (oldCollection.selfUrl || oldCollection.url);
-
-  return newParentIsNotOldUrl(newCollection, oldUrl) ||
-         newCollectionIsOldRoot(newUrl, oldCollection) ||
-         newCollectionIsNewRoot(newCollection, newUrl) ||
+export function shouldClear(newCollection: CollectionData, oldCollection: CollectionData): boolean {
+  return newCollectionIsOldRoot(newCollection, oldCollection) ||
+         newCollectionIsNewRoot(newCollection) ||
          newRootIsNotOldRoot(newCollection, oldCollection);
-}
-
-export function shorten(history: LinkData[], newUrl: string) {
-  let newUrlIndex = history.findIndex(link => link.url === newUrl);
-
-  if (newUrlIndex !== -1) {
-    return history.slice(0, newUrlIndex);
-  } else {
-    return history;
-  }
 }
 
 export function addLink(history: LinkData[], link: LinkData): LinkData[] {
@@ -64,48 +46,29 @@ export function addCollection(history: LinkData[], collection: CollectionData): 
   }]);
 }
 
-export function clearWithRootAndParent(history: LinkData[], newCollection: CollectionData, newUrl: string): LinkData[] {
-  history = [];
+export function shouldAddRoot(newCollection: CollectionData) {
+  return newCollection.catalogRootLink && newCollection.catalogRootLink.text && !newCollectionIsNewRoot(newCollection);
+}
 
-  // if new url is new catalog root, history should remain clear
-  if (newCollection.catalogRootLink &&
-      newCollection.catalogRootLink.text &&
-      newCollection.catalogRootLink.url !== newUrl) {
-    history = addLink(history, newCollection.catalogRootLink);
-
-    // only add parent if:
-    // there's a root
-    // there's a parent
-    // and parent isn't the root
-    // and parent isn't the new url
-    if (newCollection.parentLink &&
-        newCollection.parentLink.url !== newCollection.catalogRootLink.url &&
-        newCollection.parentLink.url !== newUrl) {
-      history = addLink(history, newCollection.parentLink);
-    }
-  }
-
-  return history;
+export function onlyRoot(newCollection:  CollectionData) {
+  return addLink([], newCollection.catalogRootLink);
 }
 
 export default (state: CollectionState, action: LoadCollectionAction) => {
-  let oldHistory = Object.freeze(state.history);
-  let oldCollection = Object.freeze(state.data);
-  let oldUrl = Object.freeze(oldCollection && (oldCollection.selfUrl || oldCollection.url));
-
-  let newHistory = oldHistory.slice(0);
+  let newHistory = state.history.slice(0);
   let newCollection = Object.freeze(action.data);
-  let newUrl = Object.freeze(action.url);
+  let oldCollection = Object.freeze(state.data);
 
-  if (shouldClear(newCollection, newUrl, oldCollection)) {
-    newHistory = clearWithRootAndParent(newHistory, newCollection, newUrl);
-  } else {
-    let newHistoryCopy = newHistory.slice(0);
-    newHistory = shorten(newHistoryCopy, newUrl);
+  if (shouldClear(newCollection, oldCollection)) {
+    newHistory = [];
+  }
 
-    if (oldCollection && newHistory === newHistoryCopy && !newCollectionIsOldCollection(newCollection, oldCollection)) {
-      newHistory = addCollection(newHistory, oldCollection);
-    }
+  if (newHistory.length === 0 && shouldAddRoot(newCollection)) {
+    newHistory = onlyRoot(newCollection);
+  }
+
+  if (oldCollection && !newCollectionIsOldCollection(newCollection, oldCollection)) {
+    newHistory = addCollection(newHistory, oldCollection);
   }
 
   return newHistory;

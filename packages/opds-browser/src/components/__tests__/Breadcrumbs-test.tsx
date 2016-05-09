@@ -11,6 +11,7 @@ import { LinkData } from "../../interfaces";
 describe("Breadcrumbs", () => {
   let history: LinkData[];
   let collectionData = ungroupedCollectionData;
+  let bookData = collectionData.books[0];
 
   beforeEach(() => {
     history = [{
@@ -26,7 +27,13 @@ describe("Breadcrumbs", () => {
 
   it("shows breadcrumbs with bootstrap classes", () => {
     let wrapper = shallow(
-      <Breadcrumbs collection={collectionData} history={history} />
+      <Breadcrumbs
+        BrowserLink={BrowserLink}
+        history={history}
+        hierarchy={[]}
+        collection={collectionData}
+        book={null}
+        />
     );
 
     let list = wrapper.find("ol");
@@ -42,9 +49,12 @@ describe("Breadcrumbs", () => {
   it("links to current selection if specified", () => {
     let wrapper = shallow(
       <Breadcrumbs
-        collection={collectionData}
+        BrowserLink={BrowserLink}
         history={history}
-        showCurrentLink={true} />
+        hierarchy={[]}
+        collection={collectionData}
+        book={bookData}
+        />
     );
 
     let links = wrapper.find<BrowserLinkProps>(BrowserLink);

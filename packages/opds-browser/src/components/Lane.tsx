@@ -21,6 +21,7 @@ export default class Lane extends React.Component<LaneProps, any> {
       margin: 0,
       listStyleType: "none"
     };
+    console.log(this.props.lane.url);
 
     return (
       <div className="lane">

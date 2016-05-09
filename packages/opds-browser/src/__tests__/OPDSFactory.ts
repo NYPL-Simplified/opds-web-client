@@ -1,5 +1,6 @@
 import {
   OPDSAcquisitionLink,
+  OPDSCollectionLink,
   OPDSArtworkLink,
   OPDSFacetLink,
   SearchLink,
@@ -21,6 +22,10 @@ required arguments for properties we aren't testing.
 
 export function acquisitionLink(props: any): OPDSAcquisitionLink {
   return new OPDSAcquisitionLink(<OPDSAcquisitionLink>props);
+}
+
+export function collectionLink(props: any): OPDSCollectionLink {
+  return new OPDSCollectionLink(<OPDSCollectionLink>props);
 }
 
 export function artworkLink(props: any): OPDSArtworkLink {

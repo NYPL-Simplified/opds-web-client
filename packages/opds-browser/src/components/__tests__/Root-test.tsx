@@ -15,7 +15,7 @@ import LoadingIndicator from "../LoadingIndicator";
 import ErrorMessage from "../ErrorMessage";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 import buildStore from "../../store";
-import { CollectionData, BookData } from "../../interfaces";
+import { CollectionData, BookData, LinkData } from "../../interfaces";
 import { mockRouterContext } from "./routing";
 
 
@@ -172,7 +172,7 @@ describe("Root", () => {
   });
 
   it("shows breadcrumbs", () => {
-    let history = [{
+    let history: LinkData[] = [{
       id: "2nd id",
       text: "2nd title",
       url: "2nd url"
@@ -187,7 +187,11 @@ describe("Root", () => {
     );
 
     let breadcrumbs = wrapper.find(Breadcrumbs);
-    expect(breadcrumbs.props().history).toBe(history);
+    let links = history.concat([{
+      url: ungroupedCollectionData.url,
+      text: ungroupedCollectionData.title
+    }]);
+    expect(breadcrumbs.props().links).toEqual(links);
   });
 
   describe("provided a BookDetailsContainer", () => {

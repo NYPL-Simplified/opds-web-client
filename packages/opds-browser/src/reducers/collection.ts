@@ -1,5 +1,6 @@
 import { CollectionData, LinkData, FetchErrorData } from "../interfaces";
 import history from "./history";
+import hierarchy from "./hierarchy";
 
 export interface CollectionState {
   url: string;
@@ -8,6 +9,7 @@ export interface CollectionState {
   isFetchingPage: boolean;
   error: FetchErrorData;
   history: LinkData[];
+  hierarchy: LinkData[];
 }
 
 const initialState: CollectionState = {
@@ -16,7 +18,8 @@ const initialState: CollectionState = {
   isFetching: false,
   isFetchingPage: false,
   error: null,
-  history: []
+  history: [],
+  hierarchy: []
 };
 
 const collection = (state = initialState, action) => {
@@ -40,6 +43,7 @@ const collection = (state = initialState, action) => {
         isFetching: false,
         error: null,
         history: history(state, action),
+        hierarchy: hierarchy(state.hierarchy, action)
       });
 
     case "CLEAR_COLLECTION":
@@ -47,7 +51,8 @@ const collection = (state = initialState, action) => {
         data: null,
         url: null,
         error: null,
-        history: state.history.slice(0, -1)
+        history: state.history.slice(0, -1),
+        hierarchy: state.hierarchy.slice(0, -1)
       });
 
     case "FETCH_PAGE_REQUEST":

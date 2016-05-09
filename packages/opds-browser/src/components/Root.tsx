@@ -5,12 +5,12 @@ import BookDetails from "./BookDetails";
 import LoadingIndicator from "./LoadingIndicator";
 import ErrorMessage from "./ErrorMessage";
 import Search from "./Search";
-import Breadcrumbs from "./Breadcrumbs";
+import Breadcrumbs, { BreadcrumbsProps } from "./Breadcrumbs";
 import Collection from "./Collection";
 import UrlForm from "./UrlForm";
 import SkipNavigationLink from "./SkipNavigationLink";
 import BrowserLink from "./BrowserLink";
-import { State, NavigateContext } from "../interfaces";
+import { CollectionData, BookData, LinkData, State, NavigateContext } from "../interfaces";
 
 export interface HeaderProps extends React.Props<any> {
   BrowserLink: typeof BrowserLink;
@@ -27,7 +27,6 @@ export interface RootProps extends State {
   collectionUrl?: string;
   bookUrl?: string;
   proxyUrl?: string;
-  BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
   dispatch?: any;
   setCollectionAndBook?: (collectionUrl: string, bookUrl: string) => void;
   clearCollection?: () => void;
@@ -39,8 +38,15 @@ export interface RootProps extends State {
   retryCollectionAndBook?: () => Promise<any>;
   pageTitleTemplate?: (collectionTitle: string, bookTitle: string) => string;
   headerTitle?: string;
-  Header?: new () => __React.Component<HeaderProps, any>;
   fetchPage?: (url: string) => Promise<any>;
+  Header?: new() => __React.Component<HeaderProps, any>;
+  BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
+  breadcrumbsProps?: (
+    history: LinkData[],
+    hierarchy: LinkData[],
+    collection: CollectionData,
+    book: BookData
+  ) => BreadcrumbsProps;
 }
 
 export class Root extends React.Component<RootProps, any> {
@@ -55,18 +61,38 @@ export class Root extends React.Component<RootProps, any> {
     let BookDetailsContainer = this.props.BookDetailsContainer;
     let Header = this.props.Header;
 
+    let breadcrumbsProps = this.props.breadcrumbsProps ?
+      this.props.breadcrumbsProps(
+        this.props.history,
+        this.props.hierarchy,
+        this.props.collectionData,
+        this.props.bookData
+      ) : {
+        links: this.props.history.length === 0 ?
+          [] :
+          this.props.history.concat(
+            this.props.collectionData ?
+            [{
+              url: this.props.collectionData.url,
+              text: this.props.collectionData.title
+            }] :
+            []
+          ),
+        linkToCurrent: !!this.props.bookData
+      };
+
     let headerTitle = this.props.headerTitle || (this.props.collectionData ? this.props.collectionData.title : null);
 
     let showCollection = this.props.collectionData;
     let showBook = this.props.bookData;
     let showBookWrapper = this.props.bookUrl || this.props.bookData;
     let showUrlForm = !this.props.collectionUrl && !this.props.bookUrl;
-    let showBreadcrumbs = showCollection && (this.props.bookData || this.props.history && this.props.history.length > 0);
+    let showBreadcrumbs = showCollection && breadcrumbsProps.links && breadcrumbsProps.links.length > 0;
 
     let padding = 10;
     let headerHeight = 50;
-    let navHeight = showBreadcrumbs ? 40 : 0;
-    let marginTop = headerHeight + navHeight;
+    let breadcrumbsHeight = showBreadcrumbs ? 40 : 0;
+    let marginTop = headerHeight + breadcrumbsHeight;
 
     let headerStyle = {
       padding: `${padding}px`,
@@ -148,10 +174,7 @@ export class Root extends React.Component<RootProps, any> {
 
         { showBreadcrumbs &&
           <div className="breadcrumbsWrapper" style={breadcrumbsStyle}>
-            <Breadcrumbs
-              history={this.props.history}
-              collection={this.props.collectionData}
-              showCurrentLink={!!this.props.bookData} />
+            <Breadcrumbs {...breadcrumbsProps} />
           </div>
         }
 

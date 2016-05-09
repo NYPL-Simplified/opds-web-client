@@ -3,6 +3,9 @@ jest.dontMock("../../actions");
 jest.setMock("../history", {
   default: (state, action) => state.history
 });
+jest.setMock("../hierarchy", {
+  default: (state, action) => state
+});
 
 import reducer from "../collection";
 import DataFetcher from "../../DataFetcher";
@@ -19,7 +22,8 @@ describe("collection reducer", () => {
     isFetching: false,
     isFetchingPage: false,
     error: null,
-    history: []
+    history: [],
+    hierarchy: []
   };
 
   let currentState = {
@@ -43,7 +47,8 @@ describe("collection reducer", () => {
     isFetching: false,
     isFetchingPage: false,
     error: null,
-    history: []
+    history: [],
+    hierarchy: []
   };
 
   let fetchingState = {
@@ -52,7 +57,8 @@ describe("collection reducer", () => {
     isFetching: true,
     isFetchingPage: false,
     error: null,
-    history: []
+    history: [],
+    hierarchy: []
   };
 
   let fetchingPageState = {
@@ -68,7 +74,8 @@ describe("collection reducer", () => {
     isFetching: false,
     isFetchingPage: true,
     error: null,
-    history: []
+    history: [],
+    hierarchy: []
   };
 
   let errorState = {
@@ -81,7 +88,8 @@ describe("collection reducer", () => {
       response: "test error",
       url: "some url"
     },
-    history: []
+    history: [],
+    hierarchy: []
   };
 
   it("should return the initial state", () => {
