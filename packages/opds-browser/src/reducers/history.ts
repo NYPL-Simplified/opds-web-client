@@ -59,15 +59,17 @@ export default (state: CollectionState, action: LoadCollectionAction) => {
   let newCollection = Object.freeze(action.data);
   let oldCollection = Object.freeze(state.data);
 
+  let cleared = false;
   if (shouldClear(newCollection, oldCollection)) {
     newHistory = [];
+    cleared = true;
   }
 
   if (newHistory.length === 0 && shouldAddRoot(newCollection)) {
     newHistory = onlyRoot(newCollection);
   }
 
-  if (oldCollection && !newCollectionIsOldCollection(newCollection, oldCollection)) {
+  if (!cleared && oldCollection && !newCollectionIsOldCollection(newCollection, oldCollection)) {
     newHistory = addCollection(newHistory, oldCollection);
   }
 

@@ -68,7 +68,7 @@ export class Root extends React.Component<RootProps, any> {
         this.props.collectionData,
         this.props.bookData
       ) : {
-        links: this.props.history.length === 0 ?
+        links: !this.props.history || this.props.history.length === 0 ?
           [] :
           this.props.history.concat(
             this.props.collectionData ?

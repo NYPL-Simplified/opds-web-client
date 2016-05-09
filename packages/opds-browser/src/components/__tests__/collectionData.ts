@@ -50,7 +50,15 @@ let groupedCollectionData: CollectionData = {
     }
   ],
   books: [],
-  links: []
+  links: [],
+  catalogRootLink: {
+    url: "root url",
+    text: "root title"
+  },
+  parentLink: {
+    url: "parent url",
+    text: "parent title"
+  }
 };
 
 // created ungrouped version of data by moving each lane's books directly into the collection

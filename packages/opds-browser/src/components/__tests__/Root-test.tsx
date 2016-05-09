@@ -479,29 +479,37 @@ describe("Root", () => {
     });
   });
 
-  describe("connected to store", () => {
+  describe("routing", () => {
     let store: Redux.Store;
     let collectionData: CollectionData = groupedCollectionData;
     let bookData: BookData = groupedCollectionData.lanes[0].books[0];
     let push, context, childContextTypes;
     let wrapper, root;
+    let history;
 
     beforeEach(() => {
-      store = buildStore();
       push = jest.genMockFunction();
       context = mockRouterContext(push);
       childContextTypes = {
         router: React.PropTypes.object.isRequired,
         pathFor: React.PropTypes.func.isRequired
       };
+      history = [{
+        text: "root title",
+        url: "root url"
+      }, {
+        text: "some title",
+        url: "some url"
+      }];
 
       wrapper = mount(
-        <ConnectedRoot
-          store={store}
-          collectionData={collectionData} />,
+        <Root
+          collectionData={collectionData}
+          bookData={null}
+          history={history}
+          />,
         { context, childContextTypes }
       ) as any;
-      root = wrapper.instance().getWrappedInstance();
     });
 
     it("uses router to show a collection", () => {
@@ -526,7 +534,7 @@ describe("Root", () => {
     it("uses router to hide a book", () => {
       wrapper.setProps({ bookData });
 
-      let collectionLink = wrapper.find(".currentCollectionLink").first();
+      let collectionLink = wrapper.find(".currentCollectionLink");
       let collectionUrl = collectionData.url;
       collectionLink.simulate("click", { button: 0 });
 
