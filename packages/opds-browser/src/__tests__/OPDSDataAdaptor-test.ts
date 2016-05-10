@@ -44,12 +44,15 @@ describe("OPDSDataAdapter", () => {
     let acquisitionFeed = factory.acquisitionFeed({
       id: "some id",
       entries: [entry],
+      unparsed: "unparsed data"
     });
 
     let collection = feedToCollection(acquisitionFeed, "");
     expect(collection.books.length).toEqual(0);
     expect(collection.lanes.length).toEqual(1);
     expect(collection.lanes[0].url).toEqual(collectionLink.href);
+    expect(collection.raw).toBe("unparsed data");
+
     let book = collection.lanes[0].books[0];
     expect(book.id).toEqual(entry.id);
     expect(book.title).toEqual(entry.title);
