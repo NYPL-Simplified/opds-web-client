@@ -6,8 +6,8 @@ import LoadingIndicator from "./LoadingIndicator";
 import ErrorMessage from "./ErrorMessage";
 import Search from "./Search";
 import Breadcrumbs, {
-  CreateBreadcrumbsProps,
-  defaultCreateBreadcrumbsProps
+  ComputeBreadcrumbs,
+  defaultComputeBreadcrumbs
 } from "./Breadcrumbs";
 import Collection from "./Collection";
 import UrlForm from "./UrlForm";
@@ -44,7 +44,7 @@ export interface RootProps extends State {
   fetchPage?: (url: string) => Promise<any>;
   Header?: new() => __React.Component<HeaderProps, any>;
   BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
-  createBreadcrumbsProps?: CreateBreadcrumbsProps;
+  computeBreadcrumbs?: ComputeBreadcrumbs;
 }
 
 export class Root extends React.Component<RootProps, any> {
@@ -59,13 +59,12 @@ export class Root extends React.Component<RootProps, any> {
     let BookDetailsContainer = this.props.BookDetailsContainer;
     let Header = this.props.Header;
 
-    let createBreadcrumbsProps = this.props.createBreadcrumbsProps || defaultCreateBreadcrumbsProps;
+    let computeBreadcrumbs = this.props.computeBreadcrumbs || defaultComputeBreadcrumbs;
     let { history, hierarchy, collectionData, bookData } = this.props;
-    let breadcrumbsProps = createBreadcrumbsProps({
+    let breadcrumbsLinks = computeBreadcrumbs({
       history,
       hierarchy,
-      collection: collectionData,
-      book: bookData
+      collection: collectionData
     });
 
     let headerTitle = this.props.headerTitle || (this.props.collectionData ? this.props.collectionData.title : null);
@@ -74,7 +73,7 @@ export class Root extends React.Component<RootProps, any> {
     let showBook = this.props.bookData;
     let showBookWrapper = this.props.bookUrl || this.props.bookData;
     let showUrlForm = !this.props.collectionUrl && !this.props.bookUrl;
-    let showBreadcrumbs = showCollection && breadcrumbsProps.links && breadcrumbsProps.links.length > 0;
+    let showBreadcrumbs = showCollection && breadcrumbsLinks.length > 0;
 
     let padding = 10;
     let headerHeight = 50;
@@ -161,7 +160,10 @@ export class Root extends React.Component<RootProps, any> {
 
         { showBreadcrumbs &&
           <div className="breadcrumbsWrapper" style={breadcrumbsStyle}>
-            <Breadcrumbs {...breadcrumbsProps} />
+            <Breadcrumbs
+              links={breadcrumbsLinks}
+              linkToCurrent={!!this.props.bookData}
+              />
           </div>
         }
 

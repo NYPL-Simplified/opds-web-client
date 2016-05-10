@@ -7,33 +7,27 @@ export interface BreadcrumbsProps extends React.Props<any> {
   linkToCurrent: boolean;
 }
 
-export interface DataForBreadcrumbsProps {
+export interface DataForBreadcrumbs {
   history: LinkData[];
   hierarchy: LinkData[];
   collection: CollectionData;
-  book: BookData;
 }
 
-export interface CreateBreadcrumbsProps {
-  (data: DataForBreadcrumbsProps): BreadcrumbsProps;
+export interface ComputeBreadcrumbs {
+  (data: DataForBreadcrumbs): LinkData[];
 }
 
-export function defaultCreateBreadcrumbsProps(data: DataForBreadcrumbsProps): BreadcrumbsProps {
-  let { history, hierarchy, collection, book } = data;
+export function defaultComputeBreadcrumbs(data: DataForBreadcrumbs): LinkData[] {
+  let history = data.history ? data.history.slice(0) : [];
 
-  return {
-    links: !history || history.length === 0 ?
-      [] :
-      history.concat(
-        collection ?
-        [{
-          url: collection.url,
-          text: collection.title
-        }] :
-        []
-      ),
-    linkToCurrent: !!book
-  };
+  if (data.collection) {
+    history.push({
+      url: data.collection.url,
+      text: data.collection.title
+    });
+  }
+
+  return history;
 }
 
 export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> {

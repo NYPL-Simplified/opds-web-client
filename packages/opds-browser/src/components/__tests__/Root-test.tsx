@@ -4,7 +4,7 @@ import * as React from "react";
 import { shallow, mount } from "enzyme";
 
 import ConnectedRoot, { Root, BookDetailsContainerProps, HeaderProps } from "../Root";
-import Breadcrumbs, { CreateBreadcrumbsProps } from "../Breadcrumbs";
+import Breadcrumbs, { ComputeBreadcrumbs } from "../Breadcrumbs";
 import Collection from "../Collection";
 import UrlForm from "../UrlForm";
 import BookDetails from "../BookDetails";
@@ -194,26 +194,20 @@ describe("Root", () => {
     expect(breadcrumbs.props().links).toEqual(links);
   });
 
-  it("uses createBreadcrumbsProps function to set breadcrumbs", () => {
+  it("uses custom computeBreadcrumbs function", () => {
     let breadcrumb = {
       url: "breacrumb url",
       text: "breadcrumb text"
     };
-    let createBreadcrumbsProps = (data) => {
-      return {
-        links: [breadcrumb],
-        linkToCurrent: true
-      };
-    };
+    let computeBreadcrumbs = (data) => [breadcrumb];
     let wrapper = shallow(
       <Root
         collectionData={ungroupedCollectionData}
-        createBreadcrumbsProps={createBreadcrumbsProps} />
+        computeBreadcrumbs={computeBreadcrumbs} />
     );
     let breadcrumbs = wrapper.find(Breadcrumbs);
 
     expect(breadcrumbs.props().links).toEqual([breadcrumb]);
-    expect(breadcrumbs.props().linkToCurrent).toEqual(true);
   });
 
   describe("provided a BookDetailsContainer", () => {

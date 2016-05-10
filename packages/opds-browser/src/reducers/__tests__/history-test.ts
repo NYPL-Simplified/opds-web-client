@@ -1,7 +1,7 @@
 jest.dontMock("../history");
 jest.dontMock("../../actions");
 
-import reducer, { shouldClear, addLink, addCollection } from "../history";
+import reducer, { shouldClear, shorten, addLink, addCollection } from "../history";
 import DataFetcher from "../../DataFetcher";
 import ActionsCreator from "../../actions";
 import { adapter } from "../../OPDSDataAdapter";
@@ -116,6 +116,18 @@ describe("shouldClear()", () => {
     });
     let clear = shouldClear(newCollection, oldCollection);
     expect(clear).toBe(false);
+  });
+});
+
+describe("shorten()", () => {
+  it("should shorten history if it contains new url", () => {
+    let newHistory = shorten(longHistory, longHistory[2].url);
+    expect(newHistory).toEqual([rootLink, secondLink]);
+  });
+
+  it("shouldn't shorten history if it doesn't contain new url", () => {
+    let newHistory = shorten(longHistory, "other url");
+    expect(newHistory).toBe(longHistory);
   });
 });
 
@@ -265,6 +277,40 @@ describe("history reducer", () => {
       id: null,
       url: "new root url",
       text: "new root title"
+    }];
+
+    expect(reducer(stateWithHistory, action)).toEqual(newHistory);
+  });
+
+  it("should remove history up to loaded url on LOAD_COLLECTION with url in history", () => {
+    let stateWithHistory = Object.assign({}, currentState, {
+      history: [{
+        id: "first id",
+        url: "first url",
+        text: "first title"
+      }, {
+        id: "test id",
+        url: "test url",
+        text: "test title"
+      }, {
+        id: "other id",
+        url: "other url",
+        text: "other title"
+      }]
+    });
+    let data = {
+      id: "test id",
+      url: "test url",
+      title: "test title",
+      lanes: [],
+      books: [],
+      links: []
+    };
+    let action = actions.loadCollection(data, "test url");
+    let newHistory = [{
+      id: "first id",
+      url: "first url",
+      text: "first title"
     }];
 
     expect(reducer(stateWithHistory, action)).toEqual(newHistory);

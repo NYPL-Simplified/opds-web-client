@@ -46,6 +46,16 @@ export function addCollection(history: LinkData[], collection: CollectionData): 
   }]);
 }
 
+export function shorten(history: LinkData[], newUrl: string) {
+  let newUrlIndex = history.findIndex(link => link.url === newUrl);
+
+  if (newUrlIndex !== -1) {
+    return history.slice(0, newUrlIndex);
+  } else {
+    return history;
+  }
+}
+
 export function shouldAddRoot(newCollection: CollectionData) {
   return newCollection.catalogRootLink && newCollection.catalogRootLink.text && !newCollectionIsNewRoot(newCollection);
 }
@@ -65,11 +75,15 @@ export default (state: CollectionState, action: LoadCollectionAction) => {
     cleared = true;
   }
 
+  let newHistoryCopy = newHistory.slice(0);
+  newHistory = shorten(newHistoryCopy, newCollection.url);
+  let shortened = newHistory !== newHistoryCopy;
+
   if (newHistory.length === 0 && shouldAddRoot(newCollection)) {
     newHistory = onlyRoot(newCollection);
   }
 
-  if (!cleared && oldCollection && !newCollectionIsOldCollection(newCollection, oldCollection)) {
+  if (!cleared && !shortened && oldCollection && !newCollectionIsOldCollection(newCollection, oldCollection)) {
     newHistory = addCollection(newHistory, oldCollection);
   }
 
