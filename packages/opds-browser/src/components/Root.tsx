@@ -5,7 +5,10 @@ import BookDetails from "./BookDetails";
 import LoadingIndicator from "./LoadingIndicator";
 import ErrorMessage from "./ErrorMessage";
 import Search from "./Search";
-import Breadcrumbs, { BreadcrumbsProps } from "./Breadcrumbs";
+import Breadcrumbs, {
+  CreateBreadcrumbsProps,
+  defaultCreateBreadcrumbsProps
+} from "./Breadcrumbs";
 import Collection from "./Collection";
 import UrlForm from "./UrlForm";
 import SkipNavigationLink from "./SkipNavigationLink";
@@ -41,12 +44,7 @@ export interface RootProps extends State {
   fetchPage?: (url: string) => Promise<any>;
   Header?: new() => __React.Component<HeaderProps, any>;
   BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
-  breadcrumbsProps?: (
-    history: LinkData[],
-    hierarchy: LinkData[],
-    collection: CollectionData,
-    book: BookData
-  ) => BreadcrumbsProps;
+  createBreadcrumbsProps?: CreateBreadcrumbsProps;
 }
 
 export class Root extends React.Component<RootProps, any> {
@@ -61,25 +59,14 @@ export class Root extends React.Component<RootProps, any> {
     let BookDetailsContainer = this.props.BookDetailsContainer;
     let Header = this.props.Header;
 
-    let breadcrumbsProps = this.props.breadcrumbsProps ?
-      this.props.breadcrumbsProps(
-        this.props.history,
-        this.props.hierarchy,
-        this.props.collectionData,
-        this.props.bookData
-      ) : {
-        links: !this.props.history || this.props.history.length === 0 ?
-          [] :
-          this.props.history.concat(
-            this.props.collectionData ?
-            [{
-              url: this.props.collectionData.url,
-              text: this.props.collectionData.title
-            }] :
-            []
-          ),
-        linkToCurrent: !!this.props.bookData
-      };
+    let createBreadcrumbsProps = this.props.createBreadcrumbsProps || defaultCreateBreadcrumbsProps;
+    let { history, hierarchy, collectionData, bookData } = this.props;
+    let breadcrumbsProps = createBreadcrumbsProps({
+      history,
+      hierarchy,
+      collection: collectionData,
+      book: bookData
+    });
 
     let headerTitle = this.props.headerTitle || (this.props.collectionData ? this.props.collectionData.title : null);
 

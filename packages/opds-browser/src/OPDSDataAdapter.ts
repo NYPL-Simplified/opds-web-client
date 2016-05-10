@@ -253,6 +253,7 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
   collection.catalogRootLink = OPDSLinkToLinkData(feedUrl, catalogRootLink);
   collection.parentLink = OPDSLinkToLinkData(feedUrl, parentLink);
   collection.selfUrl = selfUrl;
+  collection.raw = feed.unparsed;
   Object.freeze(collection);
   return collection;
 }

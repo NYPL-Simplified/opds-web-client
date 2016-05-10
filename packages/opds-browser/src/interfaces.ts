@@ -42,6 +42,7 @@ export interface CollectionData {
   selfUrl?: string;
   catalogRootLink?: LinkData;
   parentLink?: LinkData;
+  raw?: any;
 }
 
 export interface SearchData {

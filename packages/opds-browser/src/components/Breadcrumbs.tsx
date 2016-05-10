@@ -1,10 +1,39 @@
 import * as React from "react";
 import BrowserLink from "./BrowserLink";
-import { CollectionData, LinkData } from "../interfaces";
+import { CollectionData, BookData, LinkData } from "../interfaces";
 
 export interface BreadcrumbsProps extends React.Props<any> {
   links: LinkData[];
   linkToCurrent: boolean;
+}
+
+export interface DataForBreadcrumbsProps {
+  history: LinkData[];
+  hierarchy: LinkData[];
+  collection: CollectionData;
+  book: BookData;
+}
+
+export interface CreateBreadcrumbsProps {
+  (data: DataForBreadcrumbsProps): BreadcrumbsProps;
+}
+
+export function defaultCreateBreadcrumbsProps(data: DataForBreadcrumbsProps): BreadcrumbsProps {
+  let { history, hierarchy, collection, book } = data;
+
+  return {
+    links: !history || history.length === 0 ?
+      [] :
+      history.concat(
+        collection ?
+        [{
+          url: collection.url,
+          text: collection.title
+        }] :
+        []
+      ),
+    linkToCurrent: !!book
+  };
 }
 
 export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> {
