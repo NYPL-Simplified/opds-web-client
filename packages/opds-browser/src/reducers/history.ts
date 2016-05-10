@@ -74,4 +74,4 @@ export default (state: CollectionState, action: LoadCollectionAction) => {
   }
 
   return newHistory;
-}
+};
