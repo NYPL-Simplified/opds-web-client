@@ -102,7 +102,7 @@ describe("hierarchyComputeBreadcrumbs", () => {
     expect(hierarchyComputeBreadcrumbs(data, history)).toEqual([catalogRootLink, collectionLink]);
   });
 
-  it("return only root and parent if collection is same as root", () => {
+  it("return only parent and collection if collection is same as root", () => {
     let catalogRootLink = {
       url: "new url",
       text: "new title"
@@ -112,7 +112,7 @@ describe("hierarchyComputeBreadcrumbs", () => {
       text: "new parent text"
     };
     let data = Object.assign({}, collection, { catalogRootLink, parentLink });
-    expect(hierarchyComputeBreadcrumbs(data, history)).toEqual([catalogRootLink, parentLink]);
+    expect(hierarchyComputeBreadcrumbs(data, history)).toEqual([parentLink , collectionLink]);
   });
 
   it("return only root and parent if collection is same as parent", () => {

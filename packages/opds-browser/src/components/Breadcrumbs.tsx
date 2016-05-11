@@ -56,7 +56,7 @@ export function hierarchyComputeBreadcrumbs(collection: CollectionData, history:
 
   let { catalogRootLink, parentLink } = collection;
 
-  if (catalogRootLink) {
+  if (catalogRootLink && catalogRootLink.url !== collection.url) {
     links.push({
       text: catalogRootLink.text || "Catalog",
       url: catalogRootLink.url
@@ -64,19 +64,18 @@ export function hierarchyComputeBreadcrumbs(collection: CollectionData, history:
   }
 
   if (parentLink && parentLink.url && parentLink.text &&
-      (!catalogRootLink || parentLink.url !== catalogRootLink.url)) {
+      (!catalogRootLink || parentLink.url !== catalogRootLink.url) &&
+      parentLink.url !== collection.url) {
     links.push({
       text: parentLink.text,
       url: parentLink.url
     });
   }
 
-  if (!links.find(link => link.url === collection.url)) {
-    links.push({
-      url: collection.url,
-      text: collection.title
-    });
-  }
+  links.push({
+    url: collection.url,
+    text: collection.title
+  });
 
   return links;
 };
