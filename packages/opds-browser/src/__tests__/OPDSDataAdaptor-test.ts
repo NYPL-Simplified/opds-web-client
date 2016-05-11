@@ -24,7 +24,7 @@ describe("OPDSDataAdapter", () => {
     });
 
     let collectionLink = factory.collectionLink({
-      href: "collection link with spaces",
+      href: "collection%20url",
       rel: OPDSCollectionLink.REL,
       title: "collection title"
     });
@@ -154,7 +154,7 @@ describe("OPDSDataAdapter", () => {
 
   it("extracts search link", () => {
     let searchLink = factory.searchLink({
-      href: "url with spaces",
+      href: "search%20url",
     });
 
     let navigationFeed = factory.navigationFeed({

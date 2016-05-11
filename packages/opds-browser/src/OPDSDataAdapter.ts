@@ -20,8 +20,7 @@ import {
   SearchData
 } from "./interfaces";
 const sanitizeHtml = require("dompurify").sanitize;
-import { resolve as urlResolve } from "url";
-const resolve = (from, to) => decodeURIComponent(urlResolve(from, to));
+import { resolve } from "url";
 
 export function adapter(data: OPDSFeed|OPDSEntry, url: string): CollectionData|BookData {
   if (data instanceof OPDSFeed) {
