@@ -31,11 +31,11 @@ describe("Breadcrumbs", () => {
     let list = wrapper.find("ol");
     let links = wrapper.find(BrowserLink);
     expect(list.hasClass("breadcrumb")).toBe(true);
-    expect(links.length).toBe(1);
+    expect(links.length).toBe(2);
     expect(links.at(0).props().children).toContain("2nd title");
     expect(links.at(0).props().collectionUrl).toEqual("2nd url");
-    let current = wrapper.find(".currentCollection");
-    expect(current.length).toBe(1);
-    expect(current.text()).toBe("last title");
+    // last link is wrapped in <strong>
+    expect((links.at(1).props().children as any).props.children).toContain("last title");
+    expect(links.at(1).props().collectionUrl).toEqual("last url");
   });
 });

@@ -37,9 +37,6 @@ export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> 
       cursor: "pointer"
     };
 
-    let parentLinks = this.props.links.slice(0, -1);
-    let currentLink = this.props.links.slice(-1)[0];
-
     return (
         <ol className="breadcrumb" style={{ fontSize: "1.2em", height: "40px" }} aria-label="breadcrumbs" role="navigation">
           { this.props.links && this.props.links.map((link, i) =>

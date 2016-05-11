@@ -550,7 +550,7 @@ describe("Root", () => {
     it("uses router to hide a book", () => {
       wrapper.setProps({ bookData });
 
-      let collectionLink = wrapper.find(".currentCollectionLink");
+      let collectionLink = wrapper.find("ol.breadcrumb").find("a").last();
       let collectionUrl = collectionData.url;
       collectionLink.simulate("click", { button: 0 });
 
