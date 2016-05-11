@@ -60,11 +60,7 @@ export class Root extends React.Component<RootProps, any> {
     let Header = this.props.Header;
 
     let computeBreadcrumbs = this.props.computeBreadcrumbs || defaultComputeBreadcrumbs;
-    let breadcrumbsLinks = computeBreadcrumbs({
-      history: this.props.history,
-      hierarchy: this.props.hierarchy,
-      collection: this.props.collectionData
-    });
+    let breadcrumbsLinks = computeBreadcrumbs(this.props.collectionData, this.props.history);
 
     let headerTitle = this.props.headerTitle || (this.props.collectionData ? this.props.collectionData.title : null);
 

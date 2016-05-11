@@ -6,27 +6,8 @@ export interface BreadcrumbsProps extends React.Props<any> {
   links: LinkData[];
 }
 
-export interface DataForBreadcrumbs {
-  history: LinkData[];
-  hierarchy: LinkData[];
-  collection: CollectionData;
-}
-
 export interface ComputeBreadcrumbs {
-  (data: DataForBreadcrumbs): LinkData[];
-}
-
-export function defaultComputeBreadcrumbs(data: DataForBreadcrumbs): LinkData[] {
-  let history = data.history ? data.history.slice(0) : [];
-
-  if (data.collection) {
-    history.push({
-      url: data.collection.url,
-      text: data.collection.title
-    });
-  }
-
-  return history;
+  (collection: CollectionData, history: LinkData[]): LinkData[];
 }
 
 export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> {
@@ -53,3 +34,43 @@ export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> 
   }
 }
 
+export function defaultComputeBreadcrumbs(collection: CollectionData, history: LinkData[]): LinkData[] {
+  let links = history ? history.slice(0) : [];
+
+  if (collection) {
+    links.push({
+      url: collection.url,
+      text: collection.title
+    });
+  }
+
+  return links;
+}
+
+export function hierarchyComputeBreadcrumbs(collection: CollectionData, history: LinkData[]): LinkData[] {
+  let links = [];
+
+  if (!collection) {
+    return [];
+  }
+
+  let { catalogRootLink, parentLink } = collection;
+
+  if (catalogRootLink && catalogRootLink.url !== collection.url) {
+    links.push({
+      text: catalogRootLink.text || "Catalog",
+      url: catalogRootLink.url
+    });
+  }
+
+  if (parentLink && parentLink.url && parentLink.text &&
+      (!catalogRootLink || parentLink.url !== catalogRootLink.url) &&
+      parentLink.url !== collection.url) {
+    links.push({
+      text: parentLink.text,
+      url: parentLink.url
+    });
+  }
+
+  return links;
+};

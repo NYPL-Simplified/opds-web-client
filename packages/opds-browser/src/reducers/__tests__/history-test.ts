@@ -157,8 +157,7 @@ describe("history reducer", () => {
     isFetching: false,
     isFetchingPage: false,
     error: null,
-    history: [],
-    hierarchy: []
+    history: []
   };
 
   let currentState: CollectionState = {
@@ -182,8 +181,7 @@ describe("history reducer", () => {
     isFetching: false,
     isFetchingPage: false,
     error: null,
-    history: [],
-    hierarchy: []
+    history: []
   };
 
   let errorState: CollectionState = {
@@ -196,8 +194,7 @@ describe("history reducer", () => {
       response: "test error",
       url: "some url"
     },
-    history: [],
-    hierarchy: []
+    history: []
   };
 
   it("should handle LOAD_COLLECTION", () => {

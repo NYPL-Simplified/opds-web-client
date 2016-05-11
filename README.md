@@ -18,10 +18,9 @@ For an example of OPDS Browser in use as a standalone app, see the [demo server 
 - `bookUrl`: optional initial URL of an OPDS Entry to load. Default: `null`
 - `proxyUrl`: optional local proxy path to which all remote URLs will be posted. Default: `undefined`
 - `pageTitleTemplate(collectionTitle: string, bookTitle: string) => string`: optional function that accepts a collection and book title and returns an HTML page title. Default: `undefined`
-- `computeBreadcrumbs`: optional function for customizing breadcrumbs. It defaults to `defaultCreateBreadcrumbs` in [Breadcrumbs](packages/opds-browser/src/components/Breadcrumbs.tsx). It should return an array of link objects, each with `url` and `text` properties. Its only argument is an object with these properties:
-  - `history`: an array of link objects (each with `url` and `text` properties) that is appended every time the user navigates to a new collection
-  - `hierarchy`: an array of link objects (each with `url` and `text` properties) consisting of the current collection's catalog root and its parent link (rel="up", if present)
+- `computeBreadcrumbs`: optional function for customizing breadcrumbs. It defaults to `defaultComputeBreadcrumbs` in the [Breadcrumbs](packages/opds-browser/src/components/Breadcrumbs.tsx) module, and `hierarchyComputeBreacrumbs` is also available. It should return an array of link objects, each with `url` and `text` properties. Its accepts two arguments:
   - `collection`: object representing the current collection data (see `CollectionData` in the [interfaces file](packages/opds-browser/src/interfaces.ts))
+  - `history`: an array of link objects (each with `url` and `text` properties) that is appended every time the user navigates to a new collection
 
 ## React Component
 OPDSBrowser is also available as a reusable React component:
