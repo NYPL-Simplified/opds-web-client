@@ -49,19 +49,23 @@ describe("hierarchyComputeBreadcrumbs", () => {
     books: [],
     links: []
   };
+  let collectionLink = {
+    url: "new url",
+    text: "new title"
+  };
   let history = [];
 
-  it("returns empty without root or uplink", () => {
-    expect(hierarchyComputeBreadcrumbs(collection, history)).toEqual([]);
+  it("returns only collection link without root or parent", () => {
+    expect(hierarchyComputeBreadcrumbs(collection, history)).toEqual([collectionLink]);
   });
 
-  it("returns root if only root is present", () => {
+  it("returns root and collection if parent not present", () => {
     let catalogRootLink = {
       url: "new root url",
       text: "new root url"
     };
     let data = Object.assign({}, collection, { catalogRootLink });
-    expect(hierarchyComputeBreadcrumbs(data, history)).toEqual([catalogRootLink]);
+    expect(hierarchyComputeBreadcrumbs(data, history)).toEqual([catalogRootLink, collectionLink]);
   });
 
   it("provides default catalog root title", () => {
@@ -73,19 +77,19 @@ describe("hierarchyComputeBreadcrumbs", () => {
     expect(hierarchyComputeBreadcrumbs(data, history)).toEqual([{
       url: catalogRootLink.url,
       text: "Catalog"
-    }]);
+    }, collectionLink]);
   });
 
-  it("returns uplink if only uplink is present", () => {
+  it("returns only parent and collection if root not present", () => {
     let parentLink = {
       url: "new parent url",
       text: "new parent text"
     };
     let data = Object.assign({}, collection, { parentLink });
-    expect(hierarchyComputeBreadcrumbs(data, history)).toEqual([parentLink]);
+    expect(hierarchyComputeBreadcrumbs(data, history)).toEqual([parentLink, collectionLink]);
   });
 
-  it("returns only root if uplink is same as root", () => {
+  it("returns only root and collection if parent is same as root", () => {
     let catalogRootLink = {
       url: "new root url",
       text: "new root text"
@@ -95,6 +99,32 @@ describe("hierarchyComputeBreadcrumbs", () => {
       text: "new root text"
     };
     let data = Object.assign({}, collection, { catalogRootLink, parentLink });
-    expect(hierarchyComputeBreadcrumbs(data, history)).toEqual([catalogRootLink]);
+    expect(hierarchyComputeBreadcrumbs(data, history)).toEqual([catalogRootLink, collectionLink]);
+  });
+
+  it("return only root and parent if collection is same as root", () => {
+    let catalogRootLink = {
+      url: "new url",
+      text: "new title"
+    };
+    let parentLink = {
+      url: "new parent url",
+      text: "new parent text"
+    };
+    let data = Object.assign({}, collection, { catalogRootLink, parentLink });
+    expect(hierarchyComputeBreadcrumbs(data, history)).toEqual([catalogRootLink, parentLink]);
+  });
+
+  it("return only root and parent if collection is same as parent", () => {
+    let catalogRootLink = {
+      url: "new root url",
+      text: "new root text"
+    };
+    let parentLink = {
+      url: "new url",
+      text: "new title"
+    };
+    let data = Object.assign({}, collection, { catalogRootLink, parentLink });
+    expect(hierarchyComputeBreadcrumbs(data, history)).toEqual([catalogRootLink, parentLink]);
   });
 });
