@@ -385,7 +385,7 @@ describe("Root", () => {
       );
     });
 
-    it("renders the header with BrowserLink", () => {
+    it("renders the header with BrowserLink and Search", () => {
       let header = wrapper.find(Header);
       let search = header.childAt(0);
       expect(header.props().BrowserLink).toBe(BrowserLink);

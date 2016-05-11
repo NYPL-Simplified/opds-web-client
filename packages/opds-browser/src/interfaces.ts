@@ -39,7 +39,6 @@ export interface CollectionData {
   facetGroups?: FacetGroupData[];
   search?: SearchData;
   nextPageUrl?: string;
-  selfUrl?: string;
   catalogRootLink?: LinkData;
   parentLink?: LinkData;
   raw?: any;

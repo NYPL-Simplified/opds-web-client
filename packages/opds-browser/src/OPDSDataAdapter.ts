@@ -156,7 +156,6 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
   let nextPageUrl: string;
   let catalogRootLink: OPDSLink;
   let parentLink: OPDSLink;
-  let selfUrl: string;
 
   feed.entries.forEach(entry => {
     if (feed instanceof AcquisitionFeed) {
@@ -212,11 +211,6 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
       return (link instanceof OPDSCatalogRootLink);
     });
 
-    let selfLink = feed.links.find(link => link.rel === "self");
-    if (selfLink) {
-      selfUrl = resolve(feedUrl, selfLink.href);
-    }
-
     parentLink = feed.links.find(link => link.rel === "up");
   }
 
@@ -252,7 +246,6 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
   collection.nextPageUrl = nextPageUrl;
   collection.catalogRootLink = OPDSLinkToLinkData(feedUrl, catalogRootLink);
   collection.parentLink = OPDSLinkToLinkData(feedUrl, parentLink);
-  collection.selfUrl = selfUrl;
   collection.raw = feed.unparsed;
   Object.freeze(collection);
   return collection;
