@@ -79,12 +79,12 @@ export default (state: CollectionState, action: LoadCollectionAction) => {
   newHistory = shorten(newHistoryCopy, newCollection.url);
   let shortened = newHistory !== newHistoryCopy;
 
-  if (newHistory.length === 0 && shouldAddRoot(newCollection)) {
-    newHistory = onlyRoot(newCollection);
-  }
-
   if (!cleared && !shortened && oldCollection && !newCollectionIsOldCollection(newCollection, oldCollection)) {
     newHistory = addCollection(newHistory, oldCollection);
+  }
+
+  if (newHistory.length === 0 && shouldAddRoot(newCollection)) {
+    newHistory = onlyRoot(newCollection);
   }
 
   return newHistory;
