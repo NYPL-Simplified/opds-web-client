@@ -25,10 +25,7 @@ describe("Breadcrumbs", () => {
 
   it("shows links with bootstrap classes", () => {
     let wrapper = shallow(
-      <Breadcrumbs
-        links={data}
-        linkToCurrent={false}
-        />
+      <Breadcrumbs links={data} />
     );
 
     let list = wrapper.find("ol");
@@ -40,21 +37,5 @@ describe("Breadcrumbs", () => {
     let current = wrapper.find(".currentCollection");
     expect(current.length).toBe(1);
     expect(current.text()).toBe("last title");
-  });
-
-  it("links to current selection if specified", () => {
-    let wrapper = shallow(
-      <Breadcrumbs
-        links={data}
-        linkToCurrent={true}
-        />
-    );
-
-    let links = wrapper.find(BrowserLink);
-    let lastLink = links.last();
-    expect(links.length).toBe(data.length);
-    expect(lastLink.props().children).toContain("last title");
-    expect(lastLink.props().collectionUrl).toBe("last url");
-    expect(lastLink.hasClass("currentCollectionLink")).toBe(true);
   });
 });

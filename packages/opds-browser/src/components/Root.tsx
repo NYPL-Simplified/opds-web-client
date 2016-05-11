@@ -160,10 +160,7 @@ export class Root extends React.Component<RootProps, any> {
 
         { showBreadcrumbs &&
           <div className="breadcrumbsWrapper" style={breadcrumbsStyle}>
-            <Breadcrumbs
-              links={breadcrumbsLinks}
-              linkToCurrent={!!this.props.bookData}
-              />
+            <Breadcrumbs links={breadcrumbsLinks} />
           </div>
         }
 
