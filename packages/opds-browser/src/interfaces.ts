@@ -39,7 +39,9 @@ export interface CollectionData {
   facetGroups?: FacetGroupData[];
   search?: SearchData;
   nextPageUrl?: string;
-  catalogRootUrl?: string;
+  catalogRootLink?: LinkData;
+  parentLink?: LinkData;
+  raw?: any;
 }
 
 export interface SearchData {
@@ -52,9 +54,9 @@ export interface SearchData {
 }
 
 export interface LinkData {
-  id: string;
   text: string;
   url: string;
+  id?: string;
 }
 
 // these properties need to be optional because they're used by RootProps,

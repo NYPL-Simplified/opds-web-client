@@ -14,14 +14,10 @@ describe("BrowseLink", () => {
       id: "test-id",
       target: "_blank",
       collectionUrl: "test collection",
-      bookUrl: "test book",
-      isTopLevel: true
+      bookUrl: "test book"
     };
     let context = mockRouterContext();
-    let location = {
-      pathname: context.pathFor(props.collectionUrl, props.bookUrl),
-      state: { isTopLevel: true }
-    };
+    let location = context.pathFor(props.collectionUrl, props.bookUrl);
     let linkProps = Object.assign({}, Link.defaultProps, props, { to: location });
     let requiredRouterKeys = [
       "push", "createHref", "isActive", "replace",
@@ -47,8 +43,7 @@ describe("BrowseLink", () => {
       id: "test-id",
       target: "_blank",
       collectionUrl: "test collection",
-      bookUrl: "test book",
-      isTopLevel: false
+      bookUrl: "test book"
     };
     let context = mockRouterContext();
 

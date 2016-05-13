@@ -18,6 +18,9 @@ For an example of OPDS Browser in use as a standalone app, see the [demo server 
 - `bookUrl`: optional initial URL of an OPDS Entry to load. Default: `null`
 - `proxyUrl`: optional local proxy path to which all remote URLs will be posted. Default: `undefined`
 - `pageTitleTemplate(collectionTitle: string, bookTitle: string) => string`: optional function that accepts a collection and book title and returns an HTML page title. Default: `undefined`
+- `computeBreadcrumbs`: optional function for customizing breadcrumbs. It defaults to `defaultComputeBreadcrumbs` in the [Breadcrumbs](packages/opds-browser/src/components/Breadcrumbs.tsx) module, and `hierarchyComputeBreacrumbs` is also available. It should return an array of link objects, each with `url` and `text` properties. Its accepts two arguments:
+  - `collection`: object representing the current collection data (see `CollectionData` in the [interfaces file](packages/opds-browser/src/interfaces.ts))
+  - `history`: an array of link objects (each with `url` and `text` properties) that is appended every time the user navigates to a new collection
 
 ## React Component
 OPDSBrowser is also available as a reusable React component:
@@ -29,7 +32,6 @@ ReactDOM.render(
   <OPDSBrowser
     collectionUrl={this.props.collectionUrl}
     bookUrl={this.props.bookUrl}
-    isTopLevel={this.props.isTopLevel}
     pageTitleTemplate={this.pageTitleTemplate}
     BookDetailsContainer={BookDetailsContainer}
     Header={Header}
@@ -43,10 +45,10 @@ For an example of OPDS Browser in use as a React component, see [NYPL-Simplified
 
 - `collectionUrl`: optional URL of an OPDS Acquisition or Navigation feed to load. Default: `null`
 - `bookUrl`: optional URL of an OPDS Entry to load. Default: `null`
-- `isTopLevel`: optional boolean, if `true` and accompanying a `collectionUrl`, then in the breadcrumbs section of the browser the provided collection will be displayed immediately after the catalog root. If `false`, the provided collection will generally be added to the end of the existing breadcrumbs. Default: `false`
 - `pageTitleTemplate(collectionTitle: string, bookTitle: string) => string`: optional function that accepts a collection and book title and returns an HTML page title. Default: `undefined`
 - `Header`: optional custom React component class to render in place of OPDS Browser's default header. This `Header` will receive one prop, `BrowserLink` which should be used for links to collections or books that OPDS Browser should load, and one child, a `Search` component that will only be present when the loaded collection links to an Open Search Description document. Default: `undefined`
 - `BookDetailsContainer`: optional custom React component class to render in place of OPDS Browser's default `BookDetails` component. This `BookDetailsContainer` will receive three props: the current `collectionUrl` and `bookUrl`, and `refreshBrowser`, a function that can be called to refresh the collection and/or book. `BookDetailsContainer` will also receive the default rendered `BookDetails` component as a child. Default: `undefined`
+- `computeBreadcrumbs`: same as in "Standalone Config Options" above
 
 ### React Component Context
 

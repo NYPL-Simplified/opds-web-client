@@ -1,12 +1,13 @@
 import * as React from "react";
 import BrowserLink from "./BrowserLink";
-import { CollectionData, LinkData } from "../interfaces";
-import { subtleListStyle } from "./styles";
+import { CollectionData, BookData, LinkData } from "../interfaces";
 
-export interface BreadcrumbsProps {
-  history: LinkData[];
-  collection: CollectionData;
-  showCurrentLink?: Boolean;
+export interface BreadcrumbsProps extends React.Props<any> {
+  links: LinkData[];
+}
+
+export interface ComputeBreadcrumbs {
+  (collection: CollectionData, history: LinkData[]): LinkData[];
 }
 
 export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> {
@@ -17,35 +18,64 @@ export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> 
       cursor: "pointer"
     };
 
-    let currentCollectionStyle = {
-      fontWeight: "bold"
-    };
-
     return (
         <ol className="breadcrumb" style={{ fontSize: "1.2em", height: "40px" }} aria-label="breadcrumbs" role="navigation">
-          { this.props.history && this.props.history.map(breadcrumb =>
-            <li key={breadcrumb.id}>
+          { this.props.links && this.props.links.map((link, i) =>
+            <li key={link.url}>
               <BrowserLink
-                collectionUrl={breadcrumb.url}
+                collectionUrl={link.url}
                 bookUrl={null}>
-                { breadcrumb.text }
+                { i === this.props.links.length - 1 ? <strong>{link.text}</strong> : link.text }
               </BrowserLink>
             </li>
           ) }
-
-          <li className="currentCollection" style={currentCollectionStyle}>
-            { this.props.showCurrentLink ?
-              <BrowserLink
-                className="currentCollectionLink"
-                collectionUrl={this.props.collection.url}
-                bookUrl={null}>
-                {this.props.collection.title}
-              </BrowserLink> :
-              this.props.collection.title
-            }
-          </li>
         </ol>
     );
   }
 }
 
+export function defaultComputeBreadcrumbs(collection: CollectionData, history: LinkData[]): LinkData[] {
+  let links = history ? history.slice(0) : [];
+
+  if (collection) {
+    links.push({
+      url: collection.url,
+      text: collection.title
+    });
+  }
+
+  return links;
+}
+
+export function hierarchyComputeBreadcrumbs(collection: CollectionData, history: LinkData[]): LinkData[] {
+  let links = [];
+
+  if (!collection) {
+    return [];
+  }
+
+  let { catalogRootLink, parentLink } = collection;
+
+  if (catalogRootLink && catalogRootLink.url !== collection.url) {
+    links.push({
+      text: catalogRootLink.text || "Catalog",
+      url: catalogRootLink.url
+    });
+  }
+
+  if (parentLink && parentLink.url && parentLink.text &&
+      (!catalogRootLink || parentLink.url !== catalogRootLink.url) &&
+      parentLink.url !== collection.url) {
+    links.push({
+      text: parentLink.text,
+      url: parentLink.url
+    });
+  }
+
+  links.push({
+    url: collection.url,
+    text: collection.title
+  });
+
+  return links;
+};

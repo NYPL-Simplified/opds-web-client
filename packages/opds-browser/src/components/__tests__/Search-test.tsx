@@ -76,7 +76,7 @@ describe("Search", () => {
     let push = jest.genMockFunction();
     let context = mockRouterContext(push);
     let wrapper = mount(
-      <Search searchData={searchData} navigate={navigate} isTopLevel={true} />,
+      <Search searchData={searchData} navigate={navigate} />,
       { context }
     );
 
@@ -88,8 +88,7 @@ describe("Search", () => {
     form.simulate("submit");
 
     expect(push.mock.calls.length).toEqual(1);
-    expect(push.mock.calls[0][0].pathname).toBe(context.pathFor("test template", null));
-    expect(push.mock.calls[0][0].state.isTopLevel).toBe(true);
+    expect(push.mock.calls[0][0]).toBe(context.pathFor("test template", null));
   });
 
   it("escapes search terms", () => {
@@ -114,6 +113,6 @@ describe("Search", () => {
     form.simulate("submit");
 
     expect(push.mock.calls.length).toEqual(1);
-    expect(push.mock.calls[0][0].pathname).toBe(context.pathFor("Ind%C3%A9sirable template", null));
+    expect(push.mock.calls[0][0]).toBe(context.pathFor("Ind%C3%A9sirable template", null));
   });
 });

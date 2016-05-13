@@ -1,6 +1,12 @@
 import DataFetcher from "./DataFetcher";
 import { CollectionData, BookData, SearchData, FetchErrorData } from "./interfaces";
 
+export interface LoadCollectionAction {
+  type: string;
+  data: CollectionData;
+  url?: string;
+}
+
 export default class ActionCreator {
   private fetcher: DataFetcher;
 
@@ -28,13 +34,13 @@ export default class ActionCreator {
     this.fetcher = fetcher;
   }
 
-  fetchCollection(url: string, isTopLevel: boolean = false) {
+  fetchCollection(url: string) {
     return (dispatch) => {
       dispatch(this.fetchCollectionRequest(url));
       return new Promise((resolve, reject) => {
         this.fetcher.fetchOPDSData(url).then((data: CollectionData) => {
           dispatch(this.fetchCollectionSuccess());
-          dispatch(this.loadCollection(data, url, isTopLevel));
+          dispatch(this.loadCollection(data, url));
           resolve(data);
         }).catch(err => {
           dispatch(this.fetchCollectionFailure(err));
@@ -99,8 +105,8 @@ export default class ActionCreator {
     return { type: this.FETCH_COLLECTION_FAILURE, error };
   }
 
-  loadCollection(data: CollectionData, url?: string, isTopLevel: boolean = false) {
-    return { type: this.LOAD_COLLECTION, data, url, isTopLevel };
+  loadCollection(data: CollectionData, url?: string): LoadCollectionAction {
+    return { type: this.LOAD_COLLECTION, data, url };
   }
 
   fetchPageRequest(url: string) {

@@ -5,12 +5,12 @@ import {
   AcquisitionFeed,
   OPDSCollectionLink,
   OPDSFacetLink,
+  OPDSLink,
   SearchLink,
   CompleteEntryLink,
   OPDSCatalogRootLink,
   OPDSAcquisitionLink
 } from "opds-feed-parser";
-import * as url from "url";
 import {
   CollectionData,
   LaneData,
@@ -20,6 +20,7 @@ import {
   SearchData
 } from "./interfaces";
 const sanitizeHtml = require("dompurify").sanitize;
+import { resolve } from "url";
 
 export function adapter(data: OPDSFeed|OPDSEntry, url: string): CollectionData|BookData {
   if (data instanceof OPDSFeed) {
@@ -49,17 +50,17 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
   if (artworkLinks.length > 0) {
     imageThumbLink = artworkLinks.find(link => link.rel === "http://opds-spec.org/image/thumbnail");
     if (imageThumbLink) {
-      imageUrl = url.resolve(feedUrl, imageThumbLink.href);
+      imageUrl = resolve(feedUrl, imageThumbLink.href);
     } else {
       console.log("WARNING: using possibly large image for " + entry.title);
-      imageUrl = url.resolve(feedUrl, artworkLinks[0].href);
+      imageUrl = resolve(feedUrl, artworkLinks[0].href);
     }
   }
 
   let detailUrl;
   let detailLink = entry.links.find(link => link instanceof CompleteEntryLink);
   if (detailLink) {
-    detailUrl = url.resolve(feedUrl, detailLink.href);
+    detailUrl = resolve(feedUrl, detailLink.href);
   }
 
   let categories = entry.categories.filter(category => !!category.label).map(category => category.label);
@@ -69,7 +70,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
     return link instanceof OPDSAcquisitionLink && link.rel === OPDSAcquisitionLink.OPEN_ACCESS_REL;
   });
   if (openAccessLink) {
-    openAccessUrl = url.resolve(feedUrl, openAccessLink.href);
+    openAccessUrl = resolve(feedUrl, openAccessLink.href);
   }
 
   return <BookData>{
@@ -91,7 +92,7 @@ function entryToLink(entry: OPDSEntry, feedUrl: string): LinkData {
   let href: string;
   let links = entry.links;
   if (links.length > 0) {
-     href = url.resolve(feedUrl, links[0].href);
+     href = resolve(feedUrl, links[0].href);
   }
   return <LinkData>{
     id: entry.id,
@@ -127,6 +128,17 @@ function formatDate(inputDate: string): string {
   return `${month} ${day}, ${year}`;
 }
 
+function OPDSLinkToLinkData(feedUrl, link: OPDSLink = null) {
+  if (!link || !link.href) {
+    return null;
+  }
+
+  return {
+    url: resolve(feedUrl, link.href),
+    text: link.title
+  };
+}
+
 export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionData {
   let collection = <CollectionData>{
     id: feed.id,
@@ -141,7 +153,8 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
   let facetGroups: FacetGroupData[] = [];
   let search: SearchData;
   let nextPageUrl: string;
-  let catalogRootUrl: string;
+  let catalogRootLink: OPDSLink;
+  let parentLink: OPDSLink;
 
   feed.entries.forEach(entry => {
     if (feed instanceof AcquisitionFeed) {
@@ -153,7 +166,7 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
         if (laneIndex[title]) {
           laneIndex[title].books.push(book);
         } else {
-          laneIndex[title] = { title, url: url.resolve(feedUrl, href), books: [book] };
+          laneIndex[title] = { title, url: resolve(feedUrl, href), books: [book] };
           // use array of titles to preserve lane order
           laneTitles.push(title);
         }
@@ -183,28 +196,27 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
       return (link instanceof SearchLink);
     });
     if (searchLink) {
-      search = {url: url.resolve(feedUrl, searchLink.href)};
+      search = {url: resolve(feedUrl, searchLink.href)};
     }
 
     let nextPageLink = feed.links.find(link => {
       return (link.rel === "next");
     });
     if (nextPageLink) {
-      nextPageUrl = url.resolve(feedUrl, nextPageLink.href);
+      nextPageUrl = resolve(feedUrl, nextPageLink.href);
     }
 
-    let catalogRootLink = feed.links.find(link => {
+    catalogRootLink = feed.links.find(link => {
       return (link instanceof OPDSCatalogRootLink);
     });
-    if (catalogRootLink) {
-      catalogRootUrl = url.resolve(feedUrl, catalogRootLink.href);
-    }
+
+    parentLink = feed.links.find(link => link.rel === "up");
   }
 
   facetGroups = facetLinks.reduce((result, link) => {
     let groupLabel = link.facetGroup;
     let label = link.title;
-    let href = url.resolve(feedUrl, link.href);
+    let href = resolve(feedUrl, link.href);
     let active = link.activeFacet;
     let facet = { label, href, active };
     let newResult = [];
@@ -231,7 +243,9 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
   collection.facetGroups = facetGroups;
   collection.search = search;
   collection.nextPageUrl = nextPageUrl;
-  collection.catalogRootUrl = catalogRootUrl;
+  collection.catalogRootLink = OPDSLinkToLinkData(feedUrl, catalogRootLink);
+  collection.parentLink = OPDSLinkToLinkData(feedUrl, parentLink);
+  collection.raw = feed.unparsed;
   Object.freeze(collection);
   return collection;
 }

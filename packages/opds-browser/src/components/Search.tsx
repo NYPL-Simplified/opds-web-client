@@ -3,7 +3,6 @@ import { SearchData, NavigateContext } from "../interfaces";
 
 export interface SearchProps extends SearchData, React.HTMLProps<Search> {
   fetchSearchDescription?: (url: string) => void;
-  isTopLevel?: boolean;
 }
 
 export default class Search extends React.Component<SearchProps, any> {
@@ -48,12 +47,7 @@ export default class Search extends React.Component<SearchProps, any> {
   onSubmit(event) {
     let searchTerms = encodeURIComponent(this.refs["input"]["value"]);
     let url = this.props.searchData.template(searchTerms);
-    this.context.router.push({
-      pathname: this.context.pathFor(url, null),
-      state: {
-        isTopLevel: this.props.isTopLevel
-      }
-    });
+    this.context.router.push(this.context.pathFor(url, null));
     event.preventDefault();
   }
 }

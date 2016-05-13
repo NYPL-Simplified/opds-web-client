@@ -33,11 +33,9 @@ class OPDSBrowserApp {
       },
       render: function() {
         let { collectionUrl, bookUrl } = this.props.params;
-        let isTopLevel = (this.props.location.state && this.props.location.state.isTopLevel) || false;
         let mergedProps: RootProps = Object.assign(config, {
           collectionUrl: collectionUrl ? decodeURIComponent(collectionUrl) : null,
-          bookUrl: bookUrl ? decodeURIComponent(bookUrl) : null,
-          isTopLevel
+          bookUrl: bookUrl ? decodeURIComponent(bookUrl) : null
         });
         return <OPDSBrowser {...mergedProps} />;
       }

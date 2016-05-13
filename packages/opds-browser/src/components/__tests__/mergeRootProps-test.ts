@@ -101,13 +101,6 @@ describe("mergeRootProps", () => {
         done();
       }).catch(err => done.fail(err));
     });
-
-    it("passes isTopLevel to fetchCollection", (done) => {
-      props.setCollection("new collection url", true).then(data => {
-        expect(fetchCollection.mock.calls[0][1]).toBe(true);
-        done();
-      }).catch(err => done.fail(err));
-    });
   });
 
   describe("setBook", () => {
@@ -254,13 +247,6 @@ describe("mergeRootProps", () => {
         expect(fetchBook.mock.calls.length).toBe(0);
         expect(clearCollection.mock.calls.length).toBe(1);
         expect(clearBook.mock.calls.length).toBe(1);
-        done();
-      }).catch(err => done.fail(err));
-    });
-
-    it("passes isTopLevel to fetchCollection", (done) => {
-      props.setCollectionAndBook("new collection url", null, true).then(data => {
-        expect(fetchCollection.mock.calls[0][1]).toBe(true);
         done();
       }).catch(err => done.fail(err));
     });

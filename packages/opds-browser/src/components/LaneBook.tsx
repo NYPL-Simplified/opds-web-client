@@ -7,10 +7,9 @@ export default class LaneBook extends Book {
     let bookStyle = {
       whiteSpace: "normal", // overrides laneBooks style
       marginRight: "10px",
-      marginBottom: "10px",
       overflow: "hidden",
       display: "inline-block",
-      height: "240px"
+      height: "250px"
     };
 
     let bookCoverStyle = {

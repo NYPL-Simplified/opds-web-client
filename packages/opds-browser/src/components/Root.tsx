@@ -5,15 +5,18 @@ import BookDetails from "./BookDetails";
 import LoadingIndicator from "./LoadingIndicator";
 import ErrorMessage from "./ErrorMessage";
 import Search from "./Search";
-import Breadcrumbs from "./Breadcrumbs";
+import Breadcrumbs, {
+  ComputeBreadcrumbs,
+  defaultComputeBreadcrumbs
+} from "./Breadcrumbs";
 import Collection from "./Collection";
 import UrlForm from "./UrlForm";
 import SkipNavigationLink from "./SkipNavigationLink";
-import HeaderBrowserLink from "./HeaderBrowserLink";
-import { State, NavigateContext } from "../interfaces";
+import BrowserLink from "./BrowserLink";
+import { CollectionData, BookData, LinkData, State, NavigateContext } from "../interfaces";
 
 export interface HeaderProps extends React.Props<any> {
-  BrowserLink: typeof HeaderBrowserLink;
+  BrowserLink: typeof BrowserLink;
 }
 
 export interface BookDetailsContainerProps extends React.Props<any> {
@@ -27,9 +30,8 @@ export interface RootProps extends State {
   collectionUrl?: string;
   bookUrl?: string;
   proxyUrl?: string;
-  BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
   dispatch?: any;
-  setCollectionAndBook?: (collectionUrl: string, bookUrl: string, isToplevel?: boolean) => void;
+  setCollectionAndBook?: (collectionUrl: string, bookUrl: string) => void;
   clearCollection?: () => void;
   clearBook?: () => void;
   fetchSearchDescription?: (url: string) => void;
@@ -39,9 +41,10 @@ export interface RootProps extends State {
   retryCollectionAndBook?: () => Promise<any>;
   pageTitleTemplate?: (collectionTitle: string, bookTitle: string) => string;
   headerTitle?: string;
-  Header?: new () => __React.Component<HeaderProps, any>;
   fetchPage?: (url: string) => Promise<any>;
-  isTopLevel?: boolean;
+  Header?: new() => __React.Component<HeaderProps, any>;
+  BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
+  computeBreadcrumbs?: ComputeBreadcrumbs;
 }
 
 export class Root extends React.Component<RootProps, any> {
@@ -56,18 +59,21 @@ export class Root extends React.Component<RootProps, any> {
     let BookDetailsContainer = this.props.BookDetailsContainer;
     let Header = this.props.Header;
 
+    let computeBreadcrumbs = this.props.computeBreadcrumbs || defaultComputeBreadcrumbs;
+    let breadcrumbsLinks = computeBreadcrumbs(this.props.collectionData, this.props.history);
+
     let headerTitle = this.props.headerTitle || (this.props.collectionData ? this.props.collectionData.title : null);
 
     let showCollection = this.props.collectionData;
     let showBook = this.props.bookData;
     let showBookWrapper = this.props.bookUrl || this.props.bookData;
     let showUrlForm = !this.props.collectionUrl && !this.props.bookUrl;
-    let showBreadcrumbs = showCollection && (this.props.bookData || this.props.history && this.props.history.length > 0);
+    let showBreadcrumbs = showCollection && breadcrumbsLinks.length > 0;
 
     let padding = 10;
     let headerHeight = 50;
-    let navHeight = showBreadcrumbs ? 40 : 0;
-    let marginTop = headerHeight + navHeight;
+    let breadcrumbsHeight = showBreadcrumbs ? 40 : 0;
+    let marginTop = headerHeight + breadcrumbsHeight;
 
     let headerStyle = {
       padding: `${padding}px`,
@@ -121,13 +127,12 @@ export class Root extends React.Component<RootProps, any> {
 
         { Header ?
           <Header
-            BrowserLink={HeaderBrowserLink}>
+            BrowserLink={BrowserLink}>
             { this.props.collectionData && this.props.collectionData.search &&
               <Search
                 url={this.props.collectionData.search.url}
                 searchData={this.props.collectionData.search.searchData}
                 fetchSearchDescription={this.props.fetchSearchDescription}
-                isTopLevel={true}
                 />
             }
           </Header> :
@@ -142,7 +147,6 @@ export class Root extends React.Component<RootProps, any> {
                   url={this.props.collectionData.search.url}
                   searchData={this.props.collectionData.search.searchData}
                   fetchSearchDescription={this.props.fetchSearchDescription}
-                  isTopLevel={true}
                   />
               }
             </div>
@@ -151,10 +155,7 @@ export class Root extends React.Component<RootProps, any> {
 
         { showBreadcrumbs &&
           <div className="breadcrumbsWrapper" style={breadcrumbsStyle}>
-            <Breadcrumbs
-              history={this.props.history}
-              collection={this.props.collectionData}
-              showCurrentLink={!!this.props.bookData} />
+            <Breadcrumbs links={breadcrumbsLinks} />
           </div>
         }
 
@@ -205,7 +206,7 @@ export class Root extends React.Component<RootProps, any> {
 
   componentWillReceiveProps(nextProps: RootProps) {
     if (nextProps.collectionUrl !== this.props.collectionUrl || nextProps.bookUrl !== this.props.bookUrl) {
-      this.props.setCollectionAndBook(nextProps.collectionUrl, nextProps.bookUrl, nextProps.isTopLevel);
+      this.props.setCollectionAndBook(nextProps.collectionUrl, nextProps.bookUrl);
     }
 
     this.updatePageTitle(nextProps);
