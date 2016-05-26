@@ -1,6 +1,6 @@
 import * as React from "react";
 import LaneBook from "./LaneBook";
-import BrowserLink from "./BrowserLink";
+import CatalogLink from "./CatalogLink";
 import { LaneData } from "../interfaces";
 
 export interface LaneProps {
@@ -25,11 +25,11 @@ export default class Lane extends React.Component<LaneProps, any> {
     return (
       <div className="lane">
         <h2 style={{ clear: "both", cursor: "pointer" }}>
-          <BrowserLink
+          <CatalogLink
             className="laneTitle"
             collectionUrl={this.props.lane.url}>
             {this.props.lane.title}
-          </BrowserLink>
+          </CatalogLink>
         </h2>
 
         { this.props.lane.books &&

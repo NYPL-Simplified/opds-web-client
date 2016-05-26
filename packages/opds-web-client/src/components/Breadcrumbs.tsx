@@ -1,5 +1,5 @@
 import * as React from "react";
-import BrowserLink from "./BrowserLink";
+import CatalogLink from "./CatalogLink";
 import { CollectionData, BookData, LinkData } from "../interfaces";
 
 export interface BreadcrumbsProps extends React.Props<any> {
@@ -22,11 +22,11 @@ export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> 
         <ol className="breadcrumb" style={{ fontSize: "1.2em", height: "40px" }} aria-label="breadcrumbs" role="navigation">
           { this.props.links && this.props.links.map((link, i) =>
             <li key={link.url}>
-              <BrowserLink
+              <CatalogLink
                 collectionUrl={link.url}
                 bookUrl={null}>
                 { i === this.props.links.length - 1 ? <strong>{link.text}</strong> : link.text }
-              </BrowserLink>
+              </CatalogLink>
             </li>
           ) }
         </ol>

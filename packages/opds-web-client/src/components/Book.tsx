@@ -1,5 +1,5 @@
 import * as React from "react";
-import BrowserLink from "./BrowserLink";
+import CatalogLink from "./CatalogLink";
 import { BookData } from "../interfaces";
 
 export interface BookProps {
@@ -45,14 +45,14 @@ export default class Book extends React.Component<BookProps, any> {
 
     return (
       <div className="book" style={ bookStyle }>
-        <BrowserLink
+        <CatalogLink
           collectionUrl={this.props.collectionUrl}
           bookUrl={this.props.book.url || this.props.book.id}
           style={{ color: "black", textDecoration: "none" }}>
           <img src={this.props.book.imageUrl} style={bookCoverStyle} alt=""/>
-        </BrowserLink>
+        </CatalogLink>
         <div className="bookInfo" style={ bookInfoStyle }>
-          <BrowserLink
+          <CatalogLink
             collectionUrl={this.props.collectionUrl}
             bookUrl={this.props.book.url || this.props.book.id}
             style={{ color: "black", textDecoration: "none" }}>
@@ -66,7 +66,7 @@ export default class Book extends React.Component<BookProps, any> {
                     ""
                 }
               </div>
-          </BrowserLink>
+          </CatalogLink>
           { this.props.book.openAccessUrl &&
             <div className="bookLinks" style={bookLinksStyle}>
               <a href={this.props.book.openAccessUrl} className="btn btn-default">Get</a>

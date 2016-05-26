@@ -9,7 +9,7 @@ import Collection from "../Collection";
 import UrlForm from "../UrlForm";
 import BookDetails from "../BookDetails";
 import SkipNavigationLink from "../SkipNavigationLink";
-import BrowserLink, { BrowserLinkProps } from "../BrowserLink";
+import CatalogLink, { CatalogLinkProps } from "../CatalogLink";
 import Search from "../Search";
 import LoadingIndicator from "../LoadingIndicator";
 import ErrorMessage from "../ErrorMessage";
@@ -238,7 +238,7 @@ describe("Root", () => {
       let child = container.children().first();
       expect(container.props().bookUrl).toBe(bookData.url);
       expect(container.props().collectionUrl).toBe("test collection");
-      expect(container.props().refreshBrowser).toBe(refresh);
+      expect(container.props().refreshCatalog).toBe(refresh);
       expect(child.type()).toBe(BookDetails);
       expect(child.props().book).toBe(bookData);
     });
@@ -363,13 +363,13 @@ describe("Root", () => {
 
     class Header extends React.Component<HeaderProps, any> {
       render(): JSX.Element {
-        let TestBrowserLink = this.props.BrowserLink;
+        let TestCatalogLink = this.props.CatalogLink;
         return (
           <div className="header">
             { this.props.children }
-            <TestBrowserLink collectionUrl="test url">
+            <TestCatalogLink collectionUrl="test url">
               test
-            </TestBrowserLink>
+            </TestCatalogLink>
           </div>
         );
       }
@@ -385,10 +385,10 @@ describe("Root", () => {
       );
     });
 
-    it("renders the header with BrowserLink and Search", () => {
+    it("renders the header with CatalogLink and Search", () => {
       let header = wrapper.find(Header);
       let search = header.childAt(0);
-      expect(header.props().BrowserLink).toBe(BrowserLink);
+      expect(header.props().CatalogLink).toBe(CatalogLink);
       expect(search.type()).toBe(Search);
     });
   });
@@ -550,7 +550,7 @@ describe("Root", () => {
     it("uses router to hide a book", () => {
       wrapper.setProps({ bookData });
 
-      let collectionLink = wrapper.find("ol.breadcrumb").find(BrowserLink).last();
+      let collectionLink = wrapper.find("ol.breadcrumb").find(CatalogLink).last();
       let collectionUrl = collectionData.url;
       collectionLink.simulate("click", { button: 0 });
 

@@ -17,14 +17,14 @@ export function findBookInCollection(collection: CollectionData, book: string) {
 
 export function mapStateToProps(state, ownProps) {
   return {
-    collectionData: state.browser.collection.data || ownProps.collectionData,
-    isFetching: (state.browser.collection.isFetching || state.browser.book.isFetching),
-    isFetchingPage: state.browser.collection.isFetchingPage,
-    error: (state.browser.collection.error || state.browser.book.error),
-    bookData: state.browser.book.data || ownProps.bookData,
-    history: state.browser.collection.history,
-    loadedCollectionUrl: state.browser.collection.url,
-    loadedBookUrl: state.browser.book.url,
+    collectionData: state.catalog.collection.data || ownProps.collectionData,
+    isFetching: (state.catalog.collection.isFetching || state.catalog.book.isFetching),
+    isFetchingPage: state.catalog.collection.isFetchingPage,
+    error: (state.catalog.collection.error || state.catalog.book.error),
+    bookData: state.catalog.book.data || ownProps.bookData,
+    history: state.catalog.collection.history,
+    loadedCollectionUrl: state.catalog.collection.url,
+    loadedBookUrl: state.catalog.book.url,
     collectionUrl: ownProps.collectionUrl,
     bookUrl: ownProps.bookUrl
   };

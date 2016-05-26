@@ -1,5 +1,5 @@
 import * as React from "react";
-import BrowserLink from "./BrowserLink";
+import CatalogLink from "./CatalogLink";
 import { FacetGroupData } from "../interfaces";
 import { subtleListStyle } from "./styles";
 
@@ -15,11 +15,11 @@ export default class FacetGroup extends React.Component<FacetGroupProps, any> {
         <ul aria-label={this.props.facetGroup.label + " options"} style={subtleListStyle}>
         { this.props.facetGroup.facets.map(facet =>
           <li key={facet.label} style={facet.active ? { backgroundColor: "#ddd" } : null}>
-            <BrowserLink
+            <CatalogLink
               className="facetLink"
               collectionUrl={facet.href}>
               {facet.label}
-            </BrowserLink>
+            </CatalogLink>
           </li>
         ) }
         </ul>

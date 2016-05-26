@@ -2,13 +2,13 @@
 packages/**/node_modules
 
 # Compiled JS directory
-packages/opds-browser/lib
+packages/opds-web-client/lib
 
 # Bundled JS
 dist
 
 # TypeScript definitions
-packages/opds-browser/typings/*
+packages/opds-web-client/typings/*
 
 # Temporary files
 *~

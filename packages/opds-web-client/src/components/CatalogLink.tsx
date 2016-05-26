@@ -2,12 +2,12 @@ import * as React from "react";
 import { Link } from "react-router";
 import { NavigateContext } from "../interfaces";
 
-export interface BrowserLinkProps extends React.HTMLProps<any> {
+export interface CatalogLinkProps extends React.HTMLProps<any> {
   collectionUrl?: string;
   bookUrl?: string;
 }
 
-export default class BrowserLink extends React.Component<BrowserLinkProps, any> {
+export default class CatalogLink extends React.Component<CatalogLinkProps, any> {
   context: NavigateContext;
 
   static contextTypes: React.ValidationMap<NavigateContext> = {

@@ -4,7 +4,7 @@ import * as React from "react";
 import { shallow } from "enzyme";
 
 import FacetGroup from "../FacetGroup";
-import BrowserLink from "../BrowserLink";
+import CatalogLink from "../CatalogLink";
 import SkipNavigationLink from "../SkipNavigationLink";
 import { FacetGroupData } from "../../interfaces";
 
@@ -44,7 +44,7 @@ describe("FacetGroup", () => {
       <FacetGroup facetGroup={facetGroup} />
     );
 
-    let links = wrapper.find(BrowserLink);
+    let links = wrapper.find(CatalogLink);
     expect(links.length).toEqual(2);
     expect(links.map(facet => facet.children().at(0).text())).toEqual(facetGroup.facets.map(facet => facet.label));
   });

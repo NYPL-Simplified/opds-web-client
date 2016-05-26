@@ -5,7 +5,7 @@ import { shallow } from "enzyme";
 
 import Book from "../Book";
 import { BookData } from "../../interfaces";
-import BrowserLink from "../BrowserLink";
+import CatalogLink from "../CatalogLink";
 
 let book: BookData = {
   id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
@@ -23,7 +23,7 @@ describe("Book", () => {
       <Book book={book} />
     );
 
-    let links = wrapper.find(BrowserLink);
+    let links = wrapper.find(CatalogLink);
     expect(links.length).toEqual(2);
     let coverImage = links.at(0).children().at(0);
     expect(coverImage.type()).toBe("img");
@@ -36,7 +36,7 @@ describe("Book", () => {
       <Book book={book} />
     );
 
-    let links = wrapper.find(BrowserLink);
+    let links = wrapper.find(CatalogLink);
     expect(links.length).toEqual(2);
     let bookInfo = links.at(1);
     let title = bookInfo.find(".bookTitle");
@@ -55,7 +55,7 @@ describe("Book", () => {
       <Book book={bookCopy} />
     );
 
-    let links = wrapper.find(BrowserLink);
+    let links = wrapper.find(CatalogLink);
     let bookInfo = links.at(1).children().at(1);
     let authors = bookInfo.find(".bookAuthors");
     expect(authors.text()).toEqual(bookCopy.contributors[0]);

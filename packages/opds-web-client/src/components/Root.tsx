@@ -12,17 +12,17 @@ import Breadcrumbs, {
 import Collection from "./Collection";
 import UrlForm from "./UrlForm";
 import SkipNavigationLink from "./SkipNavigationLink";
-import BrowserLink from "./BrowserLink";
+import CatalogLink from "./CatalogLink";
 import { CollectionData, BookData, LinkData, State, NavigateContext } from "../interfaces";
 
 export interface HeaderProps extends React.Props<any> {
-  BrowserLink: typeof BrowserLink;
+  CatalogLink: typeof CatalogLink;
 }
 
 export interface BookDetailsContainerProps extends React.Props<any> {
   bookUrl: string;
   collectionUrl: string;
-  refreshBrowser: () => Promise<any>;
+  refreshCatalog: () => Promise<any>;
 }
 
 export interface RootProps extends State {
@@ -110,7 +110,7 @@ export class Root extends React.Component<RootProps, any> {
     };
 
     return (
-      <div className="browser" style={{ fontFamily: "Arial, sans-serif" }}>
+      <div className="catalog" style={{ fontFamily: "Arial, sans-serif" }}>
         <SkipNavigationLink />
 
         { this.props.error &&
@@ -127,7 +127,7 @@ export class Root extends React.Component<RootProps, any> {
 
         { Header ?
           <Header
-            BrowserLink={BrowserLink}>
+            CatalogLink={CatalogLink}>
             { this.props.collectionData && this.props.collectionData.search &&
               <Search
                 url={this.props.collectionData.search.url}
@@ -139,7 +139,7 @@ export class Root extends React.Component<RootProps, any> {
           <nav className="header navbar navbar-default navbar-fixed-top">
             <div className="container-fluid">
               <span className="navbar-brand" style={{ fontSize: "1.8em", color: "black" }}>
-                OPDS Browser
+                OPDS Web Client
               </span>
               { this.props.collectionData && this.props.collectionData.search &&
                 <Search
@@ -167,7 +167,7 @@ export class Root extends React.Component<RootProps, any> {
                   <BookDetailsContainer
                     bookUrl={this.props.bookUrl}
                     collectionUrl={this.props.collectionUrl}
-                    refreshBrowser={this.props.refreshCollectionAndBook}>
+                    refreshCatalog={this.props.refreshCollectionAndBook}>
                     <BookDetails book={this.props.bookData} />
                   </BookDetailsContainer> :
                   <div style={{ padding: "40px", maxWidth: "700px", margin: "0 auto" }}>

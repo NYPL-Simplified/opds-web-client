@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
-app.use(express.static(__dirname + "/node_modules/opds-browser/dist"));
+app.use(express.static(__dirname + "/node_modules/opds-web-client/dist"));
 app.set('views', __dirname + "/views");
 app.set('view engine', 'ejs');
 

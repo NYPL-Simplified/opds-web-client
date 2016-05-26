@@ -8,8 +8,8 @@ var config = {
   },
   output: {
     path: './dist',
-    filename: 'opds-browser.js',
-    library: 'OPDSBrowserApp',
+    filename: 'opds-web-client.js',
+    library: 'OPDSWebClient',
     libraryTarget: 'umd'
   },
   plugins: [

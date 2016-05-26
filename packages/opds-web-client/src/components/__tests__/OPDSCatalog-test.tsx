@@ -3,11 +3,11 @@ jest.autoMockOff();
 import * as React from "react";
 import { shallow } from "enzyme";
 
-import OPDSBrowser from "../OPDSBrowser";
+import OPDSCatalog from "../OPDSCatalog";
 import Root, { RootProps } from "../Root";
 import buildStore from "../../store";
 
-describe("OPDSBrowser", () => {
+describe("OPDSCatalog", () => {
   let props = {
     collectionUrl: "collection url",
     bookUrl: "book url",
@@ -24,7 +24,7 @@ describe("OPDSBrowser", () => {
 
   it("creates a store for Root if not given one", () => {
     let wrapper = shallow(
-      <OPDSBrowser {...props} />
+      <OPDSCatalog {...props} />
     );
     let root = wrapper.find<RootProps>(Root);
     expect(root.props().store).toBeTruthy();
@@ -33,7 +33,7 @@ describe("OPDSBrowser", () => {
   it("passes store to Root if given one", () => {
     let store = buildStore();
     let wrapper = shallow(
-      <OPDSBrowser {...props} store={store} />
+      <OPDSCatalog {...props} store={store} />
     );
     let root = wrapper.find<RootProps>(Root);
     expect(root.props().store).toBe(store);
@@ -41,7 +41,7 @@ describe("OPDSBrowser", () => {
 
   it("passes props to Root", () => {
     let wrapper = shallow(
-      <OPDSBrowser {...props} />
+      <OPDSCatalog {...props} />
     );
     let root = wrapper.find<RootProps>(Root);
 

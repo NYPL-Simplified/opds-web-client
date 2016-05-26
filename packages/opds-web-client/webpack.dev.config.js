@@ -8,9 +8,9 @@ var config = {
     ],
   },
   output: {
-    filename: 'opds-browser.js',
+    filename: 'opds-web-client.js',
     publicPath: 'http://localhost:8090/dist',
-    library: 'OPDSBrowserApp',
+    library: 'OPDSWebClient',
     libraryTarget: 'umd'
   },
   devtool: 'eval',
