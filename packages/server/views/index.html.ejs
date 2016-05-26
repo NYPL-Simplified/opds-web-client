@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>OPDS Browser</title>
+    <title>OPDS Web Client</title>
     <% if (process.env.NODE_ENV === "development") { %>
     <script src="http://localhost:8090/webpack-dev-server.js"></script>
     <% } %>
@@ -12,16 +12,16 @@
     </style>
   </head>
   <body>
-    <div id="opds-browser"></div>
+    <div id="opds-web-client"></div>
     <% if (process.env.NODE_ENV === "development") { %>
-    <script src="http://localhost:8090/dist/opds-browser.js"></script>
+    <script src="http://localhost:8090/dist/opds-web-client.js"></script>
     <% } else { %>
-    <script src="/opds-browser.js"></script>
+    <script src="/opds-web-client.js"></script>
     <% } %>
     <script>
       var title = document.title;
-      var browser = new OPDSBrowserApp({
-        headerTitle: "OPDS Browser",
+      var client = new OPDSWebClientApp({
+        headerTitle: "OPDS Web Cient",
         proxyUrl: "/proxy",
         pageTitleTemplate: function(collectionTitle, bookTitle) {
           var details = bookTitle || collectionTitle;
@@ -34,7 +34,7 @@
           return path;
         },
         pathPattern: "/(collection/:collectionUrl/)(book/:bookUrl/)"
-      }, "opds-browser");
+      }, "opds-web-client");
     </script>
   </body>
 </html>

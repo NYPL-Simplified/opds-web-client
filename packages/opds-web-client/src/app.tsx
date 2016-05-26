@@ -1,14 +1,14 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Router, Route, browserHistory } from "react-router";
-import OPDSBrowser from "./components/OPDSBrowser";
+import OPDSCatalog from "./components/OPDSCatalog";
 import { RootProps } from "./components/Root";
 import { PathFor } from "./interfaces";
 
-class OPDSBrowserApp {
+class OPDSWebClientApp {
   elementId: string;
   pathPattern: string;
-  BrowserRouteHandler: any;
+  RouteHandler: any;
 
   constructor(config: {
     headerTitle?: string;
@@ -19,7 +19,7 @@ class OPDSBrowserApp {
   }, elementId: string) {
     this.elementId = elementId;
     this.pathPattern = config.pathPattern || "/(collection/:collectionUrl/)(book/:bookUrl/)";
-    this.BrowserRouteHandler = React.createClass({
+    this.RouteHandler = React.createClass({
       contextTypes: {
         router: React.PropTypes.object.isRequired
       },
@@ -37,7 +37,7 @@ class OPDSBrowserApp {
           collectionUrl: collectionUrl ? decodeURIComponent(collectionUrl) : null,
           bookUrl: bookUrl ? decodeURIComponent(bookUrl) : null
         });
-        return <OPDSBrowser {...mergedProps} />;
+        return <OPDSCatalog {...mergedProps} />;
       }
     });
 
@@ -45,14 +45,14 @@ class OPDSBrowserApp {
   }
 
   render() {
-    let BrowserRouteHandler = this.BrowserRouteHandler;
+    let RouteHandler = this.RouteHandler;
     ReactDOM.render(
       <Router history={browserHistory}>
-        <Route path={this.pathPattern} component={BrowserRouteHandler} />
+        <Route path={this.pathPattern} component={RouteHandler} />
       </Router>,
       document.getElementById(this.elementId)
     );
   }
 }
 
-export = OPDSBrowserApp;
+export = OPDSWebClientApp;

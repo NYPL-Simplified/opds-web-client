@@ -1,6 +1,6 @@
 import * as React from "react";
 import Book from "./Book";
-import BrowserLink from "./BrowserLink";
+import CatalogLink from "./CatalogLink";
 
 export default class LaneBook extends Book {
   render(): JSX.Element {
@@ -26,7 +26,7 @@ export default class LaneBook extends Book {
 
     return (
       <div className="book laneBook" style={ bookStyle }>
-        <BrowserLink
+        <CatalogLink
           className="laneBookLink"
           collectionUrl={this.props.collectionUrl}
           bookUrl={this.props.book.url}
@@ -36,7 +36,7 @@ export default class LaneBook extends Book {
           <div className="bookInfo" style={ bookInfoStyle }>
             <div className="bookTitle">{this.props.book.title}</div>
           </div>
-        </BrowserLink>
+        </CatalogLink>
       </div>
     );
   }

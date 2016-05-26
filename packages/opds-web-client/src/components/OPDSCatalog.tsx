@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import Root, { RootProps } from "./Root";
 import buildStore from "../store";
 
-export interface OPDSBrowserProps {
+export interface OPDSCatalogProps {
   collectionUrl?: string;
   bookUrl?: string;
   headerTitle?: string;
@@ -12,7 +12,7 @@ export interface OPDSBrowserProps {
   store?: Redux.Store;
 }
 
-export default class OPDSBrowser extends React.Component<OPDSBrowserProps, any> {
+export default class OPDSCatalog extends React.Component<OPDSCatalogProps, any> {
   store: Redux.Store;
 
   constructor(props) {

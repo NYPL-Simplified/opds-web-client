@@ -29,6 +29,7 @@ export default class DataFetcher {
         parser.parse(response).then((parsedData: OPDSFeed | OPDSEntry) => {
           resolve(this.adapter(parsedData, url));
         }).catch(err => {
+          debugger;
           reject({
             status: null,
             response: "Failed to parse OPDS data",

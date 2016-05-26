@@ -1,12 +1,12 @@
 {
-  "name": "opds-browser",
-  "version": "0.0.16",
-  "description": "OPDS browser",
+  "name": "opds-web-client",
+  "version": "0.0.17",
+  "description": "OPDS web client",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/NYPL-Simplified/opds-browser.git"
+    "url": "https://github.com/NYPL-Simplified/opds-web-client.git"
   },
   "author": "NYPL",
   "license": "Apache-2.0",

@@ -4,7 +4,7 @@ import reducers from "./reducers/index";
 
 export default function buildStore(initialState?: any) {
   return createStore(
-    combineReducers({ browser: reducers }),
+    combineReducers({ catalog: reducers }),
     initialState,
     applyMiddleware(thunk)
   );

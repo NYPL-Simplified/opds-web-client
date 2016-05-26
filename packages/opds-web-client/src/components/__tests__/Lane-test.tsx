@@ -5,7 +5,7 @@ import { shallow } from "enzyme";
 
 import Lane from "../Lane";
 import LaneBook from "../LaneBook";
-import BrowserLink from "../BrowserLink";
+import CatalogLink from "../CatalogLink";
 import { LaneData, BookData } from "../../interfaces";
 
 let books: BookData[] = [1, 2, 3].map((i) => {
@@ -25,12 +25,12 @@ let laneData: LaneData = {
 };
 
 describe("Lane", () => {
-  it("shows the lane title in a BrowserLink", () => {
+  it("shows the lane title in a CatalogLink", () => {
     let wrapper = shallow(
       <Lane lane={laneData} />
     );
 
-    let titleLink = wrapper.find(BrowserLink);
+    let titleLink = wrapper.find(CatalogLink);
     expect(titleLink.first().children().get(0)).toBe(laneData.title);
   });
 

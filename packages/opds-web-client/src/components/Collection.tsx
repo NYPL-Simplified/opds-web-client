@@ -1,6 +1,6 @@
 import * as React from "react";
 import Book from "./Book";
-import BrowserLink from "./BrowserLink";
+import CatalogLink from "./CatalogLink";
 import Lane from "./Lane";
 import FacetGroup from "./FacetGroup";
 import Search from "./Search";
@@ -102,11 +102,11 @@ export default class Collection extends React.Component<CollectionProps, any> {
             <ul aria-label="navigation links" style={subtleListStyle} role="navigation">
             { this.props.collection.links.map(link =>
               <li key={link.id}>
-                <BrowserLink
+                <CatalogLink
                   collectionUrl={link.url}
                   style={linkStyle}>
                   {link.text}
-                </BrowserLink>
+                </CatalogLink>
               </li>) }
             </ul>
           }

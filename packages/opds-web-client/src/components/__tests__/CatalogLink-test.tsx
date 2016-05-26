@@ -3,7 +3,7 @@ jest.autoMockOff();
 import * as React from "react";
 import { shallow } from "enzyme";
 
-import BrowserLink from "../BrowserLink";
+import CatalogLink from "../CatalogLink";
 import { Link } from "react-router";
 import { mockRouterContext } from "./routing";
 
@@ -25,7 +25,7 @@ describe("BrowseLink", () => {
     ];
 
     let wrapper = shallow(
-      <BrowserLink {...props} />,
+      <CatalogLink {...props} />,
       { context }
     );
 
@@ -48,9 +48,9 @@ describe("BrowseLink", () => {
     let context = mockRouterContext();
 
     let wrapper = shallow(
-      <BrowserLink {...props}>
+      <CatalogLink {...props}>
         <div className="child"></div>
-      </BrowserLink>,
+      </CatalogLink>,
       { context }
     );
 

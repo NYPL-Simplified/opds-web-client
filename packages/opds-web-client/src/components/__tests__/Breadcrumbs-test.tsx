@@ -4,7 +4,7 @@ import * as React from "react";
 import { shallow } from "enzyme";
 
 import Breadcrumbs, { hierarchyComputeBreadcrumbs } from "../Breadcrumbs";
-import BrowserLink, { BrowserLinkProps } from "../BrowserLink";
+import CatalogLink, { CatalogLinkProps } from "../CatalogLink";
 import { ungroupedCollectionData } from "./collectionData";
 import { LinkData } from "../../interfaces";
 
@@ -29,7 +29,7 @@ describe("Breadcrumbs", () => {
     );
 
     let list = wrapper.find("ol");
-    let links = wrapper.find(BrowserLink);
+    let links = wrapper.find(CatalogLink);
     expect(list.hasClass("breadcrumb")).toBe(true);
     expect(links.length).toBe(2);
     expect(links.at(0).props().children).toContain("2nd title");
