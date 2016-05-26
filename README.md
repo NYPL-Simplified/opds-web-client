@@ -46,7 +46,7 @@ For an example of the application in use as a React component, see [NYPL-Simplif
 - `collectionUrl`: optional URL of an OPDS Acquisition or Navigation feed to load. Default: `null`
 - `bookUrl`: optional URL of an OPDS Entry to load. Default: `null`
 - `pageTitleTemplate(collectionTitle: string, bookTitle: string) => string`: optional function that accepts a collection and book title and returns an HTML page title. Default: `undefined`
-- `Header`: optional custom React component class to render in place of the client's default header. This `Header` will receive one prop, `CatalogLink` which should be used for links to collections or books that the client should load, and one child, a `Search` component that will only be present when the loaded collection links to an Open Search Description document. Default: `undefined`
+- `Header`: optional custom React component class to render in place of the client's default header. This `Header` will receive three props, `collectionTitle`, `bookTitle`, and a `CatalogLink` which should be used for links to collections or books that the client should load, and one child, a `Search` component that will only be present when the loaded collection links to an Open Search Description document. Default: `undefined`
 - `BookDetailsContainer`: optional custom React component class to render in place of the client's default `BookDetails` component. This `BookDetailsContainer` will receive three props: the current `collectionUrl` and `bookUrl`, and `refreshCatalog`, a function that can be called to refresh the collection and/or book. `BookDetailsContainer` will also receive the default rendered `BookDetails` component as a child. Default: `undefined`
 - `computeBreadcrumbs`: same as in "Standalone Config Options" above
 
