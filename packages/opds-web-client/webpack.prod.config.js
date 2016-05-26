@@ -9,7 +9,7 @@ var config = {
   output: {
     path: './dist',
     filename: 'opds-web-client.js',
-    library: 'OPDSWebClientApp',
+    library: 'OPDSWebClient',
     libraryTarget: 'umd'
   },
   plugins: [

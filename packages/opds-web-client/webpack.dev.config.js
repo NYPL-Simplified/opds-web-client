@@ -10,7 +10,7 @@ var config = {
   output: {
     filename: 'opds-web-client.js',
     publicPath: 'http://localhost:8090/dist',
-    library: 'OPDSWebClientApp',
+    library: 'OPDSWebClient',
     libraryTarget: 'umd'
   },
   devtool: 'eval',

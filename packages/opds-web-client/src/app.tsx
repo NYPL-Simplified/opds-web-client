@@ -5,7 +5,7 @@ import OPDSCatalog from "./components/OPDSCatalog";
 import { RootProps } from "./components/Root";
 import { PathFor } from "./interfaces";
 
-class OPDSWebClientApp {
+class OPDSWebClient {
   elementId: string;
   pathPattern: string;
   RouteHandler: any;
@@ -55,4 +55,4 @@ class OPDSWebClientApp {
   }
 }
 
-export = OPDSWebClientApp;
+export = OPDSWebClient;

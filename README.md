@@ -5,7 +5,7 @@ JavaScript OPDS web client
 OPDS Web Client can be run as a standalone app mounted in a DOM element:
 
 ```javascript
-new OPDSWebClientApp(config, elementId);
+new OPDSWebClient(config, elementId);
 ```
 
 For an example of OPDS Web Client in use as a standalone app, see the [demo server template](packages/server/views/index.html.ejs) included in this repository.
