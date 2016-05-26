@@ -18,7 +18,7 @@ export default class UrlForm extends React.Component<UrlFormProps, any> {
 
     return (
       <div id="urlForm" style={{ width: "800px", margin: "200px auto" }}>
-        <h2>Browse OPDS Feed</h2>
+        <h2>View OPDS Feed</h2>
         <form onSubmit={this.onSubmit.bind(this)} className="form-inline">
           <input
             ref="input"
@@ -29,7 +29,7 @@ export default class UrlForm extends React.Component<UrlFormProps, any> {
             defaultValue={this.props.collectionUrl}
             placeholder={placeholder} />
           &nbsp;
-          <button type="submit" className="btn btn-lg btn-default">Browse</button>
+          <button type="submit" className="btn btn-lg btn-default">Go</button>
         </form>
       </div>
     );
