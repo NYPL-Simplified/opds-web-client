@@ -9,7 +9,7 @@
   "author": "NYPL",
   "license": "Apache-2.0",
   "scripts": {
-    "prepublish": "cd packages/opds-web-client && npm link && cd ../server && npm link opds-browser && npm install",
+    "prepublish": "cd packages/opds-web-client && npm link && cd ../server && npm link opds-web-client && npm install",
     "test": "cd packages/opds-web-client && npm test",
     "dev-serve": "cd packages/server && npm run dev",
     "dev-build": "cd packages/opds-web-client && npm run dev",
