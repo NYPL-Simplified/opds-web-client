@@ -360,6 +360,7 @@ describe("Root", () => {
         }
       }
     });
+    let bookData: BookData = ungroupedCollectionData.books[0];
 
     class Header extends React.Component<HeaderProps, any> {
       render(): JSX.Element {
@@ -380,15 +381,18 @@ describe("Root", () => {
         <Root
           Header={Header}
           collectionData={collectionData}
+          bookData={bookData}
           fetchSearchDescription={(url: string) => {}}
           />
       );
     });
 
-    it("renders the header with CatalogLink and Search", () => {
+    it("renders the header", () => {
       let header = wrapper.find(Header);
       let search = header.childAt(0);
       expect(header.props().CatalogLink).toBe(CatalogLink);
+      expect(header.props().collectionTitle).toBe(collectionData.title);
+      expect(header.props().bookTitle).toBe(bookData.title);
       expect(search.type()).toBe(Search);
     });
   });
