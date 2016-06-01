@@ -17,6 +17,8 @@ import { CollectionData, BookData, LinkData, State, NavigateContext } from "../i
 
 export interface HeaderProps extends React.Props<any> {
   CatalogLink: typeof CatalogLink;
+  collectionTitle: string;
+  bookTitle: string;
 }
 
 export interface BookDetailsContainerProps extends React.Props<any> {
@@ -58,6 +60,8 @@ export class Root extends React.Component<RootProps, any> {
   render(): JSX.Element {
     let BookDetailsContainer = this.props.BookDetailsContainer;
     let Header = this.props.Header;
+    let collectionTitle = this.props.collectionData ? this.props.collectionData.title : null;
+    let bookTitle = this.props.bookData ? this.props.bookData.title : null;
 
     let computeBreadcrumbs = this.props.computeBreadcrumbs || defaultComputeBreadcrumbs;
     let breadcrumbsLinks = computeBreadcrumbs(this.props.collectionData, this.props.history);
@@ -127,7 +131,9 @@ export class Root extends React.Component<RootProps, any> {
 
         { Header ?
           <Header
-            CatalogLink={CatalogLink}>
+            CatalogLink={CatalogLink}
+            collectionTitle={collectionTitle}
+            bookTitle={bookTitle}>
             { this.props.collectionData && this.props.collectionData.search &&
               <Search
                 url={this.props.collectionData.search.url}
