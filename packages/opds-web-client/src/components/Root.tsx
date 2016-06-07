@@ -105,7 +105,7 @@ export class Root extends React.Component<RootProps, any> {
     let bookWrapperStyle = {
       position: "fixed",
       width: "100%",
-      top: `${marginTop}`,
+      top: `${marginTop}px`,
       height: `calc(100% - ${marginTop}px)`,
       backgroundColor: "white",
       zIndex: 100,

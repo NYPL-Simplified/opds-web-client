@@ -34,8 +34,8 @@ class OPDSWebClient {
       render: function() {
         let { collectionUrl, bookUrl } = this.props.params;
         let mergedProps: RootProps = Object.assign(config, {
-          collectionUrl: collectionUrl ? decodeURIComponent(collectionUrl) : null,
-          bookUrl: bookUrl ? decodeURIComponent(bookUrl) : null
+          collectionUrl,
+          bookUrl
         });
         return <OPDSCatalog {...mergedProps} />;
       }
