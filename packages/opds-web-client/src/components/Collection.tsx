@@ -33,7 +33,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
     let leftPanelStyle = {
       width: `${leftPanelWidth}px`,
       position: "fixed",
-      left: "0"
+      left: "0px"
     };
 
     let linkStyle = {
