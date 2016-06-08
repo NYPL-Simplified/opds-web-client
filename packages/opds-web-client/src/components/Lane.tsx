@@ -57,7 +57,7 @@ export default class Lane extends React.Component<LaneProps, any> {
                 collectionUrl={this.props.lane.url}>
                 <BookCover
                   style={{ width: "150px", height: "200px" }}
-                  text={"More " + this.props.lane.title} />
+                  text={"More\n" + this.props.lane.title} />
               </CatalogLink>
             </li>
           </ul>
