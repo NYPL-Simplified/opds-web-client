@@ -1,6 +1,7 @@
 import * as React from "react";
 import LaneBook from "./LaneBook";
 import CatalogLink from "./CatalogLink";
+import BookCover from "./BookCover";
 import { LaneData } from "../interfaces";
 
 export interface LaneProps {
@@ -22,6 +23,13 @@ export default class Lane extends React.Component<LaneProps, any> {
       listStyleType: "none"
     };
 
+    let moreLinkStyle = {
+      display: "block",
+      height: "250px",
+      whiteSpace: "normal", // overrides laneBookStyle
+      textDecoration: "none"
+    };
+
     return (
       <div className="lane">
         <h2 style={{ clear: "both", cursor: "pointer" }}>
@@ -34,14 +42,24 @@ export default class Lane extends React.Component<LaneProps, any> {
 
         { this.props.lane.books &&
           <ul className="laneBooks" aria-label={"books in " + this.props.lane.title} style={laneBooksStyle}>
-          { this.props.lane.books.map(book =>
-            <li key={book.id} style={{ display: "inline-block" }}>
-              <LaneBook
-                book={book}
-                collectionUrl={this.props.collectionUrl}
-                />
+            { this.props.lane.books.map(book =>
+              <li key={book.id} style={{ display: "inline-block" }}>
+                <LaneBook
+                  book={book}
+                  collectionUrl={this.props.collectionUrl}
+                  />
+              </li>
+            ) }
+            <li key="more" style={{ display: "inline-block" }}>
+              <CatalogLink
+                className="moreLink"
+                style={moreLinkStyle}
+                collectionUrl={this.props.lane.url}>
+                <BookCover
+                  style={{ width: "150px", height: "200px" }}
+                  text={"More " + this.props.lane.title} />
+              </CatalogLink>
             </li>
-          ) }
           </ul>
         }
       </div>

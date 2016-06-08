@@ -6,6 +6,7 @@ import { shallow } from "enzyme";
 import Lane from "../Lane";
 import LaneBook from "../LaneBook";
 import CatalogLink from "../CatalogLink";
+import BookCover from "../BookCover";
 import { LaneData, BookData } from "../../interfaces";
 
 let books: BookData[] = [1, 2, 3].map((i) => {
@@ -46,5 +47,17 @@ describe("Lane", () => {
     expect(laneBooks.length).toBe(books.length);
     expect(bookDatas).toEqual(books);
     expect(uniqueCollectionUrls).toEqual(["test collection"]);
+  });
+
+  it("shows more link", () => {
+    let wrapper = shallow(
+      <Lane lane={laneData} collectionUrl="test collection" />
+    );
+
+    let moreLink = wrapper.find(CatalogLink).filter(".moreLink");
+    expect(moreLink.prop("collectionUrl")).toBe(laneData.url);
+
+    let cover = wrapper.find(BookCover);
+    expect(cover.prop("text")).toBe("More " + laneData.title);
   });
 });
