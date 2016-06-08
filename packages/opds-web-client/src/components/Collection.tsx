@@ -17,6 +17,11 @@ export interface CollectionProps extends React.HTMLProps<Collection> {
 }
 
 export default class Collection extends React.Component<CollectionProps, any> {
+  constructor(props) {
+    super(props);
+    this.fetch = this.fetch.bind(this);
+  }
+
   render(): JSX.Element {
     let leftPanelWidth = 190;
     let padding = 10;
@@ -115,7 +120,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
             <button
               className="nextPageLink"
               style={visuallyHiddenStyle}
-              onClick={this.fetch.bind(this)}>
+              onClick={this.fetch}>
               Load more books
             </button>
           }

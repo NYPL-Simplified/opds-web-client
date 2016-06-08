@@ -8,6 +8,11 @@ export interface SearchProps extends SearchData, React.HTMLProps<Search> {
 export default class Search extends React.Component<SearchProps, any> {
   context: NavigateContext;
 
+  constructor(props) {
+    super(props);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
   static contextTypes: React.ValidationMap<NavigateContext> = {
     router: React.PropTypes.object.isRequired,
     pathFor: React.PropTypes.func.isRequired
@@ -17,7 +22,7 @@ export default class Search extends React.Component<SearchProps, any> {
     return (
       <div className="search">
         { this.props.searchData && (
-          <form onSubmit={this.onSubmit.bind(this)} className={this.props.className || "form-inline"}>
+          <form onSubmit={this.onSubmit} className={this.props.className || "form-inline"}>
             <input
               className="form-control"
               ref="input"
