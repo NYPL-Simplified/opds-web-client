@@ -1,5 +1,6 @@
 import * as React from "react";
 import CatalogLink from "./CatalogLink";
+import BookCover from "./BookCover";
 import { BookData } from "../interfaces";
 
 export interface BookProps {
@@ -43,13 +44,25 @@ export default class Book extends React.Component<BookProps, any> {
       marginTop: "10px"
     };
 
+    let autoCoverStyle = {
+      width: "150px",
+      height: "200px",
+      textAlign: "left",
+      verticalAlign: "top"
+    };
+
     return (
       <div className="book" style={ bookStyle }>
         <CatalogLink
           collectionUrl={this.props.collectionUrl}
           bookUrl={this.props.book.url || this.props.book.id}
           style={{ color: "black", textDecoration: "none" }}>
-          <img src={this.props.book.imageUrl} style={bookCoverStyle} alt=""/>
+          { this.props.book.imageUrl ?
+            <img src={this.props.book.imageUrl} style={bookCoverStyle} alt=""/> :
+            <BookCover
+              style={autoCoverStyle}
+              text={this.props.book.title} />
+          }
         </CatalogLink>
         <div className="bookInfo" style={ bookInfoStyle }>
           <CatalogLink

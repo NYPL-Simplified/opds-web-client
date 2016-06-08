@@ -24,7 +24,7 @@ export default class LaneBook extends Book {
       marginTop: "5px"
     };
 
-    let coverStyle = {
+    let autoCoverStyle = {
       width: "150px",
       height: "200px",
       textAlign: "left",
@@ -42,7 +42,7 @@ export default class LaneBook extends Book {
           { this.props.book.imageUrl ?
             <img src={this.props.book.imageUrl} style={bookCoverStyle} alt=""/> :
             <BookCover
-              style={coverStyle}
+              style={autoCoverStyle}
               text={this.props.book.title} />
           }
           <div className="bookInfo" style={ bookInfoStyle }>
