@@ -8,6 +8,11 @@ export interface UrlFormProps {
 export default class UrlForm extends React.Component<UrlFormProps, any> {
   context: NavigateContext;
 
+  constructor(props) {
+    super(props);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
   static contextTypes: React.ValidationMap<NavigateContext> = {
     router: React.PropTypes.object.isRequired,
     pathFor: React.PropTypes.func.isRequired
@@ -19,7 +24,7 @@ export default class UrlForm extends React.Component<UrlFormProps, any> {
     return (
       <div id="urlForm" style={{ width: "800px", margin: "200px auto" }}>
         <h2>View OPDS Feed</h2>
-        <form onSubmit={this.onSubmit.bind(this)} className="form-inline">
+        <form onSubmit={this.onSubmit} className="form-inline">
           <input
             ref="input"
             name="collection"
