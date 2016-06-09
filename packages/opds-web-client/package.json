@@ -25,6 +25,7 @@
     "react-router": "^2.4.1",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
+    "seedrandom": "^2.4.2",
     "whatwg-fetch": "^1.0.0",
     "xml2js": "^0.4.16"
   },
