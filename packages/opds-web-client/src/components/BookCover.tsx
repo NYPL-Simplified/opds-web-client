@@ -1,140 +1,79 @@
 import * as React from "react";
-import Curve from "./Curve";
+import * as ReactDOM from "react-dom";
+import { BookData } from "../interfaces";
 const seedrandom = require("seedrandom");
 
-export interface BookCoverProps {
-  style?: any;
-  text: string;
+export interface BookCoverProps extends React.HTMLProps<BookCover> {
+  book: BookData;
 }
 
 export default class BookCover extends React.Component<BookCoverProps, any> {
   render() {
-    let cellStyle = Object.assign({
+    let { title, authors } = this.props.book;
+    let titleStyle = Object.assign(this.computeFontStyle(title, 40), {
       display: "table-cell",
-      verticalAlign: "middle",
+      height: "120px",
+      width: "150px",
+      verticalAlign: "bottom",
+      color: "#444",
       backgroundColor: "#eee",
-      textAlign: "center",
-      padding: "5px",
-      color: "#888",
-      fontWeight: "bold"
-    }, this.props.style);
+      fontWeight: "normal",
+      padding: "10px",
+    });
+    let authorStyle = Object.assign(this.computeFontStyle(authors.join(", "), 25), {
+      paddingTop: "10px",
+      color: "#fff",
+      padding: "10px"
+    });
 
-    // calculate font size
-    // decrease size as max word length increases
-    // decrease size as word count grows beyond 3
-    // but minimum size is 15 regardless
-    let words = this.props.text.split(/\s/);
-    let wordCount = words.length;
-    let maxLength = Math.max(...words.map(word => word.length));
-    let baseFontSize = parseInt((this.props.style || {}).fontSize || "45px");
-    let fontSize = Math.max(15, baseFontSize - maxLength * 2 - Math.max(0, wordCount - 3) * 2);
-    let lineHeight = fontSize + 2;
-
-    let points = this.pointsFromText(130, 180);
-
-    let contentStyle = {
-      fontSize: fontSize + "px",
-      lineHeight: lineHeight + "px",
+    let hue = this.seededRandomHue(title);
+    let bgColor = `hsla(${hue}, 40%, 60%, 1)`;
+    let cellStyle = {
+      float: "left",
+      width: "150px",
+      height: "200px",
+      backgroundColor: bgColor,
+      border: "1px solid #888",
+      fontWeight: "normal",
+      fontFamily: "Georgia, serif",
+      position: "relative",
+      textAlign: "left"
     };
 
-    let parts = this.props.text.replace("\n", "`\n`").split("`").map((part, i) => {
-      if (part === "\n") {
-        return <br key={i} />;
-      } else {
-        return <span key={i}>{part}</span>;
-      }
-    })
+    let bindingStyle = {
+      float: "left",
+      width: "5px",
+      backgroundColor: "#fff",
+      height: "100%"
+    }
 
     // text is split so that "More" always appears on its own line
     return (
       <div style={cellStyle}>
-        <div style={contentStyle}>
-            { parts }
-        </div>
+        <div style={titleStyle}>{ title }</div>
+        <div style={authorStyle}>{ authors }</div>
       </div>
     );
   }
 
-  pointsFromText(width, height) {
-    let padding = 20;
-    let size = Math.round(Math.min(width, height)/2) - padding;
-    let center = [width/2, height/2].map(Math.round);
+  computeFontStyle(text, baseFontSize = 40, minFontSize = 15) {
+    // calculate font size
+    // decrease size as max word length increases
+    // decrease size as word count grows beyond 3
+    // but minimum size is 15 regardless
+    let words = text.split(/\s/);
+    let wordCount = words.length;
+    let maxLength = Math.max(...words.map(word => word.length));
+    let fontSize = Math.max(minFontSize, baseFontSize - maxLength * 2 - Math.max(0, wordCount - 3) * 2);
+    let lineHeight = fontSize + 5;
 
-    let chars = this.props.text.toLowerCase().replace(/\W/, "").slice(0, 20).split("");
-    // let points = chars.map((char, i) => {
-    //   let int = char.charCodeAt(0) - 80;
-    //   let angle = random(Math.PI, char) + i/2;
-    //   let radius = size * (int/22);
-    //   let x = center[0] + Math.cos(angle) * radius;
-    //   let y = center[1] + Math.sin(angle) * radius;
-    //   return [x, y];
-    // });
-
-    let points = chars.map((char, i) => randomPoint(char + i, width, height));
-
-    // let proximity = 75;
-    // let points = chars.reduce((result, char, i) => {
-    //   return addPoint(result, proximity, char + i, width, height);
-    // }, []);
-
-    points.push(points[0]);
-    points.push(points[1]);
-
-    return points;
-  }
-}
-
-export function seededRandomHue(seed) {
-  return Math.round(360 * seedrandom(seed)());
-}
-
-function random(max, seed) {
-  return Math.round(seedrandom(seed)() * max);
-}
-
-function randomPoint(seed, width, height) {
-  return [
-    Math.round(width * seedrandom(seed + "_x")()),
-    Math.round(height * seedrandom(seed + "_y")())
-  ];
-}
-
-function addPoint(points, proximity, seed, width, height) {
-  let newPoint;
-
-  if (points.length > 0) {
-    let last = points.slice(-1)[0];
-    newPoint = nearbyPoint(last, proximity, seed, width, height);
-  } else {
-    newPoint = randomPoint(seed, width, height);
+    return {
+      fontSize: fontSize + "px",
+      lineHeight: "1em"
+    };
   }
 
-  points.push(newPoint);
-
-  return points;
-}
-
-
-function nearbyPoint(previous, proximity, seed, width, height) {
-  return [
-    nearbyNumber(previous[0], proximity, width, seed + "_x"),
-    nearbyNumber(previous[1], proximity, height, seed + "_y"),
-  ];
-}
-
-function nearbyNumber(num, proximity, max, seed) {
-  let padding = 0;
-  let nearby = withinBounds(num + 2 * random(proximity, seed) - proximity, padding, max - padding, 50, seed);
-
-  if (nearby === num) {
-    nearby += random(1, seed) ? 1 : -1;
+  seededRandomHue(seed) {
+    return Math.round(360 * seedrandom(seed)());
   }
-
-  return nearby;
-}
-
-function withinBounds(num, min, max, wobble = 50, seed) {
-  // narrow lower and upper bounds by random offset
-  let offset = Math.round(seedrandom(seed)() * wobble);
-  return Math.min(Math.max(min + offset, num), max - offset);
 }

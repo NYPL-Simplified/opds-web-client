@@ -1,6 +1,7 @@
 import * as React from "react";
 import LaneBook from "./LaneBook";
 import CatalogLink from "./CatalogLink";
+import LaneMoreLink from "./LaneMoreLink";
 import BookCover from "./BookCover";
 import { LaneData } from "../interfaces";
 
@@ -21,13 +22,6 @@ export default class Lane extends React.Component<LaneProps, any> {
       padding: 0,
       margin: 0,
       listStyleType: "none"
-    };
-
-    let moreLinkStyle = {
-      display: "block",
-      height: "250px",
-      whiteSpace: "normal", // overrides laneBookStyle
-      textDecoration: "none"
     };
 
     return (
@@ -51,14 +45,7 @@ export default class Lane extends React.Component<LaneProps, any> {
               </li>
             ) }
             <li key="more" style={{ display: "inline-block" }}>
-              <CatalogLink
-                className="moreLink"
-                style={moreLinkStyle}
-                collectionUrl={this.props.lane.url}>
-                <BookCover
-                  style={{ width: "150px", height: "200px" }}
-                  text={"More\n" + this.props.lane.title} />
-              </CatalogLink>
+              <LaneMoreLink lane={this.props.lane} />
             </li>
           </ul>
         }

@@ -1,6 +1,6 @@
 import * as React from "react";
 import CatalogLink from "./CatalogLink";
-import BookCover, { seededRandomHue } from "./BookCover";
+import BookCover from "./BookCover";
 import { BookData } from "../interfaces";
 
 export interface BookProps {
@@ -44,25 +44,6 @@ export default class Book extends React.Component<BookProps, any> {
       marginTop: "10px"
     };
 
-    let hue = seededRandomHue(this.props.book.title);
-    let bgColorBottom = `hsla(${hue}, 100%, 30%, 1)`;
-    let bgColorTop = `hsla(${hue}, 100%, 15%, 1)`;
-    // let bgColor = `-webkit-linear-gradient(top, ${bgColorTop} 0%, ${bgColorBottom} 100%)`;
-    let bgColor = `hsla(${hue}, 50%, 30%, 1)`;
-
-    let autoCoverStyle = {
-      float: "left",
-      width: "150px",
-      height: "200px",
-      textAlign: "left",
-      verticalAlign: "top",
-      padding: "10px",
-      backgroundColor: bgColor,
-      fontSize: "35px",
-      color: "#fff",
-      fontWeight: "bold"
-    };
-
     return (
       <div className="book" style={ bookStyle }>
         <CatalogLink
@@ -71,9 +52,7 @@ export default class Book extends React.Component<BookProps, any> {
           style={{ color: "black", textDecoration: "none" }}>
           { this.props.book.imageUrl ?
             <img src={this.props.book.imageUrl} style={bookCoverStyle} alt=""/> :
-            <BookCover
-              style={autoCoverStyle}
-              text={this.props.book.title} />
+            <BookCover book={this.props.book} />
           }
         </CatalogLink>
         <div className="bookInfo" style={ bookInfoStyle }>

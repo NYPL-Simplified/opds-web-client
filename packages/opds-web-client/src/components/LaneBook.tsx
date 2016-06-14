@@ -24,13 +24,6 @@ export default class LaneBook extends Book {
       marginTop: "5px"
     };
 
-    let autoCoverStyle = {
-      width: "150px",
-      height: "200px",
-      textAlign: "left",
-      verticalAlign: "top"
-    };
-
     return (
       <div className="book laneBook" style={ bookStyle }>
         <CatalogLink
@@ -39,11 +32,9 @@ export default class LaneBook extends Book {
           bookUrl={this.props.book.url}
           book={this.props.book}
           style={{ color: "black", textDecoration: "none" }}>
-          { this.props.book.imageUrl ?
+          { this.props.book.title.match(/e/) && this.props.book.imageUrl ?
             <img src={this.props.book.imageUrl} style={bookCoverStyle} alt=""/> :
-            <BookCover
-              style={autoCoverStyle}
-              text={this.props.book.title} />
+            <BookCover book={this.props.book} />
           }
           <div className="bookInfo" style={ bookInfoStyle }>
             <div className="bookTitle">{this.props.book.title}</div>
