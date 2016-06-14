@@ -10,7 +10,8 @@ export interface BookCoverProps extends React.HTMLProps<BookCover> {
 export default class BookCover extends React.Component<BookCoverProps, any> {
   render() {
     let { title, authors } = this.props.book;
-    let titleStyle = Object.assign(this.computeFontStyle(title, 40), {
+
+    let titleStyle = Object.assign({
       display: "table-cell",
       height: "120px",
       width: "150px",
@@ -19,12 +20,13 @@ export default class BookCover extends React.Component<BookCoverProps, any> {
       backgroundColor: "#eee",
       fontWeight: "normal",
       padding: "10px",
-    });
-    let authorStyle = Object.assign(this.computeFontStyle(authors.join(", "), 25), {
+    }, this.computeFontStyle(title, 40));
+
+    let authorStyle = Object.assign({
       paddingTop: "10px",
       color: "#fff",
       padding: "10px"
-    });
+    }, this.computeFontStyle(authors.join(", "), 25));
 
     let hue = this.seededRandomHue(title);
     let bgColor = `hsla(${hue}, 40%, 60%, 1)`;
@@ -40,27 +42,18 @@ export default class BookCover extends React.Component<BookCoverProps, any> {
       textAlign: "left"
     };
 
-    let bindingStyle = {
-      float: "left",
-      width: "5px",
-      backgroundColor: "#fff",
-      height: "100%"
-    }
-
     // text is split so that "More" always appears on its own line
     return (
-      <div style={cellStyle}>
+      <div className="autoBookCover" style={cellStyle}>
         <div style={titleStyle}>{ title }</div>
-        <div style={authorStyle}>{ authors }</div>
+        <div style={authorStyle}>{ authors.join(", ") }</div>
       </div>
     );
   }
 
   computeFontStyle(text, baseFontSize = 40, minFontSize = 15) {
-    // calculate font size
     // decrease size as max word length increases
     // decrease size as word count grows beyond 3
-    // but minimum size is 15 regardless
     let words = text.split(/\s/);
     let wordCount = words.length;
     let maxLength = Math.max(...words.map(word => word.length));

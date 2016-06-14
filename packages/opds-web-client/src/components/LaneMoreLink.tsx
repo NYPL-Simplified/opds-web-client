@@ -1,5 +1,5 @@
 import * as React from "react";
-import CatalogLink from "./CatalogLink"
+import CatalogLink from "./CatalogLink";
 
 export default class LaneMoreLink extends React.Component<any, any> {
   render() {

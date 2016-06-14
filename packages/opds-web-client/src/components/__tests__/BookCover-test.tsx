@@ -7,23 +7,23 @@ import BookCover from "../BookCover";
 
 describe("BookCover", () => {
   let wrapper;
+  let bookData = {
+    id: "test id",
+    title: "test book",
+    authors: ["paperback writer", "brilliant recluse"]
+  };
 
   beforeEach(() => {
     wrapper = shallow(
-      <BookCover
-        style={{ width: "100px", height: "200px" }}
-        text="More Testing"
-        />
+      <BookCover book={bookData} />
     );
   });
 
-  it("applies style from props", () => {
-    let element = wrapper.find(".bookCover");
-    expect(element.prop("style").width).toBe("100px");
-    expect(element.prop("style").height).toBe("200px");
-  });
+  it("shows title and authors", () => {
+    let title = wrapper.childAt(0);
+    expect(title.text()).toBe(bookData.title);
 
-  it("shows text split between lines", () => {
-    expect(wrapper.text()).toBe("MoreTesting"); // text() doesn't include line break
+    let authors = wrapper.childAt(1);
+    expect(authors.text()).toBe(bookData.authors.join(", "));
   });
 });
