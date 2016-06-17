@@ -42,7 +42,6 @@ export default class BookCover extends React.Component<BookCoverProps, any> {
       textAlign: "left"
     };
 
-    // text is split so that "More" always appears on its own line
     return (
       <div className="autoBookCover" style={cellStyle}>
         <div style={titleStyle}>{ title }</div>
