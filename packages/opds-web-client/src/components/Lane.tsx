@@ -2,7 +2,6 @@ import * as React from "react";
 import LaneBook from "./LaneBook";
 import CatalogLink from "./CatalogLink";
 import LaneMoreLink from "./LaneMoreLink";
-import BookCover from "./BookCover";
 import { LaneData } from "../interfaces";
 
 export interface LaneProps {
