@@ -1,6 +1,7 @@
 import * as React from "react";
 import Book from "./Book";
 import CatalogLink from "./CatalogLink";
+import BookCover from "./BookCover";
 
 export default class LaneBook extends Book {
   render(): JSX.Element {
@@ -8,13 +9,13 @@ export default class LaneBook extends Book {
       whiteSpace: "normal", // overrides laneBooks style
       marginRight: "10px",
       overflow: "hidden",
-      display: "inline-block",
       height: "250px"
     };
 
     let bookCoverStyle = {
       width: "150px",
       height: "200px",
+      border: "1px solid #ccc"
     };
 
     let bookInfoStyle = {
@@ -32,7 +33,10 @@ export default class LaneBook extends Book {
           bookUrl={this.props.book.url}
           book={this.props.book}
           style={{ color: "black", textDecoration: "none" }}>
-          <img src={this.props.book.imageUrl} style={bookCoverStyle} alt=""/>
+          { this.props.book.imageUrl ?
+            <img src={this.props.book.imageUrl} style={bookCoverStyle} alt=""/> :
+            <BookCover book={this.props.book} />
+          }
           <div className="bookInfo" style={ bookInfoStyle }>
             <div className="bookTitle">{this.props.book.title}</div>
           </div>

@@ -1,6 +1,7 @@
 import * as React from "react";
 import LaneBook from "./LaneBook";
 import CatalogLink from "./CatalogLink";
+import LaneMoreLink from "./LaneMoreLink";
 import { LaneData } from "../interfaces";
 
 export interface LaneProps {
@@ -34,14 +35,17 @@ export default class Lane extends React.Component<LaneProps, any> {
 
         { this.props.lane.books &&
           <ul className="laneBooks" aria-label={"books in " + this.props.lane.title} style={laneBooksStyle}>
-          { this.props.lane.books.map(book =>
-            <li key={book.id} style={{ display: "inline-block" }}>
-              <LaneBook
-                book={book}
-                collectionUrl={this.props.collectionUrl}
-                />
+            { this.props.lane.books.map(book =>
+              <li key={book.id} style={{ display: "inline-block" }}>
+                <LaneBook
+                  book={book}
+                  collectionUrl={this.props.collectionUrl}
+                  />
+              </li>
+            ) }
+            <li key="more" style={{ display: "inline-block" }}>
+              <LaneMoreLink lane={this.props.lane} />
             </li>
-          ) }
           </ul>
         }
       </div>

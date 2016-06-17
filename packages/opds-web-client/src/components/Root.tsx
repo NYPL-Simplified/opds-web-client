@@ -95,7 +95,8 @@ export class Root extends React.Component<RootProps, any> {
     let breadcrumbsStyle = {
       position: "fixed",
       top: `${headerHeight}px`,
-      width: "100%"
+      width: "100%",
+      zIndex: 100
     };
 
     let bodyStyle = {
