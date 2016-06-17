@@ -23,7 +23,8 @@ export default class Book extends React.Component<BookProps, any> {
     let bookCoverStyle = {
       width: "150px",
       height: "200px",
-      float: "left"
+      float: "left",
+      border: "1px solid #ccc"
     };
 
     let bookInfoStyle = {

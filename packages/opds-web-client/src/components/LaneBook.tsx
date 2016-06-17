@@ -14,7 +14,8 @@ export default class LaneBook extends Book {
 
     let bookCoverStyle = {
       width: "150px",
-      height: "200px"
+      height: "200px",
+      border: "1px solid #ccc"
     };
 
     let bookInfoStyle = {
