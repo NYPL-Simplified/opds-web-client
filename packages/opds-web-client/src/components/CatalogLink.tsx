@@ -42,8 +42,13 @@ export default class CatalogLink extends React.Component<CatalogLinkProps, any> 
 
     let location = this.context.pathFor(collectionUrl, bookUrl);
 
+    // remove props that Link won't recognize
+    let props = Object.assign({}, this.props);
+    delete props["collectionUrl"];
+    delete props["bookUrl"];
+
     return (
-      <Link to={location} {...this.props} />
+      <Link to={location} {...props} />
     );
   }
 }

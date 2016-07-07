@@ -7,7 +7,7 @@ import CatalogLink from "../CatalogLink";
 import { Link } from "react-router";
 import { mockRouterContext } from "./routing";
 
-describe("BrowseLink", () => {
+describe("CatalogLink", () => {
   it("renders Link with location and props and context", () => {
     let props = {
       className: "test-class",
@@ -19,6 +19,8 @@ describe("BrowseLink", () => {
     let context = mockRouterContext();
     let location = context.pathFor(props.collectionUrl, props.bookUrl);
     let linkProps = Object.assign({}, Link.defaultProps, props, { to: location });
+    delete linkProps["collectionUrl"];
+    delete linkProps["bookUrl"];
     let requiredRouterKeys = [
       "push", "createHref", "isActive", "replace",
       "go", "goBack", "goForward", "setRouteLeaveHook"

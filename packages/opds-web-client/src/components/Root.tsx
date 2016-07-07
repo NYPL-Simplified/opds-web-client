@@ -1,5 +1,7 @@
 import * as React from "react";
+import { Store } from "redux";
 import { connect } from "react-redux";
+import { State as StoreState } from "../reducers/index";
 import { mapStateToProps, mapDispatchToProps, mergeRootProps } from "./mergeRootProps";
 import BookDetails from "./BookDetails";
 import LoadingIndicator from "./LoadingIndicator";
@@ -28,7 +30,7 @@ export interface BookDetailsContainerProps extends React.Props<any> {
 }
 
 export interface RootProps extends State {
-  store?: Redux.Store;
+  store?: Store<StoreState>;
   collectionUrl?: string;
   bookUrl?: string;
   proxyUrl?: string;
