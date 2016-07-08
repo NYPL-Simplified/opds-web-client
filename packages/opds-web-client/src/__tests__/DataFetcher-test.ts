@@ -37,6 +37,6 @@ describe("DataFetcher", () => {
     expect(mockFetch.mock.calls.length).toBe(1);
     expect(mockFetch.mock.calls[0][0]).toBe(proxyUrl);
     expect(mockFetch.mock.calls[0][1].method).toBe("POST");
-    expect(mockFetch.mock.calls[0][1].body.get("url").value).toEqual(encodeURIComponent("test url"));
+    expect(mockFetch.mock.calls[0][1].body.get("url").value).toEqual("test url");
   });
 });

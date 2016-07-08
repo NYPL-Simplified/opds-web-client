@@ -48,6 +48,44 @@ export function mapDispatchToProps(dispatch) {
   };
 };
 
+export function createFetchCollectionAndBook(dispatch) {
+  let fetcher = new DataFetcher(null, adapter);
+  let actions = mapDispatchToProps(dispatch).createDispatchProps(fetcher);
+  return (collectionUrl: string, bookUrl: string): Promise<any> => {
+    let { fetchCollection, fetchBook } = actions;
+    return fetchCollectionAndBook({
+      fetchCollection,
+      fetchBook,
+      collectionUrl,
+      bookUrl
+    });
+  };
+}
+
+export function fetchCollectionAndBook({
+  fetchCollection, fetchBook, collectionUrl, bookUrl
+}): Promise<{ collectionData: CollectionData, bookData: BookData }> {
+  return new Promise((resolve, reject) => {
+    if (collectionUrl) {
+      fetchCollection(collectionUrl).then(collectionData => {
+        if (bookUrl) {
+          fetchBook(bookUrl).then(bookData => {
+            resolve({ collectionData, bookData });
+          }).catch(err => reject(err));
+        } else {
+          resolve({ collectionData, bookData: null });
+        }
+      }).catch(err => reject(err));
+    } else if (bookUrl) {
+      fetchBook(bookUrl).then(bookData => {
+        resolve({ collectionData: null, bookData });
+      }).catch(err => reject(err));
+    } else {
+      resolve({ collectionData: null, bookData: null });
+    }
+  });
+};
+
 export function mergeRootProps(stateProps, createDispatchProps, componentProps) {
   let fetcher = new DataFetcher(componentProps.proxyUrl, adapter);
   let dispatchProps = createDispatchProps.createDispatchProps(fetcher);
@@ -108,37 +146,28 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
     });
   };
 
-  let fetchCollectionAndBook = (collectionUrl: string, bookUrl: string) => {
-    return new Promise((resolve, reject) => {
-      if (collectionUrl) {
-        dispatchProps.fetchCollection(collectionUrl).then(collectionData => {
-          if (bookUrl) {
-            dispatchProps.fetchBook(bookUrl).then(bookData => {
-              resolve({ collectionData, bookData });
-            }).catch(err => reject(err));
-          } else {
-            resolve({ collectionData, bookData: null });
-          }
-        }).catch(err => reject(err));
-      } else if (bookUrl) {
-        dispatchProps.fetchBook(bookUrl).then(bookData => {
-          resolve({ collectionData: null, bookData });
-        }).catch(err => reject(err));
-      } else {
-        resolve({ collectionData: null, bookData: null });
-      }
-    });
-  };
+  let { fetchCollection, fetchBook } = dispatchProps;
 
   return Object.assign({}, componentProps, stateProps, dispatchProps, {
     setCollection: setCollection,
     setBook: setBook,
     setCollectionAndBook: setCollectionAndBook,
     refreshCollectionAndBook: () => {
-      return fetchCollectionAndBook(stateProps.loadedCollectionUrl, stateProps.loadedBookUrl);
+      return fetchCollectionAndBook({
+        fetchCollection,
+        fetchBook,
+        collectionUrl: stateProps.loadedCollectionUrl,
+        bookUrl: stateProps.loadedBookUrl
+      });
     },
     retryCollectionAndBook: () => {
-      return fetchCollectionAndBook(stateProps.collectionUrl, stateProps.bookUrl);
+      let { collectionUrl, bookUrl } = stateProps;
+      return fetchCollectionAndBook({
+        fetchCollection,
+        fetchBook,
+        collectionUrl,
+        bookUrl
+      });
     },
     clearCollection: () => {
       setCollection(null);

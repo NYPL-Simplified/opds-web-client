@@ -19,14 +19,18 @@ export default class OPDSCatalog extends React.Component<OPDSCatalogProps, any> 
 
   constructor(props) {
     super(props);
-    this.store = this.props.store || buildStore();
+
+    // use server-provided initial state if available
+    let hasPreloadedState = typeof window !== "undefined" ? (window as any).__PRELOADED_STATE__ : null;
+    let initialState = hasPreloadedState ? (window as any).__PRELOADED_STATE__ : undefined;
+    this.store = this.props.store || buildStore(initialState);
   }
 
   render(): JSX.Element {
+    let props = Object.assign({}, this.props, { store: this.store });
+
     return (
-      <Root
-        store={this.store}
-        {...this.props} />
+      <Root {...props} />
     );
   }
 }

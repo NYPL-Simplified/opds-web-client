@@ -210,7 +210,9 @@ export class Root extends React.Component<RootProps, any> {
   }
 
   componentDidMount() {
-    document.addEventListener("keydown", this.handleKeyDown.bind(this));
+    if (typeof document !== "undefined") {
+      document.addEventListener("keydown", this.handleKeyDown.bind(this));
+    }
   }
 
   componentWillReceiveProps(nextProps: RootProps) {
@@ -222,7 +224,7 @@ export class Root extends React.Component<RootProps, any> {
   }
 
   updatePageTitle(props) {
-    if (props.pageTitleTemplate) {
+    if (typeof document !== "undefined" && props.pageTitleTemplate) {
       let collectionTitle = props.collectionData && props.collectionData.title;
       let bookTitle = props.bookData && props.bookData.title;
       document.title = props.pageTitleTemplate(collectionTitle, bookTitle);

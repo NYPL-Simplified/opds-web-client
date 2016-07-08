@@ -15,7 +15,10 @@ var config = {
   },
   devtool: 'eval',
   plugins: [
-    new webpack.DefinePlugin({ "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV) })
+    new webpack.DefinePlugin({ "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV) }),
+    // jsdom is needed for server rendering, but causes errors
+    // in the browser even if it is never used, so we ignore it:
+    new webpack.IgnorePlugin(/jsdom$/)
   ],
   module: {
     loaders: [
