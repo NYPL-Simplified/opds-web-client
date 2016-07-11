@@ -1,11 +1,7 @@
 import * as Redux from "redux";
-import collection, { CollectionState } from "./collection";
-import book, { BookState } from "./book";
-
-export interface State {
-  collection: CollectionState;
-  book: BookState;
-}
+import collection from "./collection";
+import book from "./book";
+import { State } from "../state";
 
 const reducers = Redux.combineReducers<State>({
   collection,

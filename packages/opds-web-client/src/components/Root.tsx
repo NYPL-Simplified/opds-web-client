@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Store } from "redux";
 import { connect } from "react-redux";
-import { State as StoreState } from "../reducers/index";
+import { State } from "../state";
 import { mapStateToProps, mapDispatchToProps, mergeRootProps } from "./mergeRootProps";
 import BookDetails from "./BookDetails";
 import LoadingIndicator from "./LoadingIndicator";
@@ -15,7 +15,7 @@ import Collection from "./Collection";
 import UrlForm from "./UrlForm";
 import SkipNavigationLink from "./SkipNavigationLink";
 import CatalogLink from "./CatalogLink";
-import { CollectionData, BookData, LinkData, State, NavigateContext } from "../interfaces";
+import { CollectionData, BookData, LinkData, StateProps, NavigateContext } from "../interfaces";
 
 export interface HeaderProps extends React.Props<any> {
   CatalogLink: typeof CatalogLink;
@@ -29,8 +29,8 @@ export interface BookDetailsContainerProps extends React.Props<any> {
   refreshCatalog: () => Promise<any>;
 }
 
-export interface RootProps extends State {
-  store?: Store<StoreState>;
+export interface RootProps extends StateProps {
+  store?: Store<State>;
   collectionUrl?: string;
   bookUrl?: string;
   proxyUrl?: string;

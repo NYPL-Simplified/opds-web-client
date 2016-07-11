@@ -1,5 +1,6 @@
 import { createStore, combineReducers, applyMiddleware, Store } from "redux";
-import reducers, { State } from "./reducers/index";
+import reducers from "./reducers/index";
+import { State } from "./state";
 const thunk = require("redux-thunk").default;
 
 export default function buildStore(initialState?: State): Store<State> {

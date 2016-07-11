@@ -16,7 +16,7 @@ import LoadingIndicator from "../LoadingIndicator";
 import ErrorMessage from "../ErrorMessage";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 import buildStore from "../../store";
-import { State } from "../../reducers/index";
+import { State } from "../../state";
 import { CollectionData, BookData, LinkData } from "../../interfaces";
 import { mockRouterContext } from "./routing";
 

@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import * as Redux from "redux";
 import Root, { RootProps } from "./Root";
 import buildStore from "../store";
-import { State } from "../reducers/index";
+import { State } from "../state";
 
 export interface OPDSCatalogProps {
   collectionUrl?: string;
@@ -11,7 +11,7 @@ export interface OPDSCatalogProps {
   headerTitle?: string;
   pageTitleTemplate: (collectionTitle: string, bookTitle: string) => string;
   proxyUrl?: string;
-  store?: Redux.Store<State>;
+  initialState?: State;
 }
 
 export default class OPDSCatalog extends React.Component<OPDSCatalogProps, any> {
@@ -19,11 +19,7 @@ export default class OPDSCatalog extends React.Component<OPDSCatalogProps, any> 
 
   constructor(props) {
     super(props);
-
-    // use server-provided initial state if available
-    let hasPreloadedState = typeof window !== "undefined" ? (window as any).__PRELOADED_STATE__ : null;
-    let initialState = hasPreloadedState ? (window as any).__PRELOADED_STATE__ : undefined;
-    this.store = this.props.store || buildStore(initialState);
+    this.store = buildStore(this.props.initialState || undefined);
   }
 
   render(): JSX.Element {

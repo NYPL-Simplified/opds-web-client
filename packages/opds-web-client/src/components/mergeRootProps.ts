@@ -51,8 +51,8 @@ export function mapDispatchToProps(dispatch) {
 export function createFetchCollectionAndBook(dispatch) {
   let fetcher = new DataFetcher(null, adapter);
   let actions = mapDispatchToProps(dispatch).createDispatchProps(fetcher);
-  return (collectionUrl: string, bookUrl: string): Promise<any> => {
-    let { fetchCollection, fetchBook } = actions;
+  let { fetchCollection, fetchBook } = actions;
+  return (collectionUrl: string, bookUrl: string): Promise<{ collectionData: CollectionData, bookData: BookData }> => {
     return fetchCollectionAndBook({
       fetchCollection,
       fetchBook,
