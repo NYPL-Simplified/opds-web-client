@@ -172,9 +172,9 @@ export class Root extends React.Component<RootProps, any> {
           { showBookWrapper &&
             <div className="bookDetailsWrapper" style={bookWrapperStyle}>
               { showBook &&
-                ( BookDetailsContainer && this.props.bookUrl ?
+                ( BookDetailsContainer && (this.props.bookUrl || this.props.bookData.url) ?
                   <BookDetailsContainer
-                    bookUrl={this.props.bookUrl}
+                    bookUrl={this.props.bookUrl || this.props.bookData.url}
                     collectionUrl={this.props.collectionUrl}
                     refreshCatalog={this.props.refreshCollectionAndBook}>
                     <BookDetails book={this.props.bookData} />
