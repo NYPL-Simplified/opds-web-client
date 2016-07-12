@@ -8,6 +8,8 @@ export default class BookDetails extends React.Component<BookProps, any> {
       borderTop: "1px solid #ccc"
     };
 
+    let links = this.circulationLinks();
+
     return (
       <div className="bookDetails">
         <div className="bookDetailsTop" style={{ textAlign: "left", display: "table-row" }}>
@@ -48,9 +50,17 @@ export default class BookDetails extends React.Component<BookProps, any> {
         <div style={{ clear: "both", marginTop: "1em" }}></div>
         <div
           style={bookSummaryStyle}>
-          { this.props.book.openAccessUrl &&
+          { links.length > 0 &&
             <div style={{textAlign: "center", marginBottom: "30px"}}>
-              <a href={this.props.book.openAccessUrl} className="btn btn-default">Get</a>
+              { links.map(link =>
+                <a
+                  key={link.url}
+                  href={link.url}
+                  className="btn btn-default"
+                  style={{ marginRight: "0.5em" }}>
+                  {link.text}
+                </a>
+              ) }
             </div>
           }
           <div className="bookDetailsSummary"
@@ -74,5 +84,17 @@ export default class BookDetails extends React.Component<BookProps, any> {
     if (elem) {
       elem.style.overflow = value;
     }
+  }
+
+  circulationLinks() {
+    let links = [];
+
+    if (this.props.book.openAccessUrl) {
+      links.push({ text: "Download", url: this.props.book.openAccessUrl });
+    } else if (this.props.book.borrowUrl) {
+      links.push({ text: "Borrow", url: this.props.book.borrowUrl });
+    }
+
+    return links;
   }
 }

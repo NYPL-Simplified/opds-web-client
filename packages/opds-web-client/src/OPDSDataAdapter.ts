@@ -89,6 +89,14 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
     openAccessUrl = resolve(feedUrl, openAccessLink.href);
   }
 
+  let borrowUrl;
+  let borrowLink = entry.links.find(link => {
+    return link instanceof OPDSAcquisitionLink && link.rel === OPDSAcquisitionLink.BORROW_REL;
+  });
+  if (borrowLink) {
+    borrowUrl = resolve(feedUrl, borrowLink.href);
+  }
+
   return <BookData>{
     id: entry.id,
     title: entry.title,
@@ -97,6 +105,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
     summary: entry.summary.content && sanitizeHtml(entry.summary.content),
     imageUrl: imageUrl,
     openAccessUrl: openAccessUrl,
+    borrowUrl: borrowUrl,
     publisher: entry.publisher,
     published: entry.published && formatDate(entry.published),
     categories: categories,

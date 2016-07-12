@@ -6,6 +6,7 @@ export interface BookData {
   summary?: string;
   imageUrl?: string;
   openAccessUrl?: string;
+  borrowUrl?: string;
   url?: string;
   publisher?: string;
   published?: string;
