@@ -48,6 +48,8 @@ export function mapDispatchToProps(dispatch) {
   };
 };
 
+// only used by a server when it needs to fetch collection and/or book data
+// for a particular route into a store before it renders to HTML
 export function createFetchCollectionAndBook(dispatch) {
   let fetcher = new DataFetcher(null, adapter);
   let actions = mapDispatchToProps(dispatch).createDispatchProps(fetcher);
