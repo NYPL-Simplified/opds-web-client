@@ -1,5 +1,7 @@
 import * as React from "react";
+import { Store } from "redux";
 import { connect } from "react-redux";
+import { State } from "../state";
 import { mapStateToProps, mapDispatchToProps, mergeRootProps } from "./mergeRootProps";
 import BookDetails from "./BookDetails";
 import LoadingIndicator from "./LoadingIndicator";
@@ -13,7 +15,7 @@ import Collection from "./Collection";
 import UrlForm from "./UrlForm";
 import SkipNavigationLink from "./SkipNavigationLink";
 import CatalogLink from "./CatalogLink";
-import { CollectionData, BookData, LinkData, State, NavigateContext } from "../interfaces";
+import { CollectionData, BookData, LinkData, StateProps, NavigateContext } from "../interfaces";
 
 export interface HeaderProps extends React.Props<any> {
   CatalogLink: typeof CatalogLink;
@@ -27,8 +29,8 @@ export interface BookDetailsContainerProps extends React.Props<any> {
   refreshCatalog: () => Promise<any>;
 }
 
-export interface RootProps extends State {
-  store?: Redux.Store;
+export interface RootProps extends StateProps {
+  store?: Store<State>;
   collectionUrl?: string;
   bookUrl?: string;
   proxyUrl?: string;
@@ -208,7 +210,9 @@ export class Root extends React.Component<RootProps, any> {
   }
 
   componentDidMount() {
-    document.addEventListener("keydown", this.handleKeyDown.bind(this));
+    if (typeof document !== "undefined") {
+      document.addEventListener("keydown", this.handleKeyDown.bind(this));
+    }
   }
 
   componentWillReceiveProps(nextProps: RootProps) {
@@ -220,7 +224,7 @@ export class Root extends React.Component<RootProps, any> {
   }
 
   updatePageTitle(props) {
-    if (props.pageTitleTemplate) {
+    if (typeof document !== "undefined" && props.pageTitleTemplate) {
       let collectionTitle = props.collectionData && props.collectionData.title;
       let bookTitle = props.bookData && props.bookData.title;
       document.title = props.pageTitleTemplate(collectionTitle, bookTitle);

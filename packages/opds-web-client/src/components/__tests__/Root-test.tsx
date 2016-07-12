@@ -1,6 +1,7 @@
 jest.autoMockOff();
 
 import * as React from "react";
+import { Store } from "redux";
 import { shallow, mount } from "enzyme";
 
 import ConnectedRoot, { Root, BookDetailsContainerProps, HeaderProps } from "../Root";
@@ -15,6 +16,7 @@ import LoadingIndicator from "../LoadingIndicator";
 import ErrorMessage from "../ErrorMessage";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 import buildStore from "../../store";
+import { State } from "../../state";
 import { CollectionData, BookData, LinkData } from "../../interfaces";
 import { mockRouterContext } from "./routing";
 
@@ -500,7 +502,7 @@ describe("Root", () => {
   });
 
   describe("routing", () => {
-    let store: Redux.Store;
+    let store: Store<State>;
     let collectionData: CollectionData = groupedCollectionData;
     let bookData: BookData = groupedCollectionData.lanes[0].books[0];
     let push, context, childContextTypes;

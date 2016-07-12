@@ -46,7 +46,11 @@ describe("book reducer", () => {
     url: null,
     data: null,
     isFetching: false,
-    error: "test error"
+    error: {
+      status: 500,
+      response: "error",
+      url: "url",
+    }
   };
 
   it("should return the initial state", () => {

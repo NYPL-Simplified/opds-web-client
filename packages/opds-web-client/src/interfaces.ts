@@ -62,7 +62,7 @@ export interface LinkData {
 // these properties need to be optional because they're used by RootProps,
 // which doesn't implement them until Root is connected to the state by redux;
 // initially, Root isn't provided most of these props
-export interface State {
+export interface StateProps {
   collectionData?: CollectionData;
   collectionUrl?: string;
   isFetching?: boolean;

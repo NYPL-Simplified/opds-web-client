@@ -4,6 +4,7 @@ import { Router, Route, browserHistory } from "react-router";
 import OPDSCatalog from "./components/OPDSCatalog";
 import { RootProps } from "./components/Root";
 import { PathFor } from "./interfaces";
+import { State } from "./state";
 
 class OPDSWebClient {
   elementId: string;
@@ -15,7 +16,7 @@ class OPDSWebClient {
     proxyUrl?: string;
     pageTitleTemplate?: (collectionTitle: string, bookTitle: string) => string;
     pathPattern?: string;
-    pathFor: PathFor
+    pathFor: PathFor;
   }, elementId: string) {
     this.elementId = elementId;
     this.pathPattern = config.pathPattern || "/(collection/:collectionUrl/)(book/:bookUrl/)";

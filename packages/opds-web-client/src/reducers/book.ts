@@ -1,11 +1,20 @@
-const initialState = {
+import { BookData, FetchErrorData } from "../interfaces";
+
+export interface BookState {
+  url: string;
+  data: BookData;
+  isFetching: boolean;
+  error: FetchErrorData;
+}
+
+const initialState: BookState = {
   url: null,
   data: null,
   isFetching: false,
   error: null
 };
 
-const book = (state = initialState, action) => {
+const book = (state: BookState = initialState, action): BookState => {
   switch (action.type) {
     case "FETCH_BOOK_REQUEST":
       return Object.assign({}, state, {

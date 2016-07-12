@@ -2,16 +2,18 @@
   "globalDependencies": {
     "core-js": "github:DefinitelyTyped/DefinitelyTyped/core-js/core-js.d.ts#c777572e8532c4d358306fe4c0e17a533f940b04",
     "enzyme": "registry:dt/enzyme#1.2.0+20160324040416",
+    "isomorphic-fetch": "registry:dt/isomorphic-fetch#0.0.0+20160524142046",
+    "jquery": "registry:dt/jquery#1.10.0+20160704162008",
+    "jsdom": "registry:dt/jsdom#2.0.0+20160316155526",
     "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#86dbea8fc37d9473fee465da4f0a21bea4f8cbd9",
     "react": "registry:dt/react#0.14.0+20160412154040",
     "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
-    "react-redux": "github:DefinitelyTyped/DefinitelyTyped/react-redux/react-redux.d.ts#a513c4df6eb8505da8eef432891c8b69b73535d9",
+    "react-redux": "registry:dt/react-redux#4.4.0+20160703120921",
     "react-router": "registry:dt/react-router#2.0.0+20160330124659",
     "react-router/history": "registry:dt/react-router/history#2.0.0+20160316155526",
-    "redux": "registry:dt/redux#3.3.1+20160326112656",
-    "redux-thunk": "github:DefinitelyTyped/DefinitelyTyped/redux-thunk/redux-thunk.d.ts#75249b97104d00c1ca2451ac29369009a5f2b101",
+    "redux": "registry:dt/redux#3.5.2+20160703092728",
+    "redux-thunk": "registry:dt/redux-thunk#2.1.0+20160703120921",
     "sanitize-html": "github:DefinitelyTyped/DefinitelyTyped/sanitize-html/sanitize-html.d.ts#71b9e552eab0e66ccb1385babb2f2b95e73afcb1",
-    "whatwg-fetch": "github:DefinitelyTyped/DefinitelyTyped/whatwg-fetch/whatwg-fetch.d.ts#91d963959f52ba696d74627d92bbb32350549993",
     "xml2js": "github:DefinitelyTyped/DefinitelyTyped/xml2js/xml2js.d.ts#7304e0770d53762f89af7fcf14517d5f45a04cc2"
   }
 }

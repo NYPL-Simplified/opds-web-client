@@ -6,6 +6,9 @@ import { shallow } from "enzyme";
 import OPDSCatalog from "../OPDSCatalog";
 import Root, { RootProps } from "../Root";
 import buildStore from "../../store";
+import { State } from "../../state";
+import { groupedCollectionData } from "./collectionData";
+import { jsdom } from "jsdom";
 
 describe("OPDSCatalog", () => {
   let props = {
@@ -30,13 +33,14 @@ describe("OPDSCatalog", () => {
     expect(root.props().store).toBeTruthy();
   });
 
-  it("passes store to Root if given one", () => {
+  it("passes state to Root if given one", () => {
     let store = buildStore();
+    let state = store.getState();
     let wrapper = shallow(
-      <OPDSCatalog {...props} store={store} />
+      <OPDSCatalog {...props} initialState={state} />
     );
     let root = wrapper.find<RootProps>(Root);
-    expect(root.props().store).toBe(store);
+    expect(root.props().store.getState()).toBe(state);
   });
 
   it("passes props to Root", () => {

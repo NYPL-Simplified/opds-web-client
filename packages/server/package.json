@@ -14,9 +14,9 @@
     "start": "NODE_ENV=production node index.js"
   },
   "dependencies": {
-    "body-parser": "^1.14.2",
     "ejs": "^2.4.1",
     "express": "^4.13.4",
+    "multer": "^1.1.0",
     "opds-web-client": ">=0.0.17",
     "request": "^2.69.0"
   }

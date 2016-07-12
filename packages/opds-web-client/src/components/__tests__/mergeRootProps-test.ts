@@ -1,8 +1,19 @@
 jest.dontMock("../mergeRootProps");
 jest.dontMock("./collectionData");
-jest.dontMock("../../actions");
 
-import { mergeRootProps, findBookInCollection } from "../mergeRootProps";
+// synchronous actions for simple testing
+// of createFetchCollectionAndBook
+class MockActionCreator {
+  fetchCollection(url) {
+    return "fetchCollection:" + url;
+  }
+  fetchBook(url) {
+    return "fetchBook:" + url ;
+  }
+}
+jest.setMock("../../actions", { default: MockActionCreator });
+
+import { mergeRootProps, findBookInCollection, createFetchCollectionAndBook } from "../mergeRootProps";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 
 describe("findBookInCollection", () => {
@@ -29,6 +40,26 @@ describe("findBookInCollection", () => {
     let collection = groupedCollectionData;
     let result = findBookInCollection(collection, "nonexistent");
     expect(result).toBeFalsy();
+  });
+});
+
+describe("createFetchCollectionAndBook", () => {
+  let collectionUrl = "collection url";
+  let bookUrl = "book url";
+  let dispatch = jest.genMockFunction();
+  dispatch.mockImplementation(url => new Promise((resolve, reject) => resolve(url)));
+
+  it("returns fetch function that uses the provided dispatch", (done) => {
+    let actions = new MockActionCreator();
+    let fetchCollectionAndBook = createFetchCollectionAndBook(dispatch);
+    fetchCollectionAndBook(collectionUrl, bookUrl).then(({ collectionData, bookData }) => {
+      // we are only testing that the provided dispatch is called twice,
+      // once for fetchCollection and once for fetchBook
+      expect(dispatch.mock.calls.length).toBe(2);
+      expect(dispatch.mock.calls[0][0]).toBe(actions.fetchCollection(collectionUrl));
+      expect(dispatch.mock.calls[1][0]).toBe(actions.fetchBook(bookUrl));
+      done();
+    }).catch(err => done(err));
   });
 });
 
