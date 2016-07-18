@@ -18,7 +18,10 @@ export function findBookInCollection(collection: CollectionData, book: string) {
 export function mapStateToProps(state, ownProps) {
   return {
     collectionData: state.catalog.collection.data || ownProps.collectionData,
-    isFetching: (state.catalog.collection.isFetching || state.catalog.book.isFetching),
+    isFetching:
+      state.catalog.collection.isFetching ||
+      state.catalog.book.isFetching ||
+      state.catalog.auth.isFetching,
     isFetchingPage: state.catalog.collection.isFetchingPage,
     error: (state.catalog.collection.error || state.catalog.book.error),
     bookData: state.catalog.book.data || ownProps.bookData,
@@ -26,7 +29,8 @@ export function mapStateToProps(state, ownProps) {
     loadedCollectionUrl: state.catalog.collection.url,
     loadedBookUrl: state.catalog.book.url,
     collectionUrl: ownProps.collectionUrl,
-    bookUrl: ownProps.bookUrl
+    bookUrl: ownProps.bookUrl,
+    basicAuth: state.catalog.auth.basic,
   };
 };
 
@@ -42,7 +46,10 @@ export function mapDispatchToProps(dispatch) {
         clearCollection: () => dispatch(actions.clearCollection()),
         clearBook: () => dispatch(actions.clearBook()),
         fetchSearchDescription: (url: string) => dispatch(actions.fetchSearchDescription(url)),
-        closeError: () => dispatch(actions.closeError())
+        closeError: () => dispatch(actions.closeError()),
+        borrowBook: (url: string) => dispatch(actions.borrowBook(url)),
+        saveBasicAuthCredentials: (credentials: string) => dispatch(actions.saveBasicAuthCredentials(credentials)),
+        hideBasicAuthForm: () => dispatch(actions.hideBasicAuthForm())
       };
     }
   };
@@ -51,7 +58,7 @@ export function mapDispatchToProps(dispatch) {
 // only used by a server when it needs to fetch collection and/or book data
 // for a particular route into a store before it renders to HTML
 export function createFetchCollectionAndBook(dispatch) {
-  let fetcher = new DataFetcher(null, adapter);
+  let fetcher = new DataFetcher({ adapter });
   let actions = mapDispatchToProps(dispatch).createDispatchProps(fetcher);
   let { fetchCollection, fetchBook } = actions;
   return (collectionUrl: string, bookUrl: string): Promise<{ collectionData: CollectionData, bookData: BookData }> => {
@@ -89,7 +96,11 @@ export function fetchCollectionAndBook({
 };
 
 export function mergeRootProps(stateProps, createDispatchProps, componentProps) {
-  let fetcher = new DataFetcher(componentProps.proxyUrl, adapter);
+  let fetcher = new DataFetcher({
+    proxyUrl: componentProps.proxyUrl,
+    adapter: adapter,
+    basicAuthCredentials: stateProps.basicAuth.credentials
+  });
   let dispatchProps = createDispatchProps.createDispatchProps(fetcher);
 
   let setCollection = (url: string) => {

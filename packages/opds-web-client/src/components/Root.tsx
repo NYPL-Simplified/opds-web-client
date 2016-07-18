@@ -2,20 +2,24 @@ import * as React from "react";
 import { Store } from "redux";
 import { connect } from "react-redux";
 import { State } from "../state";
-import { mapStateToProps, mapDispatchToProps, mergeRootProps } from "./mergeRootProps";
+import {
+  mapStateToProps, mapDispatchToProps, mergeRootProps
+} from "./mergeRootProps";
 import BookDetails from "./BookDetails";
 import LoadingIndicator from "./LoadingIndicator";
 import ErrorMessage from "./ErrorMessage";
+import BasicAuthForm  from "./BasicAuthForm";
 import Search from "./Search";
 import Breadcrumbs, {
-  ComputeBreadcrumbs,
-  defaultComputeBreadcrumbs
+  ComputeBreadcrumbs, defaultComputeBreadcrumbs
 } from "./Breadcrumbs";
 import Collection from "./Collection";
 import UrlForm from "./UrlForm";
 import SkipNavigationLink from "./SkipNavigationLink";
 import CatalogLink from "./CatalogLink";
-import { CollectionData, BookData, LinkData, StateProps, NavigateContext } from "../interfaces";
+import {
+  CollectionData, BookData, LinkData, StateProps, NavigateContext
+} from "../interfaces";
 
 export interface HeaderProps extends React.Props<any> {
   CatalogLink: typeof CatalogLink;
@@ -25,8 +29,10 @@ export interface HeaderProps extends React.Props<any> {
 
 export interface BookDetailsContainerProps extends React.Props<any> {
   bookUrl: string;
+  book: BookData;
   collectionUrl: string;
   refreshCatalog: () => Promise<any>;
+  borrowBook: (url: string, title: string) => Promise<any>;
 }
 
 export interface RootProps extends StateProps {
@@ -49,6 +55,9 @@ export interface RootProps extends StateProps {
   Header?: new() => __React.Component<HeaderProps, any>;
   BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
   computeBreadcrumbs?: ComputeBreadcrumbs;
+  borrowBook: (url: string) => Promise<any>;
+  saveBasicAuthCredentials: (credentials: string) => void;
+  hideBasicAuthForm: () => void;
 }
 
 export class Root extends React.Component<RootProps, any> {
@@ -126,7 +135,20 @@ export class Root extends React.Component<RootProps, any> {
             retry={this.props.retryCollectionAndBook} />
         }
 
-        { this.props.isFetching && <LoadingIndicator /> }
+        { this.props.isFetching &&
+          <LoadingIndicator />
+        }
+
+        { this.props.basicAuth && this.props.basicAuth.showForm &&
+          <BasicAuthForm
+            saveCredentials={this.props.saveBasicAuthCredentials}
+            hide={this.props.hideBasicAuthForm}
+            callback={this.props.basicAuth.callback}
+            title={this.props.basicAuth.title}
+            loginLabel={this.props.basicAuth.loginLabel}
+            passwordLabel={this.props.basicAuth.passwordLabel}
+            />
+        }
 
         { showUrlForm &&
           <UrlForm collectionUrl={this.props.collectionUrl} />
@@ -175,12 +197,15 @@ export class Root extends React.Component<RootProps, any> {
                 ( BookDetailsContainer && (this.props.bookUrl || this.props.bookData.url) ?
                   <BookDetailsContainer
                     bookUrl={this.props.bookUrl || this.props.bookData.url}
+                    book={this.props.bookData}
                     collectionUrl={this.props.collectionUrl}
-                    refreshCatalog={this.props.refreshCollectionAndBook}>
-                    <BookDetails book={this.props.bookData} />
+                    refreshCatalog={this.props.refreshCollectionAndBook}
+                    borrowBook={this.props.borrowBook}
+                    >
+                    <BookDetails book={this.props.bookData} borrowBook={this.props.borrowBook} />
                   </BookDetailsContainer> :
                   <div style={{ padding: "40px", maxWidth: "700px", margin: "0 auto" }}>
-                    <BookDetails book={this.props.bookData} />
+                    <BookDetails book={this.props.bookData} borrowBook={this.props.borrowBook} />
                   </div>
                 )
               }

@@ -7,10 +7,12 @@ export interface BookData {
   imageUrl?: string;
   openAccessUrl?: string;
   borrowUrl?: string;
+  fulfillmentUrl?: string;
   url?: string;
   publisher?: string;
   published?: string;
   categories?: string[];
+  raw?: any;
 }
 
 export interface LaneData {
@@ -72,6 +74,7 @@ export interface StateProps {
   bookUrl?: string;
   isFetchingPage?: boolean;
   history?: LinkData[];
+  basicAuth: BasicAuthData
 }
 
 export interface PathFor {
@@ -98,4 +101,18 @@ export interface Router {
 export interface NavigateContext {
   router?: Router;
   pathFor: PathFor;
+}
+
+export interface BasicAuthCallback {
+  (credentials: string): any;
+}
+
+export interface BasicAuthData {
+  showForm: boolean;
+  callback: BasicAuthCallback;
+  credentials: string;
+  title: string;
+  loginLabel: string;
+  passwordLabel: string;
+  isFetching: boolean;
 }

@@ -24,7 +24,7 @@ describe("BookDetails", () => {
 
   beforeEach(() => {
     wrapper = shallow(
-      <BookDetails book={book} />
+      <BookDetails book={book} borrowBook={jest.genMockFunction()} />
     );
   });
 
@@ -58,31 +58,31 @@ describe("BookDetails", () => {
       publisher: null
     });
     wrapper = shallow(
-      <BookDetails book={bookCopy} />
+      <BookDetails book={bookCopy} borrowBook={jest.genMockFunction()} />
     );
 
     let publisher = wrapper.find(".bookDetailsPublisher");
-    expect(publisher.length).toEqual(0);
+    expect(publisher.length).toBe(0);
   });
 
   it("shows publish date", () => {
     let published = wrapper.find(".bookDetailsPublished");
-    expect(published.text()).toEqual("Published: " + book.published);
+    expect(published.text()).toBe("Published: " + book.published);
   });
 
   it("shows categories", () => {
     let categories = wrapper.find(".bookDetailsCategories");
-    expect(categories.text()).toEqual("Categories: category 1, category 2");
+    expect(categories.text()).toBe("Categories: category 1, category 2");
   });
 
   it("doesn't show categories when there aren't any", () => {
     let bookCopy = Object.assign({}, book, { categories: [] });
     wrapper = shallow(
-      <BookDetails book={bookCopy} />
+      <BookDetails book={bookCopy} borrowBook={jest.genMockFunction()} />
     );
 
     let categories = wrapper.find(".bookDetailsCategories");
-    expect(categories.length).toEqual(0);
+    expect(categories.length).toBe(0);
   });
 
   it("shows summary", () => {
@@ -90,19 +90,46 @@ describe("BookDetails", () => {
     expect(summary.html()).toContain("Sam and Remi");
   });
 
-  it("shows get button for open access url", () => {
+  it("shows download button for open access url", () => {
     let button = wrapper.find("a.btn");
-    expect(button.text()).toEqual("Get");
-    expect(button.props().href).toEqual("secrets.epub");
+    expect(button.text()).toBe("Download");
+    expect(button.props().href).toBe("secrets.epub");
   });
 
-  it("doesn't show get button without open access url", () => {
+  it("doesn't show download button without open access url", () => {
     let bookCopy = Object.assign({}, book, { openAccessUrl: null });
     wrapper = shallow(
-      <BookDetails book={bookCopy} />
+      <BookDetails book={bookCopy} borrowBook={jest.genMockFunction()} />
     );
 
     let button = wrapper.find("a.btn");
-    expect(button.length).toEqual(0);
+    expect(button.length).toBe(0);
+  });
+
+  it("shows get button for borrow url if there's no open access url", () => {
+    let bookCopy = Object.assign({}, book, {
+      borrowUrl: "borrow url",
+      openAccessUrl: null
+    });
+    wrapper = shallow(
+      <BookDetails book={bookCopy} borrowBook={jest.genMockFunction()} />
+    );
+
+    let button = wrapper.find("a.btn");
+    expect(button.text()).toBe("Borrow");
+    expect(button.props().href).toBe("borrow url");
+  });
+
+  it("shows only download button if there's open access url and borrow url", () => {
+    let bookCopy = Object.assign({}, book, {
+      borrowUrl: "borrow url"
+    });
+    wrapper = shallow(
+      <BookDetails book={bookCopy} borrowBook={jest.genMockFunction()} />
+    );
+
+    let button = wrapper.find("a.btn");
+    expect(button.text()).toBe("Download");
+    expect(button.props().href).toBe("secrets.epub");
   });
 });

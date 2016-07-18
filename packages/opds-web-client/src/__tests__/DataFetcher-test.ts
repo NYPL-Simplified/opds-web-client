@@ -44,7 +44,7 @@ describe("DataFetcher", () => {
 
   it("uses proxy url if provided", () => {
     let proxyUrl = "http://example.com";
-    let fetcher = new DataFetcher(proxyUrl);
+    let fetcher = new DataFetcher({ proxyUrl });
     fetcher.fetch("test url");
 
     let formData = new FormData();

@@ -97,6 +97,16 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
     borrowUrl = resolve(feedUrl, borrowLink.href);
   }
 
+  let fulfillmentUrl;
+  let fulfillmentLink = entry.links.find(link => {
+    return link instanceof OPDSAcquisitionLink &&
+      link.rel === OPDSAcquisitionLink.GENERIC_REL &&
+      link.type === "vnd.adobe/adept+xml";
+  });
+  if (fulfillmentLink) {
+    fulfillmentUrl = resolve(feedUrl, fulfillmentLink.href);
+  }
+
   return <BookData>{
     id: entry.id,
     title: entry.title,
@@ -106,10 +116,12 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
     imageUrl: imageUrl,
     openAccessUrl: openAccessUrl,
     borrowUrl: borrowUrl,
+    fulfillmentUrl: fulfillmentUrl,
     publisher: entry.publisher,
     published: entry.published && formatDate(entry.published),
     categories: categories,
-    url: detailUrl
+    url: detailUrl,
+    raw: entry.unparsed
   };
 }
 

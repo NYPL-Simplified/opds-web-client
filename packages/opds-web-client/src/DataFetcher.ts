@@ -16,10 +16,20 @@ export interface RequestRejector {
 export default class DataFetcher {
   private proxyUrl: string;
   private adapter: any;
+  private basicAuthCredentials: any;
 
-  constructor(proxyUrl?: string, adapter?: any) {
-    this.proxyUrl = proxyUrl;
-    this.adapter = adapter;
+  constructor(config: {
+    proxyUrl?: string;
+    adapter?: any;
+    basicAuthCredentials?: any;
+  } = {}) {
+    this.proxyUrl = config.proxyUrl;
+    this.adapter = config.adapter;
+    this.basicAuthCredentials = config.basicAuthCredentials;
+  }
+
+  setBasicAuthCredentials(credentials: string) {
+    this.basicAuthCredentials = credentials;
   }
 
   fetchOPDSData(url: string) {
@@ -28,6 +38,14 @@ export default class DataFetcher {
     return new Promise((resolve, reject: RequestRejector) => {
       this.fetch(url).then((response) => {
         response.text().then(text => {
+          if (response.status === 401) {
+            reject({
+              status: 401,
+              response: text,
+              url: url
+            });
+          }
+
           parser.parse(text).then((parsedData: OPDSFeed | OPDSEntry) => {
             resolve(this.adapter(parsedData, url));
           }).catch(err => {
@@ -38,7 +56,9 @@ export default class DataFetcher {
             });
           });
         });
-      }).catch(err => reject(err));
+      }).catch(err => {
+        reject(err)
+      });
     });
   }
 
@@ -68,13 +88,28 @@ export default class DataFetcher {
     if (this.proxyUrl) {
       let formData = new FormData();
       formData.append("url", url);
-      options = Object.assign(options, {
+      Object.assign(options, {
         method: "POST",
         body: formData
       });
-      return fetch(this.proxyUrl, options);
-    } else {
-      return fetch(url, options);
+      url = this.proxyUrl;
     }
+
+    options["headers"] = options["headers"] || {};
+
+    // server needs to know request came from JS in order to omit
+    // 'Www-Authenticate: Basic' header, which triggers browser's
+    // basic auth popup
+    Object.assign(options["headers"], {
+      "X-Requested-With": "XMLHttpRequest"
+    });
+
+    if (this.basicAuthCredentials) {
+      Object.assign(options["headers"], {
+        Authorization: "Basic " + this.basicAuthCredentials
+      });
+    }
+
+    return fetch(url, options);
   }
 }

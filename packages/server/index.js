@@ -19,7 +19,8 @@ app.post("/proxy", form.array(), function(req, res, next) {
   var options = {
     uri: req.body.url,
     headers: {
-      "Authorization": req.headers.authorization
+      "Authorization": req.headers.authorization,
+      "X-Requested-With": req.headers["x-requested-with"],
     }
   };
   request

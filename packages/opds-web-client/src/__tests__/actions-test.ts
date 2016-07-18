@@ -10,7 +10,7 @@ let testData = {
 };
 
 import DataFetcher from "../DataFetcher";
-let fetcher = new DataFetcher(null, null) as any;
+let fetcher = new DataFetcher() as any;
 fetcher.testData = testData;
 
 import ActionsCreator from "../actions";

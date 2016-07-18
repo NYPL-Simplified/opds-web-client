@@ -1,7 +1,17 @@
 import * as React from "react";
 import { BookProps } from "./Book";
+var download = require("downloadjs");
 
-export default class BookDetails extends React.Component<BookProps, any> {
+export interface BookDetailsProps extends BookProps {
+  borrowBook: (url: string) => Promise<any>;
+}
+
+export default class BookDetails extends React.Component<BookDetailsProps, any> {
+  constructor(props) {
+    super(props);
+    this.borrow = this.borrow.bind(this);
+  }
+
   render(): JSX.Element {
     let bookSummaryStyle = {
       paddingTop: "2em",
@@ -55,7 +65,7 @@ export default class BookDetails extends React.Component<BookProps, any> {
               { links.map(link =>
                 <a
                   key={link.url}
-                  href={link.url}
+                  onClick={link.onClick}
                   className="btn btn-default"
                   style={{ marginRight: "0.5em" }}>
                   {link.text}
@@ -92,9 +102,39 @@ export default class BookDetails extends React.Component<BookProps, any> {
     if (this.props.book.openAccessUrl) {
       links.push({ text: "Download", url: this.props.book.openAccessUrl });
     } else if (this.props.book.borrowUrl) {
-      links.push({ text: "Borrow", url: this.props.book.borrowUrl });
+      links.push({
+        text: "Borrow",
+        url: this.props.book.borrowUrl,
+        onClick: this.borrow
+      });
     }
 
     return links;
+  }
+
+  borrow(event) {
+    event.preventDefault();
+
+    if (typeof document !== "undefined") {
+      this.props.borrowBook(this.props.book.borrowUrl).then(blob => {
+        download(
+          blob,
+          this.parameterize(this.props.book.title) + ".acsm",
+          "application/vnd.adobe.adept+xml"
+        );
+
+        // var url = window.URL.createObjectURL(blob);
+        // var link = document.createElement("a") as any;
+        // link.style = "display: none";
+        // link.href = url;
+        // link.download = this.props.book.title + ".acsm";
+        // link.click();
+        // window.URL.revokeObjectURL(url);
+      });
+    }
+  }
+
+  parameterize(str: string): string {
+    return str.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
   }
 }

@@ -6,7 +6,7 @@ import DataFetcher from "../../DataFetcher";
 import ActionsCreator from "../../actions";
 import { adapter } from "../../OPDSDataAdapter";
 
-let fetcher = new DataFetcher(null, adapter);
+let fetcher = new DataFetcher({ adapter });
 let actions = new ActionsCreator(fetcher);
 
 describe("book reducer", () => {
