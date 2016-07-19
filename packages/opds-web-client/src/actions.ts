@@ -39,6 +39,7 @@ export default class ActionCreator {
   SHOW_BASIC_AUTH_FORM = "SHOW_BASIC_AUTH_FORM";
   HIDE_BASIC_AUTH_FORM = "HIDE_BASIC_AUTH_FORM";
   SAVE_BASIC_AUTH_CREDENTIALS = "SAVE_BASIC_AUTH_CREDENTIALS";
+  CLEAR_BASIC_AUTH_CREDENTIALS = "CLEAR_BASIC_AUTH_CREDENTIALS";
 
   constructor(fetcher: DataFetcher) {
     this.fetcher = fetcher;
@@ -167,6 +168,43 @@ export default class ActionCreator {
     return { type: this.CLEAR_BOOK };
   }
 
+  // borrowBook(url: string) {
+  //   let args = new Array(arguments);
+  //   return (dispatch) => {
+  //     dispatch(this.borrowBookRequest());
+  //     return new Promise((resolve, reject) => {
+  //       this.fetcher.fetchOPDSData(url).then((data: BookData) => {
+  //         let { fulfillmentUrl } = data;
+  //         this.fetcher.fetch(fulfillmentUrl)
+  //           .then(response => response.blob())
+  //           .then(blob => {
+  //             dispatch(this.borrowBookSuccess());
+  //             resolve(blob);
+  //           })
+  //           .catch(err => reject(err));
+  //       }).catch((err: FetchErrorData) => {
+  //         dispatch(this.borrowBookFailure());
+  //         if (err.status === 401) {
+  //           let data = JSON.parse(err.response);
+  //           if (data.type.indexOf("http://opds-spec.org/auth/basic") !== -1) {
+  //             let callback = (credentials) => {
+  //               this.fetcher.setBasicAuthCredentials(credentials);
+  //               dispatch(this.borrowBook(url)).then(blob => {
+  //                 dispatch(this.borrowBookSuccess());
+  //                 resolve(blob);
+  //               }).catch(err => reject(err));
+  //             };
+  //             dispatch(this.showBasicAuthForm(callback, data.labels, data.title));
+  //           }
+  //         } else {
+  //           dispatch(this.borrowBookFailure());
+  //         }
+  //         reject(err);
+  //       });
+  //     });
+  //   };
+  // }
+
   borrowBook(url: string) {
     let args = new Array(arguments);
     return (dispatch) => {
@@ -183,21 +221,6 @@ export default class ActionCreator {
             .catch(err => reject(err));
         }).catch((err: FetchErrorData) => {
           dispatch(this.borrowBookFailure());
-          if (err.status === 401) {
-            let data = JSON.parse(err.response);
-            if (data.type.indexOf("http://opds-spec.org/auth/basic") !== -1) {
-              let callback = (credentials) => {
-                this.fetcher.setBasicAuthCredentials(credentials);
-                dispatch(this.borrowBook(url)).then(blob => {
-                  dispatch(this.borrowBookSuccess());
-                  resolve(blob);
-                }).catch(err => reject(err));
-              };
-              dispatch(this.showBasicAuthForm(callback, data.labels, data.title));
-            }
-          } else {
-            dispatch(this.borrowBookFailure());
-          }
           reject(err);
         });
       });
@@ -225,6 +248,11 @@ export default class ActionCreator {
   }
 
   saveBasicAuthCredentials(credentials: string) {
-    return { type: this.SAVE_BASIC_AUTH_CREDENTIALS, credentials }
+    return { type: this.SAVE_BASIC_AUTH_CREDENTIALS, credentials };
   }
+
+  clearBasicAuthCredentials() {
+    return { type: this.CLEAR_BASIC_AUTH_CREDENTIALS };
+  }
+
 }

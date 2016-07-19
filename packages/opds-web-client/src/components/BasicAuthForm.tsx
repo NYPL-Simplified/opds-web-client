@@ -1,14 +1,15 @@
 import * as React from "react";
 import { popupStyle } from "./styles";
+import { basicAuth } from "../auth";
 import { BasicAuthCallback } from "../interfaces";
 
 export interface BasicAuthFormProps {
-  saveCredentials: (credentials: string) => void;
   hide: () => void;
   callback: BasicAuthCallback;
   title?: string;
   loginLabel?: string;
   passwordLabel?: string;
+  saveCredentials: (credentials: string) => void;
 }
 
 export default class BasicAuthForm extends React.Component<BasicAuthFormProps, any> {
@@ -43,7 +44,7 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, a
           <button className="btn btn-default" onClick={this.props.hide}>Cancel</button>
         </form>
       </div>
-    )
+    );
   }
 
   submit(event) {
@@ -53,6 +54,7 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, a
     let password = (this.refs["password"] as any).value;
     let credentials = btoa(username + ":" + password);
 
+    basicAuth.setCredentials(credentials);
     this.props.saveCredentials(credentials);
     this.props.hide();
 

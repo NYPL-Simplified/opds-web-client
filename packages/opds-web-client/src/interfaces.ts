@@ -74,7 +74,8 @@ export interface StateProps {
   bookUrl?: string;
   isFetchingPage?: boolean;
   history?: LinkData[];
-  basicAuth: BasicAuthData
+  basicAuth?: BasicAuthData;
+  isSignedIn?: boolean;
 }
 
 export interface PathFor {

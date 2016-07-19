@@ -1,17 +1,13 @@
 import * as React from "react";
+import BorrowLink from "./BorrowLink";
 import { BookProps } from "./Book";
-var download = require("downloadjs");
+const download = require("downloadjs");
 
 export interface BookDetailsProps extends BookProps {
   borrowBook: (url: string) => Promise<any>;
 }
 
 export default class BookDetails extends React.Component<BookDetailsProps, any> {
-  constructor(props) {
-    super(props);
-    this.borrow = this.borrow.bind(this);
-  }
-
   render(): JSX.Element {
     let bookSummaryStyle = {
       paddingTop: "2em",
@@ -62,15 +58,7 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
           style={bookSummaryStyle}>
           { links.length > 0 &&
             <div style={{textAlign: "center", marginBottom: "30px"}}>
-              { links.map(link =>
-                <a
-                  key={link.url}
-                  onClick={link.onClick}
-                  className="btn btn-default"
-                  style={{ marginRight: "0.5em" }}>
-                  {link.text}
-                </a>
-              ) }
+              { links }
             </div>
           }
           <div className="bookDetailsSummary"
@@ -100,41 +88,29 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
     let links = [];
 
     if (this.props.book.openAccessUrl) {
-      links.push({ text: "Download", url: this.props.book.openAccessUrl });
+      links.push(
+        <a
+          key={this.props.book.openAccessUrl}
+          className="btn btn-default"
+          style={{ marginRight: "0.5em" }}
+          href={this.props.book.openAccessUrl}
+          target="_blank">
+          Download
+        </a>
+      );
     } else if (this.props.book.borrowUrl) {
-      links.push({
-        text: "Borrow",
-        url: this.props.book.borrowUrl,
-        onClick: this.borrow
-      });
+      links.push(
+        <BorrowLink
+          key={this.props.book.borrowUrl}
+          className="btn btn-default"
+          style={{ marginRight: "0.5em" }}
+          book={this.props.book}
+          borrowBook={this.props.borrowBook}>
+          Borrow
+        </BorrowLink>
+      );
     }
 
     return links;
-  }
-
-  borrow(event) {
-    event.preventDefault();
-
-    if (typeof document !== "undefined") {
-      this.props.borrowBook(this.props.book.borrowUrl).then(blob => {
-        download(
-          blob,
-          this.parameterize(this.props.book.title) + ".acsm",
-          "application/vnd.adobe.adept+xml"
-        );
-
-        // var url = window.URL.createObjectURL(blob);
-        // var link = document.createElement("a") as any;
-        // link.style = "display: none";
-        // link.href = url;
-        // link.download = this.props.book.title + ".acsm";
-        // link.click();
-        // window.URL.revokeObjectURL(url);
-      });
-    }
-  }
-
-  parameterize(str: string): string {
-    return str.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
   }
 }

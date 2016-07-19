@@ -1,6 +1,7 @@
 import ActionsCreator from "../actions";
 import DataFetcher from "../DataFetcher";
 import { adapter } from "../OPDSDataAdapter";
+import { basicAuth } from "../auth";
 import { CollectionData, BookData } from "../interfaces";
 
 export function findBookInCollection(collection: CollectionData, book: string) {
@@ -31,6 +32,7 @@ export function mapStateToProps(state, ownProps) {
     collectionUrl: ownProps.collectionUrl,
     bookUrl: ownProps.bookUrl,
     basicAuth: state.catalog.auth.basic,
+    isSignedIn: !!Object.keys(state.catalog.auth).find(key => state.catalog.auth[key].credentials)
   };
 };
 
@@ -99,7 +101,7 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
   let fetcher = new DataFetcher({
     proxyUrl: componentProps.proxyUrl,
     adapter: adapter,
-    basicAuthCredentials: stateProps.basicAuth.credentials
+    auth: basicAuth
   });
   let dispatchProps = createDispatchProps.createDispatchProps(fetcher);
 

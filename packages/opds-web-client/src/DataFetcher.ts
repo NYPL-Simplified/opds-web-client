@@ -2,6 +2,7 @@ import { feedToCollection, entryToBook } from "./OPDSDataAdapter";
 import OPDSParser, { OPDSFeed, OPDSEntry } from "opds-feed-parser";
 import OpenSearchDescriptionParser from "./OpenSearchDescriptionParser";
 require("isomorphic-fetch");
+import { basicAuth } from "./auth";
 
 export interface RequestError {
   status: number;
@@ -16,27 +17,23 @@ export interface RequestRejector {
 export default class DataFetcher {
   private proxyUrl: string;
   private adapter: any;
-  private basicAuthCredentials: any;
+  private auth: any;
 
   constructor(config: {
     proxyUrl?: string;
     adapter?: any;
-    basicAuthCredentials?: any;
+    auth?: any;
   } = {}) {
     this.proxyUrl = config.proxyUrl;
     this.adapter = config.adapter;
-    this.basicAuthCredentials = config.basicAuthCredentials;
-  }
-
-  setBasicAuthCredentials(credentials: string) {
-    this.basicAuthCredentials = credentials;
+    this.auth = config.auth;
   }
 
   fetchOPDSData(url: string) {
     let parser = new OPDSParser;
 
     return new Promise((resolve, reject: RequestRejector) => {
-      this.fetch(url).then((response) => {
+      this.fetch(url).then(response => {
         response.text().then(text => {
           if (response.status === 401) {
             reject({
@@ -56,9 +53,7 @@ export default class DataFetcher {
             });
           });
         });
-      }).catch(err => {
-        reject(err)
-      });
+      }).catch(reject);
     });
   }
 
@@ -66,8 +61,16 @@ export default class DataFetcher {
     let parser = new OpenSearchDescriptionParser;
 
     return new Promise((resolve, reject: RequestRejector) => {
-      this.fetch(searchDescriptionUrl).then((response) => {
+      this.fetch(searchDescriptionUrl).then(response => {
         response.text().then(text => {
+          if (response.status === 401) {
+            reject({
+              status: 401,
+              response: text,
+              url: searchDescriptionUrl
+            });
+          }
+
           parser.parse(text, searchDescriptionUrl).then((openSearchDescription) => {
             resolve(openSearchDescription);
           }).catch(err => {
@@ -78,7 +81,7 @@ export default class DataFetcher {
             });
           });
         });
-      }).catch((err: RequestError) => reject(err));
+      }).catch(reject);
     });
   }
 
@@ -95,19 +98,8 @@ export default class DataFetcher {
       url = this.proxyUrl;
     }
 
-    options["headers"] = options["headers"] || {};
-
-    // server needs to know request came from JS in order to omit
-    // 'Www-Authenticate: Basic' header, which triggers browser's
-    // basic auth popup
-    Object.assign(options["headers"], {
-      "X-Requested-With": "XMLHttpRequest"
-    });
-
-    if (this.basicAuthCredentials) {
-      Object.assign(options["headers"], {
-        Authorization: "Basic " + this.basicAuthCredentials
-      });
+    if (this.auth) {
+      options["headers"] = this.auth.prepareHeaders(options["headers"]);
     }
 
     return fetch(url, options);

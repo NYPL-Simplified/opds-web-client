@@ -17,6 +17,7 @@ import Collection from "./Collection";
 import UrlForm from "./UrlForm";
 import SkipNavigationLink from "./SkipNavigationLink";
 import CatalogLink from "./CatalogLink";
+import { basicAuth } from "../auth";
 import {
   CollectionData, BookData, LinkData, StateProps, NavigateContext
 } from "../interfaces";
@@ -25,6 +26,8 @@ export interface HeaderProps extends React.Props<any> {
   CatalogLink: typeof CatalogLink;
   collectionTitle: string;
   bookTitle: string;
+  isSignedIn: boolean;
+  signOut: () => void;
 }
 
 export interface BookDetailsContainerProps extends React.Props<any> {
@@ -67,6 +70,11 @@ export class Root extends React.Component<RootProps, any> {
     router: React.PropTypes.object,
     pathFor: React.PropTypes.func
   };
+
+  constructor(props) {
+    super(props);
+    this.signOut = this.signOut.bind(this);
+  }
 
   render(): JSX.Element {
     let BookDetailsContainer = this.props.BookDetailsContainer;
@@ -158,7 +166,9 @@ export class Root extends React.Component<RootProps, any> {
           <Header
             CatalogLink={CatalogLink}
             collectionTitle={collectionTitle}
-            bookTitle={bookTitle}>
+            bookTitle={bookTitle}
+            isSignedIn={this.props.isSignedIn}
+            signOut={this.signOut}>
             { this.props.collectionData && this.props.collectionData.search &&
               <Search
                 url={this.props.collectionData.search.url}
@@ -231,6 +241,11 @@ export class Root extends React.Component<RootProps, any> {
       this.props.setCollectionAndBook(this.props.collectionUrl, this.props.bookUrl);
     }
 
+    let credentials = basicAuth.getCredentials();
+    if (credentials) {
+      this.props.saveBasicAuthCredentials(credentials);
+    }
+
     this.updatePageTitle(this.props);
   }
 
@@ -292,6 +307,11 @@ export class Root extends React.Component<RootProps, any> {
       }
     }
   };
+
+  signOut() {
+    basicAuth.clearCredentials();
+    this.props.saveBasicAuthCredentials(null);
+  }
 }
 
 let connectOptions = { withRef: true, pure: false };

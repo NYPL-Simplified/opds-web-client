@@ -116,6 +116,12 @@ export default class Collection extends React.Component<CollectionProps, any> {
             </ul>
           }
 
+          { this.isEmpty() &&
+            <div style={{ padding: "1em", textAlign: "center", color: "#888", fontSize: "3em" }}>
+              No books here.
+            </div>
+          }
+
           { this.canFetch() &&
             <button
               className="nextPageLink"
@@ -169,5 +175,11 @@ export default class Collection extends React.Component<CollectionProps, any> {
     if ((scrollTop + window.innerHeight) >= document.body.scrollHeight) {
       this.fetch();
     }
+  }
+
+  isEmpty() {
+    return this.props.collection.lanes.length === 0 &&
+           this.props.collection.books.length === 0 &&
+           this.props.collection.links.length === 0;
   }
 }
