@@ -4,6 +4,7 @@ import * as React from "react";
 import { shallow } from "enzyme";
 
 import BookDetails from "../BookDetails";
+import BorrowLink from "../BorrowLink";
 
 let book = {
   id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
@@ -106,18 +107,20 @@ describe("BookDetails", () => {
     expect(button.length).toBe(0);
   });
 
-  it("shows get button for borrow url if there's no open access url", () => {
+  it("shows borrow button if there's no open access url", () => {
     let bookCopy = Object.assign({}, book, {
       borrowUrl: "borrow url",
       openAccessUrl: null
     });
+    let borrowBook = jest.genMockFunction();
     wrapper = shallow(
-      <BookDetails book={bookCopy} borrowBook={jest.genMockFunction()} />
+      <BookDetails book={bookCopy} borrowBook={borrowBook} />
     );
 
-    let button = wrapper.find("a.btn");
-    expect(button.text()).toBe("Borrow");
-    expect(button.props().href).toBe("borrow url");
+    let button = wrapper.find(BorrowLink);
+    expect(button.children().text()).toBe("Borrow");
+    expect(button.props().book).toBe(bookCopy);
+    expect(button.props().borrowBook).toBe(borrowBook);
   });
 
   it("shows only download button if there's open access url and borrow url", () => {

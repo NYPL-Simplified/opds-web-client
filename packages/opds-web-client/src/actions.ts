@@ -253,7 +253,7 @@ export default class ActionCreator {
     return (dispatch) => {
       dispatch(this.closeError());
       dispatch({ type: this.HIDE_BASIC_AUTH_FORM });
-    }
+    };
   }
 
   saveBasicAuthCredentials(credentials: string) {

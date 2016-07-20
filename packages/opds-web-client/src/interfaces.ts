@@ -121,5 +121,5 @@ export interface BasicAuthData {
 
 export interface BasicAuthLabels {
   login: string;
-  password: string
+  password: string;
 }

@@ -15,7 +15,7 @@ export const basicAuth: AuthMethod = {
   },
 
   getCredentials(): string {
-    return Cookie.get("basicAuthCredentials")
+    return Cookie.get("basicAuthCredentials");
   },
 
   clearCredentials(): void {
@@ -34,4 +34,4 @@ export const basicAuth: AuthMethod = {
 
     return headers;
   }
-}
+};

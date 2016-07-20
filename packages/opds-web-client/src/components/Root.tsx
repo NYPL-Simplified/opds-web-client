@@ -60,10 +60,10 @@ export interface RootProps extends StateProps {
   Header?: new() => __React.Component<HeaderProps, any>;
   BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
   computeBreadcrumbs?: ComputeBreadcrumbs;
-  borrowBook: (url: string) => Promise<any>;
-  saveBasicAuthCredentials: (credentials: string) => void;
-  showBasicAuthForm: (callback: BasicAuthCallback, labels: BasicAuthLabels, title: string) => void;
-  hideBasicAuthForm: () => void;
+  borrowBook?: (url: string) => Promise<any>;
+  saveBasicAuthCredentials?: (credentials: string) => void;
+  showBasicAuthForm?: (callback: BasicAuthCallback, labels: BasicAuthLabels, title: string) => void;
+  hideBasicAuthForm?: () => void;
 }
 
 export class Root extends React.Component<RootProps, any> {
