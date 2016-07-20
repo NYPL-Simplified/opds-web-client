@@ -2,7 +2,7 @@ import ActionsCreator from "../actions";
 import DataFetcher from "../DataFetcher";
 import { adapter } from "../OPDSDataAdapter";
 import { basicAuth } from "../auth";
-import { CollectionData, BookData } from "../interfaces";
+import { CollectionData, BookData, BasicAuthCallback, BasicAuthLabels } from "../interfaces";
 
 export function findBookInCollection(collection: CollectionData, book: string) {
   if (collection) {
@@ -51,6 +51,7 @@ export function mapDispatchToProps(dispatch) {
         closeError: () => dispatch(actions.closeError()),
         borrowBook: (url: string) => dispatch(actions.borrowBook(url)),
         saveBasicAuthCredentials: (credentials: string) => dispatch(actions.saveBasicAuthCredentials(credentials)),
+        showBasicAuthForm: (callback: BasicAuthCallback, labels: BasicAuthLabels, title: string) => dispatch(actions.showBasicAuthForm(callback, labels, title)),
         hideBasicAuthForm: () => dispatch(actions.hideBasicAuthForm())
       };
     }

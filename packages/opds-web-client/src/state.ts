@@ -11,7 +11,7 @@ export interface State {
 }
 
 export default function buildInitialState(collectionUrl: string, bookUrl: string): Promise<State> {
-  const store = buildStore();
+  const store = buildStore(undefined, false);
   const fetchCollectionAndBook = createFetchCollectionAndBook(store.dispatch);
   return new Promise((resolve, reject) => {
     fetchCollectionAndBook(collectionUrl, bookUrl).then(({ collectionData, bookData }) => {

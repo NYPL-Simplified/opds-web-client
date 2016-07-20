@@ -27,7 +27,7 @@ export default class ErrorMessage extends React.Component<ErrorMessageProps, any
         <button
           className="errorCloseButton btn btn-default"
           style={{ fontSize: "1.2em" }}
-          onClick={() => window.history.back() }>
+          onClick={window.history.back}>
           Go Back
         </button>
       </div>

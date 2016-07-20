@@ -19,7 +19,8 @@ import SkipNavigationLink from "./SkipNavigationLink";
 import CatalogLink from "./CatalogLink";
 import { basicAuth } from "../auth";
 import {
-  CollectionData, BookData, LinkData, StateProps, NavigateContext
+  CollectionData, BookData, LinkData, StateProps, NavigateContext,
+  BasicAuthCallback, BasicAuthLabels
 } from "../interfaces";
 
 export interface HeaderProps extends React.Props<any> {
@@ -27,6 +28,7 @@ export interface HeaderProps extends React.Props<any> {
   collectionTitle: string;
   bookTitle: string;
   isSignedIn: boolean;
+  signIn: (callback: BasicAuthCallback, labels: BasicAuthLabels, title: string) => void;
   signOut: () => void;
 }
 
@@ -60,6 +62,7 @@ export interface RootProps extends StateProps {
   computeBreadcrumbs?: ComputeBreadcrumbs;
   borrowBook: (url: string) => Promise<any>;
   saveBasicAuthCredentials: (credentials: string) => void;
+  showBasicAuthForm: (callback: BasicAuthCallback, labels: BasicAuthLabels, title: string) => void;
   hideBasicAuthForm: () => void;
 }
 
@@ -137,7 +140,7 @@ export class Root extends React.Component<RootProps, any> {
       <div className="catalog" style={{ fontFamily: "Arial, sans-serif" }}>
         <SkipNavigationLink />
 
-        { this.props.error &&
+        { this.props.error && (!this.props.basicAuth || !this.props.basicAuth.showForm) &&
           <ErrorMessage
             message={"Could not fetch data: " + this.props.error.url}
             retry={this.props.retryCollectionAndBook} />
@@ -155,6 +158,7 @@ export class Root extends React.Component<RootProps, any> {
             title={this.props.basicAuth.title}
             loginLabel={this.props.basicAuth.loginLabel}
             passwordLabel={this.props.basicAuth.passwordLabel}
+            error={this.props.basicAuth.error}
             />
         }
 
@@ -168,6 +172,7 @@ export class Root extends React.Component<RootProps, any> {
             collectionTitle={collectionTitle}
             bookTitle={bookTitle}
             isSignedIn={this.props.isSignedIn}
+            signIn={this.props.showBasicAuthForm}
             signOut={this.signOut}>
             { this.props.collectionData && this.props.collectionData.search &&
               <Search

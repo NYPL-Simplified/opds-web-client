@@ -12,7 +12,8 @@ const initialState: AuthState = {
     title: null,
     loginLabel: null,
     passwordLabel: null,
-    isFetching: false
+    isFetching: false,
+    error: null
   }
 };
 
@@ -23,16 +24,22 @@ const auth = (state: AuthState = initialState, action): AuthState => {
         basic: Object.assign({}, state.basic, {
           showForm: true,
           callback: action.callback,
-          title: action.title,
-          loginLabel: action.labels.login,
-          passwordLabel: action.labels.password
+          title: action.error ? state.basic.title : action.title,
+          loginLabel: action.labels && action.labels.login ?
+                      action.labels.login :
+                      state.basic.loginLabel,
+          passwordLabel: action.labels && action.labels.password ?
+                         action.labels.password :
+                         state.basic.passwordLabel,
+          error: action.error
         })
       });
 
     case "HIDE_BASIC_AUTH_FORM":
       return Object.assign({}, state, {
         basic: Object.assign({}, state.basic, {
-          showForm: false
+          showForm: false,
+          error: null
         })
       });
 

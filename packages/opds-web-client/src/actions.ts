@@ -1,6 +1,7 @@
 import DataFetcher from "./DataFetcher";
 import {
-  CollectionData, BookData, SearchData, FetchErrorData, BasicAuthCallback
+  CollectionData, BookData, SearchData, FetchErrorData,
+  BasicAuthCallback, BasicAuthLabels
 } from "./interfaces";
 
 export interface LoadCollectionAction {
@@ -239,12 +240,20 @@ export default class ActionCreator {
     return { type: this.BORROW_BOOK_FAILURE };
   }
 
-  showBasicAuthForm(callback: BasicAuthCallback, labels: string[], title: string) {
-    return { type: this.SHOW_BASIC_AUTH_FORM, callback, labels, title };
+  showBasicAuthForm(
+    callback: BasicAuthCallback,
+    labels: BasicAuthLabels,
+    title: string,
+    error?: string
+  ) {
+    return { type: this.SHOW_BASIC_AUTH_FORM, callback, labels, title, error };
   }
 
   hideBasicAuthForm() {
-    return { type: this.HIDE_BASIC_AUTH_FORM };
+    return (dispatch) => {
+      dispatch(this.closeError());
+      dispatch({ type: this.HIDE_BASIC_AUTH_FORM });
+    }
   }
 
   saveBasicAuthCredentials(credentials: string) {
@@ -254,5 +263,4 @@ export default class ActionCreator {
   clearBasicAuthCredentials() {
     return { type: this.CLEAR_BASIC_AUTH_CREDENTIALS };
   }
-
 }
