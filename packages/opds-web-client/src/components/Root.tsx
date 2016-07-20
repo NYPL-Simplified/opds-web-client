@@ -17,7 +17,7 @@ import Collection from "./Collection";
 import UrlForm from "./UrlForm";
 import SkipNavigationLink from "./SkipNavigationLink";
 import CatalogLink from "./CatalogLink";
-import { basicAuth } from "../auth";
+import DataFetcher from "../DataFetcher";
 import {
   CollectionData, BookData, LinkData, StateProps, NavigateContext,
   BasicAuthCallback, BasicAuthLabels
@@ -37,7 +37,8 @@ export interface BookDetailsContainerProps extends React.Props<any> {
   book: BookData;
   collectionUrl: string;
   refreshCatalog: () => Promise<any>;
-  borrowBook: (url: string, title: string) => Promise<any>;
+  borrowAndFulfillBook: (url: string) => Promise<any>;
+  fulfillBook: (url: string) => Promise<any>;
 }
 
 export interface RootProps extends StateProps {
@@ -60,8 +61,10 @@ export interface RootProps extends StateProps {
   Header?: new() => __React.Component<HeaderProps, any>;
   BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
   computeBreadcrumbs?: ComputeBreadcrumbs;
-  borrowBook?: (url: string) => Promise<any>;
+  borrowAndFulfillBook?: (url: string) => Promise<any>;
+  fulfillBook?: (url: string) => Promise<any>;
   saveBasicAuthCredentials?: (credentials: string) => void;
+  clearBasicAuthCredentials?: () => void;
   showBasicAuthForm?: (callback: BasicAuthCallback, labels: BasicAuthLabels, title: string) => void;
   hideBasicAuthForm?: () => void;
 }
@@ -73,11 +76,6 @@ export class Root extends React.Component<RootProps, any> {
     router: React.PropTypes.object,
     pathFor: React.PropTypes.func
   };
-
-  constructor(props) {
-    super(props);
-    this.signOut = this.signOut.bind(this);
-  }
 
   render(): JSX.Element {
     let BookDetailsContainer = this.props.BookDetailsContainer;
@@ -173,7 +171,7 @@ export class Root extends React.Component<RootProps, any> {
             bookTitle={bookTitle}
             isSignedIn={this.props.isSignedIn}
             signIn={this.props.showBasicAuthForm}
-            signOut={this.signOut}>
+            signOut={this.props.clearBasicAuthCredentials}>
             { this.props.collectionData && this.props.collectionData.search &&
               <Search
                 url={this.props.collectionData.search.url}
@@ -215,12 +213,20 @@ export class Root extends React.Component<RootProps, any> {
                     book={this.props.bookData}
                     collectionUrl={this.props.collectionUrl}
                     refreshCatalog={this.props.refreshCollectionAndBook}
-                    borrowBook={this.props.borrowBook}
+                    borrowAndFulfillBook={this.props.borrowAndFulfillBook}
+                    fulfillBook={this.props.fulfillBook}
                     >
-                    <BookDetails book={this.props.bookData} borrowBook={this.props.borrowBook} />
+                    <BookDetails
+                      book={this.props.bookData}
+                      borrowAndFulfillBook={this.props.borrowAndFulfillBook}
+                      fulfillBook={this.props.fulfillBook}
+                      />
                   </BookDetailsContainer> :
                   <div style={{ padding: "40px", maxWidth: "700px", margin: "0 auto" }}>
-                    <BookDetails book={this.props.bookData} borrowBook={this.props.borrowBook} />
+                    <BookDetails
+                      book={this.props.bookData}
+                      borrowAndFulfillBook={this.props.borrowAndFulfillBook}
+                      fulfillBook={this.props.fulfillBook} />
                   </div>
                 )
               }
@@ -246,12 +252,13 @@ export class Root extends React.Component<RootProps, any> {
       this.props.setCollectionAndBook(this.props.collectionUrl, this.props.bookUrl);
     }
 
-    let credentials = basicAuth.getCredentials();
+    this.updatePageTitle(this.props);
+
+    let fetcher = new DataFetcher();
+    let credentials = fetcher.getBasicAuthCredentials();
     if (credentials) {
       this.props.saveBasicAuthCredentials(credentials);
     }
-
-    this.updatePageTitle(this.props);
   }
 
   componentDidMount() {
@@ -312,11 +319,6 @@ export class Root extends React.Component<RootProps, any> {
       }
     }
   };
-
-  signOut() {
-    basicAuth.clearCredentials();
-    this.props.saveBasicAuthCredentials(null);
-  }
 }
 
 let connectOptions = { withRef: true, pure: false };

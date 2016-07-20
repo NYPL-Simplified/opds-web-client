@@ -4,7 +4,8 @@ import { BookProps } from "./Book";
 const download = require("downloadjs");
 
 export interface BookDetailsProps extends BookProps {
-  borrowBook: (url: string) => Promise<any>;
+  borrowAndFulfillBook: (url: string) => Promise<any>;
+  fulfillBook: (url: string) => Promise<any>;
 }
 
 export default class BookDetails extends React.Component<BookDetailsProps, any> {
@@ -105,7 +106,7 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
           className="btn btn-default"
           style={{ marginRight: "0.5em" }}
           book={this.props.book}
-          borrowBook={this.props.borrowBook}>
+          borrow={this.props.borrowAndFulfillBook}>
           Borrow
         </BorrowLink>
       );

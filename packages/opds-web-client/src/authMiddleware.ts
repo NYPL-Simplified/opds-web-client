@@ -1,6 +1,5 @@
 import DataFetcher from "./DataFetcher";
 import ActionCreator from "./actions";
-import { basicAuth } from "./auth";
 import { BasicAuthCallback } from "./interfaces";
 
 export default store => next => action => {
@@ -8,17 +7,19 @@ export default store => next => action => {
     return new Promise((resolve, reject) => {
       let result = next(action);
 
-      if (result.then) {
+      if (result && result.then) {
         result.then(resolve).catch(err => {
           if (err.status === 401) {
+            let fetcher = new DataFetcher();
+            let actions = new ActionCreator(fetcher);
             let data = JSON.parse(err.response);
             let error = null;
 
             // clear any invalid credentials
-            let usedBasicAuth = !!basicAuth.getCredentials();
+            let usedBasicAuth = !!fetcher.getBasicAuthCredentials();
             if (usedBasicAuth) {
               error = data.title;
-              basicAuth.clearCredentials();
+              store.dispatch(actions.clearBasicAuthCredentials());
             }
 
             if (
@@ -31,8 +32,6 @@ export default store => next => action => {
                   resolve(blob);
                 }).catch(err => reject(err));
               };
-              let fetcher = new DataFetcher({ auth: basicAuth });
-              let actions = new ActionCreator(fetcher);
 
               next(actions.showBasicAuthForm(
                 callback,

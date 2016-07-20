@@ -123,4 +123,127 @@ describe("actions", () => {
     });
   });
 
+  describe("borrowBook", () => {
+    let borrowUrl = "http://example.com/book/borrow";
+    let fulfillmentUrl = "http://example.com/book/fulfill";
+
+    it("dispatches request, load, and success", (done) => {
+      let dispatch = jest.genMockFunction();
+      fetcher.resolve = true;
+      fetcher.testData = { fulfillmentUrl };
+
+      actions.borrowBook(borrowUrl)(dispatch).then(data => {
+        expect(dispatch.mock.calls.length).toBe(2);
+        expect(dispatch.mock.calls[0][0].type).toBe(actions.BORROW_BOOK_REQUEST);
+        expect(dispatch.mock.calls[1][0].type).toBe(actions.BORROW_BOOK_SUCCESS);
+        expect(data).toBe(fulfillmentUrl);
+        done();
+      }).catch(err => done.fail(err));
+    });
+
+    it("dispatches failure", (done) => {
+      let dispatch = jest.genMockFunction();
+      fetcher.resolve = false;
+
+      actions.borrowBook(borrowUrl)(dispatch).catch(err => {
+        expect(dispatch.mock.calls.length).toBe(2);
+        expect(dispatch.mock.calls[0][0].type).toBe(actions.BORROW_BOOK_REQUEST);
+        expect(dispatch.mock.calls[1][0].type).toBe(actions.BORROW_BOOK_FAILURE);
+        expect(err).toBe("test error");
+        done();
+      });
+    });
+  });
+
+  describe("fulfillBook", () => {
+    let fulfillmentUrl = "http://example.com/book/fulfill";
+
+    it("dispatches request, load, and success", (done) => {
+      let dispatch = jest.genMockFunction();
+      fetcher.resolve = true;
+      fetcher.testData = { blob: () => "blob" };
+
+      actions.fulfillBook(fulfillmentUrl)(dispatch).then(data => {
+        expect(dispatch.mock.calls.length).toBe(2);
+        expect(dispatch.mock.calls[0][0].type).toBe(actions.FULFILL_BOOK_REQUEST);
+        expect(dispatch.mock.calls[1][0].type).toBe(actions.FULFILL_BOOK_SUCCESS);
+        expect(data).toBe("blob");
+        done();
+      }).catch(err => done.fail(err));
+    });
+
+    it("dispatches failure", (done) => {
+      let dispatch = jest.genMockFunction();
+      fetcher.resolve = false;
+
+      actions.fulfillBook(fulfillmentUrl)(dispatch).catch(err => {
+        expect(dispatch.mock.calls.length).toBe(2);
+        expect(dispatch.mock.calls[0][0].type).toBe(actions.FULFILL_BOOK_REQUEST);
+        expect(dispatch.mock.calls[1][0].type).toBe(actions.FULFILL_BOOK_FAILURE);
+        expect(err).toBe("test error");
+        done();
+      });
+    });
+  });
+
+  describe("borrowAndFulfillBook", () => {
+    let borrowUrl = "http://example.com/book/borrow";
+    let fulfillmentUrl = "http://example.com/book/fulfill";
+
+    it("dispatches request, load, and success", (done) => {
+      let dispatch = jest.genMockFunction();
+      fetcher.resolve = true;
+      fetcher.testData = { fulfillmentUrl, blob: () => "blob" };
+
+      actions.borrowAndFulfillBook(borrowUrl)(dispatch).then(data => {
+        expect(dispatch.mock.calls.length).toBe(4);
+        expect(dispatch.mock.calls[0][0].type).toBe(actions.BORROW_BOOK_REQUEST);
+        expect(dispatch.mock.calls[1][0].type).toBe(actions.BORROW_BOOK_SUCCESS);
+        expect(dispatch.mock.calls[2][0].type).toBe(actions.FULFILL_BOOK_REQUEST);
+        expect(dispatch.mock.calls[3][0].type).toBe(actions.FULFILL_BOOK_SUCCESS);
+        expect(data).toBe("blob");
+        done();
+      }).catch(err => done.fail(err));
+    });
+
+    it("dispatches failure", (done) => {
+      let dispatch = jest.genMockFunction();
+      fetcher.resolve = false;
+
+      actions.borrowAndFulfillBook(borrowUrl)(dispatch).catch(err => {
+        expect(dispatch.mock.calls.length).toBe(2);
+        expect(dispatch.mock.calls[0][0].type).toBe(actions.BORROW_BOOK_REQUEST);
+        expect(dispatch.mock.calls[1][0].type).toBe(actions.BORROW_BOOK_FAILURE);
+        expect(err).toBe("test error");
+        done();
+      });
+    });
+  });
+
+  describe("hideBasicAuthForm", () => {
+    it("closes error message", () => {
+      let dispatch = jest.genMockFunction();
+      actions.hideBasicAuthForm()(dispatch);
+      expect(dispatch.mock.calls.length).toBe(2);
+      expect(dispatch.mock.calls[0][0].type).toBe(actions.CLOSE_ERROR);
+      expect(dispatch.mock.calls[1][0].type).toBe(actions.HIDE_BASIC_AUTH_FORM);
+    });
+  });
+
+  describe("saveBasicAuthCredentials", () => {
+    it("sets fetcher credentaials", () => {
+      fetcher.setBasicAuthCredentials = jest.genMockFunction();
+      actions.saveBasicAuthCredentials("credentials");
+      expect(fetcher.setBasicAuthCredentials.mock.calls.length).toBe(1);
+      expect(fetcher.setBasicAuthCredentials.mock.calls[0][0]).toBe("credentials");
+    });
+  });
+
+  describe("clearBasicAuthCredentials", () => {
+    it("clears fetcher credentaials", () => {
+      fetcher.clearBasicAuthCredentials = jest.genMockFunction();
+      actions.clearBasicAuthCredentials();
+      expect(fetcher.clearBasicAuthCredentials.mock.calls.length).toBe(1);
+    });
+  });
 });

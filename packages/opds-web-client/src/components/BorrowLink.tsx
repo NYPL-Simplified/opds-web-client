@@ -4,7 +4,7 @@ const download = require("downloadjs");
 
 export interface BorrowLinkProps extends React.HTMLProps<any> {
   book: BookData;
-  borrowBook: (url: string) => Promise<any>;
+  borrow: (url: string) => Promise<any>;
 }
 
 export default class BorrowLink extends React.Component<BorrowLinkProps, any> {
@@ -27,7 +27,7 @@ export default class BorrowLink extends React.Component<BorrowLinkProps, any> {
     event.preventDefault();
 
     if (typeof document !== "undefined") {
-      this.props.borrowBook(this.props.book.borrowUrl).then(blob => {
+      this.props.borrow(this.props.book.borrowUrl).then(blob => {
         download(
           blob,
           this.generateFilename(this.props.book.title),

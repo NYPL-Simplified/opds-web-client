@@ -37,6 +37,10 @@ export default class ActionCreator {
   BORROW_BOOK_SUCCESS = "BORROW_BOOK_SUCCESS";
   BORROW_BOOK_FAILURE = "BORROW_BOOK_FAILURE";
 
+  FULFILL_BOOK_REQUEST = "FULFILL_BOOK_REQUEST";
+  FULFILL_BOOK_SUCCESS = "FULFILL_BOOK_SUCCESS";
+  FULFILL_BOOK_FAILURE = "FULFILL_BOOK_FAILURE";
+
   SHOW_BASIC_AUTH_FORM = "SHOW_BASIC_AUTH_FORM";
   HIDE_BASIC_AUTH_FORM = "HIDE_BASIC_AUTH_FORM";
   SAVE_BASIC_AUTH_CREDENTIALS = "SAVE_BASIC_AUTH_CREDENTIALS";
@@ -169,57 +173,25 @@ export default class ActionCreator {
     return { type: this.CLEAR_BOOK };
   }
 
-  // borrowBook(url: string) {
-  //   let args = new Array(arguments);
-  //   return (dispatch) => {
-  //     dispatch(this.borrowBookRequest());
-  //     return new Promise((resolve, reject) => {
-  //       this.fetcher.fetchOPDSData(url).then((data: BookData) => {
-  //         let { fulfillmentUrl } = data;
-  //         this.fetcher.fetch(fulfillmentUrl)
-  //           .then(response => response.blob())
-  //           .then(blob => {
-  //             dispatch(this.borrowBookSuccess());
-  //             resolve(blob);
-  //           })
-  //           .catch(err => reject(err));
-  //       }).catch((err: FetchErrorData) => {
-  //         dispatch(this.borrowBookFailure());
-  //         if (err.status === 401) {
-  //           let data = JSON.parse(err.response);
-  //           if (data.type.indexOf("http://opds-spec.org/auth/basic") !== -1) {
-  //             let callback = (credentials) => {
-  //               this.fetcher.setBasicAuthCredentials(credentials);
-  //               dispatch(this.borrowBook(url)).then(blob => {
-  //                 dispatch(this.borrowBookSuccess());
-  //                 resolve(blob);
-  //               }).catch(err => reject(err));
-  //             };
-  //             dispatch(this.showBasicAuthForm(callback, data.labels, data.title));
-  //           }
-  //         } else {
-  //           dispatch(this.borrowBookFailure());
-  //         }
-  //         reject(err);
-  //       });
-  //     });
-  //   };
-  // }
+  borrowAndFulfillBook(url: string): (dispatch: any) => Promise<Blob> {
+    return (dispatch) => {
+      return new Promise((resolve, reject) => {
+        this.borrowBook(url)(dispatch).then(fulfillmentUrl => {
+          this.fulfillBook(fulfillmentUrl)(dispatch).then(blob => {
+            resolve(blob);
+          }).catch(reject);
+        }).catch(reject);
+      });
+    };
+  }
 
-  borrowBook(url: string) {
-    let args = new Array(arguments);
+  borrowBook(url: string): (dispatch: any) => Promise<string> {
     return (dispatch) => {
       dispatch(this.borrowBookRequest());
       return new Promise((resolve, reject) => {
         this.fetcher.fetchOPDSData(url).then((data: BookData) => {
-          let { fulfillmentUrl } = data;
-          this.fetcher.fetch(fulfillmentUrl)
-            .then(response => response.blob())
-            .then(blob => {
-              dispatch(this.borrowBookSuccess());
-              resolve(blob);
-            })
-            .catch(err => reject(err));
+          dispatch(this.borrowBookSuccess());
+          resolve(data.fulfillmentUrl);
         }).catch((err: FetchErrorData) => {
           dispatch(this.borrowBookFailure());
           reject(err);
@@ -240,6 +212,36 @@ export default class ActionCreator {
     return { type: this.BORROW_BOOK_FAILURE };
   }
 
+  fulfillBook(url: string): (dispatch: any) => Promise<Blob> {
+    return (dispatch) => {
+      return new Promise((resolve, reject) => {
+        dispatch(this.fulfillBookRequest());
+        this.fetcher.fetch(url)
+          .then(response => response.blob())
+          .then(blob => {
+            dispatch(this.fulfillBookSuccess());
+            resolve(blob);
+          })
+          .catch(err => {
+            dispatch(this.fulfillBookFailure());
+            reject(err);
+          });
+      });
+    };
+  }
+
+  fulfillBookRequest() {
+    return { type: this.FULFILL_BOOK_REQUEST };
+  }
+
+  fulfillBookSuccess() {
+    return { type: this.FULFILL_BOOK_SUCCESS };
+  }
+
+  fulfillBookFailure() {
+    return { type: this.FULFILL_BOOK_FAILURE };
+  }
+
   showBasicAuthForm(
     callback: BasicAuthCallback,
     labels: BasicAuthLabels,
@@ -257,10 +259,12 @@ export default class ActionCreator {
   }
 
   saveBasicAuthCredentials(credentials: string) {
+    this.fetcher.setBasicAuthCredentials(credentials);
     return { type: this.SAVE_BASIC_AUTH_CREDENTIALS, credentials };
   }
 
   clearBasicAuthCredentials() {
+    this.fetcher.clearBasicAuthCredentials();
     return { type: this.CLEAR_BASIC_AUTH_CREDENTIALS };
   }
 }

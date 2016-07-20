@@ -25,7 +25,11 @@ describe("BookDetails", () => {
 
   beforeEach(() => {
     wrapper = shallow(
-      <BookDetails book={book} borrowBook={jest.genMockFunction()} />
+      <BookDetails
+        book={book}
+        borrowAndFulfillBook={jest.genMockFunction()}
+        fulfillBook={jest.genMockFunction()}
+        />
     );
   });
 
@@ -59,7 +63,11 @@ describe("BookDetails", () => {
       publisher: null
     });
     wrapper = shallow(
-      <BookDetails book={bookCopy} borrowBook={jest.genMockFunction()} />
+      <BookDetails
+        book={bookCopy}
+        borrowAndFulfillBook={jest.genMockFunction()}
+        fulfillBook={jest.genMockFunction()}
+        />
     );
 
     let publisher = wrapper.find(".bookDetailsPublisher");
@@ -79,7 +87,11 @@ describe("BookDetails", () => {
   it("doesn't show categories when there aren't any", () => {
     let bookCopy = Object.assign({}, book, { categories: [] });
     wrapper = shallow(
-      <BookDetails book={bookCopy} borrowBook={jest.genMockFunction()} />
+      <BookDetails
+        book={bookCopy}
+        borrowAndFulfillBook={jest.genMockFunction()}
+        fulfillBook={jest.genMockFunction()}
+        />
     );
 
     let categories = wrapper.find(".bookDetailsCategories");
@@ -100,7 +112,11 @@ describe("BookDetails", () => {
   it("doesn't show download button without open access url", () => {
     let bookCopy = Object.assign({}, book, { openAccessUrl: null });
     wrapper = shallow(
-      <BookDetails book={bookCopy} borrowBook={jest.genMockFunction()} />
+      <BookDetails
+        book={bookCopy}
+        borrowAndFulfillBook={jest.genMockFunction()}
+        fulfillBook={jest.genMockFunction()}
+        />
     );
 
     let button = wrapper.find("a.btn");
@@ -112,15 +128,18 @@ describe("BookDetails", () => {
       borrowUrl: "borrow url",
       openAccessUrl: null
     });
-    let borrowBook = jest.genMockFunction();
+    let borrowAndFulfillBook = jest.genMockFunction();
     wrapper = shallow(
-      <BookDetails book={bookCopy} borrowBook={borrowBook} />
+      <BookDetails
+        book={bookCopy}
+        borrowAndFulfillBook={borrowAndFulfillBook}
+        fulfillBook={jest.genMockFunction()} />
     );
 
     let button = wrapper.find(BorrowLink);
     expect(button.children().text()).toBe("Borrow");
     expect(button.props().book).toBe(bookCopy);
-    expect(button.props().borrowBook).toBe(borrowBook);
+    expect(button.props().borrow).toBe(borrowAndFulfillBook);
   });
 
   it("shows only download button if there's open access url and borrow url", () => {
@@ -128,7 +147,11 @@ describe("BookDetails", () => {
       borrowUrl: "borrow url"
     });
     wrapper = shallow(
-      <BookDetails book={bookCopy} borrowBook={jest.genMockFunction()} />
+      <BookDetails
+        book={bookCopy}
+        borrowAndFulfillBook={jest.genMockFunction()}
+        fulfillBook={jest.genMockFunction()}
+        />
     );
 
     let button = wrapper.find("a.btn");

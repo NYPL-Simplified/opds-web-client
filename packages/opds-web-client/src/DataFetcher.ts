@@ -1,8 +1,8 @@
 import { feedToCollection, entryToBook } from "./OPDSDataAdapter";
 import OPDSParser, { OPDSFeed, OPDSEntry } from "opds-feed-parser";
 import OpenSearchDescriptionParser from "./OpenSearchDescriptionParser";
+const Cookie = require("js-cookie");
 require("isomorphic-fetch");
-import { basicAuth } from "./auth";
 
 export interface RequestError {
   status: number;
@@ -15,18 +15,17 @@ export interface RequestRejector {
 }
 
 export default class DataFetcher {
+  public basicAuthKey: string;
   private proxyUrl: string;
   private adapter: any;
-  private auth: any;
 
   constructor(config: {
     proxyUrl?: string;
     adapter?: any;
-    auth?: any;
   } = {}) {
     this.proxyUrl = config.proxyUrl;
     this.adapter = config.adapter;
-    this.auth = config.auth;
+    this.basicAuthKey = "basicAuthCredentials";
   }
 
   fetchOPDSData(url: string) {
@@ -35,9 +34,9 @@ export default class DataFetcher {
     return new Promise((resolve, reject: RequestRejector) => {
       this.fetch(url).then(response => {
         response.text().then(text => {
-          if (response.status === 401) {
+          if (this.isErrorCode(response.status)) {
             reject({
-              status: 401,
+              status: response.status,
               response: text,
               url: url
             });
@@ -63,9 +62,9 @@ export default class DataFetcher {
     return new Promise((resolve, reject: RequestRejector) => {
       this.fetch(searchDescriptionUrl).then(response => {
         response.text().then(text => {
-          if (response.status === 401) {
+          if (this.isErrorCode(response.status)) {
             reject({
-              status: 401,
+              status: response.status,
               response: text,
               url: searchDescriptionUrl
             });
@@ -98,10 +97,41 @@ export default class DataFetcher {
       url = this.proxyUrl;
     }
 
-    if (this.auth) {
-      options["headers"] = this.auth.prepareHeaders(options["headers"]);
+    if (this.getBasicAuthCredentials()) {
+      options["headers"] = this.prepareBasicAuthHeaders(options["headers"]);
     }
 
     return fetch(url, options);
+  }
+
+  setBasicAuthCredentials(credentials: string): void {
+    if (credentials) {
+      Cookie.set(this.basicAuthKey, credentials);
+    }
+  }
+
+  getBasicAuthCredentials(): string {
+    return Cookie.get(this.basicAuthKey);
+  }
+
+  clearBasicAuthCredentials(): void {
+    Cookie.remove(this.basicAuthKey);
+  }
+
+  prepareBasicAuthHeaders(headers: any = {}): any {
+    // server needs to know request came from JS in order to omit
+    // 'Www-Authenticate: Basic' header, which triggers browser's
+    // ugly basic auth popup
+    headers["X-Requested-With"] = "XMLHttpRequest";
+
+    if (this.getBasicAuthCredentials()) {
+      headers["Authorization"] = "Basic " + this.getBasicAuthCredentials();
+    }
+
+    return headers;
+  }
+
+  isErrorCode(status: number) {
+    return status < 200 || status >= 400;
   }
 }

@@ -1,7 +1,6 @@
 import ActionsCreator from "../actions";
 import DataFetcher from "../DataFetcher";
 import { adapter } from "../OPDSDataAdapter";
-import { basicAuth } from "../auth";
 import { CollectionData, BookData, BasicAuthCallback, BasicAuthLabels } from "../interfaces";
 
 export function findBookInCollection(collection: CollectionData, book: string) {
@@ -49,8 +48,10 @@ export function mapDispatchToProps(dispatch) {
         clearBook: () => dispatch(actions.clearBook()),
         fetchSearchDescription: (url: string) => dispatch(actions.fetchSearchDescription(url)),
         closeError: () => dispatch(actions.closeError()),
-        borrowBook: (url: string) => dispatch(actions.borrowBook(url)),
+        borrowAndFulfillBook: (url: string) => dispatch(actions.borrowAndFulfillBook(url)),
+        fulfillBook: (url: string) => dispatch(actions.fulfillBook(url)),
         saveBasicAuthCredentials: (credentials: string) => dispatch(actions.saveBasicAuthCredentials(credentials)),
+        clearBasicAuthCredentials: () => dispatch(actions.clearBasicAuthCredentials()),
         showBasicAuthForm: (callback: BasicAuthCallback, labels: BasicAuthLabels, title: string) => dispatch(actions.showBasicAuthForm(callback, labels, title)),
         hideBasicAuthForm: () => dispatch(actions.hideBasicAuthForm())
       };
@@ -101,8 +102,7 @@ export function fetchCollectionAndBook({
 export function mergeRootProps(stateProps, createDispatchProps, componentProps) {
   let fetcher = new DataFetcher({
     proxyUrl: componentProps.proxyUrl,
-    adapter: adapter,
-    auth: basicAuth
+    adapter: adapter
   });
   let dispatchProps = createDispatchProps.createDispatchProps(fetcher);
 

@@ -1,6 +1,5 @@
 import * as React from "react";
 import { popupStyle } from "./styles";
-import { basicAuth } from "../auth";
 import { BasicAuthCallback } from "../interfaces";
 
 export interface BasicAuthFormProps {
@@ -91,7 +90,6 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, a
       let password = (this.refs["password"] as any).value;
       let credentials = btoa(login + ":" + password);
 
-      basicAuth.setCredentials(credentials);
       this.props.saveCredentials(credentials);
       this.props.hide();
 
