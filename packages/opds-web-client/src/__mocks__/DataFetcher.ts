@@ -20,6 +20,9 @@ export default class MockDataFetcher {
     });
   }
 
+  setBasicAuthCredentials() {
+  }
+
   getBasicAuthCredentials() {
     return "credentials";
   }

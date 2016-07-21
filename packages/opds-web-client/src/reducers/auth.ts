@@ -12,7 +12,6 @@ const initialState: AuthState = {
     title: null,
     loginLabel: null,
     passwordLabel: null,
-    isFetching: false,
     error: null
   }
 };
@@ -31,7 +30,7 @@ const auth = (state: AuthState = initialState, action): AuthState => {
           passwordLabel: action.labels && action.labels.password ?
                          action.labels.password :
                          state.basic.passwordLabel,
-          error: action.error
+          error: action.error || null
         })
       });
 
@@ -48,21 +47,6 @@ const auth = (state: AuthState = initialState, action): AuthState => {
         basic: Object.assign({}, state.basic, {
           credentials: action.credentials
         })
-      });
-
-    case "BORROW_BOOK_REQUEST":
-      return Object.assign({}, state, {
-        isFetching: true
-      });
-
-    case "BORROW_BOOK_SUCCESS":
-      return Object.assign({}, state, {
-        isFetching: false
-      });
-
-    case "BORROW_BOOK_FAILURE":
-      return Object.assign({}, state, {
-        isFetching: false
       });
 
     default:

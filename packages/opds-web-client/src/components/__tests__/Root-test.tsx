@@ -186,16 +186,15 @@ describe("Root", () => {
       loginLabel: "Clearance ID",
       passwordLabel: "Access Key",
       error: "Invalid Clearance ID and/or Access Key",
-      callback: jest.genMockFunction(),
-      isFetching: false
+      callback: jest.genMockFunction()
     };
     let saveBasicAuthCredentials = jest.genMockFunction();
-    let hideBasicAuthForm = jest.genMockFunction();
+    let closeErrorAndHideBasicAuthForm = jest.genMockFunction();
     let wrapper = shallow(
       <Root
         basicAuth={basicAuth}
         saveBasicAuthCredentials={saveBasicAuthCredentials}
-        hideBasicAuthForm={hideBasicAuthForm}
+        closeErrorAndHideBasicAuthForm={closeErrorAndHideBasicAuthForm}
         />
     );
     let form = wrapper.find(BasicAuthForm);
@@ -203,7 +202,7 @@ describe("Root", () => {
       saveCredentials, hide, callback, title, loginLabel, passwordLabel, error
     } = form.props();
     expect(saveCredentials).toBe(saveBasicAuthCredentials);
-    expect(hide).toBe(hideBasicAuthForm);
+    expect(hide).toBe(closeErrorAndHideBasicAuthForm);
     expect(callback).toBe(basicAuth.callback);
     expect(title).toBe(basicAuth.title);
     expect(loginLabel).toBe(basicAuth.loginLabel);

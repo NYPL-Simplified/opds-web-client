@@ -18,10 +18,7 @@ export function findBookInCollection(collection: CollectionData, book: string) {
 export function mapStateToProps(state, ownProps) {
   return {
     collectionData: state.catalog.collection.data || ownProps.collectionData,
-    isFetching:
-      state.catalog.collection.isFetching ||
-      state.catalog.book.isFetching ||
-      state.catalog.auth.isFetching,
+    isFetching: state.catalog.collection.isFetching || state.catalog.book.isFetching,
     isFetchingPage: state.catalog.collection.isFetchingPage,
     error: (state.catalog.collection.error || state.catalog.book.error),
     bookData: state.catalog.book.data || ownProps.bookData,
@@ -53,7 +50,7 @@ export function mapDispatchToProps(dispatch) {
         saveBasicAuthCredentials: (credentials: string) => dispatch(actions.saveBasicAuthCredentials(credentials)),
         clearBasicAuthCredentials: () => dispatch(actions.clearBasicAuthCredentials()),
         showBasicAuthForm: (callback: BasicAuthCallback, labels: BasicAuthLabels, title: string) => dispatch(actions.showBasicAuthForm(callback, labels, title)),
-        hideBasicAuthForm: () => dispatch(actions.hideBasicAuthForm())
+        closeErrorAndHideBasicAuthForm: () => dispatch(actions.closeErrorAndHideBasicAuthForm())
       };
     }
   };

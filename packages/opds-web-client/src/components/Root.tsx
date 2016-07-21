@@ -66,7 +66,7 @@ export interface RootProps extends StateProps {
   saveBasicAuthCredentials?: (credentials: string) => void;
   clearBasicAuthCredentials?: () => void;
   showBasicAuthForm?: (callback: BasicAuthCallback, labels: BasicAuthLabels, title: string) => void;
-  hideBasicAuthForm?: () => void;
+  closeErrorAndHideBasicAuthForm?: () => void;
 }
 
 export class Root extends React.Component<RootProps, any> {
@@ -151,7 +151,7 @@ export class Root extends React.Component<RootProps, any> {
         { this.props.basicAuth && this.props.basicAuth.showForm &&
           <BasicAuthForm
             saveCredentials={this.props.saveBasicAuthCredentials}
-            hide={this.props.hideBasicAuthForm}
+            hide={this.props.closeErrorAndHideBasicAuthForm}
             callback={this.props.basicAuth.callback}
             title={this.props.basicAuth.title}
             loginLabel={this.props.basicAuth.loginLabel}

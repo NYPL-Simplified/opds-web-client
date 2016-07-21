@@ -251,11 +251,15 @@ export default class ActionCreator {
     return { type: this.SHOW_BASIC_AUTH_FORM, callback, labels, title, error };
   }
 
-  hideBasicAuthForm() {
+  closeErrorAndHideBasicAuthForm() {
     return (dispatch) => {
       dispatch(this.closeError());
-      dispatch({ type: this.HIDE_BASIC_AUTH_FORM });
+      dispatch(this.hideBasicAuthForm());
     };
+  }
+
+  hideBasicAuthForm() {
+    return { type: this.HIDE_BASIC_AUTH_FORM };
   }
 
   saveBasicAuthCredentials(credentials: string) {

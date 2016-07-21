@@ -116,7 +116,6 @@ export interface BasicAuthData {
   title: string;
   loginLabel: string;
   passwordLabel: string;
-  isFetching: boolean;
   error: string;
 }
 

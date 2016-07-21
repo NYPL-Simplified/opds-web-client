@@ -47,6 +47,21 @@ const book = (state: BookState = initialState, action): BookState => {
         error: null
       });
 
+    case "BORROW_BOOK_REQUEST":
+      return Object.assign({}, state, {
+        isFetching: true
+      });
+
+    case "BORROW_BOOK_SUCCESS":
+      return Object.assign({}, state, {
+        isFetching: false
+      });
+
+    case "BORROW_BOOK_FAILURE":
+      return Object.assign({}, state, {
+        isFetching: false
+      });
+
     default:
       return state;
   }

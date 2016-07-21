@@ -222,10 +222,10 @@ describe("actions", () => {
     });
   });
 
-  describe("hideBasicAuthForm", () => {
+  describe("closeErrorAndHideBasicAuthForm", () => {
     it("closes error message", () => {
       let dispatch = jest.genMockFunction();
-      actions.hideBasicAuthForm()(dispatch);
+      actions.closeErrorAndHideBasicAuthForm()(dispatch);
       expect(dispatch.mock.calls.length).toBe(2);
       expect(dispatch.mock.calls[0][0].type).toBe(actions.CLOSE_ERROR);
       expect(dispatch.mock.calls[1][0].type).toBe(actions.HIDE_BASIC_AUTH_FORM);
