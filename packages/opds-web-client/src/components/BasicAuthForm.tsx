@@ -4,12 +4,12 @@ import { BasicAuthCallback } from "../interfaces";
 
 export interface BasicAuthFormProps {
   hide: () => void;
-  callback: BasicAuthCallback;
+  saveCredentials: (credentials: string) => void;
+  callback?: BasicAuthCallback;
   title?: string;
   loginLabel?: string;
   passwordLabel?: string;
   error?: string;
-  saveCredentials: (credentials: string) => void;
 }
 
 export default class BasicAuthForm extends React.Component<BasicAuthFormProps, any> {
@@ -27,7 +27,7 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, a
       <div className="authForm" style={authFormStyle}>
         <h3 style={{ marginTop: "0px", marginBottom: "20px" }}>{ this.props.title + " " || ""}Login</h3>
         { this.state.error &&
-          <div style={{ padding: "0.5em", color: "#f00" }}>
+          <div className="authFormError" style={{ padding: "0.5em", color: "#f00" }}>
             { this.state.error }
           </div>
         }
@@ -75,6 +75,8 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, a
         error: `${this.loginLabel()} and ${this.passwordLabel()} are required`
       });
       return false;
+    } else {
+      this.setState({ error: null});
     }
 
     return true;
@@ -84,11 +86,9 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, a
     event.preventDefault();
 
     if (this.validate()) {
-      this.setState({ error: null });
-
       let login = (this.refs["login"] as any).value;
       let password = (this.refs["password"] as any).value;
-      let credentials = btoa(login + ":" + password);
+      let credentials = this.generateCredentials(login, password);
 
       this.props.saveCredentials(credentials);
       this.props.hide();
@@ -100,13 +100,15 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, a
   }
 
   cancel(event) {
-    event.preventDefault();
-
     this.props.hide();
 
-    // only go back when auth form triggered by another action
+    // only go back when auth form was triggered by another action
     if (this.props.callback) {
       window.history.back();
     }
+  }
+
+  generateCredentials(login, password) {
+    return btoa(login + ":" + password);
   }
 }
