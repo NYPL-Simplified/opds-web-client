@@ -99,7 +99,7 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, a
     }
   }
 
-  cancel(event) {
+  cancel() {
     this.props.hide();
 
     // only go back when auth form was triggered by another action

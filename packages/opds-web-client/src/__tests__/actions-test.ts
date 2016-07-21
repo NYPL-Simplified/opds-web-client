@@ -126,17 +126,18 @@ describe("actions", () => {
   describe("borrowBook", () => {
     let borrowUrl = "http://example.com/book/borrow";
     let fulfillmentUrl = "http://example.com/book/fulfill";
+    let mimeType = "mime/type";
 
     it("dispatches request, load, and success", (done) => {
       let dispatch = jest.genMockFunction();
       fetcher.resolve = true;
-      fetcher.testData = { fulfillmentUrl };
+      fetcher.testData = { fulfillmentUrl, mimeType };
 
       actions.borrowBook(borrowUrl)(dispatch).then(data => {
         expect(dispatch.mock.calls.length).toBe(2);
         expect(dispatch.mock.calls[0][0].type).toBe(actions.BORROW_BOOK_REQUEST);
         expect(dispatch.mock.calls[1][0].type).toBe(actions.BORROW_BOOK_SUCCESS);
-        expect(data).toBe(fulfillmentUrl);
+        expect(data).toEqual(fetcher.testData);
         done();
       }).catch(err => done.fail(err));
     });
@@ -189,11 +190,12 @@ describe("actions", () => {
   describe("borrowAndFulfillBook", () => {
     let borrowUrl = "http://example.com/book/borrow";
     let fulfillmentUrl = "http://example.com/book/fulfill";
+    let mimeType = "mime/type";
 
     it("dispatches request, load, and success", (done) => {
       let dispatch = jest.genMockFunction();
       fetcher.resolve = true;
-      fetcher.testData = { fulfillmentUrl, blob: () => "blob" };
+      fetcher.testData = { fulfillmentUrl, fulfillmentType: mimeType, blob: () => "blob" };
 
       actions.borrowAndFulfillBook(borrowUrl)(dispatch).then(data => {
         expect(dispatch.mock.calls.length).toBe(4);
@@ -201,7 +203,7 @@ describe("actions", () => {
         expect(dispatch.mock.calls[1][0].type).toBe(actions.BORROW_BOOK_SUCCESS);
         expect(dispatch.mock.calls[2][0].type).toBe(actions.FULFILL_BOOK_REQUEST);
         expect(dispatch.mock.calls[3][0].type).toBe(actions.FULFILL_BOOK_SUCCESS);
-        expect(data).toBe("blob");
+        expect(data).toEqual({ blob: "blob", mimeType });
         done();
       }).catch(err => done.fail(err));
     });

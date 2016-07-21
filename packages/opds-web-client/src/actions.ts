@@ -176,22 +176,22 @@ export default class ActionCreator {
   borrowAndFulfillBook(url: string): (dispatch: any) => Promise<Blob> {
     return (dispatch) => {
       return new Promise((resolve, reject) => {
-        this.borrowBook(url)(dispatch).then(fulfillmentUrl => {
+        this.borrowBook(url)(dispatch).then(({ fulfillmentUrl, fulfillmentType }) => {
           this.fulfillBook(fulfillmentUrl)(dispatch).then(blob => {
-            resolve(blob);
+            resolve({ blob, mimeType: fulfillmentType });
           }).catch(reject);
         }).catch(reject);
       });
     };
   }
 
-  borrowBook(url: string): (dispatch: any) => Promise<string> {
+  borrowBook(url: string): (dispatch: any) => Promise<BookData> {
     return (dispatch) => {
       dispatch(this.borrowBookRequest());
       return new Promise((resolve, reject) => {
         this.fetcher.fetchOPDSData(url).then((data: BookData) => {
           dispatch(this.borrowBookSuccess());
-          resolve(data.fulfillmentUrl);
+          resolve(data);
         }).catch((err: FetchErrorData) => {
           dispatch(this.borrowBookFailure());
           reject(err);

@@ -4,7 +4,7 @@ import * as React from "react";
 import { shallow } from "enzyme";
 
 import BookDetails from "../BookDetails";
-import BorrowLink from "../BorrowLink";
+import BorrowButton from "../BorrowButton";
 
 let book = {
   id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
@@ -136,7 +136,7 @@ describe("BookDetails", () => {
         fulfillBook={jest.genMockFunction()} />
     );
 
-    let button = wrapper.find(BorrowLink);
+    let button = wrapper.find(BorrowButton);
     expect(button.children().text()).toBe("Borrow");
     expect(button.props().book).toBe(bookCopy);
     expect(button.props().borrow).toBe(borrowAndFulfillBook);

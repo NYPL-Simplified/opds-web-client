@@ -1,5 +1,5 @@
 import * as React from "react";
-import BorrowLink from "./BorrowLink";
+import BorrowButton from "./BorrowButton";
 import { BookProps } from "./Book";
 const download = require("downloadjs");
 
@@ -101,14 +101,13 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
       );
     } else if (this.props.book.borrowUrl) {
       links.push(
-        <BorrowLink
+        <BorrowButton
           key={this.props.book.borrowUrl}
-          className="btn btn-default"
           style={{ marginRight: "0.5em" }}
           book={this.props.book}
           borrow={this.props.borrowAndFulfillBook}>
           Borrow
-        </BorrowLink>
+        </BorrowButton>
       );
     }
 

@@ -98,13 +98,14 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
   }
 
   let fulfillmentUrl;
+  let fulfillmentType;
   let fulfillmentLink = entry.links.find(link => {
     return link instanceof OPDSAcquisitionLink &&
-      link.rel === OPDSAcquisitionLink.GENERIC_REL &&
-      link.type === "vnd.adobe/adept+xml";
+      link.rel === OPDSAcquisitionLink.GENERIC_REL;
   });
   if (fulfillmentLink) {
     fulfillmentUrl = resolve(feedUrl, fulfillmentLink.href);
+    fulfillmentType = fulfillmentLink.type;
   }
 
   return <BookData>{
@@ -117,6 +118,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
     openAccessUrl: openAccessUrl,
     borrowUrl: borrowUrl,
     fulfillmentUrl: fulfillmentUrl,
+    fulfillmentType: fulfillmentType,
     publisher: entry.publisher,
     published: entry.published && formatDate(entry.published),
     categories: categories,

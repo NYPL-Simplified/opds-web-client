@@ -14,6 +14,7 @@ import CatalogLink, { CatalogLinkProps } from "../CatalogLink";
 import Search from "../Search";
 import LoadingIndicator from "../LoadingIndicator";
 import ErrorMessage from "../ErrorMessage";
+import BasicAuthForm from "../BasicAuthForm";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 import buildStore from "../../store";
 import { State } from "../../state";
@@ -158,6 +159,39 @@ describe("Root", () => {
     let error = wrapper.find(ErrorMessage);
     expect(error.props().message).toContain(fetchError.url);
     expect(error.props().retry).toBe(retry);
+  });
+
+  it("shows basic auth form", () => {
+    let basicAuth = {
+      showForm: true,
+      credentials: "gibberish",
+      title: "Super Classified Archive",
+      loginLabel: "Clearance ID",
+      passwordLabel: "Access Key",
+      error: "Invalid Clearance ID and/or Access Key",
+      callback: jest.genMockFunction(),
+      isFetching: false
+    };
+    let saveBasicAuthCredentials = jest.genMockFunction();
+    let hideBasicAuthForm = jest.genMockFunction();
+    let wrapper = shallow(
+      <Root
+        basicAuth={basicAuth}
+        saveBasicAuthCredentials={saveBasicAuthCredentials}
+        hideBasicAuthForm={hideBasicAuthForm}
+        />
+    );
+    let form = wrapper.find(BasicAuthForm);
+    let {
+      saveCredentials, hide, callback, title, loginLabel, passwordLabel, error
+    } = form.props();
+    expect(saveCredentials).toBe(saveBasicAuthCredentials);
+    expect(hide).toBe(hideBasicAuthForm);
+    expect(callback).toBe(basicAuth.callback);
+    expect(title).toBe(basicAuth.title);
+    expect(loginLabel).toBe(basicAuth.loginLabel);
+    expect(passwordLabel).toBe(basicAuth.passwordLabel);
+    expect(error).toBe(basicAuth.error);
   });
 
   it("shows book detail", () => {

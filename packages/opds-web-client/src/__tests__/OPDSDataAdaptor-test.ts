@@ -31,7 +31,7 @@ describe("OPDSDataAdapter", () => {
     let fulfillmentLink = factory.acquisitionLink({
       href: "http://example.com/fulfill",
       rel: OPDSAcquisitionLink.GENERIC_REL,
-      type: "vnd.adobe/adept+xml"
+      type: "application/vnd.adobe+adept+xml"
     });
 
     let collectionLink = factory.collectionLink({
@@ -85,6 +85,7 @@ describe("OPDSDataAdapter", () => {
     expect(book.openAccessUrl).toBe(openAccessLink.href);
     expect(book.borrowUrl).toBe(borrowLink.href);
     expect(book.fulfillmentUrl).toBe(fulfillmentLink.href);
+    expect(book.fulfillmentType).toBe(fulfillmentLink.type);
   });
 
   it("extracts link info", () => {

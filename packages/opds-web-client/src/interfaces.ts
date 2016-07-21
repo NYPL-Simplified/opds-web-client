@@ -8,6 +8,7 @@ export interface BookData {
   openAccessUrl?: string;
   borrowUrl?: string;
   fulfillmentUrl?: string;
+  fulfillmentType?: string;
   url?: string;
   publisher?: string;
   published?: string;
