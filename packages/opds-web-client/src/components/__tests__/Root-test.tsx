@@ -1,4 +1,5 @@
 jest.autoMockOff();
+jest.mock("../../DataFetcher");
 
 import * as React from "react";
 import { Store } from "redux";
@@ -117,6 +118,22 @@ describe("Root", () => {
     expect(setCollectionAndBook.mock.calls.length).toBe(1);
     expect(setCollectionAndBook.mock.calls[0][0]).toBeFalsy();
     expect(setCollectionAndBook.mock.calls[0][1]).toBe(bookUrl);
+  });
+
+  it("updates page title on mount", () => {
+    let wrapper = shallow(
+      <Root pageTitleTemplate={(collection, book) => "page title"} />
+    );
+    expect(document.title).toBe("page title");
+  });
+
+  it("sets basic auth credentials on mount", () => {
+    let saveBasicAuthCredentials = jest.genMockFunction();
+    let wrapper = shallow(
+      <Root saveBasicAuthCredentials={saveBasicAuthCredentials} />
+    );
+    expect(saveBasicAuthCredentials.mock.calls.length).toBe(1);
+    expect(saveBasicAuthCredentials.mock.calls[0][0]).toBe("credentials");
   });
 
   it("fetches a collection url when updated", () => {
@@ -260,6 +277,8 @@ describe("Root", () => {
     it("renders BookDetailsContainer with urls, refresh, and book details", () => {
       let bookData = groupedCollectionData.lanes[0].books[0];
       let refresh = jest.genMockFunction();
+      let borrowAndFulfillBook = jest.genMockFunction();
+      let fulfillBook = jest.genMockFunction();
       let wrapper = shallow(
         <Root
           bookData={bookData}
@@ -267,7 +286,10 @@ describe("Root", () => {
           collectionUrl="test collection"
           refreshCollectionAndBook={refresh}
           setCollectionAndBook={jest.genMockFunction()}
-          BookDetailsContainer={Container} />
+          BookDetailsContainer={Container}
+          borrowAndFulfillBook={borrowAndFulfillBook}
+          fulfillBook={fulfillBook}
+          />
       );
 
       let container = wrapper.find(Container);
@@ -275,6 +297,8 @@ describe("Root", () => {
       expect(container.props().bookUrl).toBe(bookData.url);
       expect(container.props().collectionUrl).toBe("test collection");
       expect(container.props().refreshCatalog).toBe(refresh);
+      expect(container.props().borrowAndFulfillBook).toBe(borrowAndFulfillBook);
+      expect(container.props().fulfillBook).toBe(fulfillBook);
       expect(child.type()).toBe(BookDetails);
       expect(child.props().book).toBe(bookData);
     });
@@ -397,6 +421,8 @@ describe("Root", () => {
       }
     });
     let bookData: BookData = ungroupedCollectionData.books[0];
+    let showBasicAuthForm;
+    let clearBasicAuthCredentials;
 
     class Header extends React.Component<HeaderProps, any> {
       render(): JSX.Element {
@@ -419,6 +445,8 @@ describe("Root", () => {
           collectionData={collectionData}
           bookData={bookData}
           fetchSearchDescription={(url: string) => {}}
+          showBasicAuthForm={showBasicAuthForm}
+          isSignedIn={true}
           />
       );
     });
@@ -429,6 +457,9 @@ describe("Root", () => {
       expect(header.props().CatalogLink).toBe(CatalogLink);
       expect(header.props().collectionTitle).toBe(collectionData.title);
       expect(header.props().bookTitle).toBe(bookData.title);
+      expect(header.props().isSignedIn).toBe(true);
+      expect(header.props().showBasicAuthForm).toBe(showBasicAuthForm);
+      expect(header.props().clearBasicAuthCredentials).toBe(clearBasicAuthCredentials);
       expect(search.type()).toBe(Search);
     });
   });

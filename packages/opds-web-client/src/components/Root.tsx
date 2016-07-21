@@ -28,8 +28,8 @@ export interface HeaderProps extends React.Props<any> {
   collectionTitle: string;
   bookTitle: string;
   isSignedIn: boolean;
-  signIn: (callback: BasicAuthCallback, labels: BasicAuthLabels, title: string) => void;
-  signOut: () => void;
+  showBasicAuthForm: (callback: BasicAuthCallback, labels: BasicAuthLabels, title: string) => void;
+  clearBasicAuthCredentials: () => void;
 }
 
 export interface BookDetailsContainerProps extends React.Props<any> {
@@ -170,8 +170,8 @@ export class Root extends React.Component<RootProps, any> {
             collectionTitle={collectionTitle}
             bookTitle={bookTitle}
             isSignedIn={this.props.isSignedIn}
-            signIn={this.props.showBasicAuthForm}
-            signOut={this.props.clearBasicAuthCredentials}>
+            showBasicAuthForm={this.props.showBasicAuthForm}
+            clearBasicAuthCredentials={this.props.clearBasicAuthCredentials}>
             { this.props.collectionData && this.props.collectionData.search &&
               <Search
                 url={this.props.collectionData.search.url}
@@ -185,6 +185,7 @@ export class Root extends React.Component<RootProps, any> {
               <span className="navbar-brand" style={{ fontSize: "1.8em", color: "black" }}>
                 OPDS Web Client
               </span>
+
               { this.props.collectionData && this.props.collectionData.search &&
                 <Search
                   className="navbar-form navbar-right"
@@ -249,15 +250,20 @@ export class Root extends React.Component<RootProps, any> {
 
   componentWillMount() {
     if (this.props.collectionUrl || this.props.bookUrl) {
-      this.props.setCollectionAndBook(this.props.collectionUrl, this.props.bookUrl);
+      this.props.setCollectionAndBook(
+        this.props.collectionUrl,
+        this.props.bookUrl
+      );
     }
 
     this.updatePageTitle(this.props);
 
-    let fetcher = new DataFetcher();
-    let credentials = fetcher.getBasicAuthCredentials();
-    if (credentials) {
-      this.props.saveBasicAuthCredentials(credentials);
+    if (this.props.saveBasicAuthCredentials) {
+      let credentials = new DataFetcher().getBasicAuthCredentials();
+
+      if (credentials) {
+        this.props.saveBasicAuthCredentials(credentials);
+      }
     }
   }
 
