@@ -14,10 +14,14 @@ export default class BorrowButton extends React.Component<BorrowButtonProps, any
   }
 
   render() {
+    let props = Object.assign({}, this.props);
+    delete props["book"];
+    delete props["borrow"];
+
     return (
       <button
         className="btn btn-default"
-        {...this.props}
+        {...props}
         onClick={this.borrow}>
         Borrow
       </button>
@@ -29,7 +33,7 @@ export default class BorrowButton extends React.Component<BorrowButtonProps, any
       return download(
         blob,
         this.generateFilename(this.props.book.title),
-        // TODO: use mimeType variable once we fix the link type in our OPDS entries 
+        // TODO: use mimeType variable once we fix the link type in our OPDS entries
         "application/vnd.adobe.adept+xml"
       );
     });
@@ -39,4 +43,3 @@ export default class BorrowButton extends React.Component<BorrowButtonProps, any
     return str.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") + ".acsm";
   }
 }
-
