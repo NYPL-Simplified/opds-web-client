@@ -24,7 +24,22 @@ describe("DataFetcher", () => {
 
     expect(mockFetch.mock.calls.length).toBe(1);
     expect(mockFetch.mock.calls[0][0]).toBe("test url");
-    expect(mockFetch.mock.calls[0][1]).toBe(options);
+    expect(mockFetch.mock.calls[0][1]).toEqual(options);
+  });
+
+  it("sends credentials by default", () => {
+    let options = {
+      method: "POST",
+      data: { test: "test" }
+    };
+    let fetcher = new DataFetcher();
+    fetcher.fetch("test url", options);
+
+    expect(mockFetch.mock.calls.length).toBe(1);
+    expect(mockFetch.mock.calls[0][0]).toBe("test url");
+    expect(mockFetch.mock.calls[0][1]).toEqual(
+      Object.assign({ credentials: "same-origin" }, options)
+    );
   });
 
   it("uses proxy url if provided", () => {

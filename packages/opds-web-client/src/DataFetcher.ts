@@ -63,6 +63,8 @@ export default class DataFetcher {
   }
 
   fetch(url: string, options = {}) {
+    options = Object.assign({ credentials: "same-origin" }, options);
+
     if (this.proxyUrl) {
       let formData = new FormData();
       formData.append("url", url);

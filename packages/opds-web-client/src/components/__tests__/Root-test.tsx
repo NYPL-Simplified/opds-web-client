@@ -245,8 +245,8 @@ describe("Root", () => {
       expect(child.props().book).toBe(bookData);
     });
 
-    it("does not render BookDetailsContainer if bookUrl is missing", () => {
-      let bookData = groupedCollectionData.lanes[0].books[0];
+    it("does not render BookDetailsContainer if bookUrl and bookData.url are missing", () => {
+      let bookData = Object.assign({}, groupedCollectionData.lanes[0].books[0], { url: null });
       let refresh = jest.genMockFunction();
       let wrapper = shallow(
         <Root
