@@ -148,7 +148,7 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
 
     if (this.isBorrowed()) {
       links.push(
-        <button className="btn btn-default disabled">On Hold</button>
+        <button key="onhold" className="btn btn-default disabled">On Hold</button>
       );
     } else if (this.props.book.borrowUrl) {
       let label = this.props.book.copies &&

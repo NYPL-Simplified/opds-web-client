@@ -1,7 +1,10 @@
 jest.dontMock("../OPDSDataAdapter");
 jest.dontMock("./OPDSFactory");
 
-import { OPDSArtworkLink, OPDSCollectionLink, OPDSFacetLink, OPDSAcquisitionLink } from "opds-feed-parser";
+import {
+  OPDSArtworkLink, OPDSCollectionLink, OPDSFacetLink, OPDSAcquisitionLink ,
+  OPDSShelfLink,
+} from "opds-feed-parser";
 import * as factory from "./OPDSFactory";
 import { feedToCollection } from "../OPDSDataAdapter";
 const sanitizeHtml = require("dompurify").sanitize;
@@ -25,7 +28,10 @@ describe("OPDSDataAdapter", () => {
 
     let borrowLink = factory.acquisitionLink({
       href: "http://example.com/borrow",
-      rel: OPDSAcquisitionLink.BORROW_REL
+      rel: OPDSAcquisitionLink.BORROW_REL,
+      availability: { availability: "unavailable" },
+      holds: { total: 20, position: 5 },
+      copies: { total: 2, available: 0 }
     });
 
     let fulfillmentLink = factory.acquisitionLink({
@@ -86,6 +92,9 @@ describe("OPDSDataAdapter", () => {
     expect(book.borrowUrl).toBe(borrowLink.href);
     expect(book.fulfillmentLinks[0].url).toBe(fulfillmentLink.href);
     expect(book.fulfillmentLinks[0].type).toBe(fulfillmentLink.type);
+    expect(book.availability).toEqual(borrowLink.availability);
+    expect(book.holds).toEqual(borrowLink.holds);
+    expect(book.copies).toEqual(borrowLink.copies);
   });
 
   it("extracts link info", () => {
@@ -191,11 +200,27 @@ describe("OPDSDataAdapter", () => {
     let acquisitionFeed = factory.acquisitionFeed({
       id: "some id",
       entries: [],
-      links: [nextLink],
+      links: [nextLink]
     });
 
     let collection = feedToCollection(acquisitionFeed, "");
     expect(collection.nextPageUrl).toBeTruthy();
     expect(collection.nextPageUrl).toEqual("href");
+  });
+
+  it("extracts shelf url", () => {
+    let shelfLink = factory.shelfLink({
+      href: "loans",
+      rel: OPDSShelfLink.REL
+    });
+
+    let acquisitionFeed = factory.acquisitionFeed({
+      id: "some id",
+      entries: [],
+      links: [shelfLink]
+    });
+
+    let collection = feedToCollection(acquisitionFeed, "");
+    expect(collection.shelfUrl).toEqual(shelfLink.href);
   });
 });

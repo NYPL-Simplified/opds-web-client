@@ -212,15 +212,29 @@ describe("Root", () => {
 
   it("shows book detail", () => {
     let bookData = groupedCollectionData.lanes[0].books[0];
+    let loans = [Object.assign({}, bookData, {
+      availability: { status: "availabile" }
+    })];
+    let borrowBook = jest.genMockFunction();
+    let fulfillBook = jest.genMockFunction();
     let wrapper = shallow(
-      <Root bookData={bookData}/>
+      <Root
+        bookData={bookData}
+        loans={loans}
+        borrowBook={borrowBook}
+        fulfillBook={fulfillBook}
+        isSignedIn={true}
+        />
     );
 
     let bookWrapper = wrapper.find(".bookDetailsWrapper");
     let book = wrapper.find(BookDetails);
 
     expect(bookWrapper.length).toBe(1);
-    expect(book.props().book).toBe(bookData);
+    expect(book.props().book).toEqual(loans[0]);
+    expect(book.props().borrowBook).toBe(borrowBook);
+    expect(book.props().fulfillBook).toBe(fulfillBook);
+    expect(book.props().isSignedIn).toBe(true);
   });
 
   it("shows breadcrumbs", () => {
@@ -445,6 +459,7 @@ describe("Root", () => {
           fetchSearchDescription={(url: string) => {}}
           showBasicAuthForm={showBasicAuthForm}
           isSignedIn={true}
+          loansUrl="loans"
           />
       );
     });
@@ -457,6 +472,7 @@ describe("Root", () => {
       expect(header.props().isSignedIn).toBe(true);
       expect(header.props().showBasicAuthForm).toBe(showBasicAuthForm);
       expect(header.props().clearBasicAuthCredentials).toBe(clearBasicAuthCredentials);
+      expect(header.props().loansUrl).toBe("loans");
       expect(search.type()).toBe(Search);
     });
   });

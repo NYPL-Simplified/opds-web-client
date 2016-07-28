@@ -65,7 +65,7 @@ describe("createFetchCollectionAndBook", () => {
 
 describe("mergeRootProps", () => {
   let stateProps, dispatchProps, componentProps;
-  let fetchCollection, clearCollection, fetchBook, loadBook, clearBook, navigate;
+  let fetchCollection, clearCollection, fetchBook, loadBook, clearBook, navigate, borrowBook, fetchLoans;
   let fakeCollection = ungroupedCollectionData;
   let fakeBook = {
     id: "fake book id",
@@ -74,12 +74,12 @@ describe("mergeRootProps", () => {
   };
 
   beforeEach(() => {
-    fetchCollection = jest.genMockFunction().mockImplementation((url) => {
+    fetchCollection = jest.genMockFunction().mockImplementation(url => {
       return new Promise((resolve, reject) => {
         resolve(fakeCollection);
       });
     });
-    fetchBook = jest.genMockFunction().mockImplementation((url) => {
+    fetchBook = jest.genMockFunction().mockImplementation(url => {
       return new Promise((resolve, reject) => {
         resolve(fakeBook);
       });
@@ -87,8 +87,15 @@ describe("mergeRootProps", () => {
     loadBook = jest.genMockFunction();
     clearCollection = jest.genMockFunction();
     clearBook = jest.genMockFunction();
+    borrowBook = jest.genMockFunction().mockImplementation(url => {
+      return new Promise((resolve, reject) => resolve(fakeBook));
+    });
+    fetchLoans = jest.genMockFunction();
     dispatchProps = { createDispatchProps: (fetcher) => {
-      return { fetchCollection, clearCollection, loadBook, fetchBook, clearBook };
+      return {
+        fetchCollection, clearCollection, loadBook, fetchBook, clearBook,
+        borrowBook, fetchLoans
+      };
     }};
     componentProps = {};
   });
@@ -434,6 +441,44 @@ describe("mergeRootProps", () => {
         expect(fetchBook.mock.calls.length).toBe(0);
         done();
       });
+    });
+  });
+
+  describe("borrowBook", () => {
+    let props;
+
+    it("calls borrowBook", () => {
+      stateProps = {
+        loansUrl: "loans"
+      };
+      props = mergeRootProps(stateProps, dispatchProps, componentProps);
+      props.borrowBook("borrow url");
+
+      expect(borrowBook.mock.calls.length).toBe(1);
+      expect(borrowBook.mock.calls[0][0]).toBe("borrow url");
+    });
+
+    it("calls fetchLoans if loansUrl is present", (done) => {
+      stateProps = {
+        loansUrl: "loans"
+      };
+      props = mergeRootProps(stateProps, dispatchProps, componentProps);
+
+      props.borrowBook().then(data => {
+        expect(fetchLoans.mock.calls.length).toBe(1);
+        expect(fetchLoans.mock.calls[0][0]).toBe("loans");
+        expect(data).toEqual(fakeBook);
+        done();
+      }).catch(done.fail);
+    });
+
+    it("doesn't call fetchLoans if loansUrl is blank", (done) => {
+      props = mergeRootProps({}, dispatchProps, componentProps);
+
+      props.borrowBook().then(data => {
+        expect(fetchLoans.mock.calls.length).toBe(0);
+        done();
+      }).catch(done.fail);
     });
   });
 });

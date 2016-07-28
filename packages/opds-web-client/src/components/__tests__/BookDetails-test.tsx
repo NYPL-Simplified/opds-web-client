@@ -161,4 +161,21 @@ describe("BookDetails", () => {
     expect(button.props().mimeType).toBe(link.type);
     expect(button.props().isPlainLink).toBe(true);
   });
+
+  it("shows 'on hold'", () => {
+    let bookCopy = Object.assign({}, book, {
+      openAccessLinks: [],
+      availability: { status: "reserved" }
+    });
+    wrapper = shallow(
+      <BookDetails
+        book={bookCopy}
+        borrowBook={jest.genMockFunction()}
+        fulfillBook={jest.genMockFunction()}
+        />
+    );
+    let button = wrapper.find("button");
+    expect(button.text()).toBe("On Hold");
+    expect(button.props().className).toContain("disabled");
+  });
 });
