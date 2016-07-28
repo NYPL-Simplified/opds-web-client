@@ -5,6 +5,7 @@ import { shallow } from "enzyme";
 
 import BookDetails from "../BookDetails";
 import BorrowButton from "../BorrowButton";
+import DownloadButton from "../DownloadButton";
 
 let book = {
   id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
@@ -14,7 +15,8 @@ let book = {
   contributors: ["contributor 1"],
   summary: "&lt;b&gt;Sam and Remi Fargo race for treasure&#8212;and survival&#8212;in this lightning-paced new adventure from #1&lt;i&gt; New York Times&lt;/i&gt; bestselling author Clive Cussler.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;Husband-and-wife team Sam and Remi Fargo are in Mexico when they come upon a remarkable discovery&#8212;the mummified remainsof a man clutching an ancient sealed pot. Within the pot is a Mayan book larger than any known before.&lt;br /&gt;&lt;br /&gt;The book contains astonishing information about the Mayans, their cities, and about mankind itself. The secrets are so powerful that some people would do anything to possess them&#8212;as the Fargos are about to find out. Many men and women are going to die for that book.",
   imageUrl: "https://dlotdqc6pnwqb.cloudfront.net/3M/crrmnr9/cover.jpg",
-  openAccessUrl: "secrets.epub",
+  openAccessLinks: [{ url: "secrets.epub", type: "application/epub+zip" }],
+  borrowUrl: "borrow url",
   publisher: "Penguin Publishing Group",
   published: "February 29, 2016",
   categories: ["category 1", "category 2"]
@@ -27,7 +29,7 @@ describe("BookDetails", () => {
     wrapper = shallow(
       <BookDetails
         book={book}
-        borrowAndFulfillBook={jest.genMockFunction()}
+        borrowBook={jest.genMockFunction()}
         fulfillBook={jest.genMockFunction()}
         />
     );
@@ -65,7 +67,7 @@ describe("BookDetails", () => {
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
-        borrowAndFulfillBook={jest.genMockFunction()}
+        borrowBook={jest.genMockFunction()}
         fulfillBook={jest.genMockFunction()}
         />
     );
@@ -89,7 +91,7 @@ describe("BookDetails", () => {
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
-        borrowAndFulfillBook={jest.genMockFunction()}
+        borrowBook={jest.genMockFunction()}
         fulfillBook={jest.genMockFunction()}
         />
     );
@@ -104,58 +106,59 @@ describe("BookDetails", () => {
   });
 
   it("shows download button for open access url", () => {
-    let button = wrapper.find("a.btn");
-    expect(button.text()).toBe("Download");
-    expect(button.props().href).toBe("secrets.epub");
+    let button = wrapper.find(DownloadButton);
+    expect(button.props().url).toBe("secrets.epub");
+    expect(button.props().mimeType).toBe("application/epub+zip");
+    expect(button.props().isPlainLink).toBe(true);
   });
 
-  it("doesn't show download button without open access url", () => {
-    let bookCopy = Object.assign({}, book, { openAccessUrl: null });
+  it("shows borrow/hold button", () => {
+    let bookCopy = Object.assign({}, book, {
+      borrowUrl: "borrow url"
+    });
+    let borrowBook = jest.genMockFunction();
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
-        borrowAndFulfillBook={jest.genMockFunction()}
+        borrowBook={borrowBook}
         fulfillBook={jest.genMockFunction()}
         />
-    );
-
-    let button = wrapper.find("a.btn");
-    expect(button.length).toBe(0);
-  });
-
-  it("shows borrow button if there's no open access url", () => {
-    let bookCopy = Object.assign({}, book, {
-      borrowUrl: "borrow url",
-      openAccessUrl: null
-    });
-    let borrowAndFulfillBook = jest.genMockFunction();
-    wrapper = shallow(
-      <BookDetails
-        book={bookCopy}
-        borrowAndFulfillBook={borrowAndFulfillBook}
-        fulfillBook={jest.genMockFunction()} />
     );
 
     let button = wrapper.find(BorrowButton);
     expect(button.children().text()).toBe("Borrow");
-    expect(button.props().book).toBe(bookCopy);
-    expect(button.props().borrow).toBe(borrowAndFulfillBook);
+    button.props().borrow();
+    expect(borrowBook.mock.calls.length).toBe(1);
+    expect(borrowBook.mock.calls[0][0]).toBe(bookCopy.borrowUrl);
+    wrapper.setProps({
+      book: Object.assign({}, bookCopy, {
+        copies: { total: 2, available: 0 }
+      })
+    });
+    button = wrapper.find(BorrowButton);
+    expect(button.children().text()).toBe("Hold");
   });
 
-  it("shows only download button if there's open access url and borrow url", () => {
+  it("shows fulfill button if there's no download button", () => {
+    let link = { url: "fulfillment url", type: "application/vnd.adobe.adept+xml" };
     let bookCopy = Object.assign({}, book, {
-      borrowUrl: "borrow url"
+      openAccessLinks: [],
+      fulfillmentLinks: [link]
     });
+    let fulfillBook = jest.genMockFunction();
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
-        borrowAndFulfillBook={jest.genMockFunction()}
-        fulfillBook={jest.genMockFunction()}
+        borrowBook={jest.genMockFunction()}
+        fulfillBook={fulfillBook}
+        isSignedIn={false}
         />
     );
-
-    let button = wrapper.find("a.btn");
-    expect(button.text()).toBe("Download");
-    expect(button.props().href).toBe("secrets.epub");
+    let button = wrapper.find(DownloadButton);
+    expect(button.props().fulfill).toBe(fulfillBook);
+    expect(button.props().url).toBe(link.url);
+    expect(button.props().title).toBe(bookCopy.title);
+    expect(button.props().mimeType).toBe(link.type);
+    expect(button.props().isPlainLink).toBe(true);
   });
 });

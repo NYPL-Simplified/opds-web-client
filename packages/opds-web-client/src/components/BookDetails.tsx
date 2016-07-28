@@ -1,6 +1,7 @@
 import * as React from "react";
+import CatalogLink from "./CatalogLink";
 import BorrowButton from "./BorrowButton";
-import FulfillButton from "./FulfillButton";
+import DownloadButton from "./DownloadButton";
 import { BookProps } from "./Book";
 import { BookData } from "../interfaces";
 const download = require("downloadjs");
@@ -8,7 +9,7 @@ const download = require("downloadjs");
 export interface BookDetailsProps extends BookProps {
   borrowBook: (url: string) => Promise<BookData>;
   fulfillBook: (url: string) => Promise<any>;
-  isSignedIn: boolean;
+  isSignedIn?: boolean;
 }
 
 export default class BookDetails extends React.Component<BookDetailsProps, any> {
@@ -22,8 +23,6 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
       paddingTop: "2em",
       borderTop: "1px solid #ccc"
     };
-
-    let links = this.circulationLinks();
 
     return (
       <div className="bookDetails">
@@ -65,11 +64,24 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
         <div style={{ clear: "both", marginTop: "1em" }}></div>
         <div
           style={bookSummaryStyle}>
-          { links.length > 0 &&
-            <div style={{textAlign: "center", marginBottom: "30px"}}>
-              { links }
+          <div className="row">
+            <div className="col-sm-2">
+              { this.props.book.url &&
+                <CatalogLink
+                  className="btn btn-link"
+                  target="_blank"
+                  bookUrl={this.props.book.url}>
+                  Permalink
+                </CatalogLink>
+              }
             </div>
-          }
+            <div className="col-sm-8" style={{textAlign: "center", marginBottom: "30px"}}>
+              { this.circulationLinks() }
+            </div>
+            <div className="col-sm-2" style={{ textAlign: "right" }}>
+            </div>
+          </div>
+
           <div className="bookDetailsSummary"
                dangerouslySetInnerHTML={{ __html: this.props.book.summary }}></div>
         </div>
@@ -102,15 +114,15 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
     ) {
       links.push(
         this.props.book.openAccessLinks.map(link => {
-          let label = this.mimeTypeToDownloadLabel(link.type);
-          return (<a
-            key={link.url}
-            className="btn btn-default"
-            style={{ marginRight: "0.5em" }}
-            href={link.url}
-            target="_blank">
-            {label}
-          </a>);
+          return (
+            <DownloadButton
+              key={link.url}
+              style={{ marginRight: "0.5em" }}
+              url={link.url}
+              mimeType={link.type}
+              isPlainLink={true}
+              />
+            );
         })
       );
     } else if (
@@ -119,18 +131,16 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
     ) {
       links.push(
         this.props.book.fulfillmentLinks.map(link => {
-          let label = this.mimeTypeToDownloadLabel(link.type);
           return (
-            <FulfillButton
+            <DownloadButton
               key={link.url}
               style={{ marginRight: "0.5em" }}
               fulfill={this.props.fulfillBook}
               url={link.url}
               mimeType={link.type}
               title={this.props.book.title}
-              isSignedIn={this.props.isSignedIn}>
-              {label}
-            </FulfillButton>
+              isPlainLink={!this.props.isSignedIn}
+              />
           );
         })
       );
@@ -160,23 +170,6 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
 
   borrow(): Promise<BookData> {
     return this.props.borrowBook(this.props.book.borrowUrl);
-  }
-
-  mimeTypeToDownloadLabel(mimeType) {
-    switch(mimeType) {
-      case "application/epub+zip":
-        return "Download EPUB";
-      case "application/pdf":
-        return "Download PDF";
-      case "application/vnd.adobe.adept+xml":
-        return "Download ACSM";
-      case "vnd.adobe/adept+xml":
-        return "Download ACSM";
-      case "application/x-mobipocket-ebook":
-        return "Download MOBI";
-      default:
-        return "Download";
-    }
   }
 
   isBorrowed() {

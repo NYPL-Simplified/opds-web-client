@@ -82,10 +82,10 @@ describe("OPDSDataAdapter", () => {
     expect(book.imageUrl).toEqual(thumbImageLink.href);
     expect(book.publisher).toBe("Fake Publisher");
     expect(book.published).toBe("June 8, 2014");
-    expect(book.openAccessUrl).toBe(openAccessLink.href);
+    expect(book.openAccessLinks[0].url).toBe(openAccessLink.href);
     expect(book.borrowUrl).toBe(borrowLink.href);
-    expect(book.fulfillmentUrl).toBe(fulfillmentLink.href);
-    expect(book.fulfillmentType).toBe(fulfillmentLink.type);
+    expect(book.fulfillmentLinks[0].url).toBe(fulfillmentLink.href);
+    expect(book.fulfillmentLinks[0].type).toBe(fulfillmentLink.type);
   });
 
   it("extracts link info", () => {

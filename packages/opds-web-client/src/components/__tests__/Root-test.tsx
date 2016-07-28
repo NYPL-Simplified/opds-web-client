@@ -276,7 +276,7 @@ describe("Root", () => {
     it("renders BookDetailsContainer with urls, refresh, and book details", () => {
       let bookData = groupedCollectionData.lanes[0].books[0];
       let refresh = jest.genMockFunction();
-      let borrowAndFulfillBook = jest.genMockFunction();
+      let borrowBook = jest.genMockFunction();
       let fulfillBook = jest.genMockFunction();
       let wrapper = shallow(
         <Root
@@ -286,7 +286,7 @@ describe("Root", () => {
           refreshCollectionAndBook={refresh}
           setCollectionAndBook={jest.genMockFunction()}
           BookDetailsContainer={Container}
-          borrowAndFulfillBook={borrowAndFulfillBook}
+          borrowBook={borrowBook}
           fulfillBook={fulfillBook}
           />
       );
@@ -296,7 +296,7 @@ describe("Root", () => {
       expect(container.props().bookUrl).toBe(bookData.url);
       expect(container.props().collectionUrl).toBe("test collection");
       expect(container.props().refreshCatalog).toBe(refresh);
-      expect(container.props().borrowAndFulfillBook).toBe(borrowAndFulfillBook);
+      expect(container.props().borrowBook).toBe(borrowBook);
       expect(container.props().fulfillBook).toBe(fulfillBook);
       expect(child.type()).toBe(BookDetails);
       expect(child.props().book).toBe(bookData);

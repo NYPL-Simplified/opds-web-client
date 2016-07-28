@@ -134,9 +134,10 @@ describe("actions", () => {
       fetcher.testData = { fulfillmentUrl, mimeType };
 
       actions.borrowBook(borrowUrl)(dispatch).then(data => {
-        expect(dispatch.mock.calls.length).toBe(2);
+        expect(dispatch.mock.calls.length).toBe(3);
         expect(dispatch.mock.calls[0][0].type).toBe(actions.BORROW_BOOK_REQUEST);
         expect(dispatch.mock.calls[1][0].type).toBe(actions.BORROW_BOOK_SUCCESS);
+        expect(dispatch.mock.calls[2][0].type).toBe(actions.LOAD_BORROW_DATA);
         expect(data).toEqual(fetcher.testData);
         done();
       }).catch(err => done.fail(err));
@@ -181,41 +182,6 @@ describe("actions", () => {
         expect(dispatch.mock.calls.length).toBe(2);
         expect(dispatch.mock.calls[0][0].type).toBe(actions.FULFILL_BOOK_REQUEST);
         expect(dispatch.mock.calls[1][0].type).toBe(actions.FULFILL_BOOK_FAILURE);
-        expect(err).toBe("test error");
-        done();
-      });
-    });
-  });
-
-  describe("borrowAndFulfillBook", () => {
-    let borrowUrl = "http://example.com/book/borrow";
-    let fulfillmentUrl = "http://example.com/book/fulfill";
-    let mimeType = "mime/type";
-
-    it("dispatches request, load, and success", (done) => {
-      let dispatch = jest.genMockFunction();
-      fetcher.resolve = true;
-      fetcher.testData = { fulfillmentUrl, fulfillmentType: mimeType, blob: () => "blob" };
-
-      actions.borrowAndFulfillBook(borrowUrl)(dispatch).then(data => {
-        expect(dispatch.mock.calls.length).toBe(4);
-        expect(dispatch.mock.calls[0][0].type).toBe(actions.BORROW_BOOK_REQUEST);
-        expect(dispatch.mock.calls[1][0].type).toBe(actions.BORROW_BOOK_SUCCESS);
-        expect(dispatch.mock.calls[2][0].type).toBe(actions.FULFILL_BOOK_REQUEST);
-        expect(dispatch.mock.calls[3][0].type).toBe(actions.FULFILL_BOOK_SUCCESS);
-        expect(data).toEqual({ blob: "blob", mimeType });
-        done();
-      }).catch(err => done.fail(err));
-    });
-
-    it("dispatches failure", (done) => {
-      let dispatch = jest.genMockFunction();
-      fetcher.resolve = false;
-
-      actions.borrowAndFulfillBook(borrowUrl)(dispatch).catch(err => {
-        expect(dispatch.mock.calls.length).toBe(2);
-        expect(dispatch.mock.calls[0][0].type).toBe(actions.BORROW_BOOK_REQUEST);
-        expect(dispatch.mock.calls[1][0].type).toBe(actions.BORROW_BOOK_FAILURE);
         expect(err).toBe("test error");
         done();
       });

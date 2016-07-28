@@ -89,7 +89,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
     return {
       url: resolve(feedUrl, link.href),
       type: link.type
-    }
+    };
   });
 
   let borrowUrl;
@@ -116,7 +116,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
   let holds;
   let copies;
   let linkWithAvailability = <OPDSAcquisitionLink>entry.links.find(link => {
-    return link instanceof OPDSAcquisitionLink && !!link.availability
+    return link instanceof OPDSAcquisitionLink && !!link.availability;
   });
   if (linkWithAvailability) {
     ({ availability, holds, copies } = linkWithAvailability);

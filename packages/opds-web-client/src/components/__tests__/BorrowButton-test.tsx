@@ -1,9 +1,5 @@
 jest.dontMock("../BorrowButton");
 jest.dontMock("./collectionData");
-jest.dontMock("../../__mocks__/downloadjs");
-
-const download = require("../../__mocks__/downloadjs");
-jest.setMock("downloadjs", download);
 
 import * as React from "react";
 import { shallow } from "enzyme";
@@ -29,7 +25,9 @@ describe("BorrowButton", () => {
       <BorrowButton
         style={style}
         book={bookData}
-        borrow={borrow} />
+        borrow={borrow}>
+        Borrow
+      </BorrowButton>
     );
   });
 
@@ -43,20 +41,5 @@ describe("BorrowButton", () => {
     let button = wrapper.find("button");
     button.simulate("click");
     expect(borrow.mock.calls.length).toBe(1);
-    expect(borrow.mock.calls[0][0]).toBe(bookData.borrowUrl);
-  });
-
-  it("downloads after borrowing", (done) => {
-    let button = wrapper.find("button");
-    button.props().onClick().then(() => {
-      expect(download.getBlob()).toBe("blob");
-      expect(download.getFilename()).toBe(
-        wrapper.instance().generateFilename(bookData.title)
-      );
-      // TODO: expect "mime/type" once we fix the link type in our OPDS entries
-      // and update BorrowButton to use the dynamic mimeType
-      expect(download.getMimeType()).toBe("application/vnd.adobe.adept+xml");
-      done();
-    }).catch(done.fail);
   });
 });

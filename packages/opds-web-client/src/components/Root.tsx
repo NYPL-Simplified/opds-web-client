@@ -342,7 +342,7 @@ export class Root extends React.Component<RootProps, any> {
   };
 
   loanedBookData(): BookData {
-    if (this.props.loans.length === 0) {
+    if (!this.props.loans || this.props.loans.length === 0) {
       return null;
     }
 
@@ -350,7 +350,7 @@ export class Root extends React.Component<RootProps, any> {
       if (this.props.bookData) {
         return book.id === this.props.bookData.id;
       } else if (this.props.bookUrl) {
-        return book.url === this.props.bookUrl
+        return book.url === this.props.bookUrl;
       } else {
         return null;
       }

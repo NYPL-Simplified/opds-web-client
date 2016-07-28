@@ -25,7 +25,9 @@ describe("DataFetcher", () => {
 
     expect(mockFetch.mock.calls.length).toBe(1);
     expect(mockFetch.mock.calls[0][0]).toBe("test url");
-    expect(mockFetch.mock.calls[0][1]).toEqual(options);
+    expect(mockFetch.mock.calls[0][1]).toEqual(Object.assign({}, options, {
+      headers: { "X-Requested-With": "XMLHttpRequest" }
+    }));
   });
 
   it("sends credentials by default", () => {
@@ -39,7 +41,9 @@ describe("DataFetcher", () => {
     expect(mockFetch.mock.calls.length).toBe(1);
     expect(mockFetch.mock.calls[0][0]).toBe("test url");
     expect(mockFetch.mock.calls[0][1]).toEqual(
-      Object.assign({ credentials: "same-origin" }, options)
+      Object.assign({ credentials: "same-origin", headers: {
+        "X-Requested-With": "XMLHttpRequest"
+      } }, options)
     );
   });
 

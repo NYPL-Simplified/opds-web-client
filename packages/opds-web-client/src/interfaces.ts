@@ -96,8 +96,8 @@ export interface StateProps {
   history?: LinkData[];
   basicAuth?: BasicAuthData;
   isSignedIn?: boolean;
-  loansUrl: string;
-  loans: BookData[];
+  loansUrl?: string;
+  loans?: BookData[];
 }
 
 export interface PathFor {
