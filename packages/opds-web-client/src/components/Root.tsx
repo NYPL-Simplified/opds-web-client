@@ -47,7 +47,7 @@ export interface RootProps extends StateProps {
   bookUrl?: string;
   proxyUrl?: string;
   dispatch?: any;
-  setCollectionAndBook?: (collectionUrl: string, bookUrl: string) => void;
+  setCollectionAndBook?: (collectionUrl: string, bookUrl: string) => Promise<any>;
   clearCollection?: () => void;
   clearBook?: () => void;
   fetchSearchDescription?: (url: string) => void;
@@ -63,6 +63,7 @@ export interface RootProps extends StateProps {
   computeBreadcrumbs?: ComputeBreadcrumbs;
   borrowBook?: (url: string) => Promise<BookData>;
   fulfillBook?: (url: string) => Promise<any>;
+  fetchLoans?: (url: string) => Promise<any>;
   saveBasicAuthCredentials?: (credentials: string) => void;
   clearBasicAuthCredentials?: () => void;
   showBasicAuthForm?: (callback: BasicAuthCallback, labels: BasicAuthLabels, title: string) => void;
@@ -268,7 +269,11 @@ export class Root extends React.Component<RootProps, any> {
       this.props.setCollectionAndBook(
         this.props.collectionUrl,
         this.props.bookUrl
-      );
+      ).then(({ collectionData, bookData }) => {
+        if (this.props.isSignedIn && collectionData.shelfUrl) {
+          this.props.fetchLoans(collectionData.shelfUrl);
+        }
+      });
     }
 
     this.updatePageTitle(this.props);

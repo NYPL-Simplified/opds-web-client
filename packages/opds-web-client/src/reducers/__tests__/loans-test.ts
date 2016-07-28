@@ -41,6 +41,18 @@ describe("loans reducer", () => {
     expect(reducer(initState, action)).toEqual(newState);
   });
 
+  it("handles LOAD_COLLECTION for loans feed", () => {
+    let oldState = Object.assign({}, initState, {
+      url: "loans url"
+    });
+    let loansCollectionData = Object.assign({}, collectionData, { books: loansData });
+    let action = actions.loadCollection(loansCollectionData, "loans url");
+    let newState = Object.assign({}, oldState, {
+      books: loansData
+    });
+    expect(reducer(oldState, action)).toEqual(newState);
+  });
+
   it("handles LOAD_LOANS", () => {
     let oldState = Object.assign({}, initState, {
       url: "loans url"

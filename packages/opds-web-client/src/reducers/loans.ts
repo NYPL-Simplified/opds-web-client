@@ -13,8 +13,12 @@ const initialState: LoansState = {
 export default (state: LoansState = initialState, action): LoansState => {
   switch (action.type) {
     case "LOAD_COLLECTION":
+      let loansUrl = action.data.shelfUrl || state.url;
+      let isLoans = action.url === loansUrl;
+
       return Object.assign({}, state, {
-        url: action.data.shelfUrl || state.url
+        url: action.data.shelfUrl || state.url,
+        books: isLoans ? action.data.books : state.books
       });
 
     case "LOAD_LOANS":

@@ -22,6 +22,13 @@ import { State } from "../../state";
 import { CollectionData, BookData, LinkData } from "../../interfaces";
 import { mockRouterContext } from "./routing";
 
+const setCollectionAndBookPromise = new Promise((resolve, reject) => {
+  resolve({
+    collectionData: null,
+    bookData: null
+  });
+});
+const mockSetCollectionAndBook = jest.genMockFunction().mockReturnValue(setCollectionAndBookPromise);
 
 describe("Root", () => {
   it("shows skip navigation link", () => {
@@ -80,7 +87,7 @@ describe("Root", () => {
 
   it("doesn't show a url form if collection url", () => {
     let wrapper = shallow(
-      <Root collectionUrl="test" setCollectionAndBook={jest.genMockFunction()} />
+      <Root collectionUrl="test" setCollectionAndBook={mockSetCollectionAndBook} />
     );
 
     let urlForms = wrapper.find(UrlForm);
@@ -89,7 +96,7 @@ describe("Root", () => {
 
   it("doesn't show a url form if book url", () => {
     let wrapper = shallow(
-      <Root bookUrl="test" setCollectionAndBook={jest.genMockFunction()} />
+      <Root bookUrl="test" setCollectionAndBook={mockSetCollectionAndBook} />
     );
 
     let urlForms = wrapper.find(UrlForm);
@@ -110,7 +117,7 @@ describe("Root", () => {
 
   it("fetches a book url on mount", () => {
     let bookUrl = "http://example.com/book";
-    let setCollectionAndBook = jest.genMockFunction();
+    let setCollectionAndBook = jest.genMockFunction().andReturnValue(setCollectionAndBookPromise);
     let wrapper = shallow(
       <Root bookUrl={bookUrl} setCollectionAndBook={setCollectionAndBook}/>
     );
@@ -118,6 +125,23 @@ describe("Root", () => {
     expect(setCollectionAndBook.mock.calls.length).toBe(1);
     expect(setCollectionAndBook.mock.calls[0][0]).toBeFalsy();
     expect(setCollectionAndBook.mock.calls[0][1]).toBe(bookUrl);
+  });
+
+  it("fetches loans on mount", () => {
+    let collectionUrl = "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/blocks.xml";
+    let setCollectionAndBook = jest.genMockFunction().mockImplementation((collectionUrl, bookUrl) => {
+      return new Promise((resolve, reject) => resolve({
+        collectionData: Object.assign({}, ungroupedCollectionData, { shelfUrl: "loans url" }),
+        bookData: null
+      }));
+    });
+    let fetchLoans = jest.genMockFunction();
+    let wrapper = shallow(
+      <Root collectionUrl={collectionUrl} setCollectionAndBook={setCollectionAndBook}/>
+    );
+
+    expect(fetchLoans.mock.calls.length).toBe(1);
+    expect(fetchLoans.mock.calls[0][0]).toBe("loans url");
   });
 
   it("updates page title on mount", () => {
@@ -140,7 +164,7 @@ describe("Root", () => {
     let elem = document.createElement("div");
     let collectionUrl = "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/blocks.xml";
     let newCollection = "new collection url";
-    let setCollectionAndBook = jest.genMockFunction();
+    let setCollectionAndBook = jest.genMockFunction().andReturnValue(setCollectionAndBookPromise);
     let wrapper = shallow(
       <Root collectionUrl={collectionUrl} setCollectionAndBook={setCollectionAndBook} />
     );
@@ -298,7 +322,7 @@ describe("Root", () => {
           bookUrl={bookData.url}
           collectionUrl="test collection"
           refreshCollectionAndBook={refresh}
-          setCollectionAndBook={jest.genMockFunction()}
+          setCollectionAndBook={mockSetCollectionAndBook}
           BookDetailsContainer={Container}
           borrowBook={borrowBook}
           fulfillBook={fulfillBook}
@@ -325,7 +349,7 @@ describe("Root", () => {
           bookUrl={null}
           collectionUrl="test collection"
           refreshCollectionAndBook={refresh}
-          setCollectionAndBook={jest.genMockFunction()}
+          setCollectionAndBook={mockSetCollectionAndBook}
           BookDetailsContainer={Container} />
       );
       let containers = wrapper.find(Container);
@@ -374,7 +398,7 @@ describe("Root", () => {
       <Root
         bookUrl="test book"
         collectionUrl="test collection"
-        setCollectionAndBook={jest.genMockFunction()}
+        setCollectionAndBook={mockSetCollectionAndBook}
         />,
       { context }
     ) as any;
@@ -401,7 +425,7 @@ describe("Root", () => {
       <Root
         bookUrl="test book"
         collectionUrl="test collection"
-        setCollectionAndBook={jest.genMockFunction()}
+        setCollectionAndBook={mockSetCollectionAndBook}
         />,
       { context }
     ) as any;
@@ -499,7 +523,7 @@ describe("Root", () => {
         <Root
           collectionData={collectionData}
           bookData={bookData}
-          setCollectionAndBook={jest.genMockFunction()}
+          setCollectionAndBook={mockSetCollectionAndBook}
           />,
         { context }
       ) as any;
@@ -517,7 +541,7 @@ describe("Root", () => {
         <Root
           collectionData={collectionData}
           bookData={bookData}
-          setCollectionAndBook={jest.genMockFunction()}
+          setCollectionAndBook={mockSetCollectionAndBook}
           />,
         { context }
       ) as any;
@@ -551,7 +575,7 @@ describe("Root", () => {
         <Root
           collectionData={collectionData}
           bookData={bookData}
-          setCollectionAndBook={jest.genMockFunction()}
+          setCollectionAndBook={mockSetCollectionAndBook}
           />,
         { context }
       ) as any;
@@ -568,7 +592,7 @@ describe("Root", () => {
         <Root
           collectionData={collectionData}
           bookData={bookData}
-          setCollectionAndBook={jest.genMockFunction()}
+          setCollectionAndBook={mockSetCollectionAndBook}
           />,
         { context }
       ) as any;
