@@ -2,11 +2,13 @@ import buildStore from "./store";
 import { createFetchCollectionAndBook } from "./components/mergeRootProps";
 import { CollectionState } from "./reducers/collection";
 import { BookState } from "./reducers/book";
+import { LoansState } from "./reducers/loans";
 import { AuthState } from "./reducers/auth";
 
 export interface State {
   collection: CollectionState;
   book: BookState;
+  loans: LoansState;
   auth: AuthState;
 }
 

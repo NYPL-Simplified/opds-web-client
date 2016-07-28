@@ -2,6 +2,7 @@ import ActionsCreator from "../actions";
 import DataFetcher from "../DataFetcher";
 import { adapter } from "../OPDSDataAdapter";
 import { CollectionData, BookData, BasicAuthCallback, BasicAuthLabels } from "../interfaces";
+import { State } from "../state";
 
 export function findBookInCollection(collection: CollectionData, book: string) {
   if (collection) {
@@ -17,18 +18,20 @@ export function findBookInCollection(collection: CollectionData, book: string) {
 
 export function mapStateToProps(state, ownProps) {
   return {
-    collectionData: state.catalog.collection.data || ownProps.collectionData,
-    isFetching: state.catalog.collection.isFetching || state.catalog.book.isFetching,
-    isFetchingPage: state.catalog.collection.isFetchingPage,
-    error: (state.catalog.collection.error || state.catalog.book.error),
-    bookData: state.catalog.book.data || ownProps.bookData,
-    history: state.catalog.collection.history,
-    loadedCollectionUrl: state.catalog.collection.url,
-    loadedBookUrl: state.catalog.book.url,
+    collectionData: state.collection.data || ownProps.collectionData,
+    isFetching: state.collection.isFetching || state.book.isFetching,
+    isFetchingPage: state.collection.isFetchingPage,
+    error: (state.collection.error || state.book.error),
+    bookData: state.book.data || ownProps.bookData,
+    history: state.collection.history,
+    loadedCollectionUrl: state.collection.url,
+    loadedBookUrl: state.book.url,
     collectionUrl: ownProps.collectionUrl,
     bookUrl: ownProps.bookUrl,
-    basicAuth: state.catalog.auth.basic,
-    isSignedIn: !!Object.keys(state.catalog.auth).find(key => state.catalog.auth[key].credentials)
+    loansUrl: state.loans.url,
+    loans: state.loans.books,
+    basicAuth: state.auth.basic,
+    isSignedIn: !!Object.keys(state.auth).find(key => state.auth[key].credentials)
   };
 };
 
@@ -45,8 +48,9 @@ export function mapDispatchToProps(dispatch) {
         clearBook: () => dispatch(actions.clearBook()),
         fetchSearchDescription: (url: string) => dispatch(actions.fetchSearchDescription(url)),
         closeError: () => dispatch(actions.closeError()),
-        borrowAndFulfillBook: (url: string) => dispatch(actions.borrowAndFulfillBook(url)),
+        borrowBook: (url: string) => dispatch(actions.borrowBook(url)),
         fulfillBook: (url: string) => dispatch(actions.fulfillBook(url)),
+        fetchLoans: (url: string) => dispatch(actions.fetchLoans(url)),
         saveBasicAuthCredentials: (credentials: string) => dispatch(actions.saveBasicAuthCredentials(credentials)),
         clearBasicAuthCredentials: () => dispatch(actions.clearBasicAuthCredentials()),
         showBasicAuthForm: (callback: BasicAuthCallback, labels: BasicAuthLabels, title: string) => dispatch(actions.showBasicAuthForm(callback, labels, title)),
@@ -161,6 +165,16 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
 
   let { fetchCollection, fetchBook } = dispatchProps;
 
+  let borrowBook = (url: string) => {
+    return dispatchProps.borrowBook(url).then((data) => {
+      if (stateProps.loansUrl) {
+        dispatchProps.fetchLoans(stateProps.loansUrl);
+      }
+
+      return data;
+    });
+  };
+
   return Object.assign({}, componentProps, stateProps, dispatchProps, {
     setCollection: setCollection,
     setBook: setBook,
@@ -187,6 +201,7 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
     },
     clearBook: () => {
       setBook(null);
-    }
+    },
+    borrowBook: borrowBook
   });
 };

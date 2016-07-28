@@ -97,9 +97,7 @@ export default class DataFetcher {
       url = this.proxyUrl;
     }
 
-    if (this.getBasicAuthCredentials()) {
-      options["headers"] = this.prepareBasicAuthHeaders(options["headers"]);
-    }
+    options["headers"] = this.prepareBasicAuthHeaders(options["headers"]);
 
     return fetch(url, options);
   }

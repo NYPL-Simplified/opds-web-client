@@ -16,7 +16,7 @@ const initialState: AuthState = {
   }
 };
 
-const auth = (state: AuthState = initialState, action): AuthState => {
+export default (state: AuthState = initialState, action): AuthState => {
   switch (action.type) {
     case "SHOW_BASIC_AUTH_FORM":
       return Object.assign({}, state, {
@@ -53,5 +53,3 @@ const auth = (state: AuthState = initialState, action): AuthState => {
       return state;
   }
 };
-
-export default auth;

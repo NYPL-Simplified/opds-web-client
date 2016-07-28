@@ -425,13 +425,12 @@ describe("Root", () => {
 
     class Header extends React.Component<HeaderProps, any> {
       render(): JSX.Element {
-        let TestCatalogLink = this.props.CatalogLink;
         return (
           <div className="header">
             { this.props.children }
-            <TestCatalogLink collectionUrl="test url">
+            <CatalogLink collectionUrl="test url">
               test
-            </TestCatalogLink>
+            </CatalogLink>
           </div>
         );
       }
@@ -453,7 +452,6 @@ describe("Root", () => {
     it("renders the header", () => {
       let header = wrapper.find(Header);
       let search = header.childAt(0);
-      expect(header.props().CatalogLink).toBe(CatalogLink);
       expect(header.props().collectionTitle).toBe(collectionData.title);
       expect(header.props().bookTitle).toBe(bookData.title);
       expect(header.props().isSignedIn).toBe(true);

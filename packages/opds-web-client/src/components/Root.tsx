@@ -24,9 +24,9 @@ import {
 } from "../interfaces";
 
 export interface HeaderProps extends React.Props<any> {
-  CatalogLink: typeof CatalogLink;
   collectionTitle: string;
   bookTitle: string;
+  loansUrl: string;
   isSignedIn: boolean;
   showBasicAuthForm: (callback: BasicAuthCallback, labels: BasicAuthLabels, title: string) => void;
   clearBasicAuthCredentials: () => void;
@@ -37,7 +37,7 @@ export interface BookDetailsContainerProps extends React.Props<any> {
   book: BookData;
   collectionUrl: string;
   refreshCatalog: () => Promise<any>;
-  borrowAndFulfillBook: (url: string) => Promise<any>;
+  borrowBook: (url: string) => Promise<any>;
   fulfillBook: (url: string) => Promise<any>;
 }
 
@@ -61,7 +61,7 @@ export interface RootProps extends StateProps {
   Header?: new() => __React.Component<HeaderProps, any>;
   BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
   computeBreadcrumbs?: ComputeBreadcrumbs;
-  borrowAndFulfillBook?: (url: string) => Promise<any>;
+  borrowBook?: (url: string) => Promise<BookData>;
   fulfillBook?: (url: string) => Promise<any>;
   saveBasicAuthCredentials?: (credentials: string) => void;
   clearBasicAuthCredentials?: () => void;
@@ -166,9 +166,9 @@ export class Root extends React.Component<RootProps, any> {
 
         { Header ?
           <Header
-            CatalogLink={CatalogLink}
             collectionTitle={collectionTitle}
             bookTitle={bookTitle}
+            loansUrl={this.props.loansUrl}
             isSignedIn={this.props.isSignedIn}
             showBasicAuthForm={this.props.showBasicAuthForm}
             clearBasicAuthCredentials={this.props.clearBasicAuthCredentials}>
@@ -185,6 +185,18 @@ export class Root extends React.Component<RootProps, any> {
               <span className="navbar-brand" style={{ fontSize: "1.8em", color: "black" }}>
                 OPDS Web Client
               </span>
+
+              { this.props.loansUrl &&
+                <ul className="nav navbar-nav">
+                  <li>
+                    <CatalogLink
+                      collectionUrl={this.props.loansUrl}
+                      bookUrl={null}>
+                      Loans
+                    </CatalogLink>
+                  </li>
+                </ul>
+              }
 
               { this.props.collectionData && this.props.collectionData.search &&
                 <Search
@@ -211,23 +223,26 @@ export class Root extends React.Component<RootProps, any> {
                 ( BookDetailsContainer && (this.props.bookUrl || this.props.bookData.url) ?
                   <BookDetailsContainer
                     bookUrl={this.props.bookUrl || this.props.bookData.url}
-                    book={this.props.bookData}
+                    book={this.loanedBookData() || this.props.bookData}
                     collectionUrl={this.props.collectionUrl}
                     refreshCatalog={this.props.refreshCollectionAndBook}
-                    borrowAndFulfillBook={this.props.borrowAndFulfillBook}
+                    borrowBook={this.props.borrowBook}
                     fulfillBook={this.props.fulfillBook}
                     >
                     <BookDetails
-                      book={this.props.bookData}
-                      borrowAndFulfillBook={this.props.borrowAndFulfillBook}
+                      book={this.loanedBookData() || this.props.bookData}
+                      borrowBook={this.props.borrowBook}
                       fulfillBook={this.props.fulfillBook}
+                      isSignedIn={this.props.isSignedIn}
                       />
                   </BookDetailsContainer> :
                   <div style={{ padding: "40px", maxWidth: "700px", margin: "0 auto" }}>
                     <BookDetails
-                      book={this.props.bookData}
-                      borrowAndFulfillBook={this.props.borrowAndFulfillBook}
-                      fulfillBook={this.props.fulfillBook} />
+                      book={this.loanedBookData() || this.props.bookData}
+                      borrowBook={this.props.borrowBook}
+                      fulfillBook={this.props.fulfillBook}
+                      isSignedIn={this.props.isSignedIn}
+                      />
                   </div>
                 )
               }
@@ -325,6 +340,22 @@ export class Root extends React.Component<RootProps, any> {
       }
     }
   };
+
+  loanedBookData(): BookData {
+    if (this.props.loans.length === 0) {
+      return null;
+    }
+
+    return this.props.loans.find(book => {
+      if (this.props.bookData) {
+        return book.id === this.props.bookData.id;
+      } else if (this.props.bookUrl) {
+        return book.url === this.props.bookUrl
+      } else {
+        return null;
+      }
+    });
+  }
 }
 
 let connectOptions = { withRef: true, pure: false };

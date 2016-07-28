@@ -1,14 +1,22 @@
 import * as React from "react";
 import BorrowButton from "./BorrowButton";
+import FulfillButton from "./FulfillButton";
 import { BookProps } from "./Book";
+import { BookData } from "../interfaces";
 const download = require("downloadjs");
 
 export interface BookDetailsProps extends BookProps {
-  borrowAndFulfillBook: (url: string) => Promise<any>;
+  borrowBook: (url: string) => Promise<BookData>;
   fulfillBook: (url: string) => Promise<any>;
+  isSignedIn: boolean;
 }
 
 export default class BookDetails extends React.Component<BookDetailsProps, any> {
+  constructor(props) {
+    super(props);
+    this.borrow = this.borrow.bind(this);
+  }
+
   render(): JSX.Element {
     let bookSummaryStyle = {
       paddingTop: "2em",
@@ -88,29 +96,91 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
   circulationLinks() {
     let links = [];
 
-    if (this.props.book.openAccessUrl) {
+    if (
+      this.props.book.openAccessLinks &&
+      this.props.book.openAccessLinks.length > 0
+    ) {
       links.push(
-        <a
-          key={this.props.book.openAccessUrl}
-          className="btn btn-default"
-          style={{ marginRight: "0.5em" }}
-          href={this.props.book.openAccessUrl}
-          target="_blank">
-          Download
-        </a>
+        this.props.book.openAccessLinks.map(link => {
+          let label = this.mimeTypeToDownloadLabel(link.type);
+          return (<a
+            key={link.url}
+            className="btn btn-default"
+            style={{ marginRight: "0.5em" }}
+            href={link.url}
+            target="_blank">
+            {label}
+          </a>);
+        })
+      );
+    } else if (
+      this.props.book.fulfillmentLinks &&
+      this.props.book.fulfillmentLinks.length > 0
+    ) {
+      links.push(
+        this.props.book.fulfillmentLinks.map(link => {
+          let label = this.mimeTypeToDownloadLabel(link.type);
+          return (
+            <FulfillButton
+              key={link.url}
+              style={{ marginRight: "0.5em" }}
+              fulfill={this.props.fulfillBook}
+              url={link.url}
+              mimeType={link.type}
+              title={this.props.book.title}
+              isSignedIn={this.props.isSignedIn}>
+              {label}
+            </FulfillButton>
+          );
+        })
+      );
+    }
+
+    if (this.isBorrowed()) {
+      links.push(
+        <button className="btn btn-default disabled">On Hold</button>
       );
     } else if (this.props.book.borrowUrl) {
+      let label = this.props.book.copies &&
+                  this.props.book.copies.available === 0 ?
+                  "Hold" :
+                  "Borrow";
       links.push(
         <BorrowButton
           key={this.props.book.borrowUrl}
           style={{ marginRight: "0.5em" }}
-          book={this.props.book}
-          borrow={this.props.borrowAndFulfillBook}>
-          Borrow
+          borrow={this.borrow}>
+          { label }
         </BorrowButton>
       );
     }
 
     return links;
+  }
+
+  borrow(): Promise<BookData> {
+    return this.props.borrowBook(this.props.book.borrowUrl);
+  }
+
+  mimeTypeToDownloadLabel(mimeType) {
+    switch(mimeType) {
+      case "application/epub+zip":
+        return "Download EPUB";
+      case "application/pdf":
+        return "Download PDF";
+      case "application/vnd.adobe.adept+xml":
+        return "Download ACSM";
+      case "vnd.adobe/adept+xml":
+        return "Download ACSM";
+      case "application/x-mobipocket-ebook":
+        return "Download MOBI";
+      default:
+        return "Download";
+    }
+  }
+
+  isBorrowed() {
+    return this.props.book.availability &&
+           this.props.book.availability.status === "reserved";
   }
 }

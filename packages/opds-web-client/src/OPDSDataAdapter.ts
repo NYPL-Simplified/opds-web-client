@@ -9,7 +9,8 @@ import {
   SearchLink,
   CompleteEntryLink,
   OPDSCatalogRootLink,
-  OPDSAcquisitionLink
+  OPDSAcquisitionLink,
+  OPDSShelfLink
 } from "opds-feed-parser";
 import {
   CollectionData,
@@ -81,31 +82,44 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
 
   let categories = entry.categories.filter(category => !!category.label).map(category => category.label);
 
-  let openAccessUrl;
-  let openAccessLink = entry.links.find(link => {
-    return link instanceof OPDSAcquisitionLink && link.rel === OPDSAcquisitionLink.OPEN_ACCESS_REL;
+  let openAccessLinks = entry.links.filter(link => {
+    return link instanceof OPDSAcquisitionLink &&
+           link.rel === OPDSAcquisitionLink.OPEN_ACCESS_REL;
+  }).map(link => {
+    return {
+      url: resolve(feedUrl, link.href),
+      type: link.type
+    }
   });
-  if (openAccessLink) {
-    openAccessUrl = resolve(feedUrl, openAccessLink.href);
-  }
 
   let borrowUrl;
-  let borrowLink = entry.links.find(link => {
+  let borrowLink = <OPDSAcquisitionLink>entry.links.find(link => {
     return link instanceof OPDSAcquisitionLink && link.rel === OPDSAcquisitionLink.BORROW_REL;
   });
   if (borrowLink) {
     borrowUrl = resolve(feedUrl, borrowLink.href);
   }
 
-  let fulfillmentUrl;
+  let fulfillmentUrls;
   let fulfillmentType;
-  let fulfillmentLink = entry.links.find(link => {
+  let fulfillmentLinks = entry.links.filter(link => {
     return link instanceof OPDSAcquisitionLink &&
-      link.rel === OPDSAcquisitionLink.GENERIC_REL;
+           link.rel === OPDSAcquisitionLink.GENERIC_REL;
+  }).map(link => {
+    return {
+      url: resolve(feedUrl, link.href),
+      type: link.type
+    };
   });
-  if (fulfillmentLink) {
-    fulfillmentUrl = resolve(feedUrl, fulfillmentLink.href);
-    fulfillmentType = fulfillmentLink.type;
+
+  let availability;
+  let holds;
+  let copies;
+  let linkWithAvailability = <OPDSAcquisitionLink>entry.links.find(link => {
+    return link instanceof OPDSAcquisitionLink && !!link.availability
+  });
+  if (linkWithAvailability) {
+    ({ availability, holds, copies } = linkWithAvailability);
   }
 
   return <BookData>{
@@ -115,10 +129,12 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
     contributors: contributors,
     summary: entry.summary.content && sanitizeHtml(entry.summary.content),
     imageUrl: imageUrl,
-    openAccessUrl: openAccessUrl,
+    openAccessLinks: openAccessLinks,
     borrowUrl: borrowUrl,
-    fulfillmentUrl: fulfillmentUrl,
-    fulfillmentType: fulfillmentType,
+    fulfillmentLinks: fulfillmentLinks,
+    availability: availability,
+    holds: holds,
+    copies: copies,
     publisher: entry.publisher,
     published: entry.published && formatDate(entry.published),
     categories: categories,
@@ -194,6 +210,7 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
   let nextPageUrl: string;
   let catalogRootLink: OPDSLink;
   let parentLink: OPDSLink;
+  let shelfUrl: string;
 
   feed.entries.forEach(entry => {
     if (feed instanceof AcquisitionFeed) {
@@ -250,6 +267,11 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
     });
 
     parentLink = feed.links.find(link => link.rel === "up");
+
+    let shelfLink = feed.links.find(link => link instanceof OPDSShelfLink);
+    if (shelfLink) {
+      shelfUrl = shelfLink.href;
+    }
   }
 
   facetGroups = facetLinks.reduce((result, link) => {
@@ -284,6 +306,7 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
   collection.nextPageUrl = nextPageUrl;
   collection.catalogRootLink = OPDSLinkToLinkData(feedUrl, catalogRootLink);
   collection.parentLink = OPDSLinkToLinkData(feedUrl, parentLink);
+  collection.shelfUrl = shelfUrl;
   collection.raw = feed.unparsed;
   Object.freeze(collection);
   return collection;

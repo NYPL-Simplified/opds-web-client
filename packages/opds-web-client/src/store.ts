@@ -7,7 +7,7 @@ import authMiddleware from "./authMiddleware";
 export default function buildStore(initialState?: State, withAuth: boolean = true): Store<State> {
   const middlewares = withAuth ? [authMiddleware, thunk] : [thunk];
   return createStore<State>(
-    combineReducers<State>({ catalog: reducers }),
+    reducers,
     initialState,
     applyMiddleware(...middlewares)
   );

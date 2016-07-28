@@ -5,10 +5,28 @@ export interface BookData {
   contributors?: string[];
   summary?: string;
   imageUrl?: string;
-  openAccessUrl?: string;
+  openAccessLinks?: {
+    url: string;
+    type: string;
+  }[];
   borrowUrl?: string;
-  fulfillmentUrl?: string;
-  fulfillmentType?: string;
+  fulfillmentLinks?: {
+    url: string;
+    type: string;
+  }[];
+  availability?: {
+    status: string;
+    since?: string;
+    until?: string;
+  };
+  holds?: {
+    total: number;
+    position?: number;
+  };
+  copies?: {
+    total: number;
+    available: number;
+  };
   url?: string;
   publisher?: string;
   published?: string;
@@ -45,6 +63,7 @@ export interface CollectionData {
   nextPageUrl?: string;
   catalogRootLink?: LinkData;
   parentLink?: LinkData;
+  shelfUrl?: string;
   raw?: any;
 }
 
@@ -77,6 +96,8 @@ export interface StateProps {
   history?: LinkData[];
   basicAuth?: BasicAuthData;
   isSignedIn?: boolean;
+  loansUrl: string;
+  loans: BookData[];
 }
 
 export interface PathFor {
