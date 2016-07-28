@@ -31,7 +31,7 @@ describe("actions", () => {
         expect(dispatch.mock.calls[2][0].type).toBe(actions.LOAD_COLLECTION);
         expect(data).toBe(testData);
         done();
-      }).catch(err => done.fail(err));
+      }).catch(done.fail);
     });
 
     it("dispatches failure", (done) => {
@@ -61,7 +61,7 @@ describe("actions", () => {
         expect(dispatch.mock.calls[2][0].type).toBe(actions.LOAD_PAGE);
         expect(data).toBe(testData);
         done();
-      }).catch(err => done.fail(err));
+      }).catch(done.fail);
     });
 
     it("dispatches failure", (done) => {
@@ -88,7 +88,7 @@ describe("actions", () => {
         expect(dispatch.mock.calls[0][0].type).toBe(actions.LOAD_SEARCH_DESCRIPTION);
         expect(data).toBe(testData);
         done();
-      }).catch(err => done.fail(err));
+      }).catch(done.fail);
     });
   });
 
@@ -106,7 +106,7 @@ describe("actions", () => {
         expect(dispatch.mock.calls[2][0].type).toBe(actions.LOAD_BOOK);
         expect(data).toBe(testData);
         done();
-      }).catch(err => done.fail(err));
+      }).catch(done.fail);
     });
 
     it("dispatches failure", (done) => {
@@ -140,7 +140,7 @@ describe("actions", () => {
         expect(dispatch.mock.calls[2][0].type).toBe(actions.LOAD_BORROW_DATA);
         expect(data).toEqual(fetcher.testData);
         done();
-      }).catch(err => done.fail(err));
+      }).catch(done.fail);
     });
 
     it("dispatches failure", (done) => {
@@ -171,7 +171,7 @@ describe("actions", () => {
         expect(dispatch.mock.calls[1][0].type).toBe(actions.FULFILL_BOOK_SUCCESS);
         expect(data).toBe("blob");
         done();
-      }).catch(err => done.fail(err));
+      }).catch(done.fail);
     });
 
     it("dispatches failure", (done) => {
@@ -182,6 +182,38 @@ describe("actions", () => {
         expect(dispatch.mock.calls.length).toBe(2);
         expect(dispatch.mock.calls[0][0].type).toBe(actions.FULFILL_BOOK_REQUEST);
         expect(dispatch.mock.calls[1][0].type).toBe(actions.FULFILL_BOOK_FAILURE);
+        expect(err).toBe("test error");
+        done();
+      });
+    });
+  });
+
+  describe("fetchLoans", () => {
+    let loansUrl = "http://example.com/loans";
+
+    it("dispatches request, load, and success", (done) => {
+      let dispatch = jest.genMockFunction();
+      fetcher.resolve = true;
+      fetcher.testData = testData;
+
+      actions.fetchLoans(loansUrl)(dispatch).then(data => {
+        expect(dispatch.mock.calls.length).toBe(3);
+        expect(dispatch.mock.calls[0][0].type).toBe(actions.FETCH_LOANS_REQUEST);
+        expect(dispatch.mock.calls[1][0].type).toBe(actions.FETCH_LOANS_SUCCESS);
+        expect(dispatch.mock.calls[2][0].type).toBe(actions.LOAD_LOANS);
+        expect(data).toBe(testData);
+        done();
+      }).catch(done.fail);
+    });
+
+    it("dispatches failure", (done) => {
+      let dispatch = jest.genMockFunction();
+      fetcher.resolve = false;
+
+      actions.fetchLoans(loansUrl)(dispatch).catch(err => {
+        expect(dispatch.mock.calls.length).toBe(2);
+        expect(dispatch.mock.calls[0][0].type).toBe(actions.FETCH_LOANS_REQUEST);
+        expect(dispatch.mock.calls[1][0].type).toBe(actions.FETCH_LOANS_FAILURE);
         expect(err).toBe("test error");
         done();
       });
