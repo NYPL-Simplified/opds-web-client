@@ -8,6 +8,7 @@ export interface RequestError {
   status: number;
   response: string;
   url: string;
+  headers?: any;
 }
 
 export interface RequestRejector {
@@ -38,7 +39,8 @@ export default class DataFetcher {
             reject({
               status: response.status,
               response: text,
-              url: url
+              url: url,
+              headers: response.headers
             });
           }
 

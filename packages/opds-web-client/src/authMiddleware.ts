@@ -15,30 +15,36 @@ export default store => next => action => {
             let data = JSON.parse(err.response);
             let error = null;
 
-            // clear any invalid credentials
-            let usedBasicAuth = !!fetcher.getBasicAuthCredentials();
-            if (usedBasicAuth) {
-              error = data.title;
-              store.dispatch(actions.clearBasicAuthCredentials());
-            }
+            if (err.headers && err.headers.has("www-authenticate")) {
+              // browser's default basic auth form was shown,
+              // so don't show ours
+              reject(err);
+            } else {
+              // clear any invalid credentials
+              let usedBasicAuth = !!fetcher.getBasicAuthCredentials();
+              if (usedBasicAuth) {
+                error = data.title;
+                store.dispatch(actions.clearBasicAuthCredentials());
+              }
 
-            if (
-              usedBasicAuth ||
-              data.type.indexOf("http://opds-spec.org/auth/basic") !== -1
-            ) {
-              let callback: BasicAuthCallback = () => {
-                // use dispatch() instead of next() to start from the top
-                store.dispatch(action).then(blob => {
-                  resolve(blob);
-                }).catch(err => reject(err));
-              };
+              if (
+                usedBasicAuth ||
+                data.type.indexOf("http://opds-spec.org/auth/basic") !== -1
+              ) {
+                let callback: BasicAuthCallback = () => {
+                  // use dispatch() instead of next() to start from the top
+                  store.dispatch(action).then(blob => {
+                    resolve(blob);
+                  }).catch(err => reject(err));
+                };
 
-              next(actions.showBasicAuthForm(
-                callback,
-                data.labels,
-                data.title,
-                error
-              ));
+                next(actions.showBasicAuthForm(
+                  callback,
+                  data.labels,
+                  data.title,
+                  error
+                ));
+              }
             }
           } else {
             reject(err);
