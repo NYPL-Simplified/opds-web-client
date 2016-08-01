@@ -25,7 +25,7 @@ import {
 export interface HeaderProps extends React.Props<any> {
   collectionTitle: string;
   bookTitle: string;
-  loansUrl: string;
+  loansUrl?: string;
   isSignedIn: boolean;
   showBasicAuthForm: (callback: BasicAuthCallback, labels: BasicAuthLabels, title: string) => void;
   clearBasicAuthCredentials: () => void;
@@ -33,7 +33,6 @@ export interface HeaderProps extends React.Props<any> {
 
 export interface BookDetailsContainerProps extends React.Props<any> {
   bookUrl: string;
-  book: BookData;
   collectionUrl: string;
   refreshCatalog: () => Promise<any>;
   borrowBook: (url: string) => Promise<any>;
@@ -223,7 +222,6 @@ export class Root extends React.Component<RootProps, any> {
                 ( BookDetailsContainer && (this.props.bookUrl || this.props.bookData.url) ?
                   <BookDetailsContainer
                     bookUrl={this.props.bookUrl || this.props.bookData.url}
-                    book={this.loanedBookData() || this.props.bookData}
                     collectionUrl={this.props.collectionUrl}
                     refreshCatalog={this.props.refreshCollectionAndBook}
                     borrowBook={this.props.borrowBook}
