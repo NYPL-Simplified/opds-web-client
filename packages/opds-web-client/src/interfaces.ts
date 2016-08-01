@@ -95,6 +95,7 @@ export interface StateProps {
   isFetchingPage?: boolean;
   history?: LinkData[];
   basicAuth?: BasicAuthData;
+  basicAuthCredentials?: string;
   isSignedIn?: boolean;
   loansUrl?: string;
   loans?: BookData[];

@@ -105,7 +105,7 @@ describe("Root", () => {
 
   it("fetches a collection url on mount", () => {
     let collectionUrl = "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/blocks.xml";
-    let setCollectionAndBook = jest.genMockFunction();
+    let setCollectionAndBook = jest.genMockFunction().mockReturnValue(setCollectionAndBookPromise);
     let wrapper = shallow(
       <Root collectionUrl={collectionUrl} setCollectionAndBook={setCollectionAndBook}/>
     );
@@ -117,7 +117,7 @@ describe("Root", () => {
 
   it("fetches a book url on mount", () => {
     let bookUrl = "http://example.com/book";
-    let setCollectionAndBook = jest.genMockFunction().andReturnValue(setCollectionAndBookPromise);
+    let setCollectionAndBook = jest.genMockFunction().mockReturnValue(setCollectionAndBookPromise);
     let wrapper = shallow(
       <Root bookUrl={bookUrl} setCollectionAndBook={setCollectionAndBook}/>
     );
@@ -127,7 +127,7 @@ describe("Root", () => {
     expect(setCollectionAndBook.mock.calls[0][1]).toBe(bookUrl);
   });
 
-  it("fetches loans on mount", () => {
+  it("fetches loans on mount", (done) => {
     let collectionUrl = "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/blocks.xml";
     let setCollectionAndBook = jest.genMockFunction().mockImplementation((collectionUrl, bookUrl) => {
       return new Promise((resolve, reject) => resolve({
@@ -137,11 +137,19 @@ describe("Root", () => {
     });
     let fetchLoans = jest.genMockFunction();
     let wrapper = shallow(
-      <Root collectionUrl={collectionUrl} setCollectionAndBook={setCollectionAndBook}/>
+      <Root
+        collectionUrl={collectionUrl}
+        setCollectionAndBook={setCollectionAndBook}
+        fetchLoans={fetchLoans}
+        basicAuthCredentials="credentials"
+        />
     );
 
-    expect(fetchLoans.mock.calls.length).toBe(1);
-    expect(fetchLoans.mock.calls[0][0]).toBe("loans url");
+    (wrapper.instance() as any).componentWillMount().then(() => {
+      let count = fetchLoans.mock.calls.length;
+      expect(fetchLoans.mock.calls[count - 1][0]).toBe("loans url");
+      done();
+    }).catch(done.fail);
   });
 
   it("updates page title on mount", () => {
@@ -154,7 +162,10 @@ describe("Root", () => {
   it("sets basic auth credentials on mount", () => {
     let saveBasicAuthCredentials = jest.genMockFunction();
     let wrapper = shallow(
-      <Root saveBasicAuthCredentials={saveBasicAuthCredentials} />
+      <Root
+        saveBasicAuthCredentials={saveBasicAuthCredentials}
+        basicAuthCredentials="credentials"
+        />
     );
     expect(saveBasicAuthCredentials.mock.calls.length).toBe(1);
     expect(saveBasicAuthCredentials.mock.calls[0][0]).toBe("credentials");
@@ -164,7 +175,7 @@ describe("Root", () => {
     let elem = document.createElement("div");
     let collectionUrl = "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/blocks.xml";
     let newCollection = "new collection url";
-    let setCollectionAndBook = jest.genMockFunction().andReturnValue(setCollectionAndBookPromise);
+    let setCollectionAndBook = jest.genMockFunction().mockReturnValue(setCollectionAndBookPromise);
     let wrapper = shallow(
       <Root collectionUrl={collectionUrl} setCollectionAndBook={setCollectionAndBook} />
     );

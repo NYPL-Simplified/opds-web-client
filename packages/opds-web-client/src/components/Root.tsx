@@ -17,7 +17,6 @@ import Collection from "./Collection";
 import UrlForm from "./UrlForm";
 import SkipNavigationLink from "./SkipNavigationLink";
 import CatalogLink from "./CatalogLink";
-import DataFetcher from "../DataFetcher";
 import {
   CollectionData, BookData, LinkData, StateProps, NavigateContext,
   BasicAuthCallback, BasicAuthLabels
@@ -265,25 +264,21 @@ export class Root extends React.Component<RootProps, any> {
   }
 
   componentWillMount() {
+    this.updatePageTitle(this.props);
+
+    if (this.props.basicAuthCredentials && this.props.saveBasicAuthCredentials) {
+      this.props.saveBasicAuthCredentials(this.props.basicAuthCredentials);
+    }
+
     if (this.props.collectionUrl || this.props.bookUrl) {
-      this.props.setCollectionAndBook(
+      return this.props.setCollectionAndBook(
         this.props.collectionUrl,
         this.props.bookUrl
       ).then(({ collectionData, bookData }) => {
-        if (this.props.isSignedIn && collectionData.shelfUrl) {
+        if (this.props.basicAuthCredentials && collectionData.shelfUrl) {
           this.props.fetchLoans(collectionData.shelfUrl);
         }
       });
-    }
-
-    this.updatePageTitle(this.props);
-
-    if (this.props.saveBasicAuthCredentials) {
-      let credentials = new DataFetcher().getBasicAuthCredentials();
-
-      if (credentials) {
-        this.props.saveBasicAuthCredentials(credentials);
-      }
     }
   }
 

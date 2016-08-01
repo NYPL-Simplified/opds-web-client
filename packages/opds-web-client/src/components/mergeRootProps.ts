@@ -31,7 +31,7 @@ export function mapStateToProps(state, ownProps) {
     loansUrl: state.loans.url,
     loans: state.loans.books,
     basicAuth: state.auth.basic,
-    isSignedIn: !!Object.keys(state.auth).find(key => state.auth[key].credentials)
+    isSignedIn: !!state.auth.basic.credentials
   };
 };
 

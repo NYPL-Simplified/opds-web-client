@@ -49,6 +49,13 @@ export default (state: AuthState = initialState, action): AuthState => {
         })
       });
 
+    case "CLEAR_BASIC_AUTH_CREDENTIALS":
+      return Object.assign({}, state, {
+        basic: Object.assign({}, state.basic, {
+          credentials: null
+        })
+      });
+
     default:
       return state;
   }
