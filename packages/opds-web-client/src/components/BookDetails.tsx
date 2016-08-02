@@ -8,7 +8,7 @@ const download = require("downloadjs");
 
 export interface BookDetailsProps extends BookProps {
   borrowBook: (url: string) => Promise<BookData>;
-  fulfillBook: (url: string) => Promise<any>;
+  fulfillBook: (url: string) => Promise<Blob>;
   isSignedIn?: boolean;
 }
 
@@ -131,6 +131,7 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
     ) {
       links.push(
         this.props.book.fulfillmentLinks.map(link => {
+          let isStreaming = link.type === "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media";
           return (
             <DownloadButton
               key={link.url}
@@ -139,7 +140,7 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
               url={link.url}
               mimeType={link.type}
               title={this.props.book.title}
-              isPlainLink={!this.props.isSignedIn}
+              isPlainLink={isStreaming || !this.props.isSignedIn}
               />
           );
         })

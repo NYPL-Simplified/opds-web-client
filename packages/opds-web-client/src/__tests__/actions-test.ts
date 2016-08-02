@@ -163,7 +163,7 @@ describe("actions", () => {
     it("dispatches request, load, and success", (done) => {
       let dispatch = jest.genMockFunction();
       fetcher.resolve = true;
-      fetcher.testData = { blob: () => "blob" };
+      fetcher.testData = { blob: () => "blob", ok: true };
 
       actions.fulfillBook(fulfillmentUrl)(dispatch).then(data => {
         expect(dispatch.mock.calls.length).toBe(2);
@@ -184,7 +184,7 @@ describe("actions", () => {
         expect(dispatch.mock.calls[1][0].type).toBe(actions.FULFILL_BOOK_FAILURE);
         expect(err).toBe("test error");
         done();
-      });
+      }).catch(done.fail);
     });
   });
 
@@ -216,7 +216,7 @@ describe("actions", () => {
         expect(dispatch.mock.calls[1][0].type).toBe(actions.FETCH_LOANS_FAILURE);
         expect(err).toBe("test error");
         done();
-      });
+      }).catch(done.fail);
     });
   });
 

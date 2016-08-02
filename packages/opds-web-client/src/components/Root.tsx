@@ -36,7 +36,7 @@ export interface BookDetailsContainerProps extends React.Props<any> {
   collectionUrl: string;
   refreshCatalog: () => Promise<any>;
   borrowBook: (url: string) => Promise<any>;
-  fulfillBook: (url: string) => Promise<any>;
+  fulfillBook: (url: string) => Promise<Blob>;
 }
 
 export interface RootProps extends StateProps {

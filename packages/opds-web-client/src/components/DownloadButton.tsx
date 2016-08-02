@@ -16,19 +16,26 @@ export default class DownloadButton extends React.Component<DownloadButtonProps,
   }
 
   render() {
+    let props = Object.assign({}, this.props);
+    delete props["url"];
+    delete props["mimeType"];
+    delete props["isPlainLink"];
+    delete props["fulfill"];
+    delete props["title"];
+
     return (
       <span>
         { this.props.isPlainLink ?
           <a
             className="btn btn-default"
-            {...this.props}
+            {...props}
             href={this.props.url}
             target="_blank">
             {this.downloadLabel()}
           </a> :
           <button
             className="btn btn-default"
-            {...this.props}
+            {...props}
             onClick={this.fulfill}>
             {this.downloadLabel()}
           </button>
@@ -67,6 +74,9 @@ export default class DownloadButton extends React.Component<DownloadButtonProps,
   }
 
   downloadLabel() {
+    if (this.props.mimeType === "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media") {
+      return "Open in Web Reader";
+    }
     let type = this.fileExtension().replace(".", "").toUpperCase();
     return "Download" + (type ? " " + type : "");
   }

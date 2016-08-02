@@ -188,7 +188,7 @@ export default class ActionCreator {
           dispatch(this.loadBorrowData(data));
           resolve(data);
         }).catch((err: FetchErrorData) => {
-          dispatch(this.borrowBookFailure());
+          dispatch(this.borrowBookFailure(err));
           reject(err);
         });
       });
@@ -203,8 +203,8 @@ export default class ActionCreator {
     return { type: this.BORROW_BOOK_SUCCESS };
   }
 
-  borrowBookFailure() {
-    return { type: this.BORROW_BOOK_FAILURE };
+  borrowBookFailure(error) {
+    return { type: this.BORROW_BOOK_FAILURE, error };
   }
 
   loadBorrowData(data) {
@@ -216,13 +216,23 @@ export default class ActionCreator {
       return new Promise((resolve, reject) => {
         dispatch(this.fulfillBookRequest());
         this.fetcher.fetch(url)
-          .then(response => response.blob())
+          .then(response => {
+            if (response.ok) {
+              return response.blob();
+            } else {
+              throw({
+                status: response.status,
+                response: "Could not fulfill book",
+                url: url
+              });
+            }
+          })
           .then(blob => {
             dispatch(this.fulfillBookSuccess());
             resolve(blob);
           })
           .catch(err => {
-            dispatch(this.fulfillBookFailure());
+            dispatch(this.fulfillBookFailure(err));
             reject(err);
           });
       });
@@ -237,8 +247,8 @@ export default class ActionCreator {
     return { type: this.FULFILL_BOOK_SUCCESS };
   }
 
-  fulfillBookFailure() {
-    return { type: this.FULFILL_BOOK_FAILURE };
+  fulfillBookFailure(error) {
+    return { type: this.FULFILL_BOOK_FAILURE, error };
   }
 
   fetchLoans(url: string) {
