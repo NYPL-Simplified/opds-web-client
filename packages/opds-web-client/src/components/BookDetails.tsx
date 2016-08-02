@@ -48,7 +48,7 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
             }
             <div style={{ marginTop: "2em", color: "#888", fontSize: "0.9em" }}>
               { this.fieldNames().map(key =>
-                fields[key] ? <div key={key}>{key}: {fields[key]}</div> : null
+                fields[key] ? <div className={"bookDetails" + key} key={key}>{key}: {fields[key]}</div> : null
               ) }
             </div>
           </div>
