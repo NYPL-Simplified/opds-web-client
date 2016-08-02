@@ -24,6 +24,8 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
       borderTop: "1px solid #ccc"
     };
 
+    let fields = this.fields();
+
     return (
       <div className="bookDetails">
         <div className="bookDetailsTop" style={{ textAlign: "left", display: "table-row" }}>
@@ -45,19 +47,9 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
               ""
             }
             <div style={{ marginTop: "2em", color: "#888", fontSize: "0.9em" }}>
-              { this.props.book.published &&
-                <div className="bookDetailsPublished">Published: {this.props.book.published}</div>
-              }
-              {
-                this.props.book.publisher ?
-                <div className="bookDetailsPublisher">Publisher: {this.props.book.publisher}</div> :
-                ""
-              }
-              {
-                this.props.book.categories && this.props.book.categories.length ?
-                <div className="bookDetailsCategories">Categories: {this.props.book.categories.join(", ")}</div> :
-                ""
-              }
+              { this.fieldNames().map(key =>
+                fields[key] ? <div key={key}>{key}: {fields[key]}</div> : null
+              ) }
             </div>
           </div>
         </div>
@@ -103,6 +95,20 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
     if (elem) {
       elem.style.overflow = value;
     }
+  }
+
+  fieldNames() {
+    return ["Publisher", "Published", "Categories"];
+  }
+
+  fields() {
+    return this.props.book ? {
+      Published: this.props.book.published,
+      Publisher: this.props.book.publisher,
+      Categories: this.props.book.categories ?
+                  this.props.book.categories.join(", ") :
+                  null
+    } : {};
   }
 
   circulationLinks() {

@@ -52,7 +52,6 @@ export default class DownloadButton extends React.Component<DownloadButtonProps,
         // TODO: use mimeType variable once we fix the link type in our OPDS entries
         this.mimeType()
       );
-
     });
   }
 
