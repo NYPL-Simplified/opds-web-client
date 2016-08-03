@@ -345,8 +345,6 @@ describe("Root", () => {
       expect(container.props().bookUrl).toBe(bookData.url);
       expect(container.props().collectionUrl).toBe("test collection");
       expect(container.props().refreshCatalog).toBe(refresh);
-      expect(container.props().borrowBook).toBe(borrowBook);
-      expect(container.props().fulfillBook).toBe(fulfillBook);
       expect(child.type()).toBe(BookDetails);
       expect(child.props().book).toBe(bookData);
     });
