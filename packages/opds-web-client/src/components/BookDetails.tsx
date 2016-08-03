@@ -153,7 +153,7 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
       );
     }
 
-    if (this.isBorrowed()) {
+    if (this.isReserved()) {
       links.push(
         <button key="onhold" className="btn btn-default disabled">On Hold</button>
       );
@@ -179,7 +179,7 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
     return this.props.borrowBook(this.props.book.borrowUrl);
   }
 
-  isBorrowed() {
+  isReserved() {
     return this.props.book.availability &&
            this.props.book.availability.status === "reserved";
   }
