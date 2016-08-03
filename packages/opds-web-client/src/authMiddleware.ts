@@ -2,6 +2,9 @@ import DataFetcher from "./DataFetcher";
 import ActionCreator from "./actions";
 import { BasicAuthCallback } from "./interfaces";
 
+// see Redux Middleware docs:
+// http://redux.js.org/docs/advanced/Middleware.html
+
 export default store => next => action => {
   if (typeof action === "function") {
     return new Promise((resolve, reject) => {
@@ -23,6 +26,8 @@ export default store => next => action => {
               // clear any invalid credentials
               let usedBasicAuth = !!fetcher.getBasicAuthCredentials();
               if (usedBasicAuth) {
+                // 401s resulting from wrong username/password return
+                // problem detail documents, not auth documents
                 error = data.title;
                 store.dispatch(actions.clearBasicAuthCredentials());
               }
@@ -35,7 +40,7 @@ export default store => next => action => {
                   // use dispatch() instead of next() to start from the top
                   store.dispatch(action).then(blob => {
                     resolve(blob);
-                  }).catch(err => reject(err));
+                  }).catch(reject);
                 };
 
                 next(actions.showBasicAuthForm(
