@@ -5,8 +5,9 @@ import { adapter } from "../OPDSDataAdapter";
 import DataFetcher from "../DataFetcher";
 import ActionsCreator from "../actions";
 import Lane from "./Lane";
-import { CollectionData, LaneData } from "../interfaces";
+import { CollectionData, LaneData, FetchErrorData } from "../interfaces";
 import { subtleListStyle } from "./styles";
+import spinner from "../images/spinner";
 
 export interface LanesProps {
   url: string;
@@ -17,23 +18,34 @@ export interface LanesProps {
   proxy?: string;
   hiddenBookIds?: string[];
   hideMoreLinks?: boolean;
+  isFetching?: boolean;
 }
 
 export class Lanes extends React.Component<any, any> {
   render() {
     return (
-      <ul aria-label="groups of books" style={subtleListStyle}>
-      { this.props.lanes && this.props.lanes.map(lane =>
-        <li key={lane.title}>
-          <Lane
-            lane={lane}
-            collectionUrl={this.props.url}
-            hideMoreLinks={this.props.hideMoreLinks}
-            hiddenBookIds={this.props.hiddenBookIds}
-            />
-        </li>
-      ) }
-      </ul>
+      <div className="lanes">
+        { this.props.isFetching &&
+          <div style={{ textAlign: "center" }}>
+            <img src={spinner} style={{ width: "30px", height: "30px" }} />
+          </div>
+        }
+
+        { this.props.lanes && this.props.lanes.length > 0 ?
+          <ul aria-label="groups of books" style={subtleListStyle}>
+          { this.props.lanes && this.props.lanes.map(lane =>
+            <li key={lane.title}>
+              <Lane
+                lane={lane}
+                collectionUrl={this.props.url}
+                hideMoreLinks={this.props.hideMoreLinks}
+                hiddenBookIds={this.props.hiddenBookIds}
+                />
+            </li>
+          ) }
+          </ul> : null
+        }
+      </div>
     );
   }
 
@@ -52,7 +64,8 @@ export class Lanes extends React.Component<any, any> {
 
 function mapStateToProps(state, ownProps) {
   return {
-    lanes: state.collection.data ? state.collection.data.lanes : []
+    lanes: state.collection.data ? state.collection.data.lanes : [],
+    isFetching: state.collection.isFetching,
   };
 }
 
