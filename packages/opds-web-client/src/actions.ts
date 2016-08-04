@@ -57,7 +57,7 @@ export default class ActionCreator {
   }
 
   fetchCollection(url: string) {
-    return (dispatch) => {
+    return (dispatch): Promise<CollectionData> => {
       dispatch(this.fetchCollectionRequest(url));
       return new Promise((resolve, reject) => {
         this.fetcher.fetchOPDSData(url).then((data: CollectionData) => {

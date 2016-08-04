@@ -1,7 +1,7 @@
 import * as React from "react";
 import Book from "./Book";
 import CatalogLink from "./CatalogLink";
-import Lane from "./Lane";
+import { Lanes } from "./Lanes";
 import FacetGroup from "./FacetGroup";
 import Search from "./Search";
 import SkipNavigationLink from "./SkipNavigationLink";
@@ -80,15 +80,10 @@ export default class Collection extends React.Component<CollectionProps, any> {
           <a className="mainAnchor" name="main"></a>
 
           { this.props.collection.lanes &&
-            <ul aria-label="groups of books" style={subtleListStyle}>
-            { this.props.collection.lanes.map(lane =>
-              <li key={lane.title}>
-                <Lane
-                  lane={lane}
-                  collectionUrl={this.props.collection.url} />
-              </li>
-            ) }
-            </ul>
+            <Lanes
+              url={this.props.collection.url}
+              lanes={this.props.collection.lanes}
+              />
           }
 
           { this.props.collection.books &&
