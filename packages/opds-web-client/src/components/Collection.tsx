@@ -14,6 +14,7 @@ export interface CollectionProps extends React.HTMLProps<Collection> {
   isFetchingPage?: boolean;
   error?: FetchErrorData;
   fetchPage?: (url: string) => Promise<any>;
+  proxyUrl?: string;
 }
 
 export default class Collection extends React.Component<CollectionProps, any> {
@@ -79,11 +80,11 @@ export default class Collection extends React.Component<CollectionProps, any> {
           aria-label={"books in " + this.props.collection.title}>
           <a className="mainAnchor" name="main"></a>
 
-          { this.props.collection.lanes &&
+          { (this.props.collection.lanes && this.props.collection.lanes.length > 0) ?
             <Lanes
               url={this.props.collection.url}
               lanes={this.props.collection.lanes}
-              />
+              /> : null
           }
 
           { this.props.collection.books &&

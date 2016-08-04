@@ -7,7 +7,7 @@ import { LaneData, BookData } from "../interfaces";
 export interface LaneProps {
   lane: LaneData;
   collectionUrl?: string;
-  hideMoreLinks?: boolean;
+  hideMoreLink?: boolean;
   hiddenBookIds?: string[];
 }
 
@@ -50,7 +50,7 @@ export default class Lane extends React.Component<LaneProps, any> {
                 />
             </li>
           ) }
-          { !this.props.hideMoreLinks &&
+          { !this.props.hideMoreLink &&
             <li key="more" style={{ display: "inline-block" }}>
               <LaneMoreLink lane={this.props.lane} />
             </li>
@@ -65,6 +65,8 @@ export default class Lane extends React.Component<LaneProps, any> {
       return this.props.lane.books;
     }
 
-    return this.props.lane.books.filter(book => this.props.hiddenBookIds.indexOf(book.id) === -1)
+    return this.props.lane.books.filter(book =>
+      this.props.hiddenBookIds.indexOf(book.id) === -1
+    );
   }
 }

@@ -15,7 +15,7 @@ export interface LanesProps {
   fetchCollection?: (url: string) => Promise<CollectionData>;
   clearCollection?: () => void;
   store?: Store<{ collection: CollectionData; }>;
-  proxy?: string;
+  proxyUrl?: string;
   hiddenBookIds?: string[];
   hideMoreLinks?: boolean;
   isFetching?: boolean;
@@ -27,7 +27,11 @@ export class Lanes extends React.Component<any, any> {
       <div className="lanes">
         { this.props.isFetching &&
           <div style={{ textAlign: "center" }}>
-            <img src={spinner} style={{ width: "30px", height: "30px" }} />
+            <img
+              className="lanesSpinner"
+              src={spinner}
+              style={{ width: "30px", height: "30px" }}
+              />
           </div>
         }
 
@@ -38,7 +42,7 @@ export class Lanes extends React.Component<any, any> {
               <Lane
                 lane={lane}
                 collectionUrl={this.props.url}
-                hideMoreLinks={this.props.hideMoreLinks}
+                hideMoreLink={this.props.hideMoreLinks}
                 hiddenBookIds={this.props.hiddenBookIds}
                 />
             </li>
@@ -65,23 +69,35 @@ export class Lanes extends React.Component<any, any> {
 function mapStateToProps(state, ownProps) {
   return {
     lanes: state.collection.data ? state.collection.data.lanes : [],
-    isFetching: state.collection.isFetching,
+    isFetching: state.collection.isFetching
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  let fetcher = new DataFetcher({ proxyUrl: "http://localhost:3000/proxy", adapter });
-  let actions = new ActionsCreator(fetcher);
+  return (fetcher) => {
+    let actions = new ActionsCreator(fetcher);
 
-  return {
-    fetchCollection: (url: string) => dispatch(actions.fetchCollection(url)),
-    clearCollection: () => dispatch(actions.clearCollection())
+    return {
+      fetchCollection: (url: string) => dispatch(actions.fetchCollection(url)),
+      clearCollection: () => dispatch(actions.clearCollection())
+    };
   };
+}
+
+function mergeLanesProps(stateProps, createDispatchProps, componentProps) {
+  let fetcher = new DataFetcher({
+    proxyUrl: componentProps.proxyUrl,
+    adapter: adapter
+  });
+  let dispatchProps = createDispatchProps.createDispatchProps(fetcher);
+
+  return Object.assign({}, componentProps, stateProps, dispatchProps);
 }
 
 const ConnectedLanes = connect<any, any, any>(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
+  mergeLanesProps
 )(Lanes);
 
 export default ConnectedLanes;
