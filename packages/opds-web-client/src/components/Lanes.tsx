@@ -74,13 +74,15 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return (fetcher) => {
-    let actions = new ActionsCreator(fetcher);
+  return {
+    createDispatchProps: function(fetcher) {
+      let actions = new ActionsCreator(fetcher);
 
-    return {
-      fetchCollection: (url: string) => dispatch(actions.fetchCollection(url)),
-      clearCollection: () => dispatch(actions.clearCollection())
-    };
+      return {
+        fetchCollection: (url: string) => dispatch(actions.fetchCollection(url)),
+        clearCollection: () => dispatch(actions.clearCollection())
+      };
+    }
   };
 }
 

@@ -60,7 +60,7 @@ export default class BookCover extends React.Component<BookCoverProps, any> {
     let lineHeight = fontSize + 5;
 
     return {
-      fontSize: fontSize + "px",
+      fontSize: (fontSize / 13) + "em",
       lineHeight: "1em"
     };
   }
