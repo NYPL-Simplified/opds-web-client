@@ -15,6 +15,14 @@ import { CollectionData } from "../../interfaces";
 import { mockRouterContext } from "./routing";
 
 describe("Collection", () => {
+  describe("empty collection", () => {
+    it("says the collection is empty", () => {
+      let collectionData: CollectionData = Object.assign({}, groupedCollectionData, { lanes: [] });
+      let wrapper = shallow(<Collection collection={collectionData} />);
+      expect(wrapper.text()).toBe("No books here.");
+    });
+  });
+
   describe("collection with lanes", () => {
     let collectionData: CollectionData = groupedCollectionData;
     let wrapper;

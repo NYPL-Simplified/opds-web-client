@@ -3,16 +3,14 @@ export default class MockDataFetcher {
   testData: any = "test";
 
   fetchOPDSData(url) {
-    return new Promise((resolve, reject) => {
-      if (this.resolve) {
-        resolve(this.testData);
-      } else {
-        reject("test error");
-      }
-    });
+    return this.fetch(url);
   }
 
   fetchSearchDescriptionData(url) {
+    return this.fetch(url);
+  }
+
+  fetch(url) {
     return new Promise((resolve, reject) => {
       if (this.resolve) {
         resolve(this.testData);
@@ -22,4 +20,10 @@ export default class MockDataFetcher {
     });
   }
 
+  setBasicAuthCredentials() {
+  }
+
+  getBasicAuthCredentials() {
+    return "credentials";
+  }
 };

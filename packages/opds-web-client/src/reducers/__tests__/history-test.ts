@@ -7,7 +7,7 @@ import ActionsCreator from "../../actions";
 import { adapter } from "../../OPDSDataAdapter";
 import { CollectionState } from "../collection";
 
-let fetcher = new DataFetcher(null, adapter);
+let fetcher = new DataFetcher({ adapter });
 let actions = new ActionsCreator(fetcher);
 
 let rootLink = {

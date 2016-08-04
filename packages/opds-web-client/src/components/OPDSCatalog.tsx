@@ -4,6 +4,7 @@ import * as Redux from "redux";
 import Root, { RootProps } from "./Root";
 import buildStore from "../store";
 import { State } from "../state";
+import DataFetcher from "../DataFetcher";
 
 export interface OPDSCatalogProps {
   collectionUrl?: string;
@@ -20,13 +21,23 @@ export default class OPDSCatalog extends React.Component<OPDSCatalogProps, any> 
   constructor(props) {
     super(props);
     this.store = buildStore(this.props.initialState || undefined);
+    this.state = { basicAuthCredentials: null };
   }
 
   render(): JSX.Element {
-    let props = Object.assign({}, this.props, { store: this.store });
+    let props: RootProps = Object.assign({}, this.props, {
+      store: this.store,
+      basicAuthCredentials: this.state.basicAuthCredentials
+    });
 
     return (
       <Root {...props} />
     );
+  }
+
+  componentWillMount() {
+    this.setState({
+      basicAuthCredentials: new DataFetcher().getBasicAuthCredentials()
+    });
   }
 }

@@ -1,12 +1,30 @@
 import * as React from "react";
+import CatalogLink from "./CatalogLink";
+import BorrowButton from "./BorrowButton";
+import DownloadButton from "./DownloadButton";
 import { BookProps } from "./Book";
+import { BookData } from "../interfaces";
+const download = require("downloadjs");
 
-export default class BookDetails extends React.Component<BookProps, any> {
+export interface BookDetailsProps extends BookProps {
+  borrowBook: (url: string) => Promise<BookData>;
+  fulfillBook: (url: string) => Promise<Blob>;
+  isSignedIn?: boolean;
+}
+
+export default class BookDetails extends React.Component<BookDetailsProps, any> {
+  constructor(props) {
+    super(props);
+    this.borrow = this.borrow.bind(this);
+  }
+
   render(): JSX.Element {
     let bookSummaryStyle = {
       paddingTop: "2em",
       borderTop: "1px solid #ccc"
     };
+
+    let fields = this.fields();
 
     return (
       <div className="bookDetails">
@@ -29,30 +47,33 @@ export default class BookDetails extends React.Component<BookProps, any> {
               ""
             }
             <div style={{ marginTop: "2em", color: "#888", fontSize: "0.9em" }}>
-              { this.props.book.published &&
-                <div className="bookDetailsPublished">Published: {this.props.book.published}</div>
-              }
-              {
-                this.props.book.publisher ?
-                <div className="bookDetailsPublisher">Publisher: {this.props.book.publisher}</div> :
-                ""
-              }
-              {
-                this.props.book.categories && this.props.book.categories.length ?
-                <div className="bookDetailsCategories">Categories: {this.props.book.categories.join(", ")}</div> :
-                ""
-              }
+              { this.fieldNames().map(key =>
+                fields[key] ? <div className={"bookDetails" + key} key={key}>{key}: {fields[key]}</div> : null
+              ) }
             </div>
           </div>
         </div>
         <div style={{ clear: "both", marginTop: "1em" }}></div>
         <div
           style={bookSummaryStyle}>
-          { this.props.book.openAccessUrl &&
-            <div style={{textAlign: "center", marginBottom: "30px"}}>
-              <a href={this.props.book.openAccessUrl} className="btn btn-default">Get</a>
+          <div className="row">
+            <div className="col-sm-2">
+              { this.props.book.url &&
+                <CatalogLink
+                  className="btn btn-link"
+                  target="_blank"
+                  bookUrl={this.props.book.url}>
+                  Permalink
+                </CatalogLink>
+              }
             </div>
-          }
+            <div className="col-sm-8" style={{textAlign: "center", marginBottom: "30px"}}>
+              { this.circulationLinks() }
+            </div>
+            <div className="col-sm-2" style={{ textAlign: "right" }}>
+            </div>
+          </div>
+
           <div className="bookDetailsSummary"
                dangerouslySetInnerHTML={{ __html: this.props.book.summary }}></div>
         </div>
@@ -74,5 +95,92 @@ export default class BookDetails extends React.Component<BookProps, any> {
     if (elem) {
       elem.style.overflow = value;
     }
+  }
+
+  fieldNames() {
+    return ["Publisher", "Published", "Categories"];
+  }
+
+  fields() {
+    return this.props.book ? {
+      Published: this.props.book.published,
+      Publisher: this.props.book.publisher,
+      Categories: this.props.book.categories ?
+                  this.props.book.categories.join(", ") :
+                  null
+    } : {};
+  }
+
+  circulationLinks() {
+    let links = [];
+
+    if (
+      this.props.book.openAccessLinks &&
+      this.props.book.openAccessLinks.length > 0
+    ) {
+      links.push(
+        this.props.book.openAccessLinks.map(link => {
+          return (
+            <DownloadButton
+              key={link.url}
+              style={{ marginRight: "0.5em" }}
+              url={link.url}
+              mimeType={link.type}
+              isPlainLink={true}
+              />
+            );
+        })
+      );
+    } else if (
+      this.props.book.fulfillmentLinks &&
+      this.props.book.fulfillmentLinks.length > 0
+    ) {
+      links.push(
+        this.props.book.fulfillmentLinks.map(link => {
+          let isStreaming = link.type === "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media";
+          return (
+            <DownloadButton
+              key={link.url}
+              style={{ marginRight: "0.5em" }}
+              fulfill={this.props.fulfillBook}
+              url={link.url}
+              mimeType={link.type}
+              title={this.props.book.title}
+              isPlainLink={isStreaming || !this.props.isSignedIn}
+              />
+          );
+        })
+      );
+    }
+
+    if (this.isReserved()) {
+      links.push(
+        <button key="onhold" className="btn btn-default disabled">On Hold</button>
+      );
+    } else if (this.props.book.borrowUrl) {
+      let label = this.props.book.copies &&
+                  this.props.book.copies.available === 0 ?
+                  "Hold" :
+                  "Borrow";
+      links.push(
+        <BorrowButton
+          key={this.props.book.borrowUrl}
+          style={{ marginRight: "0.5em" }}
+          borrow={this.borrow}>
+          { label }
+        </BorrowButton>
+      );
+    }
+
+    return links;
+  }
+
+  borrow(): Promise<BookData> {
+    return this.props.borrowBook(this.props.book.borrowUrl);
+  }
+
+  isReserved() {
+    return this.props.book.availability &&
+           this.props.book.availability.status === "reserved";
   }
 }

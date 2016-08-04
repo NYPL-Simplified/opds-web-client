@@ -72,10 +72,10 @@ export default class Book extends React.Component<BookProps, any> {
                 }
               </div>
           </CatalogLink>
-          { this.props.book.openAccessUrl &&
+          { this.props.book.openAccessLinks && this.props.book.openAccessLinks.length ?
             <div className="bookLinks" style={bookLinksStyle}>
-              <a href={this.props.book.openAccessUrl} className="btn btn-default">Get</a>
-            </div>
+              <a href={this.props.book.openAccessLinks[0].url} className="btn btn-default">Download</a>
+            </div> : null
           }
         </div>
       </div>

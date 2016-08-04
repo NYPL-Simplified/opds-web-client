@@ -1,5 +1,8 @@
 import DataFetcher from "./DataFetcher";
-import { CollectionData, BookData, SearchData, FetchErrorData } from "./interfaces";
+import {
+  CollectionData, BookData, SearchData, FetchErrorData,
+  BasicAuthCallback, BasicAuthLabels
+} from "./interfaces";
 
 export interface LoadCollectionAction {
   type: string;
@@ -29,6 +32,25 @@ export default class ActionCreator {
 
   LOAD_SEARCH_DESCRIPTION = "LOAD_SEARCH_DESCRIPTION";
   CLOSE_ERROR = "CLOSE_ERROR";
+
+  BORROW_BOOK_REQUEST = "BORROW_BOOK_REQUEST";
+  BORROW_BOOK_SUCCESS = "BORROW_BOOK_SUCCESS";
+  BORROW_BOOK_FAILURE = "BORROW_BOOK_FAILURE";
+  LOAD_BORROW_DATA = "LOAD_BORROW_DATA";
+
+  FULFILL_BOOK_REQUEST = "FULFILL_BOOK_REQUEST";
+  FULFILL_BOOK_SUCCESS = "FULFILL_BOOK_SUCCESS";
+  FULFILL_BOOK_FAILURE = "FULFILL_BOOK_FAILURE";
+
+  FETCH_LOANS_REQUEST = "FETCH_LOANS_REQUEST";
+  FETCH_LOANS_SUCCESS = "FETCH_LOANS_SUCCESS";
+  FETCH_LOANS_FAILURE = "FETCH_LOANS_FAILURE";
+  LOAD_LOANS = "LOAD_LOANS";
+
+  SHOW_BASIC_AUTH_FORM = "SHOW_BASIC_AUTH_FORM";
+  HIDE_BASIC_AUTH_FORM = "HIDE_BASIC_AUTH_FORM";
+  SAVE_BASIC_AUTH_CREDENTIALS = "SAVE_BASIC_AUTH_CREDENTIALS";
+  CLEAR_BASIC_AUTH_CREDENTIALS = "CLEAR_BASIC_AUTH_CREDENTIALS";
 
   constructor(fetcher: DataFetcher) {
     this.fetcher = fetcher;
@@ -155,5 +177,139 @@ export default class ActionCreator {
 
   clearBook() {
     return { type: this.CLEAR_BOOK };
+  }
+
+  borrowBook(url: string): (dispatch: any) => Promise<BookData> {
+    return (dispatch) => {
+      dispatch(this.borrowBookRequest());
+      return new Promise((resolve, reject) => {
+        this.fetcher.fetchOPDSData(url).then((data: BookData) => {
+          dispatch(this.borrowBookSuccess());
+          dispatch(this.loadBorrowData(data));
+          resolve(data);
+        }).catch((err: FetchErrorData) => {
+          dispatch(this.borrowBookFailure(err));
+          reject(err);
+        });
+      });
+    };
+  }
+
+  borrowBookRequest() {
+    return { type: this.BORROW_BOOK_REQUEST };
+  }
+
+  borrowBookSuccess() {
+    return { type: this.BORROW_BOOK_SUCCESS };
+  }
+
+  borrowBookFailure(error) {
+    return { type: this.BORROW_BOOK_FAILURE, error };
+  }
+
+  loadBorrowData(data) {
+    return { type: this.LOAD_BORROW_DATA, data };
+  }
+
+  fulfillBook(url: string): (dispatch: any) => Promise<Blob> {
+    return (dispatch) => {
+      return new Promise((resolve, reject) => {
+        dispatch(this.fulfillBookRequest());
+        this.fetcher.fetch(url)
+          .then(response => {
+            if (response.ok) {
+              return response.blob();
+            } else {
+              throw({
+                status: response.status,
+                response: "Could not fulfill book",
+                url: url
+              });
+            }
+          })
+          .then(blob => {
+            dispatch(this.fulfillBookSuccess());
+            resolve(blob);
+          })
+          .catch(err => {
+            dispatch(this.fulfillBookFailure(err));
+            reject(err);
+          });
+      });
+    };
+  }
+
+  fulfillBookRequest() {
+    return { type: this.FULFILL_BOOK_REQUEST };
+  }
+
+  fulfillBookSuccess() {
+    return { type: this.FULFILL_BOOK_SUCCESS };
+  }
+
+  fulfillBookFailure(error) {
+    return { type: this.FULFILL_BOOK_FAILURE, error };
+  }
+
+  fetchLoans(url: string) {
+    return (dispatch) => {
+      dispatch(this.fetchLoansRequest(url));
+      return new Promise((resolve, reject) => {
+        this.fetcher.fetchOPDSData(url).then((data: CollectionData) => {
+          dispatch(this.fetchLoansSuccess());
+          dispatch(this.loadLoans(data.books));
+          resolve(data);
+        }).catch(err => {
+          dispatch(this.fetchLoansFailure(err));
+          reject(err);
+        });
+      });
+    };
+  }
+
+  fetchLoansRequest(url: string) {
+    return { type: this.FETCH_LOANS_REQUEST, url };
+  }
+
+  fetchLoansSuccess() {
+    return { type: this.FETCH_LOANS_SUCCESS };
+  }
+
+  fetchLoansFailure(error?: FetchErrorData) {
+    return { type: this.FETCH_LOANS_FAILURE, error };
+  }
+
+  loadLoans(books: BookData[]) {
+    return { type: this.LOAD_LOANS, books };
+  }
+
+  showBasicAuthForm(
+    callback: BasicAuthCallback,
+    labels: BasicAuthLabels,
+    title: string,
+    error?: string
+  ) {
+    return { type: this.SHOW_BASIC_AUTH_FORM, callback, labels, title, error };
+  }
+
+  closeErrorAndHideBasicAuthForm() {
+    return (dispatch) => {
+      dispatch(this.closeError());
+      dispatch(this.hideBasicAuthForm());
+    };
+  }
+
+  hideBasicAuthForm() {
+    return { type: this.HIDE_BASIC_AUTH_FORM };
+  }
+
+  saveBasicAuthCredentials(credentials: string) {
+    this.fetcher.setBasicAuthCredentials(credentials);
+    return { type: this.SAVE_BASIC_AUTH_CREDENTIALS, credentials };
+  }
+
+  clearBasicAuthCredentials() {
+    this.fetcher.clearBasicAuthCredentials();
+    return { type: this.CLEAR_BASIC_AUTH_CREDENTIALS };
   }
 }

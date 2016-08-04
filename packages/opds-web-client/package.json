@@ -1,6 +1,6 @@
 {
   "name": "opds-web-client",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "OPDS web client",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -18,9 +18,11 @@
   },
   "dependencies": {
     "dompurify": "^0.8.1",
+    "downloadjs": "^1.4.4",
     "isomorphic-fetch": "^2.2.1",
+    "js-cookie": "^2.1.2",
     "jsdom": "^9.4.1",
-    "opds-feed-parser": "^0.0.11",
+    "opds-feed-parser": "^0.0.12",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-redux": "^4.4.5",

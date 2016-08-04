@@ -19,15 +19,26 @@ app.post("/proxy", form.array(), function(req, res, next) {
   var options = {
     uri: req.body.url,
     headers: {
-      "Authorization": req.headers.authorization
+      "Authorization": req.headers.authorization,
+      "X-Requested-With": req.headers["x-requested-with"],
     }
   };
+
   request
     .get(options)
     .on("error", function(err) {
       next("proxy request error: " + req.body.url + " " + err);
     })
     .pipe(res);
+});
+
+// support CORS preflight requests
+app.options("/proxy", function(req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  res.setHeader("Access-Control-Allow-Methods", req.headers["access-control-request-method"]);
+  res.setHeader("Access-Control-Allow-Headers", req.headers["access-control-request-headers"]);
+  res.status(200).end();
 });
 
 app.get("/*", function(req, res, next) {

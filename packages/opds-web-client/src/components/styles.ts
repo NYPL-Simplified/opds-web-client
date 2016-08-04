@@ -15,13 +15,13 @@ export const subtleListStyle: __React.CSSProperties = {
   listStyleType: "none"
 };
 
-export function popupStyle(width: number): __React.CSSProperties {
+export function popupStyle(width: number, height: number = 200): __React.CSSProperties {
   return {
     position: "fixed",
     top: "50%",
     left: "50%",
     width: `${width}px`,
-    marginTop: "-100px",
+    marginTop: `-${height / 2}px`,
     marginLeft: `-${width / 2}px`,
     padding: "30px",
     backgroundColor: "#ddd",

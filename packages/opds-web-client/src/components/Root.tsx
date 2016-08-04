@@ -2,25 +2,33 @@ import * as React from "react";
 import { Store } from "redux";
 import { connect } from "react-redux";
 import { State } from "../state";
-import { mapStateToProps, mapDispatchToProps, mergeRootProps } from "./mergeRootProps";
+import {
+  mapStateToProps, mapDispatchToProps, mergeRootProps
+} from "./mergeRootProps";
 import BookDetails from "./BookDetails";
 import LoadingIndicator from "./LoadingIndicator";
 import ErrorMessage from "./ErrorMessage";
+import BasicAuthForm  from "./BasicAuthForm";
 import Search from "./Search";
 import Breadcrumbs, {
-  ComputeBreadcrumbs,
-  defaultComputeBreadcrumbs
+  ComputeBreadcrumbs, defaultComputeBreadcrumbs
 } from "./Breadcrumbs";
 import Collection from "./Collection";
 import UrlForm from "./UrlForm";
 import SkipNavigationLink from "./SkipNavigationLink";
 import CatalogLink from "./CatalogLink";
-import { CollectionData, BookData, LinkData, StateProps, NavigateContext } from "../interfaces";
+import {
+  CollectionData, BookData, LinkData, StateProps, NavigateContext,
+  BasicAuthCallback, BasicAuthLabels
+} from "../interfaces";
 
 export interface HeaderProps extends React.Props<any> {
-  CatalogLink: typeof CatalogLink;
   collectionTitle: string;
   bookTitle: string;
+  loansUrl?: string;
+  isSignedIn: boolean;
+  showBasicAuthForm: (callback: BasicAuthCallback, labels: BasicAuthLabels, title: string) => void;
+  clearBasicAuthCredentials: () => void;
 }
 
 export interface BookDetailsContainerProps extends React.Props<any> {
@@ -35,7 +43,7 @@ export interface RootProps extends StateProps {
   bookUrl?: string;
   proxyUrl?: string;
   dispatch?: any;
-  setCollectionAndBook?: (collectionUrl: string, bookUrl: string) => void;
+  setCollectionAndBook?: (collectionUrl: string, bookUrl: string) => Promise<any>;
   clearCollection?: () => void;
   clearBook?: () => void;
   fetchSearchDescription?: (url: string) => void;
@@ -49,6 +57,13 @@ export interface RootProps extends StateProps {
   Header?: new() => __React.Component<HeaderProps, any>;
   BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
   computeBreadcrumbs?: ComputeBreadcrumbs;
+  borrowBook?: (url: string) => Promise<BookData>;
+  fulfillBook?: (url: string) => Promise<any>;
+  fetchLoans?: (url: string) => Promise<any>;
+  saveBasicAuthCredentials?: (credentials: string) => void;
+  clearBasicAuthCredentials?: () => void;
+  showBasicAuthForm?: (callback: BasicAuthCallback, labels: BasicAuthLabels, title: string) => void;
+  closeErrorAndHideBasicAuthForm?: () => void;
 }
 
 export class Root extends React.Component<RootProps, any> {
@@ -120,13 +135,27 @@ export class Root extends React.Component<RootProps, any> {
       <div className="catalog" style={{ fontFamily: "Arial, sans-serif" }}>
         <SkipNavigationLink />
 
-        { this.props.error &&
+        { this.props.error && (!this.props.basicAuth || !this.props.basicAuth.showForm) &&
           <ErrorMessage
             message={"Could not fetch data: " + this.props.error.url}
             retry={this.props.retryCollectionAndBook} />
         }
 
-        { this.props.isFetching && <LoadingIndicator /> }
+        { this.props.isFetching &&
+          <LoadingIndicator />
+        }
+
+        { this.props.basicAuth && this.props.basicAuth.showForm &&
+          <BasicAuthForm
+            saveCredentials={this.props.saveBasicAuthCredentials}
+            hide={this.props.closeErrorAndHideBasicAuthForm}
+            callback={this.props.basicAuth.callback}
+            title={this.props.basicAuth.title}
+            loginLabel={this.props.basicAuth.loginLabel}
+            passwordLabel={this.props.basicAuth.passwordLabel}
+            error={this.props.basicAuth.error}
+            />
+        }
 
         { showUrlForm &&
           <UrlForm collectionUrl={this.props.collectionUrl} />
@@ -134,9 +163,12 @@ export class Root extends React.Component<RootProps, any> {
 
         { Header ?
           <Header
-            CatalogLink={CatalogLink}
             collectionTitle={collectionTitle}
-            bookTitle={bookTitle}>
+            bookTitle={bookTitle}
+            loansUrl={this.props.loansUrl}
+            isSignedIn={this.props.isSignedIn}
+            showBasicAuthForm={this.props.showBasicAuthForm}
+            clearBasicAuthCredentials={this.props.clearBasicAuthCredentials}>
             { this.props.collectionData && this.props.collectionData.search &&
               <Search
                 url={this.props.collectionData.search.url}
@@ -150,6 +182,19 @@ export class Root extends React.Component<RootProps, any> {
               <span className="navbar-brand" style={{ fontSize: "1.8em", color: "black" }}>
                 OPDS Web Client
               </span>
+
+              { this.props.loansUrl &&
+                <ul className="nav navbar-nav">
+                  <li>
+                    <CatalogLink
+                      collectionUrl={this.props.loansUrl}
+                      bookUrl={null}>
+                      Loans
+                    </CatalogLink>
+                  </li>
+                </ul>
+              }
+
               { this.props.collectionData && this.props.collectionData.search &&
                 <Search
                   className="navbar-form navbar-right"
@@ -176,11 +221,22 @@ export class Root extends React.Component<RootProps, any> {
                   <BookDetailsContainer
                     bookUrl={this.props.bookUrl || this.props.bookData.url}
                     collectionUrl={this.props.collectionUrl}
-                    refreshCatalog={this.props.refreshCollectionAndBook}>
-                    <BookDetails book={this.props.bookData} />
+                    refreshCatalog={this.props.refreshCollectionAndBook}
+                    >
+                    <BookDetails
+                      book={this.loanedBookData() || this.props.bookData}
+                      borrowBook={this.props.borrowBook}
+                      fulfillBook={this.props.fulfillBook}
+                      isSignedIn={this.props.isSignedIn}
+                      />
                   </BookDetailsContainer> :
                   <div style={{ padding: "40px", maxWidth: "700px", margin: "0 auto" }}>
-                    <BookDetails book={this.props.bookData} />
+                    <BookDetails
+                      book={this.loanedBookData() || this.props.bookData}
+                      borrowBook={this.props.borrowBook}
+                      fulfillBook={this.props.fulfillBook}
+                      isSignedIn={this.props.isSignedIn}
+                      />
                   </div>
                 )
               }
@@ -202,11 +258,22 @@ export class Root extends React.Component<RootProps, any> {
   }
 
   componentWillMount() {
-    if (this.props.collectionUrl || this.props.bookUrl) {
-      this.props.setCollectionAndBook(this.props.collectionUrl, this.props.bookUrl);
+    this.updatePageTitle(this.props);
+
+    if (this.props.basicAuthCredentials && this.props.saveBasicAuthCredentials) {
+      this.props.saveBasicAuthCredentials(this.props.basicAuthCredentials);
     }
 
-    this.updatePageTitle(this.props);
+    if (this.props.collectionUrl || this.props.bookUrl) {
+      return this.props.setCollectionAndBook(
+        this.props.collectionUrl,
+        this.props.bookUrl
+      ).then(({ collectionData, bookData }) => {
+        if (this.props.basicAuthCredentials && collectionData.shelfUrl) {
+          this.props.fetchLoans(collectionData.shelfUrl);
+        }
+      });
+    }
   }
 
   componentDidMount() {
@@ -267,6 +334,22 @@ export class Root extends React.Component<RootProps, any> {
       }
     }
   };
+
+  loanedBookData(): BookData {
+    if (!this.props.loans || this.props.loans.length === 0) {
+      return null;
+    }
+
+    return this.props.loans.find(book => {
+      if (this.props.bookData) {
+        return book.id === this.props.bookData.id;
+      } else if (this.props.bookUrl) {
+        return book.url === this.props.bookUrl;
+      } else {
+        return null;
+      }
+    });
+  }
 }
 
 let connectOptions = { withRef: true, pure: false };

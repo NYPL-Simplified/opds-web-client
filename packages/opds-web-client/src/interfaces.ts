@@ -5,11 +5,33 @@ export interface BookData {
   contributors?: string[];
   summary?: string;
   imageUrl?: string;
-  openAccessUrl?: string;
+  openAccessLinks?: {
+    url: string;
+    type: string;
+  }[];
+  borrowUrl?: string;
+  fulfillmentLinks?: {
+    url: string;
+    type: string;
+  }[];
+  availability?: {
+    status: string;
+    since?: string;
+    until?: string;
+  };
+  holds?: {
+    total: number;
+    position?: number;
+  };
+  copies?: {
+    total: number;
+    available: number;
+  };
   url?: string;
   publisher?: string;
   published?: string;
   categories?: string[];
+  raw?: any;
 }
 
 export interface LaneData {
@@ -41,6 +63,7 @@ export interface CollectionData {
   nextPageUrl?: string;
   catalogRootLink?: LinkData;
   parentLink?: LinkData;
+  shelfUrl?: string;
   raw?: any;
 }
 
@@ -71,6 +94,11 @@ export interface StateProps {
   bookUrl?: string;
   isFetchingPage?: boolean;
   history?: LinkData[];
+  basicAuth?: BasicAuthData;
+  basicAuthCredentials?: string;
+  isSignedIn?: boolean;
+  loansUrl?: string;
+  loans?: BookData[];
 }
 
 export interface PathFor {
@@ -97,4 +125,23 @@ export interface Router {
 export interface NavigateContext {
   router?: Router;
   pathFor: PathFor;
+}
+
+export interface BasicAuthCallback {
+  (credentials: string): any;
+}
+
+export interface BasicAuthData {
+  showForm: boolean;
+  callback: BasicAuthCallback;
+  credentials: string;
+  title: string;
+  loginLabel: string;
+  passwordLabel: string;
+  error: string;
+}
+
+export interface BasicAuthLabels {
+  login: string;
+  password: string;
 }
