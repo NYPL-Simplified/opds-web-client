@@ -252,7 +252,6 @@ export class Root extends React.Component<RootProps, any> {
               isFetching={this.props.isFetching}
               isFetchingPage={this.props.isFetchingPage}
               error={this.props.error}
-              proxyUrl={this.props.proxyUrl}
               />
           }
         </div>
