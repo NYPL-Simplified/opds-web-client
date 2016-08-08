@@ -37,7 +37,10 @@ describe("OPDSDataAdapter", () => {
     let fulfillmentLink = factory.acquisitionLink({
       href: "http://example.com/fulfill",
       rel: OPDSAcquisitionLink.GENERIC_REL,
-      type: "application/vnd.adobe+adept+xml"
+      type: "application/atom+xml;type=entry;profile=opds-catalog",
+      indirectAcquisitions: [{
+        type: "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media"
+      }]
     });
 
     let collectionLink = factory.collectionLink({
@@ -92,6 +95,7 @@ describe("OPDSDataAdapter", () => {
     expect(book.borrowUrl).toBe(borrowLink.href);
     expect(book.fulfillmentLinks[0].url).toBe(fulfillmentLink.href);
     expect(book.fulfillmentLinks[0].type).toBe(fulfillmentLink.type);
+    expect(book.fulfillmentLinks[0].indirectType).toBe(fulfillmentLink.indirectAcquisitions[0].type);
     expect(book.availability).toEqual(borrowLink.availability);
     expect(book.holds).toEqual(borrowLink.holds);
     expect(book.copies).toEqual(borrowLink.copies);

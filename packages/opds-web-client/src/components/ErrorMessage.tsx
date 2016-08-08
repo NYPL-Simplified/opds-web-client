@@ -23,12 +23,6 @@ export default class ErrorMessage extends React.Component<ErrorMessageProps, any
           style={{ fontSize: "1.2em" }}
           onClick={this.props.retry}>
           Try again
-        </button>&nbsp;&nbsp;
-        <button
-          className="errorCloseButton btn btn-default"
-          style={{ fontSize: "1.2em" }}
-          onClick={() => window.history.back()}>
-          Go Back
         </button>
       </div>
     );

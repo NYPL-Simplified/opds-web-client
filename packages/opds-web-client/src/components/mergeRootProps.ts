@@ -50,6 +50,7 @@ export function mapDispatchToProps(dispatch) {
         closeError: () => dispatch(actions.closeError()),
         borrowBook: (url: string) => dispatch(actions.borrowBook(url)),
         fulfillBook: (url: string) => dispatch(actions.fulfillBook(url)),
+        indirectFulfillBook: (url: string, type: string) => dispatch(actions.indirectFulfillBook(url, type)),
         fetchLoans: (url: string) => dispatch(actions.fetchLoans(url)),
         saveBasicAuthCredentials: (credentials: string) => dispatch(actions.saveBasicAuthCredentials(credentials)),
         clearBasicAuthCredentials: () => dispatch(actions.clearBasicAuthCredentials()),

@@ -15,18 +15,6 @@ describe("ErrorMessage", () => {
     expect(message.text()).toBe("test error");
   });
 
-  it("goes back", () => {
-    let wrapper = shallow(
-      <ErrorMessage message="test error" />
-    );
-
-    let button = wrapper.find(".errorCloseButton");
-    spyOn(window.history, "back");
-    button.simulate("click");
-
-    expect(window.history.back).toHaveBeenCalled();
-  });
-
   it("retries", () => {
     let retry = jest.genMockFunction();
     let wrapper = shallow(
@@ -45,6 +33,6 @@ describe("ErrorMessage", () => {
     );
 
     let buttons = wrapper.find(".btn");
-    expect(buttons.length).toBe(2);
+    expect(buttons.length).toBe(1);
   });
 });

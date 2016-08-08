@@ -211,6 +211,8 @@ export default class ActionCreator {
     return { type: this.LOAD_BORROW_DATA, data };
   }
 
+
+
   fulfillBook(url: string): (dispatch: any) => Promise<Blob> {
     return (dispatch) => {
       return new Promise((resolve, reject) => {
@@ -235,6 +237,33 @@ export default class ActionCreator {
             dispatch(this.fulfillBookFailure(err));
             reject(err);
           });
+      });
+    };
+  }
+
+  indirectFulfillBook(url: string, type: string): (dispatch: any) => Promise<string> {
+    return (dispatch) => {
+      return new Promise((resolve, reject) => {
+        dispatch(this.fulfillBookRequest());
+        this.fetcher.fetchOPDSData(url).then((book: BookData) => {
+          let link = book.fulfillmentLinks.find(link =>
+            link.type === type
+          );
+
+          if (link) {
+            dispatch(this.fulfillBookSuccess());
+            resolve(link.url);
+          } else {
+            throw({
+              status: 200,
+              response: "Couldn't fulfill book",
+              url: url
+            });
+          }
+        }).catch(err => {
+          dispatch(this.fulfillBookFailure(err));
+          reject(err);
+        });
       });
     };
   }
