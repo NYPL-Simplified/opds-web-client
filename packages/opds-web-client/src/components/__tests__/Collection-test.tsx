@@ -4,7 +4,7 @@ import * as React from "react";
 import { shallow, mount } from "enzyme";
 
 import Collection from "../Collection";
-import Lane from "../Lane";
+import { Lanes } from "../Lanes";
 import Book from "../Book";
 import LaneBook from "../LaneBook";
 import FacetGroup from "../FacetGroup";
@@ -38,14 +38,10 @@ describe("Collection", () => {
       expect(link.props().name).toBe("main");
     });
 
-    it("shows lanes in order", () => {
-      let lanes = wrapper.find(Lane);
-      let laneDatas = lanes.map(lane => lane.props().lane);
-      let uniqueCollectionUrls = Array.from(new Set(lanes.map(lane => lane.props().collectionUrl)));
-
-      expect(lanes.length).toBe(collectionData.lanes.length);
-      expect(laneDatas).toEqual(collectionData.lanes);
-      expect(uniqueCollectionUrls).toEqual([collectionData.url]);
+    it("shows lanes", () => {
+      let lanes = wrapper.find(Lanes);
+      expect(lanes.props().url).toBe(collectionData.url);
+      expect(lanes.props().lanes).toEqual(collectionData.lanes);
     });
   });
 

@@ -35,6 +35,7 @@ export interface BookDetailsContainerProps extends React.Props<any> {
   bookUrl: string;
   collectionUrl: string;
   refreshCatalog: () => Promise<any>;
+  book: BookData;
 }
 
 export interface RootProps extends StateProps {
@@ -219,6 +220,7 @@ export class Root extends React.Component<RootProps, any> {
               { showBook &&
                 ( BookDetailsContainer && (this.props.bookUrl || this.props.bookData.url) ?
                   <BookDetailsContainer
+                    book={this.loanedBookData() || this.props.bookData}
                     bookUrl={this.props.bookUrl || this.props.bookData.url}
                     collectionUrl={this.props.collectionUrl}
                     refreshCatalog={this.props.refreshCollectionAndBook}

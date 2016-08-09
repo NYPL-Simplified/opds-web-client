@@ -53,4 +53,17 @@ describe("Lane", () => {
     let moreLink = wrapper.find(LaneMoreLink);
     expect(moreLink.prop("lane")).toBe(laneData);
   });
+
+  it("hides more link", () => {
+    wrapper.setProps({ hideMoreLink: true });
+    let moreLink = wrapper.find(LaneMoreLink);
+    expect(moreLink.length).toBe(0);
+  });
+
+  it("hides books by id", () => {
+    wrapper.setProps({ hiddenBookIds: ["test book id 1"] });
+    let laneBooks = wrapper.find(LaneBook);
+    expect(laneBooks.length).toBe(books.length - 1);
+    expect(laneBooks.at(0).props().book).toBe(books[1]);
+  });
 });
