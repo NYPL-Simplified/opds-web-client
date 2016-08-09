@@ -17,7 +17,6 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, a
     super(props);
     this.state = { error: this.props.error };
     this.submit = this.submit.bind(this);
-    this.cancel = this.cancel.bind(this);
   }
 
   render() {
@@ -47,8 +46,6 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, a
             />
           <br />
           <input type="submit" className="btn btn-default" value="Submit" />
-          &nbsp;&nbsp;
-          <button className="btn btn-default" onClick={this.cancel}>Cancel</button>
         </form>
       </div>
     );
@@ -96,15 +93,6 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, a
       if (this.props.callback) {
         this.props.callback(credentials);
       }
-    }
-  }
-
-  cancel() {
-    this.props.hide();
-
-    // only go back when auth form was triggered by another action
-    if (this.props.callback) {
-      window.history.back();
     }
   }
 

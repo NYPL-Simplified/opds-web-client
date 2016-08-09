@@ -14,7 +14,6 @@ export interface CollectionProps extends React.HTMLProps<Collection> {
   isFetchingPage?: boolean;
   error?: FetchErrorData;
   fetchPage?: (url: string) => Promise<any>;
-  proxyUrl?: string;
 }
 
 export default class Collection extends React.Component<CollectionProps, any> {
