@@ -19,8 +19,16 @@ export default store => next => action => {
       if (result && result.then) {
         result.then(resolve).catch(err => {
           if (err.status === 401) {
-            let data = JSON.parse(err.response);
-            let error = null;
+            let error;
+            let data;
+
+            // response might not be JSON
+            try {
+              data = JSON.parse(err.response);
+            } catch (e) {
+              reject(err);
+              return;
+            }
 
             if (err.headers && err.headers.has("www-authenticate")) {
               // browser's default basic auth form was shown,
@@ -37,7 +45,7 @@ export default store => next => action => {
               }
 
               // find provider with basic auth method
-              let provider = Object.keys(data.providers).find(key => {
+              let provider = data.providers && Object.keys(data.providers).find(key => {
                 return Object.keys(data.providers[key].methods).indexOf(BASIC_AUTH) !== -1;
               });
 
@@ -75,6 +83,17 @@ export default store => next => action => {
                   title,
                   error
                 ));
+              } else {
+                // no provider found with basic auth method
+                // currently this custom response will not make it to the user,
+                // becuase the fetch error has already been dispatched by
+                // fetchCollectionFailure, fetchBookFailure, etc
+                next(actions.hideBasicAuthForm());
+                reject({
+                  status: 401,
+                  response: "Authentication is required but no compatible authentication method was found.",
+                  url: err.url
+                });
               }
             }
           } else {
@@ -83,6 +102,9 @@ export default store => next => action => {
           }
         });
       }
+    }).catch(err => {
+      // this is where we could potentially dispatch a custom auth error action
+      // displaying a more informative error
     });
   }
 
