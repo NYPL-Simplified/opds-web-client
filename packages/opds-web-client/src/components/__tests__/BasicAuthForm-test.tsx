@@ -42,11 +42,6 @@ describe("BasicAuthForm", () => {
       expect(input.prop("value")).toBe("Submit");
     });
 
-    it("shows cancel button", () => {
-      let button = wrapper.find("button");
-      expect(button.text()).toBe("Cancel");
-    });
-
     it("shows error", () => {
       let error = wrapper.find(".authFormError");
       expect(error.text()).toBe("you forgot the secret password! what kind of spy arre you?");
@@ -141,14 +136,6 @@ describe("BasicAuthForm", () => {
         expect(callback.mock.calls.length).toBe(1);
         expect(callback.mock.calls[0][0]).toBe(credentials);
       });
-    });
-
-    it("hides when cancel button is clicked", () => {
-      let button = wrapper.find("button");
-      spyOn(window.history, "back");
-      button.simulate("click");
-      expect(hide.mock.calls.length).toBe(1);
-      expect(window.history.back).toHaveBeenCalled();
     });
 
     it("updates error from props", () => {

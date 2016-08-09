@@ -31,6 +31,7 @@ describe("BookDetails", () => {
         book={book}
         borrowBook={jest.genMockFunction()}
         fulfillBook={jest.genMockFunction()}
+        indirectFulfillBook={jest.genMockFunction()}
         />
     );
   });
@@ -69,6 +70,7 @@ describe("BookDetails", () => {
         book={bookCopy}
         borrowBook={jest.genMockFunction()}
         fulfillBook={jest.genMockFunction()}
+        indirectFulfillBook={jest.genMockFunction()}
         />
     );
 
@@ -93,6 +95,7 @@ describe("BookDetails", () => {
         book={bookCopy}
         borrowBook={jest.genMockFunction()}
         fulfillBook={jest.genMockFunction()}
+        indirectFulfillBook={jest.genMockFunction()}
         />
     );
 
@@ -122,6 +125,7 @@ describe("BookDetails", () => {
         book={bookCopy}
         borrowBook={borrowBook}
         fulfillBook={jest.genMockFunction()}
+        indirectFulfillBook={jest.genMockFunction()}
         />
     );
 
@@ -146,16 +150,19 @@ describe("BookDetails", () => {
       fulfillmentLinks: [link]
     });
     let fulfillBook = jest.genMockFunction();
+    let indirectFulfillBook = jest.genMockFunction();
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
         borrowBook={jest.genMockFunction()}
         fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
         isSignedIn={false}
         />
     );
     let button = wrapper.find(DownloadButton);
     expect(button.props().fulfill).toBe(fulfillBook);
+    expect(button.props().indirectFulfill).toBe(indirectFulfillBook);
     expect(button.props().url).toBe(link.url);
     expect(button.props().title).toBe(bookCopy.title);
     expect(button.props().mimeType).toBe(link.type);
@@ -172,6 +179,7 @@ describe("BookDetails", () => {
         book={bookCopy}
         borrowBook={jest.genMockFunction()}
         fulfillBook={jest.genMockFunction()}
+        indirectFulfillBook={jest.genMockFunction()}
         />
     );
     let button = wrapper.find("button");

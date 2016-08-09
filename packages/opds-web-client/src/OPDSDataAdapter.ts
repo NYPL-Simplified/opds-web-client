@@ -106,9 +106,17 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
     return link instanceof OPDSAcquisitionLink &&
            link.rel === OPDSAcquisitionLink.GENERIC_REL;
   }).map(link => {
+    let indirectType;
+    let indirects = (link as OPDSAcquisitionLink).indirectAcquisitions;
+
+    if (indirects && indirects.length > 0) {
+      indirectType = indirects[0].type;
+    }
+
     return {
       url: resolve(feedUrl, link.href),
-      type: link.type
+      type: link.type,
+      indirectType
     };
   });
 

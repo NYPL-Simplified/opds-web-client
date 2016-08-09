@@ -13,6 +13,7 @@ export interface BookData {
   fulfillmentLinks?: {
     url: string;
     type: string;
+    indirectType: string;
   }[];
   availability?: {
     status: string;
