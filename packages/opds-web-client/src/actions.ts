@@ -211,8 +211,6 @@ export default class ActionCreator {
     return { type: this.LOAD_BORROW_DATA, data };
   }
 
-
-
   fulfillBook(url: string): (dispatch: any) => Promise<Blob> {
     return (dispatch) => {
       return new Promise((resolve, reject) => {

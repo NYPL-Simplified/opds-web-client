@@ -47,7 +47,7 @@ export default class DownloadButton extends React.Component<DownloadButtonProps,
   }
 
   fulfill() {
-    if (this.props.indirectType) {
+    if (this.isIndirect()) {
       return this.props.indirectFulfill(this.props.url, this.props.indirectType).then(url => {
         window.open(url, "_blank");
       });
@@ -61,6 +61,11 @@ export default class DownloadButton extends React.Component<DownloadButtonProps,
         );
       });
     }
+  }
+
+  isIndirect() {
+    return this.props.indirectType &&
+      this.props.mimeType === "application/atom+xml;type=entry;profile=opds-catalog";
   }
 
   generateFilename(str: string): string {

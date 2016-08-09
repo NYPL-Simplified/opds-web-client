@@ -74,17 +74,35 @@ describe("DownloadButton", () => {
     }).catch(done.fail);
   });
 
-  it("fulfills indirect links", () => {
-    wrapper.setProps({ indirectType: "some/type" });
+  it("fulfills OPDS-based indirect links", () => {
+    let streamingType = "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media";
+    wrapper.setProps({
+      mimeType: "application/atom+xml;type=entry;profile=opds-catalog",
+      indirectType: streamingType
+    });
     let button = wrapper.find("button");
     button.simulate("click");
     expect(indirectFulfill.mock.calls.length).toBe(1);
     expect(indirectFulfill.mock.calls[0][0]).toBe("download url");
-    expect(indirectFulfill.mock.calls[0][1]).toBe("some/type");
+    expect(indirectFulfill.mock.calls[0][1]).toBe(streamingType);
+  });
+
+  it("fulfills ACSM-based indirect links", () => {
+    wrapper.setProps({
+      mimeType: "vnd.adobe/adept+xml",
+      indirectType: "application/epub+zip"
+    });
+    let button = wrapper.find("button");
+    button.simulate("click");
+    expect(fulfill.mock.calls.length).toBe(1);
+    expect(fulfill.mock.calls[0][0]).toBe("download url");
   });
 
   it("opens indirect fulfillment link in new tab", (done) => {
-    wrapper.setProps({ indirectType: "some/type" });
+    wrapper.setProps({
+      mimeType: "application/atom+xml;type=entry;profile=opds-catalog",
+      indirectType: "some/type"
+    });
     spyOn(window, "open");
     let button = wrapper.find("button");
     button.props().onClick().then(() => {
