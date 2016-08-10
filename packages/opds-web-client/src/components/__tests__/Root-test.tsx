@@ -252,12 +252,14 @@ describe("Root", () => {
     })];
     let borrowBook = jest.genMockFunction();
     let fulfillBook = jest.genMockFunction();
+    let indirectFulfillBook = jest.genMockFunction();
     let wrapper = shallow(
       <Root
         bookData={bookData}
         loans={loans}
         borrowBook={borrowBook}
         fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
         isSignedIn={true}
         />
     );
@@ -269,6 +271,7 @@ describe("Root", () => {
     expect(book.props().book).toEqual(loans[0]);
     expect(book.props().borrowBook).toBe(borrowBook);
     expect(book.props().fulfillBook).toBe(fulfillBook);
+    expect(book.props().indirectFulfillBook).toBe(indirectFulfillBook);
     expect(book.props().isSignedIn).toBe(true);
   });
 

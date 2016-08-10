@@ -188,6 +188,43 @@ describe("actions", () => {
     });
   });
 
+  describe("indirectFulfillBook", () => {
+    let fulfillmentUrl = "http://example.com/book/fulfill";
+    let fulfillmentType = "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media";
+    let indirectUrl = "http://example.com/reader";
+
+    it("dispatches request, load, and success", (done) => {
+      let dispatch = jest.genMockFunction();
+      fetcher.resolve = true;
+      fetcher.testData = {
+        fulfillmentLinks: [
+          { url: indirectUrl, type: fulfillmentType }
+        ]
+      };
+
+      actions.indirectFulfillBook(fulfillmentUrl, fulfillmentType)(dispatch).then(url => {
+        expect(dispatch.mock.calls.length).toBe(2);
+        expect(dispatch.mock.calls[0][0].type).toBe(actions.FULFILL_BOOK_REQUEST);
+        expect(dispatch.mock.calls[1][0].type).toBe(actions.FULFILL_BOOK_SUCCESS);
+        expect(url).toBe(indirectUrl);
+        done();
+      }).catch(done.fail);
+    });
+
+    it("dispatches failure", (done) => {
+      let dispatch = jest.genMockFunction();
+      fetcher.resolve = false;
+
+      actions.indirectFulfillBook(fulfillmentUrl, fulfillmentType)(dispatch).catch(err => {
+        expect(dispatch.mock.calls.length).toBe(2);
+        expect(dispatch.mock.calls[0][0].type).toBe(actions.FULFILL_BOOK_REQUEST);
+        expect(dispatch.mock.calls[1][0].type).toBe(actions.FULFILL_BOOK_FAILURE);
+        expect(err).toBe("test error");
+        done();
+      }).catch(done.fail);
+    });
+  });
+
   describe("fetchLoans", () => {
     let loansUrl = "http://example.com/loans";
 

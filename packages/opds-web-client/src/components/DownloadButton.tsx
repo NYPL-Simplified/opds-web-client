@@ -6,7 +6,9 @@ export interface DownloadButtonProps extends React.HTMLProps<any> {
   mimeType: string;
   isPlainLink?: boolean;
   fulfill?: (url: string) => Promise<Blob>;
+  indirectFulfill?: (url: string, type: string) => Promise<string>;
   title?: string;
+  indirectType?: string;
 }
 
 export default class DownloadButton extends React.Component<DownloadButtonProps, any> {
@@ -45,14 +47,25 @@ export default class DownloadButton extends React.Component<DownloadButtonProps,
   }
 
   fulfill() {
-    return this.props.fulfill(this.props.url).then(blob => {
-      return download(
-        blob,
-        this.generateFilename(this.props.title),
-        // TODO: use mimeType variable once we fix the link type in our OPDS entries
-        this.mimeType()
-      );
-    });
+    if (this.isIndirect()) {
+      return this.props.indirectFulfill(this.props.url, this.props.indirectType).then(url => {
+        window.open(url, "_blank");
+      });
+    } else {
+      return this.props.fulfill(this.props.url).then(blob => {
+        download(
+          blob,
+          this.generateFilename(this.props.title),
+          // TODO: use mimeType variable once we fix the link type in our OPDS entries
+          this.mimeType()
+        );
+      });
+    }
+  }
+
+  isIndirect() {
+    return this.props.indirectType &&
+      this.props.mimeType === "application/atom+xml;type=entry;profile=opds-catalog";
   }
 
   generateFilename(str: string): string {
@@ -73,7 +86,7 @@ export default class DownloadButton extends React.Component<DownloadButtonProps,
   }
 
   downloadLabel() {
-    if (this.props.mimeType === "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media") {
+    if (this.props.indirectType === "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media") {
       return "Open in Web Reader";
     }
     let type = this.fileExtension().replace(".", "").toUpperCase();

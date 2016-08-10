@@ -9,6 +9,7 @@ const download = require("downloadjs");
 export interface BookDetailsProps extends BookProps {
   borrowBook: (url: string) => Promise<BookData>;
   fulfillBook: (url: string) => Promise<Blob>;
+  indirectFulfillBook: (url: string, type: string) => Promise<string>;
   isSignedIn?: boolean;
 }
 
@@ -143,10 +144,12 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
               key={link.url}
               style={{ marginRight: "0.5em" }}
               fulfill={this.props.fulfillBook}
+              indirectFulfill={this.props.indirectFulfillBook}
               url={link.url}
               mimeType={link.type}
               title={this.props.book.title}
               isPlainLink={isStreaming || !this.props.isSignedIn}
+              indirectType={link.indirectType}
               />
           );
         })
