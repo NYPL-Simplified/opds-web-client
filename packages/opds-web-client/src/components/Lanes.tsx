@@ -15,6 +15,7 @@ export interface LanesProps {
   fetchCollection?: (url: string) => Promise<CollectionData>;
   clearCollection?: () => void;
   store?: Store<{ collection: CollectionData; }>;
+  namespace?: string;
   proxyUrl?: string;
   hiddenBookIds?: string[];
   hideMoreLinks?: boolean;
@@ -67,9 +68,10 @@ export class Lanes extends React.Component<any, any> {
 }
 
 function mapStateToProps(state, ownProps) {
+  let key = ownProps.namespace || "collection";
   return {
-    lanes: state.collection.data ? state.collection.data.lanes : [],
-    isFetching: state.collection.isFetching
+    lanes: state[key].data ? state[key].data.lanes : [],
+    isFetching: state[key].isFetching
   };
 }
 

@@ -13,7 +13,7 @@ export interface BookDetailsProps extends BookProps {
   isSignedIn?: boolean;
 }
 
-export default class BookDetails extends React.Component<BookDetailsProps, any> {
+export default class BookDetails<P extends BookDetailsProps> extends React.Component<P, any> {
   constructor(props) {
     super(props);
     this.borrow = this.borrow.bind(this);
@@ -58,7 +58,7 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
         <div
           style={bookSummaryStyle}>
           <div className="row">
-            <div className="col-sm-2">
+            <div className="col-sm-3">
               { this.props.book.url &&
                 <CatalogLink
                   className="btn btn-link"
@@ -68,10 +68,11 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
                 </CatalogLink>
               }
             </div>
-            <div className="col-sm-8" style={{textAlign: "center", marginBottom: "30px"}}>
+            <div className="col-sm-6" style={{textAlign: "center", marginBottom: "30px"}}>
               { this.circulationLinks() }
             </div>
-            <div className="col-sm-2" style={{ textAlign: "right" }}>
+            <div className="col-sm-3" style={{ textAlign: "right" }}>
+              { this.rightColumnLinks() }
             </div>
           </div>
 
@@ -185,5 +186,8 @@ export default class BookDetails extends React.Component<BookDetailsProps, any> 
   isReserved() {
     return this.props.book.availability &&
            this.props.book.availability.status === "reserved";
+  }
+
+  rightColumnLinks() {
   }
 }
