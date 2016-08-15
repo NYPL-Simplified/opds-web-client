@@ -55,6 +55,25 @@ describe("Lanes", () => {
     expect(fetchCollection.mock.calls[0][0]).toBe(groupedCollectionData.url);
   });
 
+  it("fetches new collection on componentWillReceiveProps if there's a new url", () => {
+    let fetchCollection = jest.genMockFunction();
+    wrapper = shallow(
+      <Lanes
+        url={"test1"}
+        lanes={[]}
+        fetchCollection={fetchCollection}
+        />
+    );
+    expect(fetchCollection.mock.calls.length).toBe(1);
+
+    wrapper.instance().componentWillReceiveProps({url: "test1"});
+    expect(fetchCollection.mock.calls.length).toBe(1);
+
+    wrapper.instance().componentWillReceiveProps({url: "test2"});
+    expect(fetchCollection.mock.calls.length).toBe(2);
+    expect(fetchCollection.mock.calls[1][0]).toBe("test2");
+  });
+
   it("clears collection on unmount", () => {
     let clearCollection = jest.genMockFunction();
     wrapper = shallow(
