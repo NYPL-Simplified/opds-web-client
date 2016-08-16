@@ -56,20 +56,25 @@ describe("Lanes", () => {
   });
 
   it("fetches new collection on componentWillReceiveProps if there's a new url", () => {
+    let clearCollection = jest.genMockFunction();
     let fetchCollection = jest.genMockFunction();
     wrapper = shallow(
       <Lanes
         url={"test1"}
         lanes={[]}
+        clearCollection={clearCollection}
         fetchCollection={fetchCollection}
         />
     );
+    expect(clearCollection.mock.calls.length).toBe(0);
     expect(fetchCollection.mock.calls.length).toBe(1);
 
     wrapper.instance().componentWillReceiveProps({url: "test1"});
+    expect(clearCollection.mock.calls.length).toBe(0);
     expect(fetchCollection.mock.calls.length).toBe(1);
 
     wrapper.instance().componentWillReceiveProps({url: "test2"});
+    expect(clearCollection.mock.calls.length).toBe(1);
     expect(fetchCollection.mock.calls.length).toBe(2);
     expect(fetchCollection.mock.calls[1][0]).toBe("test2");
   });
