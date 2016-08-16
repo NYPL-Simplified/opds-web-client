@@ -219,6 +219,7 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
   let catalogRootLink: OPDSLink;
   let parentLink: OPDSLink;
   let shelfUrl: string;
+  let aboutLinks: LinkData[] = [];
 
   feed.entries.forEach(entry => {
     if (feed instanceof AcquisitionFeed) {
@@ -280,6 +281,24 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
     if (shelfLink) {
       shelfUrl = shelfLink.href;
     }
+
+    let aboutLabels = {
+      "about": "About",
+      "terms-of-service": "Terms of Service",
+      "privacy-policy": "Privacy Policy",
+      "copyright": "Copyright"
+    };
+
+    Object.keys(aboutLabels).forEach(rel => {
+      let link = feed.links.find(link => link.rel === rel);
+      if (link) {
+        let linkData = {
+          url: resolve(feedUrl, link.href),
+          text: aboutLabels[rel]
+        };
+        aboutLinks.push(linkData);
+      }
+    });
   }
 
   facetGroups = facetLinks.reduce((result, link) => {
@@ -315,6 +334,7 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
   collection.catalogRootLink = OPDSLinkToLinkData(feedUrl, catalogRootLink);
   collection.parentLink = OPDSLinkToLinkData(feedUrl, parentLink);
   collection.shelfUrl = shelfUrl;
+  collection.aboutLinks = aboutLinks;
   collection.raw = feed.unparsed;
   Object.freeze(collection);
   return collection;

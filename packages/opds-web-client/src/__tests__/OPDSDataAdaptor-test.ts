@@ -2,8 +2,8 @@ jest.dontMock("../OPDSDataAdapter");
 jest.dontMock("./OPDSFactory");
 
 import {
-  OPDSArtworkLink, OPDSCollectionLink, OPDSFacetLink, OPDSAcquisitionLink ,
-  OPDSShelfLink,
+  OPDSArtworkLink, OPDSCollectionLink, OPDSFacetLink, OPDSAcquisitionLink,
+  OPDSShelfLink, OPDSLink
 } from "opds-feed-parser";
 import * as factory from "./OPDSFactory";
 import { feedToCollection } from "../OPDSDataAdapter";
@@ -226,5 +226,29 @@ describe("OPDSDataAdapter", () => {
 
     let collection = feedToCollection(acquisitionFeed, "");
     expect(collection.shelfUrl).toEqual(shelfLink.href);
+  });
+
+  it("extracts about links", () => {
+    let aboutLink = factory.link({
+      href: "about",
+      rel: "about"
+    });
+    let termsLink = factory.link({
+      href: "terms",
+      rel: "terms-of-service"
+    });
+
+    let acquisitionFeed = factory.acquisitionFeed({
+      id: "some id",
+      entries: [],
+      links: [aboutLink, termsLink]
+    });
+
+    let collection = feedToCollection(acquisitionFeed, "");
+    expect(collection.aboutLinks.length).toEqual(2);
+    let urls = collection.aboutLinks.map(link => link.url).sort();
+    let texts = collection.aboutLinks.map(link => link.text).sort();
+    expect(urls).toEqual(["about", "terms"]);
+    expect(texts).toEqual(["About", "Terms of Service"]);
   });
 });

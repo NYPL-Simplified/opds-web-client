@@ -65,6 +65,7 @@ export interface CollectionData {
   catalogRootLink?: LinkData;
   parentLink?: LinkData;
   shelfUrl?: string;
+  aboutLinks?: LinkData[];
   raw?: any;
 }
 

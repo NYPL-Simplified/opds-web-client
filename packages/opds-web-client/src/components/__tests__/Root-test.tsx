@@ -514,6 +514,36 @@ describe("Root", () => {
     });
   });
 
+  describe("when given a collection with about links", () => {
+    let wrapper;
+    let collectionData = Object.assign({}, ungroupedCollectionData, {
+      aboutLinks: [{
+        url: "about",
+        text: "About"
+      }, {
+        url: "terms",
+        text: "Terms"
+      }]
+    });
+
+    beforeEach(() => {
+      wrapper = shallow(
+        <Root
+          collectionData={collectionData}
+          fetchSearchDescription={(url: string) => {}}
+          />
+      );
+    });
+
+    it("renders the footer", () => {
+      let footer = wrapper.find("footer");
+      let aboutLinks = footer.find("li");
+      expect(aboutLinks.length).toEqual(2);
+      expect(aboutLinks.containsMatchingElement("About")).toBeTruthy();
+      expect(aboutLinks.containsMatchingElement("Terms")).toBeTruthy();
+    });
+  });
+
   describe("showNextBook()", () => {
     let mockPush;
     let context;

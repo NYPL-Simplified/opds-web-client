@@ -92,11 +92,18 @@ export class Root extends React.Component<RootProps, any> {
     let showBookWrapper = this.props.bookUrl || this.props.bookData;
     let showUrlForm = !this.props.collectionUrl && !this.props.bookUrl;
     let showBreadcrumbs = showCollection && breadcrumbsLinks.length > 0;
+    let showFooter = showCollection && this.props.collectionData.aboutLinks && this.props.collectionData.aboutLinks.length > 0;
 
     let padding = 10;
     let headerHeight = 50;
     let breadcrumbsHeight = showBreadcrumbs ? 40 : 0;
     let marginTop = headerHeight + breadcrumbsHeight;
+
+    let footerHeight = 0;
+    if (showFooter) {
+      footerHeight = 50;
+    }
+    let marginBottom = footerHeight;
 
     let headerStyle = {
       padding: `${padding}px`,
@@ -120,17 +127,28 @@ export class Root extends React.Component<RootProps, any> {
 
     let bodyStyle = {
       paddingTop: `${marginTop + padding}px`,
+      paddingBottom: `${marginBottom + padding}px`
     };
 
     let bookWrapperStyle = {
       position: "fixed",
       width: "100%",
       top: `${marginTop}px`,
-      height: `calc(100% - ${marginTop}px)`,
+      height: `calc(100% - ${marginTop + marginBottom}px)`,
       backgroundColor: "white",
       zIndex: 100,
       transform: "translateZ(0)",
       overflowY: "scroll"
+    };
+
+    let footerStyle = {
+      position: "fixed",
+      bottom: 0,
+      width: "100%",
+      height: `${footerHeight}px`,
+      padding: `${padding}px`,
+      backgroundColor: "#eee",
+      borderTop: "1px solid #ccc"
     };
 
     return (
@@ -258,6 +276,17 @@ export class Root extends React.Component<RootProps, any> {
               />
           }
         </div>
+        { showFooter &&
+          <footer style={ footerStyle }>
+            <ul aria-label="about links" className="list-inline">
+              { this.props.collectionData.aboutLinks.map(link =>
+                <li key={link.url} style={{padding: "5px"}}>
+                  <a href={link.url}>{link.text}</a>
+                </li>
+              ) }
+            </ul>
+          </footer>
+        }
       </div>
     );
   }
