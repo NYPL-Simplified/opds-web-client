@@ -60,6 +60,12 @@ export class Lanes extends React.Component<any, any> {
     }
   }
 
+  componentWillReceiveProps(newProps) {
+    if (this.props.fetchCollection && (newProps.url !== this.props.url)) {
+      this.props.fetchCollection(newProps.url);
+    }
+  }
+
   componentWillUnmount() {
     if (this.props.clearCollection) {
       this.props.clearCollection();
