@@ -5,7 +5,7 @@ import * as React from "react";
 import { Store } from "redux";
 import { shallow, mount } from "enzyme";
 
-import ConnectedRoot, { Root, BookDetailsContainerProps, HeaderProps } from "../Root";
+import ConnectedRoot, { Root, BookDetailsContainerProps, HeaderProps, FooterProps } from "../Root";
 import Breadcrumbs, { ComputeBreadcrumbs } from "../Breadcrumbs";
 import Collection from "../Collection";
 import UrlForm from "../UrlForm";
@@ -514,22 +514,24 @@ describe("Root", () => {
     });
   });
 
-  describe("when given a collection with about links", () => {
+  describe("when given a footer component", () => {
     let wrapper;
-    let collectionData = Object.assign({}, ungroupedCollectionData, {
-      aboutLinks: [{
-        url: "about",
-        text: "About"
-      }, {
-        url: "terms",
-        text: "Terms"
-      }]
-    });
+    let collectionData = ungroupedCollectionData;
+    let bookData = ungroupedCollectionData.books[0];
+    class Footer extends React.Component<FooterProps, any> {
+      render(): JSX.Element {
+        return (
+          <div className="footer" />
+        );
+      }
+    }
 
     beforeEach(() => {
       wrapper = shallow(
         <Root
+          Footer={Footer}
           collectionData={collectionData}
+          bookData={bookData}
           fetchSearchDescription={(url: string) => {}}
           />
       );
@@ -537,10 +539,9 @@ describe("Root", () => {
 
     it("renders the footer", () => {
       let footer = wrapper.find("footer");
-      let aboutLinks = footer.find("li");
-      expect(aboutLinks.length).toEqual(2);
-      expect(aboutLinks.containsMatchingElement("About")).toBeTruthy();
-      expect(aboutLinks.containsMatchingElement("Terms")).toBeTruthy();
+      expect(footer.length).toBe(1);
+      let footerComponent = footer.childAt(0);
+      expect(footerComponent.props().collection).toBe(collectionData);
     });
   });
 

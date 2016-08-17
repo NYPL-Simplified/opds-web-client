@@ -50,7 +50,7 @@ let groupedCollectionData: CollectionData = {
     }
   ],
   books: [],
-  links: [],
+  navigationLinks: [],
   catalogRootLink: {
     url: "root url",
     text: "root title"

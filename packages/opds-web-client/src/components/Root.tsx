@@ -31,6 +31,10 @@ export interface HeaderProps extends React.Props<any> {
   clearBasicAuthCredentials: () => void;
 }
 
+export interface FooterProps extends React.Props<any> {
+  collection: CollectionData;
+}
+
 export interface BookDetailsContainerProps extends React.Props<any> {
   bookUrl: string;
   collectionUrl: string;
@@ -56,6 +60,7 @@ export interface RootProps extends StateProps {
   headerTitle?: string;
   fetchPage?: (url: string) => Promise<any>;
   Header?: new() => __React.Component<HeaderProps, any>;
+  Footer?: new() => __React.Component<FooterProps, any>;
   BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
   computeBreadcrumbs?: ComputeBreadcrumbs;
   borrowBook?: (url: string) => Promise<BookData>;
@@ -79,6 +84,7 @@ export class Root extends React.Component<RootProps, any> {
   render(): JSX.Element {
     let BookDetailsContainer = this.props.BookDetailsContainer;
     let Header = this.props.Header;
+    let Footer = this.props.Footer;
     let collectionTitle = this.props.collectionData ? this.props.collectionData.title : null;
     let bookTitle = this.props.bookData ? this.props.bookData.title : null;
 
@@ -92,7 +98,7 @@ export class Root extends React.Component<RootProps, any> {
     let showBookWrapper = this.props.bookUrl || this.props.bookData;
     let showUrlForm = !this.props.collectionUrl && !this.props.bookUrl;
     let showBreadcrumbs = showCollection && breadcrumbsLinks.length > 0;
-    let showFooter = showCollection && this.props.collectionData.aboutLinks && this.props.collectionData.aboutLinks.length > 0;
+    let showFooter = showCollection && Footer;
 
     let padding = 10;
     let headerHeight = 50;
@@ -104,19 +110,6 @@ export class Root extends React.Component<RootProps, any> {
       footerHeight = 50;
     }
     let marginBottom = footerHeight;
-
-    let headerStyle = {
-      padding: `${padding}px`,
-      backgroundColor: "#eee",
-      borderBottom: "1px solid #ccc",
-      marginBottom: `${padding}px`,
-      textAlign: "left",
-      position: "fixed",
-      width: "100%",
-      height: `${headerHeight}px`,
-      top: "0",
-      boxSizing: "border-box"
-    };
 
     let breadcrumbsStyle = {
       position: "fixed",
@@ -278,13 +271,7 @@ export class Root extends React.Component<RootProps, any> {
         </div>
         { showFooter &&
           <footer style={ footerStyle }>
-            <ul aria-label="about links" className="list-inline">
-              { this.props.collectionData.aboutLinks.map(link =>
-                <li key={link.url} style={{padding: "5px"}}>
-                  <a href={link.url}>{link.text}</a>
-                </li>
-              ) }
-            </ul>
+            <Footer collection={this.props.collectionData} />
           </footer>
         }
       </div>

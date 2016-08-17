@@ -198,7 +198,8 @@ function OPDSLinkToLinkData(feedUrl, link: OPDSLink = null) {
 
   return {
     url: resolve(feedUrl, link.href),
-    text: link.title
+    text: link.title,
+    type: link.rel
   };
 }
 
@@ -209,7 +210,7 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
     url: feedUrl
   };
   let books: BookData[] = [];
-  let links: LinkData[] = [];
+  let navigationLinks: LinkData[] = [];
   let lanes: LaneData[] = [];
   let laneTitles = [];
   let laneIndex = [];
@@ -219,7 +220,7 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
   let catalogRootLink: OPDSLink;
   let parentLink: OPDSLink;
   let shelfUrl: string;
-  let aboutLinks: LinkData[] = [];
+  let links: OPDSLink[] = [];
 
   feed.entries.forEach(entry => {
     if (feed instanceof AcquisitionFeed) {
@@ -240,7 +241,7 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
       }
     } else {
       let link = entryToLink(entry, feedUrl);
-      links.push(link);
+      navigationLinks.push(link);
     }
   });
 
@@ -282,23 +283,7 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
       shelfUrl = shelfLink.href;
     }
 
-    let aboutLabels = {
-      "about": "About",
-      "terms-of-service": "Terms of Service",
-      "privacy-policy": "Privacy Policy",
-      "copyright": "Copyright"
-    };
-
-    Object.keys(aboutLabels).forEach(rel => {
-      let link = feed.links.find(link => link.rel === rel);
-      if (link) {
-        let linkData = {
-          url: resolve(feedUrl, link.href),
-          text: aboutLabels[rel]
-        };
-        aboutLinks.push(linkData);
-      }
-    });
+    links = feed.links;
   }
 
   facetGroups = facetLinks.reduce((result, link) => {
@@ -326,7 +311,7 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
   }, []);
 
   collection.lanes = lanes;
-  collection.links = links;
+  collection.navigationLinks = navigationLinks;
   collection.books = dedupeBooks(books);
   collection.facetGroups = facetGroups;
   collection.search = search;
@@ -334,7 +319,7 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
   collection.catalogRootLink = OPDSLinkToLinkData(feedUrl, catalogRootLink);
   collection.parentLink = OPDSLinkToLinkData(feedUrl, parentLink);
   collection.shelfUrl = shelfUrl;
-  collection.aboutLinks = aboutLinks;
+  collection.links = links.map(link => OPDSLinkToLinkData(feedUrl, link));
   collection.raw = feed.unparsed;
   Object.freeze(collection);
   return collection;

@@ -14,7 +14,7 @@ let collectionData = {
   id: "id",
   books: [],
   lanes: [],
-  links: [],
+  navigationLinks: [],
   shelfUrl: "loans url"
 };
 let loansData = [{

@@ -46,7 +46,7 @@ let basicCollection = {
   title: "test title",
   books: [],
   lanes: [],
-  links: []
+  navigationLinks: []
 };
 
 describe("shouldClear()", () => {
@@ -168,7 +168,7 @@ describe("history reducer", () => {
       url: "url",
       lanes: [],
       books: [],
-      links: [],
+      navigationLinks: [],
       catalogRootLink: {
         url: "root url",
         text: "root title"
@@ -204,7 +204,7 @@ describe("history reducer", () => {
       title: "some title",
       lanes: [],
       books: [],
-      links: []
+      navigationLinks: []
     };
     let action = actions.loadCollection(data, "some other url");
     let newHistory = [{
@@ -223,7 +223,7 @@ describe("history reducer", () => {
       title: "some title",
       lanes: [],
       books: [],
-      links: []
+      navigationLinks: []
     };
     let action = actions.loadCollection(data, "some other url");
     expect(reducer(currentState, action)).toEqual(currentState.history);
@@ -243,7 +243,7 @@ describe("history reducer", () => {
       title: "root title",
       lanes: [],
       books: [],
-      links: []
+      navigationLinks: []
     };
     let action = actions.loadCollection(data, "root url");
     expect(reducer(stateWithHistory, action)).toEqual([]);
@@ -267,7 +267,7 @@ describe("history reducer", () => {
       },
       lanes: [],
       books: [],
-      links: []
+      navigationLinks: []
     };
     let action = actions.loadCollection(data, "some url");
     let newHistory = [{
@@ -301,7 +301,7 @@ describe("history reducer", () => {
       title: "test title",
       lanes: [],
       books: [],
-      links: []
+      navigationLinks: []
     };
     let action = actions.loadCollection(data, "test url");
     let newHistory = [{
@@ -320,7 +320,7 @@ describe("history reducer", () => {
       title: "some title",
       lanes: [],
       books: [],
-      links: []
+      navigationLinks: []
     };
     let action = actions.loadCollection(data, "some url");
 
