@@ -81,7 +81,7 @@ describe("Collection", () => {
         title: "title",
         books: [],
         lanes: [],
-        links: [],
+        navigationLinks: [],
         facetGroups: [{
           label: "group",
           facets: []
@@ -116,7 +116,7 @@ describe("Collection", () => {
         title: "title",
         books: [],
         lanes: [],
-        links: [],
+        navigationLinks: [],
         nextPageUrl: "next"
       };
       let context = mockRouterContext();
@@ -153,7 +153,7 @@ describe("Collection", () => {
         title: "title",
         books: [],
         lanes: [],
-        links: [],
+        navigationLinks: [],
         nextPageUrl: "next"
       };
       let context = mockRouterContext();
@@ -173,7 +173,7 @@ describe("Collection", () => {
         title: "title",
         books: [],
         lanes: [],
-        links: [],
+        navigationLinks: [],
       };
 
       let wrapper = shallow(
@@ -205,7 +205,7 @@ describe("Collection", () => {
       title: "title",
       books: [],
       lanes: [],
-      links: []
+      navigationLinks: []
     };
     let wrapper;
     let context;

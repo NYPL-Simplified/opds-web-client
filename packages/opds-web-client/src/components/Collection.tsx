@@ -98,9 +98,9 @@ export default class Collection extends React.Component<CollectionProps, any> {
             </ul>
           }
 
-          { this.props.collection.links &&
+          { this.props.collection.navigationLinks &&
             <ul aria-label="navigation links" style={subtleListStyle} role="navigation">
-            { this.props.collection.links.map(link =>
+            { this.props.collection.navigationLinks.map(link =>
               <li key={link.id}>
                 <CatalogLink
                   collectionUrl={link.url}
@@ -175,6 +175,6 @@ export default class Collection extends React.Component<CollectionProps, any> {
   isEmpty() {
     return this.props.collection.lanes.length === 0 &&
            this.props.collection.books.length === 0 &&
-           this.props.collection.links.length === 0;
+           this.props.collection.navigationLinks.length === 0;
   }
 }

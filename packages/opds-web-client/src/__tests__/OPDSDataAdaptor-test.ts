@@ -2,8 +2,8 @@ jest.dontMock("../OPDSDataAdapter");
 jest.dontMock("./OPDSFactory");
 
 import {
-  OPDSArtworkLink, OPDSCollectionLink, OPDSFacetLink, OPDSAcquisitionLink ,
-  OPDSShelfLink,
+  OPDSArtworkLink, OPDSCollectionLink, OPDSFacetLink, OPDSAcquisitionLink,
+  OPDSShelfLink, OPDSLink
 } from "opds-feed-parser";
 import * as factory from "./OPDSFactory";
 import { feedToCollection } from "../OPDSDataAdapter";
@@ -101,7 +101,7 @@ describe("OPDSDataAdapter", () => {
     expect(book.copies).toEqual(borrowLink.copies);
   });
 
-  it("extracts link info", () => {
+  it("extracts navigation link info", () => {
     let navigationLink = factory.link({
       href: "href",
     });
@@ -118,8 +118,8 @@ describe("OPDSDataAdapter", () => {
     });
 
     let collection = feedToCollection(navigationFeed, "");
-    expect(collection.links.length).toEqual(1);
-    let link = collection.links[0];
+    expect(collection.navigationLinks.length).toEqual(1);
+    let link = collection.navigationLinks[0];
     expect(link.id).toEqual(linkEntry.id);
     expect(link.text).toEqual(linkEntry.title);
     expect(link.url).toEqual(navigationLink.href);
@@ -226,5 +226,29 @@ describe("OPDSDataAdapter", () => {
 
     let collection = feedToCollection(acquisitionFeed, "");
     expect(collection.shelfUrl).toEqual(shelfLink.href);
+  });
+
+  it("extracts top-level links", () => {
+    let aboutLink = factory.link({
+      href: "about",
+      rel: "about"
+    });
+    let termsLink = factory.link({
+      href: "terms",
+      rel: "terms-of-service"
+    });
+
+    let acquisitionFeed = factory.acquisitionFeed({
+      id: "some id",
+      entries: [],
+      links: [aboutLink, termsLink]
+    });
+
+    let collection = feedToCollection(acquisitionFeed, "");
+    expect(collection.links.length).toEqual(2);
+    let urls = collection.links.map(link => link.url).sort();
+    let types = collection.links.map(link => link.type).sort();
+    expect(urls).toEqual(["about", "terms"]);
+    expect(types).toEqual(["about", "terms-of-service"]);
   });
 });

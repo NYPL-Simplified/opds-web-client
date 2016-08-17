@@ -30,7 +30,7 @@ describe("collection reducer", () => {
       url: "url",
       lanes: [],
       books: [],
-      links: [],
+      navigationLinks: [],
       catalogRootLink: {
         url: "root url",
         text: "root title"
@@ -63,7 +63,7 @@ describe("collection reducer", () => {
       title: "some title",
       books: [],
       lanes: [],
-      links: []
+      navigationLinks: []
     },
     isFetching: false,
     isFetchingPage: true,
@@ -123,7 +123,7 @@ describe("collection reducer", () => {
       title: "some title",
       lanes: [],
       books: [],
-      links: []
+      navigationLinks: []
     };
     let action = actions.loadCollection(data, "some other url");
     let newState = Object.assign({}, currentState, {
@@ -142,7 +142,7 @@ describe("collection reducer", () => {
       title: "some title",
       lanes: [],
       books: [],
-      links: []
+      navigationLinks: []
     };
     let action = actions.loadCollection(data, "some url");
     let newState = Object.assign({}, errorState, {
@@ -207,7 +207,7 @@ describe("collection reducer", () => {
         imageUrl: "",
         publisher: ""
       }],
-      links: [],
+      navigationLinks: [],
       nextPageUrl: "next"
     };
     let action = actions.loadPage(data);

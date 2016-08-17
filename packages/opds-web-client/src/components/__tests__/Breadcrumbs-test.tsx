@@ -47,7 +47,7 @@ describe("hierarchyComputeBreadcrumbs", () => {
     title: "new title",
     lanes: [],
     books: [],
-    links: []
+    navigationLinks: []
   };
   let collectionLink = {
     url: "new url",

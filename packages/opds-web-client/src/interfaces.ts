@@ -58,13 +58,14 @@ export interface CollectionData {
   title: string;
   lanes: LaneData[];
   books: BookData[];
-  links: LinkData[];
+  navigationLinks: LinkData[];
   facetGroups?: FacetGroupData[];
   search?: SearchData;
   nextPageUrl?: string;
   catalogRootLink?: LinkData;
   parentLink?: LinkData;
   shelfUrl?: string;
+  links?: LinkData[];
   raw?: any;
 }
 
@@ -81,6 +82,7 @@ export interface LinkData {
   text: string;
   url: string;
   id?: string;
+  type?: string;
 }
 
 // these properties need to be optional because they're used by RootProps,

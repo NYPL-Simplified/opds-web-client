@@ -31,6 +31,10 @@ export interface HeaderProps extends React.Props<any> {
   clearBasicAuthCredentials: () => void;
 }
 
+export interface FooterProps extends React.Props<any> {
+  collection: CollectionData;
+}
+
 export interface BookDetailsContainerProps extends React.Props<any> {
   bookUrl: string;
   collectionUrl: string;
@@ -56,6 +60,7 @@ export interface RootProps extends StateProps {
   headerTitle?: string;
   fetchPage?: (url: string) => Promise<any>;
   Header?: new() => __React.Component<HeaderProps, any>;
+  Footer?: new() => __React.Component<FooterProps, any>;
   BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
   computeBreadcrumbs?: ComputeBreadcrumbs;
   borrowBook?: (url: string) => Promise<BookData>;
@@ -79,6 +84,7 @@ export class Root extends React.Component<RootProps, any> {
   render(): JSX.Element {
     let BookDetailsContainer = this.props.BookDetailsContainer;
     let Header = this.props.Header;
+    let Footer = this.props.Footer;
     let collectionTitle = this.props.collectionData ? this.props.collectionData.title : null;
     let bookTitle = this.props.bookData ? this.props.bookData.title : null;
 
@@ -92,24 +98,18 @@ export class Root extends React.Component<RootProps, any> {
     let showBookWrapper = this.props.bookUrl || this.props.bookData;
     let showUrlForm = !this.props.collectionUrl && !this.props.bookUrl;
     let showBreadcrumbs = showCollection && breadcrumbsLinks.length > 0;
+    let showFooter = showCollection && Footer;
 
     let padding = 10;
     let headerHeight = 50;
     let breadcrumbsHeight = showBreadcrumbs ? 40 : 0;
     let marginTop = headerHeight + breadcrumbsHeight;
 
-    let headerStyle = {
-      padding: `${padding}px`,
-      backgroundColor: "#eee",
-      borderBottom: "1px solid #ccc",
-      marginBottom: `${padding}px`,
-      textAlign: "left",
-      position: "fixed",
-      width: "100%",
-      height: `${headerHeight}px`,
-      top: "0",
-      boxSizing: "border-box"
-    };
+    let footerHeight = 0;
+    if (showFooter) {
+      footerHeight = 50;
+    }
+    let marginBottom = footerHeight;
 
     let breadcrumbsStyle = {
       position: "fixed",
@@ -120,17 +120,28 @@ export class Root extends React.Component<RootProps, any> {
 
     let bodyStyle = {
       paddingTop: `${marginTop + padding}px`,
+      paddingBottom: `${marginBottom + padding}px`
     };
 
     let bookWrapperStyle = {
       position: "fixed",
       width: "100%",
       top: `${marginTop}px`,
-      height: `calc(100% - ${marginTop}px)`,
+      height: `calc(100% - ${marginTop + marginBottom}px)`,
       backgroundColor: "white",
       zIndex: 100,
       transform: "translateZ(0)",
       overflowY: "scroll"
+    };
+
+    let footerStyle = {
+      position: "fixed",
+      bottom: 0,
+      width: "100%",
+      height: `${footerHeight}px`,
+      padding: `${padding}px`,
+      backgroundColor: "#eee",
+      borderTop: "1px solid #ccc"
     };
 
     return (
@@ -258,6 +269,11 @@ export class Root extends React.Component<RootProps, any> {
               />
           }
         </div>
+        { showFooter &&
+          <footer style={ footerStyle }>
+            <Footer collection={this.props.collectionData} />
+          </footer>
+        }
       </div>
     );
   }

@@ -5,7 +5,7 @@ import * as React from "react";
 import { Store } from "redux";
 import { shallow, mount } from "enzyme";
 
-import ConnectedRoot, { Root, BookDetailsContainerProps, HeaderProps } from "../Root";
+import ConnectedRoot, { Root, BookDetailsContainerProps, HeaderProps, FooterProps } from "../Root";
 import Breadcrumbs, { ComputeBreadcrumbs } from "../Breadcrumbs";
 import Collection from "../Collection";
 import UrlForm from "../UrlForm";
@@ -511,6 +511,37 @@ describe("Root", () => {
       expect(header.props().clearBasicAuthCredentials).toBe(clearBasicAuthCredentials);
       expect(header.props().loansUrl).toBe("loans");
       expect(search.type()).toBe(Search);
+    });
+  });
+
+  describe("when given a footer component", () => {
+    let wrapper;
+    let collectionData = ungroupedCollectionData;
+    let bookData = ungroupedCollectionData.books[0];
+    class Footer extends React.Component<FooterProps, any> {
+      render(): JSX.Element {
+        return (
+          <div className="footer" />
+        );
+      }
+    }
+
+    beforeEach(() => {
+      wrapper = shallow(
+        <Root
+          Footer={Footer}
+          collectionData={collectionData}
+          bookData={bookData}
+          fetchSearchDescription={(url: string) => {}}
+          />
+      );
+    });
+
+    it("renders the footer", () => {
+      let footer = wrapper.find("footer");
+      expect(footer.length).toBe(1);
+      let footerComponent = footer.childAt(0);
+      expect(footerComponent.props().collection).toBe(collectionData);
     });
   });
 
