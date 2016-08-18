@@ -4,6 +4,7 @@ import * as React from "react";
 import { shallow } from "enzyme";
 
 import BookDetails from "../BookDetails";
+import BookCover from "../BookCover";
 import BorrowButton from "../BorrowButton";
 import DownloadButton from "../DownloadButton";
 
@@ -37,8 +38,8 @@ describe("BookDetails", () => {
   });
 
   it("shows cover", () => {
-    let coverImage = wrapper.find("img");
-    expect(coverImage.props().src).toBe(book.imageUrl);
+    let cover = wrapper.find(BookCover);
+    expect(cover.props().book).toBe(book);
   });
 
   it("shows title", () => {

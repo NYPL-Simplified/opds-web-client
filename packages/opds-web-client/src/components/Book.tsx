@@ -20,13 +20,6 @@ export default class Book extends React.Component<BookProps, any> {
       textAlign: "center"
     };
 
-    let bookCoverStyle = {
-      width: "150px",
-      height: "200px",
-      float: "left",
-      border: "1px solid #ccc"
-    };
-
     let bookInfoStyle = {
       width: "160px",
       textAlign: "left",
@@ -51,10 +44,7 @@ export default class Book extends React.Component<BookProps, any> {
           collectionUrl={this.props.collectionUrl}
           bookUrl={this.props.book.url || this.props.book.id}
           style={{ color: "black", textDecoration: "none" }}>
-          { this.props.book.imageUrl ?
-            <img src={this.props.book.imageUrl} style={bookCoverStyle} alt=""/> :
-            <BookCover book={this.props.book} />
-          }
+          <BookCover book={this.props.book} />
         </CatalogLink>
         <div className="bookInfo" style={ bookInfoStyle }>
           <CatalogLink

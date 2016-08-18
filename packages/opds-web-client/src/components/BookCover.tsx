@@ -8,7 +8,35 @@ export interface BookCoverProps extends React.HTMLProps<BookCover> {
 }
 
 export default class BookCover extends React.Component<BookCoverProps, any> {
+  constructor(props) {
+    super(props);
+    this.state = { error: false };
+    this.handleError = this.handleError.bind(this);
+  }
+
+  handleError(event) {
+    this.setState({ error: true });
+  }
+
   render() {
+    let bookCoverStyle = {
+      width: "150px",
+      height: "200px",
+      float: "left",
+      border: "1px solid #ccc"
+    };
+
+    if (this.props.book.imageUrl && !this.state.error) {
+      return (
+        <img
+          src={this.props.book.imageUrl}
+          onError={this.handleError}
+          style={bookCoverStyle}
+          alt=""
+          />
+      );
+    }
+
     let { title, authors } = this.props.book;
 
     let titleStyle = Object.assign({
