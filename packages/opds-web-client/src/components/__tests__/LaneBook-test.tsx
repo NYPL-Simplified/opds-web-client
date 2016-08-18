@@ -6,6 +6,7 @@ import { shallow } from "enzyme";
 import LaneBook from "../LaneBook";
 import { BookProps } from "../Book";
 import CatalogLink, { CatalogLinkProps } from "../CatalogLink";
+import BookCover from "../BookCover";
 import { BookData } from "../../interfaces";
 
 let book: BookData = {
@@ -18,14 +19,13 @@ let book: BookData = {
 };
 
 describe("LaneBook", () => {
-  it("shows the book cover with empty alt", () => {
+  it("shows the book cover", () => {
     let wrapper = shallow(
       <LaneBook book={book} />
     );
 
-    let coverImage = wrapper.find("img");
-    expect(coverImage.props().src).toBe(book.imageUrl);
-    expect(coverImage.props().alt).toEqual("");
+    let cover = wrapper.find(BookCover);
+    expect(cover.props().book).toBe(book);
   });
 
   it("shows book title in a CatalogLink", () => {
