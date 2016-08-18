@@ -6,6 +6,7 @@ import { shallow } from "enzyme";
 import Book from "../Book";
 import { BookData } from "../../interfaces";
 import CatalogLink from "../CatalogLink";
+import BookCover from "../BookCover";
 
 let book: BookData = {
   id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
@@ -18,17 +19,16 @@ let book: BookData = {
 };
 
 describe("Book", () => {
-  it("shows the book cover with empty alt", () => {
+  it("shows the book cover", () => {
     let wrapper = shallow(
       <Book book={book} />
     );
 
     let links = wrapper.find(CatalogLink);
     expect(links.length).toEqual(2);
-    let coverImage = links.at(0).children().at(0);
-    expect(coverImage.type()).toBe("img");
-    expect(coverImage.props().src).toBe(book.imageUrl);
-    expect(coverImage.props().alt).toBe("");
+    let cover = links.at(0).children().at(0);
+    expect(cover.type()).toBe(BookCover);
+    expect(cover.props().book).toBe(book);
   });
 
   it("shows book info", () => {

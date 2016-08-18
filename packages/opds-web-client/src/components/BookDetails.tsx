@@ -2,6 +2,7 @@ import * as React from "react";
 import CatalogLink from "./CatalogLink";
 import BorrowButton from "./BorrowButton";
 import DownloadButton from "./DownloadButton";
+import BookCover from "./BookCover";
 import { BookProps } from "./Book";
 import { BookData } from "../interfaces";
 const download = require("downloadjs");
@@ -30,11 +31,9 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
     return (
       <div className="bookDetails">
         <div className="bookDetailsTop" style={{ textAlign: "left", display: "table-row" }}>
-          { this.props.book.imageUrl &&
-            <div className="bookImage" style={{ display: "table-cell", paddingRight: "20px", verticalAlign: "top" }}>
-              <img src={this.props.book.imageUrl} style={{ height: "150px" }}/>
-            </div>
-          }
+          <div className="bookImage" style={{ display: "table-cell", paddingRight: "20px", verticalAlign: "top" }}>
+            <BookCover book={this.props.book} />
+          </div>
           <div className="bookDetailsHeader" style={{ display: "table-cell", verticalAlign: "top", textAlign: "left", maxWidth: "500px" }}>
             <h1 className="bookDetailsTitle" style={{ margin: 0 }}>{this.props.book.title}</h1>
             {
