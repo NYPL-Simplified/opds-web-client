@@ -18,6 +18,12 @@ export default class BookCover extends React.Component<BookCoverProps, any> {
     this.setState({ error: true });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.state.error) {
+      this.setState({ error: false });
+    }
+  }
+
   render() {
     let bookCoverStyle = {
       width: "150px",

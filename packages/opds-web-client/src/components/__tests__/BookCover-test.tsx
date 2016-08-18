@@ -59,6 +59,15 @@ describe("BookCover", () => {
 
       let authors = wrapper.childAt(1);
       expect(authors.text()).toBe(bookData.authors.join(", "));
+
+      // The placeholder is cleared when there are new props.
+      let newBookData = {
+        id: "new book",
+        imageUrl: "https://dlotdqc6pnwqb.cloudfront.net/3M/abcdefg/cover.jpg"
+      };
+      wrapper.setProps({ book: newBookData });
+      image = wrapper.find("img");
+      expect(image.props().src).toBe(newBookData.imageUrl);
     });
   });
 });
