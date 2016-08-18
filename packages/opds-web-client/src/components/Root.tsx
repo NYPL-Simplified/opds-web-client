@@ -120,7 +120,8 @@ export class Root extends React.Component<RootProps, any> {
 
     let bodyStyle = {
       paddingTop: `${marginTop + padding}px`,
-      paddingBottom: `${marginBottom + padding}px`
+      paddingBottom: `${marginBottom + padding}px`,
+      overflow: "auto"
     };
 
     let bookWrapperStyle = {
