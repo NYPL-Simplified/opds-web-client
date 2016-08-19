@@ -47,8 +47,8 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
               ""
             }
             <div style={{ marginTop: "2em", color: "#888", fontSize: "0.9em" }}>
-              { this.fieldNames().map(key =>
-                fields[key] ? <div className={"bookDetails" + key} key={key}>{key}: {fields[key]}</div> : null
+              { this.fields().map(field =>
+                field.value ? <div className={"bookDetails-" + field.name.replace(" ", "-")} key={field.name}>{field.name}: {field.value}</div> : null
               ) }
             </div>
           </div>
@@ -98,18 +98,23 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
     }
   }
 
-  fieldNames() {
-    return ["Publisher", "Published", "Categories"];
-  }
-
   fields() {
-    return this.props.book ? {
-      Published: this.props.book.published,
-      Publisher: this.props.book.publisher,
-      Categories: this.props.book.categories ?
-                  this.props.book.categories.join(", ") :
-                  null
-    } : {};
+    return this.props.book ? [
+      {
+        name: "Publisher",
+        value: this.props.book.publisher
+      },
+      {
+        name: "Published",
+        "value": this.props.book.published
+      },
+      {
+        name: "Categories",
+        value: this.props.book.categories ?
+                 this.props.book.categories.join(", ") :
+                 null
+      }
+    ] : [];
   }
 
   circulationLinks() {

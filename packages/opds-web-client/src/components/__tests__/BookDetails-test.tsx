@@ -58,7 +58,7 @@ describe("BookDetails", () => {
   });
 
   it("shows publisher", () => {
-    let publisher = wrapper.find(".bookDetailsPublisher");
+    let publisher = wrapper.find(".bookDetails-Publisher");
     expect(publisher.text()).toBe("Publisher: " + book.publisher);
   });
 
@@ -75,17 +75,17 @@ describe("BookDetails", () => {
         />
     );
 
-    let publisher = wrapper.find(".bookDetailsPublisher");
+    let publisher = wrapper.find(".bookDetails-Publisher");
     expect(publisher.length).toBe(0);
   });
 
   it("shows publish date", () => {
-    let published = wrapper.find(".bookDetailsPublished");
+    let published = wrapper.find(".bookDetails-Published");
     expect(published.text()).toBe("Published: " + book.published);
   });
 
   it("shows categories", () => {
-    let categories = wrapper.find(".bookDetailsCategories");
+    let categories = wrapper.find(".bookDetails-Categories");
     expect(categories.text()).toBe("Categories: category 1, category 2");
   });
 
@@ -100,7 +100,7 @@ describe("BookDetails", () => {
         />
     );
 
-    let categories = wrapper.find(".bookDetailsCategories");
+    let categories = wrapper.find(".bookDetails-Categories");
     expect(categories.length).toBe(0);
   });
 
