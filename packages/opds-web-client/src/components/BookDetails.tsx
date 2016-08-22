@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as moment from "moment";
 import CatalogLink from "./CatalogLink";
 import BorrowButton from "./BorrowButton";
 import DownloadButton from "./DownloadButton";
@@ -73,7 +74,12 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
               }
             </div>
             <div className="col-sm-6" style={{textAlign: "center", marginBottom: "30px"}}>
-              { this.circulationLinks() }
+              <div style={{ marginBottom: "5px" }}>
+                { this.circulationLinks() }
+              </div>
+              <div className="circulationInfo">
+                { this.circulationInfo() }
+              </div>
             </div>
             <div className="col-sm-3" style={{ textAlign: "right" }}>
               { this.rightColumnLinks() }
@@ -125,10 +131,7 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
   circulationLinks() {
     let links = [];
 
-    if (
-      this.props.book.openAccessLinks &&
-      this.props.book.openAccessLinks.length > 0
-    ) {
+    if (this.isOpenAccess()) {
       links.push(
         this.props.book.openAccessLinks.map(link => {
           return (
@@ -142,10 +145,7 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
             );
         })
       );
-    } else if (
-      this.props.book.fulfillmentLinks &&
-      this.props.book.fulfillmentLinks.length > 0
-    ) {
+    } else if (this.isBorrowed()) {
       links.push(
         this.props.book.fulfillmentLinks.map(link => {
           let isStreaming = link.type === "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media";
@@ -188,6 +188,58 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
     return links;
   }
 
+  circulationInfo() {
+    if (this.isOpenAccess()) {
+      return [(
+        <div key="oa">This open-access book is available to keep.</div>
+      )];
+    }
+
+    if (this.isBorrowed()) {
+      let availableUntil = this.props.book.availability && this.props.book.availability.until;
+      if (availableUntil) {
+        let timeLeft = moment(availableUntil).fromNow(true);
+        return [(
+          <div key="loan">You have this book on loan for { timeLeft }.</div>
+        )];
+      }
+      return [];
+    }
+
+    let info = [];
+
+    let availableCopies = (this.props.book.copies && this.props.book.copies.available);
+    let totalCopies = (this.props.book.copies && this.props.book.copies.total);
+    let totalHolds = (this.props.book.holds && this.props.book.holds.total);
+    let holdsPosition = (this.props.book.holds && this.props.book.holds.position);
+
+    if (availableCopies !== undefined && availableCopies !== null
+          && totalCopies !== undefined && totalCopies !== null) {
+      info.push(
+        <div key="copies">
+          { availableCopies } of { totalCopies } copies available
+        </div>
+      );
+    }
+
+    if (totalHolds && availableCopies === 0) {
+      info.push(
+        <div key="holds">
+          { totalHolds } patrons in hold queue
+        </div>
+      );
+      if (this.isReserved() && holdsPosition !== undefined && holdsPosition !== null) {
+        info.push(
+          <div key="holds-position">
+            Your holds position: { holdsPosition }
+          </div>
+        );
+      }
+    }
+
+    return info;
+  }
+
   borrow(): Promise<BookData> {
     return this.props.borrowBook(this.props.book.borrowUrl);
   }
@@ -195,6 +247,16 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
   isReserved() {
     return this.props.book.availability &&
            this.props.book.availability.status === "reserved";
+  }
+
+  isBorrowed() {
+    return this.props.book.fulfillmentLinks &&
+           this.props.book.fulfillmentLinks.length > 0;
+  }
+
+  isOpenAccess() {
+    return this.props.book.openAccessLinks &&
+           this.props.book.openAccessLinks.length > 0;
   }
 
   rightColumnLinks() {
