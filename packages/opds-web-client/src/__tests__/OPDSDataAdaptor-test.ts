@@ -58,7 +58,11 @@ describe("OPDSDataAdapter", () => {
       categories: [factory.category({label: "label"}), factory.category({term: "no label"}), factory.category({label: "label 2"})],
       links: [largeImageLink, thumbImageLink, openAccessLink, borrowLink, fulfillmentLink, collectionLink],
       published: "2014-06-08T22:45:58Z",
-      publisher: "Fake Publisher"
+      publisher: "Fake Publisher",
+      series: {
+        name: "Fake Series",
+        position: 2
+      }
     });
 
     let acquisitionFeed = factory.acquisitionFeed({
@@ -81,6 +85,8 @@ describe("OPDSDataAdapter", () => {
     expect(book.authors[1]).toEqual(entry.authors[1].name);
     expect(book.contributors.length).toEqual(1);
     expect(book.contributors[0]).toEqual(entry.contributors[0].name);
+    expect(book.series.name).toEqual(entry.series.name);
+    expect(book.series.position).toEqual(entry.series.position);
     expect(book.summary).toEqual(sanitizeHtml(entry.summary.content));
     expect(book.summary).toContain("Many men and women are going to die for that book.");
     expect(book.summary).not.toContain("script");

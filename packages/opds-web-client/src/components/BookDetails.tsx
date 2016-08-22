@@ -37,6 +37,11 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
           <div className="bookDetailsHeader" style={{ display: "table-cell", verticalAlign: "top", textAlign: "left", maxWidth: "500px" }}>
             <h1 className="bookDetailsTitle" style={{ margin: 0 }}>{this.props.book.title}</h1>
             {
+              this.props.book.series && this.props.book.series.name ?
+              <h3 className="bookDetailsSeries" style={{ marginTop: "0.5em", fontSize: "1em" }}>{ this.props.book.series.name }</h3> :
+              ""
+            }
+            {
               this.props.book.authors && this.props.book.authors.length ?
               <h2 className="bookDetailsAuthors" style={{ marginTop: "0.5em", fontSize: "1.2em" }}>{this.props.book.authors.join(", ")}</h2> :
               ""

@@ -133,6 +133,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
   return <BookData>{
     id: entry.id,
     title: entry.title,
+    series: entry.series,
     authors: authors,
     contributors: contributors,
     summary: entry.summary.content && sanitizeHtml(entry.summary.content),

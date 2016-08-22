@@ -20,7 +20,10 @@ let book = {
   borrowUrl: "borrow url",
   publisher: "Penguin Publishing Group",
   published: "February 29, 2016",
-  categories: ["category 1", "category 2"]
+  categories: ["category 1", "category 2"],
+  series: {
+    name: "Fake Series"
+  }
 };
 
 describe("BookDetails", () => {
@@ -45,6 +48,11 @@ describe("BookDetails", () => {
   it("shows title", () => {
     let title = wrapper.find("h1");
     expect(title.text()).toBe(book.title);
+  });
+
+  it("shows series", () => {
+    let series = wrapper.find(".bookDetailsSeries");
+    expect(series.text()).toBe(book.series.name);
   });
 
   it("shows authors", () => {

@@ -1,6 +1,10 @@
 export interface BookData {
   id: string;
   title: string;
+  series?: {
+    name: string;
+    position?: number;
+  };
   authors?: string[];
   contributors?: string[];
   summary?: string;
