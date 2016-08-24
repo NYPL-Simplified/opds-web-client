@@ -48,7 +48,7 @@ export function mapDispatchToProps(dispatch) {
         clearBook: () => dispatch(actions.clearBook()),
         fetchSearchDescription: (url: string) => dispatch(actions.fetchSearchDescription(url)),
         closeError: () => dispatch(actions.closeError()),
-        borrowBook: (url: string) => dispatch(actions.borrowBook(url)),
+        updateBook: (url: string) => dispatch(actions.updateBook(url)),
         fulfillBook: (url: string) => dispatch(actions.fulfillBook(url)),
         indirectFulfillBook: (url: string, type: string) => dispatch(actions.indirectFulfillBook(url, type)),
         fetchLoans: (url: string) => dispatch(actions.fetchLoans(url)),
@@ -166,8 +166,8 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
 
   let { fetchCollection, fetchBook } = dispatchProps;
 
-  let borrowBook = (url: string) => {
-    return dispatchProps.borrowBook(url).then((data) => {
+  let updateBook = (url: string) => {
+    return dispatchProps.updateBook(url).then((data) => {
       if (stateProps.loansUrl) {
         dispatchProps.fetchLoans(stateProps.loansUrl);
       }
@@ -203,6 +203,6 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
     clearBook: () => {
       setBook(null);
     },
-    borrowBook: borrowBook
+    updateBook: updateBook
   });
 };

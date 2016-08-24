@@ -9,7 +9,7 @@ import { BookData } from "../interfaces";
 const download = require("downloadjs");
 
 export interface BookDetailsProps extends BookProps {
-  borrowBook: (url: string) => Promise<BookData>;
+  updateBook: (url: string) => Promise<BookData>;
   fulfillBook: (url: string) => Promise<Blob>;
   indirectFulfillBook: (url: string, type: string) => Promise<string>;
   isSignedIn?: boolean;
@@ -241,7 +241,7 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
   }
 
   borrow(): Promise<BookData> {
-    return this.props.borrowBook(this.props.book.borrowUrl);
+    return this.props.updateBook(this.props.book.borrowUrl);
   }
 
   isReserved() {

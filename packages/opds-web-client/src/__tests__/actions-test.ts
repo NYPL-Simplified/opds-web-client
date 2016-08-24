@@ -123,7 +123,7 @@ describe("actions", () => {
     });
   });
 
-  describe("borrowBook", () => {
+  describe("updateBook", () => {
     let borrowUrl = "http://example.com/book/borrow";
     let fulfillmentUrl = "http://example.com/book/fulfill";
     let mimeType = "mime/type";
@@ -133,11 +133,11 @@ describe("actions", () => {
       fetcher.resolve = true;
       fetcher.testData = { fulfillmentUrl, mimeType };
 
-      actions.borrowBook(borrowUrl)(dispatch).then(data => {
+      actions.updateBook(borrowUrl)(dispatch).then(data => {
         expect(dispatch.mock.calls.length).toBe(3);
-        expect(dispatch.mock.calls[0][0].type).toBe(actions.BORROW_BOOK_REQUEST);
-        expect(dispatch.mock.calls[1][0].type).toBe(actions.BORROW_BOOK_SUCCESS);
-        expect(dispatch.mock.calls[2][0].type).toBe(actions.LOAD_BORROW_DATA);
+        expect(dispatch.mock.calls[0][0].type).toBe(actions.UPDATE_BOOK_REQUEST);
+        expect(dispatch.mock.calls[1][0].type).toBe(actions.UPDATE_BOOK_SUCCESS);
+        expect(dispatch.mock.calls[2][0].type).toBe(actions.LOAD_UPDATE_BOOK_DATA);
         expect(data).toEqual(fetcher.testData);
         done();
       }).catch(done.fail);
@@ -147,10 +147,10 @@ describe("actions", () => {
       let dispatch = jest.genMockFunction();
       fetcher.resolve = false;
 
-      actions.borrowBook(borrowUrl)(dispatch).catch(err => {
+      actions.updateBook(borrowUrl)(dispatch).catch(err => {
         expect(dispatch.mock.calls.length).toBe(2);
-        expect(dispatch.mock.calls[0][0].type).toBe(actions.BORROW_BOOK_REQUEST);
-        expect(dispatch.mock.calls[1][0].type).toBe(actions.BORROW_BOOK_FAILURE);
+        expect(dispatch.mock.calls[0][0].type).toBe(actions.UPDATE_BOOK_REQUEST);
+        expect(dispatch.mock.calls[1][0].type).toBe(actions.UPDATE_BOOK_FAILURE);
         expect(err).toBe("test error");
         done();
       });

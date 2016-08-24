@@ -34,7 +34,7 @@ describe("BookDetails", () => {
     wrapper = shallow(
       <BookDetails
         book={book}
-        borrowBook={jest.genMockFunction()}
+        updateBook={jest.genMockFunction()}
         fulfillBook={jest.genMockFunction()}
         indirectFulfillBook={jest.genMockFunction()}
         />
@@ -78,7 +78,7 @@ describe("BookDetails", () => {
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
-        borrowBook={jest.genMockFunction()}
+        updateBook={jest.genMockFunction()}
         fulfillBook={jest.genMockFunction()}
         indirectFulfillBook={jest.genMockFunction()}
         />
@@ -103,7 +103,7 @@ describe("BookDetails", () => {
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
-        borrowBook={jest.genMockFunction()}
+        updateBook={jest.genMockFunction()}
         fulfillBook={jest.genMockFunction()}
         indirectFulfillBook={jest.genMockFunction()}
         />
@@ -129,11 +129,11 @@ describe("BookDetails", () => {
     let bookCopy = Object.assign({}, book, {
       borrowUrl: "borrow url"
     });
-    let borrowBook = jest.genMockFunction();
+    let updateBook = jest.genMockFunction();
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
-        borrowBook={borrowBook}
+        updateBook={updateBook}
         fulfillBook={jest.genMockFunction()}
         indirectFulfillBook={jest.genMockFunction()}
         />
@@ -142,8 +142,8 @@ describe("BookDetails", () => {
     let button = wrapper.find(BorrowButton);
     expect(button.children().text()).toBe("Borrow");
     button.props().borrow();
-    expect(borrowBook.mock.calls.length).toBe(1);
-    expect(borrowBook.mock.calls[0][0]).toBe(bookCopy.borrowUrl);
+    expect(updateBook.mock.calls.length).toBe(1);
+    expect(updateBook.mock.calls[0][0]).toBe(bookCopy.borrowUrl);
     wrapper.setProps({
       book: Object.assign({}, bookCopy, {
         copies: { total: 2, available: 0 }
@@ -164,7 +164,7 @@ describe("BookDetails", () => {
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
-        borrowBook={jest.genMockFunction()}
+        updateBook={jest.genMockFunction()}
         fulfillBook={fulfillBook}
         indirectFulfillBook={indirectFulfillBook}
         isSignedIn={false}
@@ -187,7 +187,7 @@ describe("BookDetails", () => {
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
-        borrowBook={jest.genMockFunction()}
+        updateBook={jest.genMockFunction()}
         fulfillBook={jest.genMockFunction()}
         indirectFulfillBook={jest.genMockFunction()}
         />
@@ -211,7 +211,7 @@ describe("BookDetails", () => {
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
-        borrowBook={jest.genMockFunction()}
+        updateBook={jest.genMockFunction()}
         fulfillBook={jest.genMockFunction()}
         indirectFulfillBook={jest.genMockFunction()}
         />
@@ -235,7 +235,7 @@ describe("BookDetails", () => {
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
-        borrowBook={jest.genMockFunction()}
+        updateBook={jest.genMockFunction()}
         fulfillBook={jest.genMockFunction()}
         indirectFulfillBook={jest.genMockFunction()}
         />
@@ -260,7 +260,7 @@ describe("BookDetails", () => {
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
-        borrowBook={jest.genMockFunction()}
+        updateBook={jest.genMockFunction()}
         fulfillBook={jest.genMockFunction()}
         indirectFulfillBook={jest.genMockFunction()}
         />
@@ -285,7 +285,7 @@ describe("BookDetails", () => {
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
-        borrowBook={jest.genMockFunction()}
+        updateBook={jest.genMockFunction()}
         fulfillBook={jest.genMockFunction()}
         indirectFulfillBook={jest.genMockFunction()}
         />

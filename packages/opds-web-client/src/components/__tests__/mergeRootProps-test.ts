@@ -65,7 +65,7 @@ describe("createFetchCollectionAndBook", () => {
 
 describe("mergeRootProps", () => {
   let stateProps, dispatchProps, componentProps;
-  let fetchCollection, clearCollection, fetchBook, loadBook, clearBook, navigate, borrowBook, fetchLoans;
+  let fetchCollection, clearCollection, fetchBook, loadBook, clearBook, navigate, updateBook, fetchLoans;
   let fakeCollection = ungroupedCollectionData;
   let fakeBook = {
     id: "fake book id",
@@ -87,14 +87,14 @@ describe("mergeRootProps", () => {
     loadBook = jest.genMockFunction();
     clearCollection = jest.genMockFunction();
     clearBook = jest.genMockFunction();
-    borrowBook = jest.genMockFunction().mockImplementation(url => {
+    updateBook = jest.genMockFunction().mockImplementation(url => {
       return new Promise((resolve, reject) => resolve(fakeBook));
     });
     fetchLoans = jest.genMockFunction();
     dispatchProps = { createDispatchProps: (fetcher) => {
       return {
         fetchCollection, clearCollection, loadBook, fetchBook, clearBook,
-        borrowBook, fetchLoans
+        updateBook, fetchLoans
       };
     }};
     componentProps = {};
@@ -444,18 +444,18 @@ describe("mergeRootProps", () => {
     });
   });
 
-  describe("borrowBook", () => {
+  describe("updateBook", () => {
     let props;
 
-    it("calls borrowBook", () => {
+    it("calls updateBook", () => {
       stateProps = {
         loansUrl: "loans"
       };
       props = mergeRootProps(stateProps, dispatchProps, componentProps);
-      props.borrowBook("borrow url");
+      props.updateBook("borrow url");
 
-      expect(borrowBook.mock.calls.length).toBe(1);
-      expect(borrowBook.mock.calls[0][0]).toBe("borrow url");
+      expect(updateBook.mock.calls.length).toBe(1);
+      expect(updateBook.mock.calls[0][0]).toBe("borrow url");
     });
 
     it("calls fetchLoans if loansUrl is present", (done) => {
@@ -464,7 +464,7 @@ describe("mergeRootProps", () => {
       };
       props = mergeRootProps(stateProps, dispatchProps, componentProps);
 
-      props.borrowBook().then(data => {
+      props.updateBook().then(data => {
         expect(fetchLoans.mock.calls.length).toBe(1);
         expect(fetchLoans.mock.calls[0][0]).toBe("loans");
         expect(data).toEqual(fakeBook);
@@ -475,7 +475,7 @@ describe("mergeRootProps", () => {
     it("doesn't call fetchLoans if loansUrl is blank", (done) => {
       props = mergeRootProps({}, dispatchProps, componentProps);
 
-      props.borrowBook().then(data => {
+      props.updateBook().then(data => {
         expect(fetchLoans.mock.calls.length).toBe(0);
         done();
       }).catch(done.fail);

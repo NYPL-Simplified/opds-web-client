@@ -48,25 +48,25 @@ const book = (state: BookState = initialState, action): BookState => {
       });
 
     case "FULFILL_BOOK_REQUEST":
-    case "BORROW_BOOK_REQUEST":
+    case "UPDATE_BOOK_REQUEST":
       return Object.assign({}, state, {
         isFetching: true
       });
 
     case "FULFILL_BOOK_SUCCESS":
-    case "BORROW_BOOK_SUCCESS":
+    case "UPDATE_BOOK_SUCCESS":
       return Object.assign({}, state, {
         isFetching: false
       });
 
     case "FULFILL_BOOK_FAILURE":
-    case "BORROW_BOOK_FAILURE":
+    case "UPDATE_BOOK_FAILURE":
       return Object.assign({}, state, {
         isFetching: false,
         error: action.error
       });
 
-    case "LOAD_BORROW_DATA":
+    case "LOAD_UPDATE_BOOK_DATA":
       return Object.assign({}, state, {
         data: Object.assign({}, state.data, action.data)
       });
