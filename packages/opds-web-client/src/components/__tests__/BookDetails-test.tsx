@@ -1,6 +1,7 @@
 jest.autoMockOff();
 
 import * as React from "react";
+import * as moment from "moment";
 import { shallow } from "enzyme";
 
 import BookDetails from "../BookDetails";
@@ -194,5 +195,104 @@ describe("BookDetails", () => {
     let button = wrapper.find("button");
     expect(button.text()).toBe("On Hold");
     expect(button.props().className).toContain("disabled");
+  });
+
+  it("shows holds when there are no copies available", () => {
+    let bookCopy = Object.assign({}, book, {
+      openAccessLinks: [],
+      copies: {
+        available: 0,
+        total: 12
+      },
+      holds: {
+        total: 6
+      }
+    });
+    wrapper = shallow(
+      <BookDetails
+        book={bookCopy}
+        borrowBook={jest.genMockFunction()}
+        fulfillBook={jest.genMockFunction()}
+        indirectFulfillBook={jest.genMockFunction()}
+        />
+    );
+    let circulationInfo = wrapper.find(".circulationInfo");
+    expect(circulationInfo.text()).toContain("0 of 12 copies available");
+    expect(circulationInfo.text()).toContain("6 patrons in hold queue");
+  });
+
+  it("doesn't show holds when there are copies available", () => {
+    let bookCopy = Object.assign({}, book, {
+      openAccessLinks: [],
+      copies: {
+        available: 5,
+        total: 12
+      },
+      holds: {
+        total: 6
+      }
+    });
+    wrapper = shallow(
+      <BookDetails
+        book={bookCopy}
+        borrowBook={jest.genMockFunction()}
+        fulfillBook={jest.genMockFunction()}
+        indirectFulfillBook={jest.genMockFunction()}
+        />
+    );
+    let circulationInfo = wrapper.find(".circulationInfo");
+    expect(circulationInfo.text()).toContain("5 of 12 copies available");
+    expect(circulationInfo.text()).not.toContain("6");
+  });
+
+  it("shows circulation info for open access book", () => {
+    let circulationInfo = wrapper.find(".circulationInfo");
+    expect(circulationInfo.text()).toContain("open-access");
+  });
+
+  it("shows circulation info for borrowed book", () => {
+    let tomorrow = moment().add(1, "day").format();
+    let bookCopy = Object.assign({}, book, {
+      openAccessLinks: [],
+      fulfillmentLinks: ["http://fulfill"],
+      availability: { status: "available", until: tomorrow }
+    });
+    wrapper = shallow(
+      <BookDetails
+        book={bookCopy}
+        borrowBook={jest.genMockFunction()}
+        fulfillBook={jest.genMockFunction()}
+        indirectFulfillBook={jest.genMockFunction()}
+        />
+    );
+    let circulationInfo = wrapper.find(".circulationInfo");
+    expect(circulationInfo.text()).toContain("on loan for a day");
+  });
+
+  it("shows circulation info for reserved book", () => {
+    let bookCopy = Object.assign({}, book, {
+      openAccessLinks: [],
+      availability: { status: "reserved" },
+      copies: {
+        available: 0,
+        total: 12
+      },
+      holds: {
+        total: 6,
+        position: 3
+      }
+    });
+    wrapper = shallow(
+      <BookDetails
+        book={bookCopy}
+        borrowBook={jest.genMockFunction()}
+        fulfillBook={jest.genMockFunction()}
+        indirectFulfillBook={jest.genMockFunction()}
+        />
+    );
+    let circulationInfo = wrapper.find(".circulationInfo");
+    expect(circulationInfo.text()).toContain("0 of 12 copies available");
+    expect(circulationInfo.text()).toContain("6 patrons in hold queue");
+    expect(circulationInfo.text()).toContain("Your holds position: 3");
   });
 });
