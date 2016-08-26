@@ -63,7 +63,7 @@ export interface RootProps extends StateProps {
   Footer?: new() => __React.Component<FooterProps, any>;
   BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
   computeBreadcrumbs?: ComputeBreadcrumbs;
-  borrowBook?: (url: string) => Promise<BookData>;
+  updateBook?: (url: string) => Promise<BookData>;
   fulfillBook?: (url: string) => Promise<Blob>;
   indirectFulfillBook?: (url: string, type: string) => Promise<string>;
   fetchLoans?: (url: string) => Promise<any>;
@@ -240,7 +240,7 @@ export class Root extends React.Component<RootProps, any> {
                     >
                     <BookDetails
                       book={this.loanedBookData() || this.props.bookData}
-                      borrowBook={this.props.borrowBook}
+                      updateBook={this.props.updateBook}
                       fulfillBook={this.props.fulfillBook}
                       indirectFulfillBook={this.props.indirectFulfillBook}
                       isSignedIn={this.props.isSignedIn}
@@ -249,7 +249,7 @@ export class Root extends React.Component<RootProps, any> {
                   <div style={{ padding: "40px", maxWidth: "700px", margin: "0 auto" }}>
                     <BookDetails
                       book={this.loanedBookData() || this.props.bookData}
-                      borrowBook={this.props.borrowBook}
+                      updateBook={this.props.updateBook}
                       fulfillBook={this.props.fulfillBook}
                       indirectFulfillBook={this.props.indirectFulfillBook}
                       isSignedIn={this.props.isSignedIn}

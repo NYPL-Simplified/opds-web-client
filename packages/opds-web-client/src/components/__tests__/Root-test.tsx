@@ -250,14 +250,14 @@ describe("Root", () => {
     let loans = [Object.assign({}, bookData, {
       availability: { status: "availabile" }
     })];
-    let borrowBook = jest.genMockFunction();
+    let updateBook = jest.genMockFunction();
     let fulfillBook = jest.genMockFunction();
     let indirectFulfillBook = jest.genMockFunction();
     let wrapper = shallow(
       <Root
         bookData={bookData}
         loans={loans}
-        borrowBook={borrowBook}
+        updateBook={updateBook}
         fulfillBook={fulfillBook}
         indirectFulfillBook={indirectFulfillBook}
         isSignedIn={true}
@@ -269,7 +269,7 @@ describe("Root", () => {
 
     expect(bookWrapper.length).toBe(1);
     expect(book.props().book).toEqual(loans[0]);
-    expect(book.props().borrowBook).toBe(borrowBook);
+    expect(book.props().updateBook).toBe(updateBook);
     expect(book.props().fulfillBook).toBe(fulfillBook);
     expect(book.props().indirectFulfillBook).toBe(indirectFulfillBook);
     expect(book.props().isSignedIn).toBe(true);
@@ -328,7 +328,7 @@ describe("Root", () => {
     it("renders BookDetailsContainer with urls, refresh, and book details", () => {
       let bookData = groupedCollectionData.lanes[0].books[0];
       let refresh = jest.genMockFunction();
-      let borrowBook = jest.genMockFunction();
+      let updateBook = jest.genMockFunction();
       let fulfillBook = jest.genMockFunction();
       let wrapper = shallow(
         <Root
@@ -338,7 +338,7 @@ describe("Root", () => {
           refreshCollectionAndBook={refresh}
           setCollectionAndBook={mockSetCollectionAndBook}
           BookDetailsContainer={Container}
-          borrowBook={borrowBook}
+          updateBook={updateBook}
           fulfillBook={fulfillBook}
           />
       );

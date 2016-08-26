@@ -64,4 +64,21 @@ describe("loans reducer", () => {
 
     expect(reducer(oldState, action)).toEqual(newState);
   });
+
+  it("clears books on LOAD_UPDATE_BOOK_DATA", () => {
+    let oldState = Object.assign({}, initState, {
+        books: loansData
+    });
+    let newBookData = {
+      id: "book id",
+      url: "book url",
+      title: "new book title"
+    };
+    let action = actions.loadUpdateBookData(newBookData);
+    let newState = Object.assign({}, oldState, {
+      books: []
+    });
+
+    expect(reducer(oldState, action)).toEqual(newState);
+  });
 });

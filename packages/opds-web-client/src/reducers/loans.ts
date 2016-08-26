@@ -26,6 +26,16 @@ export default (state: LoansState = initialState, action): LoansState => {
         books: action.books
       });
 
+    case "LOAD_UPDATE_BOOK_DATA":
+      // A book has been updated, so the loans feed is now outdated.
+      // If we remove the loans, the components showing the book that
+      // was updated can use the data from the book update request 
+      // until the next LOAD_LOANS action.
+
+      return Object.assign({}, state, {
+        books: []
+      });
+
     default:
       return state;
   }

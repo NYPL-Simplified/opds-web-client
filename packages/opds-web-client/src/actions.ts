@@ -33,10 +33,10 @@ export default class ActionCreator {
   LOAD_SEARCH_DESCRIPTION = "LOAD_SEARCH_DESCRIPTION";
   CLOSE_ERROR = "CLOSE_ERROR";
 
-  BORROW_BOOK_REQUEST = "BORROW_BOOK_REQUEST";
-  BORROW_BOOK_SUCCESS = "BORROW_BOOK_SUCCESS";
-  BORROW_BOOK_FAILURE = "BORROW_BOOK_FAILURE";
-  LOAD_BORROW_DATA = "LOAD_BORROW_DATA";
+  UPDATE_BOOK_REQUEST = "UPDATE_BOOK_REQUEST";
+  UPDATE_BOOK_SUCCESS = "UPDATE_BOOK_SUCCESS";
+  UPDATE_BOOK_FAILURE = "UPDATE_BOOK_FAILURE";
+  LOAD_UPDATE_BOOK_DATA = "LOAD_UPDATE_BOOK_DATA";
 
   FULFILL_BOOK_REQUEST = "FULFILL_BOOK_REQUEST";
   FULFILL_BOOK_SUCCESS = "FULFILL_BOOK_SUCCESS";
@@ -179,36 +179,36 @@ export default class ActionCreator {
     return { type: this.CLEAR_BOOK };
   }
 
-  borrowBook(url: string): (dispatch: any) => Promise<BookData> {
+  updateBook(url: string): (dispatch: any) => Promise<BookData> {
     return (dispatch) => {
-      dispatch(this.borrowBookRequest());
+      dispatch(this.updateBookRequest());
       return new Promise((resolve, reject) => {
         this.fetcher.fetchOPDSData(url).then((data: BookData) => {
-          dispatch(this.borrowBookSuccess());
-          dispatch(this.loadBorrowData(data));
+          dispatch(this.updateBookSuccess());
+          dispatch(this.loadUpdateBookData(data));
           resolve(data);
         }).catch((err: FetchErrorData) => {
-          dispatch(this.borrowBookFailure(err));
+          dispatch(this.updateBookFailure(err));
           reject(err);
         });
       });
     };
   }
 
-  borrowBookRequest() {
-    return { type: this.BORROW_BOOK_REQUEST };
+  updateBookRequest() {
+    return { type: this.UPDATE_BOOK_REQUEST };
   }
 
-  borrowBookSuccess() {
-    return { type: this.BORROW_BOOK_SUCCESS };
+  updateBookSuccess() {
+    return { type: this.UPDATE_BOOK_SUCCESS };
   }
 
-  borrowBookFailure(error) {
-    return { type: this.BORROW_BOOK_FAILURE, error };
+  updateBookFailure(error) {
+    return { type: this.UPDATE_BOOK_FAILURE, error };
   }
 
-  loadBorrowData(data) {
-    return { type: this.LOAD_BORROW_DATA, data };
+  loadUpdateBookData(data) {
+    return { type: this.LOAD_UPDATE_BOOK_DATA, data };
   }
 
   fulfillBook(url: string): (dispatch: any) => Promise<Blob> {
