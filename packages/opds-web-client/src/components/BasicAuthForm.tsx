@@ -1,5 +1,5 @@
 import * as React from "react";
-import { popupStyle } from "./styles";
+import "../stylesheets/basic_auth_form.scss";
 import { BasicAuthCallback } from "../interfaces";
 
 export interface BasicAuthFormProps {
@@ -20,13 +20,11 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, a
   }
 
   render() {
-    let authFormStyle = popupStyle(300, 300);
-
     return (
-      <div className="authForm" style={authFormStyle}>
-        <h3 style={{ marginTop: "0px", marginBottom: "20px" }}>{ this.props.title + " " || ""}Login</h3>
+      <div className="auth-form">
+        <h3>{ this.props.title + " " || ""}Login</h3>
         { this.state.error &&
-          <div className="authFormError" style={{ padding: "0.5em", color: "#f00" }}>
+          <div className="error">
             { this.state.error }
           </div>
         }

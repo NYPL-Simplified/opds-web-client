@@ -23,6 +23,10 @@ var config = {
   module: {
     loaders: [
       {
+        test: /\.scss$/,
+        loaders: ["style", "css", "sass"]
+      },
+      {
         test: /\.tsx?$/,
         exclude: [/node_modules/],
         loaders: [
@@ -37,7 +41,7 @@ var config = {
     ],
   },
   resolve: {
-    extensions: ["", ".webpack.js", ".web.js", ".js", ".ts", ".tsx"]
+    extensions: ["", ".webpack.js", ".web.js", ".js", ".ts", ".tsx", ".scss"]
   }
 };
 
