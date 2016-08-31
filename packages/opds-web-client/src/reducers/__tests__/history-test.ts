@@ -1,5 +1,4 @@
-jest.dontMock("../history");
-jest.dontMock("../../actions");
+import { expect } from "chai";
 
 import reducer, { shouldClear, shorten, addLink, addCollection } from "../history";
 import DataFetcher from "../../DataFetcher";
@@ -63,7 +62,7 @@ describe("shouldClear()", () => {
       catalogRootLink: rootLink
     });
     let clear = shouldClear(newCollection, oldCollection);
-    expect(clear).toBe(true);
+    expect(clear).to.equal(true);
   });
 
   it("should return true if new collection is new root", () => {
@@ -77,7 +76,7 @@ describe("shouldClear()", () => {
       }
     });
     let clear = shouldClear(newCollection, basicCollection);
-    expect(clear).toBe(true);
+    expect(clear).to.equal(true);
   });
 
   it("should return true if new root is not old root", () => {
@@ -97,7 +96,7 @@ describe("shouldClear()", () => {
       catalogRootLink: rootLink
     });
     let clear = shouldClear(newCollection, oldCollection);
-    expect(clear).toBe(true);
+    expect(clear).to.equal(true);
   });
 
   it("should return false otherwise", () => {
@@ -115,26 +114,26 @@ describe("shouldClear()", () => {
       catalogRootLink: rootLink
     });
     let clear = shouldClear(newCollection, oldCollection);
-    expect(clear).toBe(false);
+    expect(clear).to.equal(false);
   });
 });
 
 describe("shorten()", () => {
   it("should shorten history if it contains new url", () => {
     let newHistory = shorten(longHistory, longHistory[2].url);
-    expect(newHistory).toEqual([rootLink, secondLink]);
+    expect(newHistory).to.deep.equal([rootLink, secondLink]);
   });
 
   it("shouldn't shorten history if it doesn't contain new url", () => {
     let newHistory = shorten(longHistory, "other url");
-    expect(newHistory).toBe(longHistory);
+    expect(newHistory).to.deep.equal(longHistory);
   });
 });
 
 describe("addLink", () => {
   it("adds a link to a history", () => {
     let newHistory = addLink(longHistory, fourthLink);
-    expect(newHistory).toEqual(longHistory.concat([fourthLink]));
+    expect(newHistory).to.deep.equal(longHistory.concat([fourthLink]));
   });
 });
 
@@ -142,7 +141,7 @@ describe("addCollection", () => {
   it("adds a collection to a history", () => {
     let collection = basicCollection;
     let newHistory = addCollection(longHistory, collection);
-    expect(newHistory).toEqual(longHistory.concat([{
+    expect(newHistory).to.deep.equal(longHistory.concat([{
       id: collection.id,
       url: collection.url,
       text: collection.title
@@ -213,7 +212,7 @@ describe("history reducer", () => {
       url: "url"
     }];
 
-    expect(reducer(currentState, action)).toEqual(newHistory);
+    expect(reducer(currentState, action)).to.deep.equal(newHistory);
   });
 
   it("shouldn't change history on LOAD_COLLECTION with same id", () => {
@@ -226,7 +225,7 @@ describe("history reducer", () => {
       navigationLinks: []
     };
     let action = actions.loadCollection(data, "some other url");
-    expect(reducer(currentState, action)).toEqual(currentState.history);
+    expect(reducer(currentState, action)).to.deep.equal(currentState.history);
   });
 
   it("should clear history on LOAD_COLLECTION with the old catalog root", () => {
@@ -246,7 +245,7 @@ describe("history reducer", () => {
       navigationLinks: []
     };
     let action = actions.loadCollection(data, "root url");
-    expect(reducer(stateWithHistory, action)).toEqual([]);
+    expect(reducer(stateWithHistory, action)).to.deep.equal([]);
   });
 
   it("should clear history on LOAD_COLLECTION with a new catalog", () => {
@@ -276,7 +275,7 @@ describe("history reducer", () => {
       text: "new root title"
     }];
 
-    expect(reducer(stateWithHistory, action)).toEqual(newHistory);
+    expect(reducer(stateWithHistory, action)).to.deep.equal(newHistory);
   });
 
   it("should remove history up to loaded url on LOAD_COLLECTION with url in history", () => {
@@ -310,7 +309,7 @@ describe("history reducer", () => {
       text: "first title"
     }];
 
-    expect(reducer(stateWithHistory, action)).toEqual(newHistory);
+    expect(reducer(stateWithHistory, action)).to.deep.equal(newHistory);
   });
 
   it("should handle LOAD_COLLECTION after an error", () => {
@@ -324,6 +323,6 @@ describe("history reducer", () => {
     };
     let action = actions.loadCollection(data, "some url");
 
-    expect(reducer(errorState, action)).toEqual([]);
+    expect(reducer(errorState, action)).to.deep.equal([]);
   });
 });

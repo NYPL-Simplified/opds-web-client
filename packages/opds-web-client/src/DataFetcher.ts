@@ -90,7 +90,7 @@ export default class DataFetcher {
     options = Object.assign({ credentials: "same-origin" }, options);
 
     if (this.proxyUrl) {
-      let formData = new FormData();
+      let formData = new (window as any).FormData();
       formData.append("url", url);
       Object.assign(options, {
         method: "POST",

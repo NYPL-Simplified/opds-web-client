@@ -1,4 +1,4 @@
-jest.autoMockOff();
+import { expect } from "chai";
 
 import * as React from "react";
 import { shallow } from "enzyme";
@@ -20,7 +20,7 @@ describe("FacetGroup", () => {
     );
 
     let label = wrapper.find(".facet-group-label");
-    expect(label.text()).toEqual(facetGroup.label + ":");
+    expect(label.text()).to.equal(facetGroup.label + ":");
   });
 
   it("shows facets", () => {
@@ -45,7 +45,7 @@ describe("FacetGroup", () => {
     );
 
     let links = wrapper.find(CatalogLink);
-    expect(links.length).toEqual(2);
-    expect(links.map(facet => facet.children().at(0).text())).toEqual(facetGroup.facets.map(facet => facet.label));
+    expect(links.length).to.equal(2);
+    expect(links.map(facet => facet.children().at(0).text())).to.deep.equal(facetGroup.facets.map(facet => facet.label));
   });
 });

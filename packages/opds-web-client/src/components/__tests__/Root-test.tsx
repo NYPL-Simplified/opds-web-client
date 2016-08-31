@@ -1,5 +1,5 @@
-jest.autoMockOff();
-jest.mock("../../DataFetcher");
+import { expect } from "chai";
+import { stub, spy } from "sinon";
 
 import * as React from "react";
 import { Store } from "redux";
@@ -28,7 +28,7 @@ const setCollectionAndBookPromise = new Promise((resolve, reject) => {
     bookData: null
   });
 });
-const mockSetCollectionAndBook = jest.genMockFunction().mockReturnValue(setCollectionAndBookPromise);
+const mockSetCollectionAndBook = stub().returns(setCollectionAndBookPromise);
 
 describe("Root", () => {
   it("shows skip navigation link", () => {
@@ -37,7 +37,7 @@ describe("Root", () => {
     );
 
     let links = wrapper.find(SkipNavigationLink);
-    expect(links.length).toBe(1);
+    expect(links.length).to.equal(1);
   });
 
   it("shows search and treats it as top-level", () => {
@@ -60,9 +60,9 @@ describe("Root", () => {
     );
 
     let search = wrapper.find(Search);
-    expect(search.props().url).toBe(collectionData.search.url);
-    expect(search.props().searchData).toBe(collectionData.search.searchData);
-    expect(search.props().fetchSearchDescription).toBe(fetchSearchDescription);
+    expect(search.props().url).to.equal(collectionData.search.url);
+    expect(search.props().searchData).to.equal(collectionData.search.searchData);
+    expect(search.props().fetchSearchDescription).to.equal(fetchSearchDescription);
   });
 
   it("shows a collection if props include collectionData", () => {
@@ -72,8 +72,8 @@ describe("Root", () => {
     );
 
     let collections = wrapper.find(Collection);
-    expect(collections.length).toBe(1);
-    expect(collections.first().props().collection).toBe(collectionData);
+    expect(collections.length).to.equal(1);
+    expect(collections.first().props().collection).to.equal(collectionData);
   });
 
   it("shows a url form if no collection url or book url", () => {
@@ -82,7 +82,7 @@ describe("Root", () => {
     );
 
     let urlForms = wrapper.find(UrlForm);
-    expect(urlForms.length).toBe(1);
+    expect(urlForms.length).to.equal(1);
   });
 
   it("doesn't show a url form if collection url", () => {
@@ -91,7 +91,7 @@ describe("Root", () => {
     );
 
     let urlForms = wrapper.find(UrlForm);
-    expect(urlForms.length).toBe(0);
+    expect(urlForms.length).to.equal(0);
   });
 
   it("doesn't show a url form if book url", () => {
@@ -100,42 +100,42 @@ describe("Root", () => {
     );
 
     let urlForms = wrapper.find(UrlForm);
-    expect(urlForms.length).toBe(0);
+    expect(urlForms.length).to.equal(0);
   });
 
   it("fetches a collection url on mount", () => {
     let collectionUrl = "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/blocks.xml";
-    let setCollectionAndBook = jest.genMockFunction().mockReturnValue(setCollectionAndBookPromise);
+    let setCollectionAndBook = stub().returns(setCollectionAndBookPromise);
     let wrapper = shallow(
       <Root collectionUrl={collectionUrl} setCollectionAndBook={setCollectionAndBook}/>
     );
 
-    expect(setCollectionAndBook.mock.calls.length).toBe(1);
-    expect(setCollectionAndBook.mock.calls[0][0]).toBe(collectionUrl);
-    expect(setCollectionAndBook.mock.calls[0][1]).toBeFalsy();
+    expect(setCollectionAndBook.callCount).to.equal(1);
+    expect(setCollectionAndBook.args[0][0]).to.equal(collectionUrl);
+    expect(setCollectionAndBook.args[0][1]).not.to.be.ok;
   });
 
   it("fetches a book url on mount", () => {
     let bookUrl = "http://example.com/book";
-    let setCollectionAndBook = jest.genMockFunction().mockReturnValue(setCollectionAndBookPromise);
+    let setCollectionAndBook = stub().returns(setCollectionAndBookPromise);
     let wrapper = shallow(
       <Root bookUrl={bookUrl} setCollectionAndBook={setCollectionAndBook}/>
     );
 
-    expect(setCollectionAndBook.mock.calls.length).toBe(1);
-    expect(setCollectionAndBook.mock.calls[0][0]).toBeFalsy();
-    expect(setCollectionAndBook.mock.calls[0][1]).toBe(bookUrl);
+    expect(setCollectionAndBook.callCount).to.equal(1);
+    expect(setCollectionAndBook.args[0][0]).not.to.be.ok;
+    expect(setCollectionAndBook.args[0][1]).to.equal(bookUrl);
   });
 
   it("fetches loans on mount", (done) => {
     let collectionUrl = "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/blocks.xml";
-    let setCollectionAndBook = jest.genMockFunction().mockImplementation((collectionUrl, bookUrl) => {
+    let setCollectionAndBook = (collectionUrl, bookUrl) => {
       return new Promise((resolve, reject) => resolve({
         collectionData: Object.assign({}, ungroupedCollectionData, { shelfUrl: "loans url" }),
         bookData: null
       }));
-    });
-    let fetchLoans = jest.genMockFunction();
+    };
+    let fetchLoans = stub();
     let wrapper = shallow(
       <Root
         collectionUrl={collectionUrl}
@@ -146,36 +146,36 @@ describe("Root", () => {
     );
 
     (wrapper.instance() as any).componentWillMount().then(() => {
-      let count = fetchLoans.mock.calls.length;
-      expect(fetchLoans.mock.calls[count - 1][0]).toBe("loans url");
+      let count = fetchLoans.callCount;
+      expect(fetchLoans.args[count - 1][0]).to.equal("loans url");
       done();
-    }).catch(done.fail);
+    }).catch(err => { console.log(err); throw(err); });
   });
 
   it("updates page title on mount", () => {
     let wrapper = shallow(
       <Root pageTitleTemplate={(collection, book) => "page title"} />
     );
-    expect(document.title).toBe("page title");
+    expect(document.title).to.equal("page title");
   });
 
   it("sets basic auth credentials on mount", () => {
-    let saveBasicAuthCredentials = jest.genMockFunction();
+    let saveBasicAuthCredentials = stub();
     let wrapper = shallow(
       <Root
         saveBasicAuthCredentials={saveBasicAuthCredentials}
         basicAuthCredentials="credentials"
         />
     );
-    expect(saveBasicAuthCredentials.mock.calls.length).toBe(1);
-    expect(saveBasicAuthCredentials.mock.calls[0][0]).toBe("credentials");
+    expect(saveBasicAuthCredentials.callCount).to.equal(1);
+    expect(saveBasicAuthCredentials.args[0][0]).to.equal("credentials");
   });
 
   it("fetches a collection url when updated", () => {
     let elem = document.createElement("div");
     let collectionUrl = "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/blocks.xml";
     let newCollection = "new collection url";
-    let setCollectionAndBook = jest.genMockFunction().mockReturnValue(setCollectionAndBookPromise);
+    let setCollectionAndBook = stub().returns(setCollectionAndBookPromise);
     let wrapper = shallow(
       <Root collectionUrl={collectionUrl} setCollectionAndBook={setCollectionAndBook} />
     );
@@ -183,9 +183,9 @@ describe("Root", () => {
       collectionUrl: newCollection
     });
 
-    expect(setCollectionAndBook.mock.calls.length).toBe(2);
-    expect(setCollectionAndBook.mock.calls[1][0]).toBe(newCollection);
-    expect(setCollectionAndBook.mock.calls[1][1]).toBeFalsy();
+    expect(setCollectionAndBook.callCount).to.equal(2);
+    expect(setCollectionAndBook.args[1][0]).to.equal(newCollection);
+    expect(setCollectionAndBook.args[1][1]).not.to.be.ok;
   });
 
   it("shows loading message", () => {
@@ -194,7 +194,7 @@ describe("Root", () => {
     );
 
     let loadings = wrapper.find(LoadingIndicator);
-    expect(loadings.length).toBe(1);
+    expect(loadings.length).to.equal(1);
   });
 
   it("shows error message", () => {
@@ -203,14 +203,14 @@ describe("Root", () => {
       response: "test error",
       url: "test error url"
     };
-    let retry = jest.genMockFunction();
+    let retry = stub();
     let wrapper = shallow(
       <Root error={fetchError} retryCollectionAndBook={retry} />
     );
 
     let error = wrapper.find(ErrorMessage);
-    expect(error.props().message).toContain(fetchError.url);
-    expect(error.props().retry).toBe(retry);
+    expect(error.props().message).to.contain(fetchError.url);
+    expect(error.props().retry).to.equal(retry);
   });
 
   it("shows basic auth form", () => {
@@ -221,10 +221,10 @@ describe("Root", () => {
       loginLabel: "Clearance ID",
       passwordLabel: "Access Key",
       error: "Invalid Clearance ID and/or Access Key",
-      callback: jest.genMockFunction()
+      callback: stub()
     };
-    let saveBasicAuthCredentials = jest.genMockFunction();
-    let closeErrorAndHideBasicAuthForm = jest.genMockFunction();
+    let saveBasicAuthCredentials = stub();
+    let closeErrorAndHideBasicAuthForm = stub();
     let wrapper = shallow(
       <Root
         basicAuth={basicAuth}
@@ -236,13 +236,13 @@ describe("Root", () => {
     let {
       saveCredentials, hide, callback, title, loginLabel, passwordLabel, error
     } = form.props();
-    expect(saveCredentials).toBe(saveBasicAuthCredentials);
-    expect(hide).toBe(closeErrorAndHideBasicAuthForm);
-    expect(callback).toBe(basicAuth.callback);
-    expect(title).toBe(basicAuth.title);
-    expect(loginLabel).toBe(basicAuth.loginLabel);
-    expect(passwordLabel).toBe(basicAuth.passwordLabel);
-    expect(error).toBe(basicAuth.error);
+    expect(saveCredentials).to.equal(saveBasicAuthCredentials);
+    expect(hide).to.equal(closeErrorAndHideBasicAuthForm);
+    expect(callback).to.equal(basicAuth.callback);
+    expect(title).to.equal(basicAuth.title);
+    expect(loginLabel).to.equal(basicAuth.loginLabel);
+    expect(passwordLabel).to.equal(basicAuth.passwordLabel);
+    expect(error).to.equal(basicAuth.error);
   });
 
   it("shows book detail", () => {
@@ -250,9 +250,9 @@ describe("Root", () => {
     let loans = [Object.assign({}, bookData, {
       availability: { status: "availabile" }
     })];
-    let updateBook = jest.genMockFunction();
-    let fulfillBook = jest.genMockFunction();
-    let indirectFulfillBook = jest.genMockFunction();
+    let updateBook = stub();
+    let fulfillBook = stub();
+    let indirectFulfillBook = stub();
     let wrapper = shallow(
       <Root
         bookData={bookData}
@@ -267,12 +267,12 @@ describe("Root", () => {
     let bookWrapper = wrapper.find(".bookDetailsWrapper");
     let book = wrapper.find(BookDetails);
 
-    expect(bookWrapper.length).toBe(1);
-    expect(book.props().book).toEqual(loans[0]);
-    expect(book.props().updateBook).toBe(updateBook);
-    expect(book.props().fulfillBook).toBe(fulfillBook);
-    expect(book.props().indirectFulfillBook).toBe(indirectFulfillBook);
-    expect(book.props().isSignedIn).toBe(true);
+    expect(bookWrapper.length).to.equal(1);
+    expect(book.props().book).to.equal(loans[0]);
+    expect(book.props().updateBook).to.equal(updateBook);
+    expect(book.props().fulfillBook).to.equal(fulfillBook);
+    expect(book.props().indirectFulfillBook).to.equal(indirectFulfillBook);
+    expect(book.props().isSignedIn).to.equal(true);
   });
 
   it("shows breadcrumbs", () => {
@@ -295,7 +295,7 @@ describe("Root", () => {
       url: ungroupedCollectionData.url,
       text: ungroupedCollectionData.title
     }]);
-    expect(breadcrumbs.props().links).toEqual(links);
+    expect(breadcrumbs.props().links).to.deep.equal(links);
   });
 
   it("uses custom computeBreadcrumbs function", () => {
@@ -311,7 +311,7 @@ describe("Root", () => {
     );
     let breadcrumbs = wrapper.find(Breadcrumbs);
 
-    expect(breadcrumbs.props().links).toEqual([breadcrumb]);
+    expect(breadcrumbs.props().links).to.deep.equal([breadcrumb]);
   });
 
   describe("provided a BookDetailsContainer", () => {
@@ -327,9 +327,9 @@ describe("Root", () => {
 
     it("renders BookDetailsContainer with urls, refresh, and book details", () => {
       let bookData = groupedCollectionData.lanes[0].books[0];
-      let refresh = jest.genMockFunction();
-      let updateBook = jest.genMockFunction();
-      let fulfillBook = jest.genMockFunction();
+      let refresh = stub();
+      let updateBook = stub();
+      let fulfillBook = stub();
       let wrapper = shallow(
         <Root
           bookData={bookData}
@@ -345,17 +345,17 @@ describe("Root", () => {
 
       let container = wrapper.find(Container);
       let child = container.children().first();
-      expect(container.props().bookUrl).toBe(bookData.url);
-      expect(container.props().collectionUrl).toBe("test collection");
-      expect(container.props().refreshCatalog).toBe(refresh);
-      expect(container.props().book).toBe(bookData);
-      expect(child.type()).toBe(BookDetails);
-      expect(child.props().book).toBe(bookData);
+      expect(container.props().bookUrl).to.equal(bookData.url);
+      expect(container.props().collectionUrl).to.equal("test collection");
+      expect(container.props().refreshCatalog).to.equal(refresh);
+      expect(container.props().book).to.equal(bookData);
+      expect(child.type()).to.equal(BookDetails);
+      expect(child.props().book).to.equal(bookData);
     });
 
     it("does not render BookDetailsContainer if bookUrl and bookData.url are missing", () => {
       let bookData = Object.assign({}, groupedCollectionData.lanes[0].books[0], { url: null });
-      let refresh = jest.genMockFunction();
+      let refresh = stub();
       let wrapper = shallow(
         <Root
           bookData={bookData}
@@ -366,7 +366,7 @@ describe("Root", () => {
           BookDetailsContainer={Container} />
       );
       let containers = wrapper.find(Container);
-      expect(containers.length).toBe(0);
+      expect(containers.length).to.equal(0);
     });
   });
 
@@ -374,8 +374,7 @@ describe("Root", () => {
     let elem = document.createElement("div");
     let collectionData = ungroupedCollectionData;
     let bookData = collectionData.books[0];
-    let pageTitleTemplate = jest.genMockFunction();
-    pageTitleTemplate.mockImplementation((collectionTitle, bookTitle) => {
+    let pageTitleTemplate = spy((collectionTitle, bookTitle) => {
       return "testing " + collectionTitle + ", " + bookTitle;
     });
     let wrapper = shallow(
@@ -386,10 +385,10 @@ describe("Root", () => {
     );
 
     // template should be invoked by componentWillMount
-    expect(pageTitleTemplate.mock.calls.length).toBe(1);
-    expect(pageTitleTemplate.mock.calls[0][0]).toBe(collectionData.title);
-    expect(pageTitleTemplate.mock.calls[0][1]).toBe(bookData.title);
-    expect(document.title).toBe("testing " + collectionData.title + ", " + bookData.title);
+    expect(pageTitleTemplate.callCount).to.equal(1);
+    expect(pageTitleTemplate.args[0][0]).to.equal(collectionData.title);
+    expect(pageTitleTemplate.args[0][1]).to.equal(bookData.title);
+    expect(document.title).to.equal("testing " + collectionData.title + ", " + bookData.title);
 
     wrapper.setProps({
       collectionData: null,
@@ -398,14 +397,14 @@ describe("Root", () => {
     });
 
     // template should be invoked again by componentWillUpdate
-    expect(pageTitleTemplate.mock.calls.length).toBe(2);
-    expect(pageTitleTemplate.mock.calls[1][0]).toBe(null);
-    expect(pageTitleTemplate.mock.calls[1][1]).toBe(null);
-    expect(document.title).toBe("testing null, null");
+    expect(pageTitleTemplate.callCount).to.equal(2);
+    expect(pageTitleTemplate.args[1][0]).to.equal(null);
+    expect(pageTitleTemplate.args[1][1]).to.equal(null);
+    expect(document.title).to.equal("testing null, null");
   });
 
   it("calls showPrevBook() on left key press but not if meta key is also presssed", () => {
-    let showPrevBook = jest.genMockFunction();
+    let showPrevBook = stub();
     let context = mockRouterContext();
     let wrapper = mount(
       <Root
@@ -417,22 +416,22 @@ describe("Root", () => {
     ) as any;
     wrapper.instance().showPrevBook = showPrevBook;
 
-    document.dispatchEvent(new KeyboardEvent("keydown", {
+    document.dispatchEvent(new (window as any).KeyboardEvent("keydown", {
       code: "ArrowLeft"
     } as any));
 
-    expect(showPrevBook.mock.calls.length).toBe(1);
+    expect(showPrevBook.callCount).to.equal(1);
 
-    document.dispatchEvent(new KeyboardEvent("keydown", {
+    document.dispatchEvent(new (window as any).KeyboardEvent("keydown", {
       code: "ArrowLeft",
       ctrlKey: true
     } as any));
 
-    expect(showPrevBook.mock.calls.length).toBe(1);
+    expect(showPrevBook.callCount).to.equal(1);
   });
 
   it("calls showNextBook() on right key press but not if meta key is also presssed", () => {
-    let showNextBook = jest.genMockFunction();
+    let showNextBook = stub();
     let context = mockRouterContext();
     let wrapper = mount(
       <Root
@@ -444,18 +443,18 @@ describe("Root", () => {
     ) as any;
     wrapper.instance().showNextBook = showNextBook;
 
-    document.dispatchEvent(new KeyboardEvent("keydown", {
+    document.dispatchEvent(new (window as any).KeyboardEvent("keydown", {
       code: "ArrowRight"
     } as any));
 
-    expect(showNextBook.mock.calls.length).toBe(1);
+    expect(showNextBook.callCount).to.equal(1);
 
-    document.dispatchEvent(new KeyboardEvent("keydown", {
+    document.dispatchEvent(new (window as any).KeyboardEvent("keydown", {
       code: "ArrowRight",
       altKey: true
     } as any));
 
-    expect(showNextBook.mock.calls.length).toBe(1);
+    expect(showNextBook.callCount).to.equal(1);
   });
 
   describe("when given a header component", () => {
@@ -504,13 +503,13 @@ describe("Root", () => {
     it("renders the header", () => {
       let header = wrapper.find(Header);
       let search = header.childAt(0);
-      expect(header.props().collectionTitle).toBe(collectionData.title);
-      expect(header.props().bookTitle).toBe(bookData.title);
-      expect(header.props().isSignedIn).toBe(true);
-      expect(header.props().showBasicAuthForm).toBe(showBasicAuthForm);
-      expect(header.props().clearBasicAuthCredentials).toBe(clearBasicAuthCredentials);
-      expect(header.props().loansUrl).toBe("loans");
-      expect(search.type()).toBe(Search);
+      expect(header.props().collectionTitle).to.equal(collectionData.title);
+      expect(header.props().bookTitle).to.equal(bookData.title);
+      expect(header.props().isSignedIn).to.equal(true);
+      expect(header.props().showBasicAuthForm).to.equal(showBasicAuthForm);
+      expect(header.props().clearBasicAuthCredentials).to.equal(clearBasicAuthCredentials);
+      expect(header.props().loansUrl).to.equal("loans");
+      expect(search.type()).to.equal(Search);
     });
   });
 
@@ -539,9 +538,9 @@ describe("Root", () => {
 
     it("renders the footer", () => {
       let footer = wrapper.find("footer");
-      expect(footer.length).toBe(1);
+      expect(footer.length).to.equal(1);
       let footerComponent = footer.childAt(0);
-      expect(footerComponent.props().collection).toBe(collectionData);
+      expect(footerComponent.props().collection).to.equal(collectionData);
     });
   });
 
@@ -555,7 +554,7 @@ describe("Root", () => {
     let wrapper;
 
     beforeEach(() => {
-      mockPush = jest.genMockFunction();
+      mockPush = stub();
       context = mockRouterContext(mockPush);
       collectionData = groupedCollectionData;
     });
@@ -573,8 +572,8 @@ describe("Root", () => {
       ) as any;
       wrapper.instance().showNextBook();
 
-      expect(mockPush.mock.calls.length).toBe(1);
-      expect(mockPush.mock.calls[0][0]).toBe(context.pathFor(collectionData.url, nextBookData.url));
+      expect(mockPush.callCount).to.equal(1);
+      expect(mockPush.args[0][0]).to.equal(context.pathFor(collectionData.url, nextBookData.url));
     });
 
     it("navigates to first book if currently showing last book", () => {
@@ -591,8 +590,8 @@ describe("Root", () => {
       ) as any;
       wrapper.instance().showNextBook();
 
-      expect(mockPush.mock.calls.length).toBe(1);
-      expect(mockPush.mock.calls[0][0]).toBe(context.pathFor(collectionData.url, nextBookData.url));
+      expect(mockPush.callCount).to.equal(1);
+      expect(mockPush.args[0][0]).to.equal(context.pathFor(collectionData.url, nextBookData.url));
     });
   });
 
@@ -606,7 +605,7 @@ describe("Root", () => {
     let wrapper;
 
     beforeEach(() => {
-      mockPush = jest.genMockFunction();
+      mockPush = stub();
       context = mockRouterContext(mockPush);
       collectionData = groupedCollectionData;
     });
@@ -625,8 +624,8 @@ describe("Root", () => {
       ) as any;
       wrapper.instance().showPrevBook();
 
-      expect(mockPush.mock.calls.length).toBe(1);
-      expect(mockPush.mock.calls[0][0]).toBe(context.pathFor(collectionData.url, prevBookData.url));
+      expect(mockPush.callCount).to.equal(1);
+      expect(mockPush.args[0][0]).to.equal(context.pathFor(collectionData.url, prevBookData.url));
     });
 
     it("navigates to first book if currently showing second book", () => {
@@ -642,8 +641,8 @@ describe("Root", () => {
       ) as any;
       wrapper.instance().showPrevBook();
 
-      expect(mockPush.mock.calls.length).toBe(1);
-      expect(mockPush.mock.calls[0][0]).toBe(context.pathFor(collectionData.url, prevBookData.url));
+      expect(mockPush.callCount).to.equal(1);
+      expect(mockPush.args[0][0]).to.equal(context.pathFor(collectionData.url, prevBookData.url));
     });
   });
 
@@ -656,7 +655,7 @@ describe("Root", () => {
     let history;
 
     beforeEach(() => {
-      push = jest.genMockFunction();
+      push = stub();
       context = mockRouterContext(push);
       childContextTypes = {
         router: React.PropTypes.object.isRequired,
@@ -685,8 +684,8 @@ describe("Root", () => {
       let collectionUrl = collectionData.lanes[0].url;
       collectionLink.simulate("click", { button: 0 });
 
-      expect(push.mock.calls.length).toBe(1);
-      expect(push.mock.calls[0][0]).toBe(context.pathFor(collectionUrl, null));
+      expect(push.callCount).to.equal(1);
+      expect(push.args[0][0]).to.equal(context.pathFor(collectionUrl, null));
     });
 
     it("uses router to show a book", () => {
@@ -695,8 +694,8 @@ describe("Root", () => {
       let bookUrl = collectionData.lanes[0].books[0].url;
       bookLink.simulate("click", { button: 0 });
 
-      expect(push.mock.calls.length).toBe(1);
-      expect(push.mock.calls[0][0]).toBe(context.pathFor(collectionUrl, bookUrl));
+      expect(push.callCount).to.equal(1);
+      expect(push.args[0][0]).to.equal(context.pathFor(collectionUrl, bookUrl));
     });
 
     it("uses router to hide a book", () => {
@@ -706,8 +705,8 @@ describe("Root", () => {
       let collectionUrl = collectionData.url;
       collectionLink.simulate("click", { button: 0 });
 
-      expect(push.mock.calls.length).toBe(1);
-      expect(push.mock.calls[0][0]).toBe(context.pathFor(collectionUrl, null));
+      expect(push.callCount).to.equal(1);
+      expect(push.args[0][0]).to.equal(context.pathFor(collectionUrl, null));
     });
   });
 });

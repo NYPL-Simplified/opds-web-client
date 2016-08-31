@@ -1,42 +1,46 @@
-jest.dontMock("../state");
-jest.dontMock("../reducers/index");
-jest.dontMock("../reducers/collection");
-jest.dontMock("../reducers/book");
+import { expect } from "chai";
+import { stub } from "sinon";
 
-let fetchCollectionAndBook;
-let createFetchCollectionAndBook = jest.genMockFunction();
-createFetchCollectionAndBook.mockImplementation((collectionUrl, bookUrl) => fetchCollectionAndBook);
 let dispatch = () => {};
 let initialState = "initial state";
 let alteredState = "state with collection and book";
 let testState = initialState;
-jest.setMock("../components/mergeRootProps", { createFetchCollectionAndBook });
-jest.setMock("../store", { default: () => { return { dispatch, getState: () => testState }; } });
+import * as mergeRootProps from "../components/mergeRootProps";
+import * as store from "../store";
 
 import buildInitialState from "../state";
 
 describe("buildInitialState", () => {
   let collectionUrl = "collection url";
   let bookUrl = "book url";
+  let fetchCollectionAndBookStub;
+  let createFetchCollectionAndBookStub;
+  let storeStub;
 
   beforeEach(() => {
-    fetchCollectionAndBook = jest.genMockFunction();
-    fetchCollectionAndBook.mockReturnValue(new Promise((resolve, reject) => {
+    fetchCollectionAndBookStub = stub().returns(new Promise((resolve, reject) => {
       testState = alteredState;
       resolve({ collectionData: null, bookData: null });
     }));
-    createFetchCollectionAndBook.mockClear();
+    createFetchCollectionAndBookStub = stub(mergeRootProps, "createFetchCollectionAndBook").returns(fetchCollectionAndBookStub);
+
+    storeStub = stub(store, "default").returns({ dispatch, getState: () => testState });
+  });
+
+  afterEach(() => {
+    createFetchCollectionAndBookStub.restore();
+    storeStub.restore();
   });
 
   it("fetches given collection and book into state", (done) => {
     buildInitialState(collectionUrl, bookUrl).then(state => {
-      expect(createFetchCollectionAndBook.mock.calls.length).toBe(1);
-      expect(createFetchCollectionAndBook.mock.calls[0][0]).toBe(dispatch);
-      expect(fetchCollectionAndBook.mock.calls.length).toBe(1);
-      expect(fetchCollectionAndBook.mock.calls[0][0]).toBe(collectionUrl);
-      expect(fetchCollectionAndBook.mock.calls[0][1]).toBe(bookUrl);
-      expect(state).toBe(alteredState);
+      expect(createFetchCollectionAndBookStub.callCount).to.equal(1);
+      expect(createFetchCollectionAndBookStub.args[0][0]).to.equal(dispatch);
+      expect(fetchCollectionAndBookStub.callCount).to.equal(1);
+      expect(fetchCollectionAndBookStub.args[0][0]).to.equal(collectionUrl);
+      expect(fetchCollectionAndBookStub.args[0][1]).to.equal(bookUrl);
+      expect(state).to.equal(alteredState);
       done();
-    }).catch(err => done(err));
+    }).catch(err => { console.log(err); throw(err); });
   });
 });

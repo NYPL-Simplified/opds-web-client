@@ -1,4 +1,5 @@
-jest.dontMock("../DataFetcher");
+import { expect } from "chai";
+import { stub } from "sinon";
 
 import DataFetcher from "../DataFetcher";
 const Cookie = require("js-cookie");
@@ -7,8 +8,7 @@ describe("DataFetcher", () => {
   let mockFetch;
 
   beforeEach(() => {
-    mockFetch = jest.genMockFunction();
-    mockFetch.mockReturnValue(new Promise<any>((resolve, reject) => {
+    mockFetch = stub().returns(new Promise<any>((resolve, reject) => {
       resolve({ status: 200 });
     }));
     fetch = mockFetch;
@@ -23,9 +23,9 @@ describe("DataFetcher", () => {
     let fetcher = new DataFetcher();
     fetcher.fetch("test url", options);
 
-    expect(mockFetch.mock.calls.length).toBe(1);
-    expect(mockFetch.mock.calls[0][0]).toBe("test url");
-    expect(mockFetch.mock.calls[0][1]).toEqual(Object.assign({}, options, {
+    expect(mockFetch.callCount).to.equal(1);
+    expect(mockFetch.args[0][0]).to.equal("test url");
+    expect(mockFetch.args[0][1]).to.deep.equal(Object.assign({}, options, {
       headers: { "X-Requested-With": "XMLHttpRequest" }
     }));
   });
@@ -38,9 +38,9 @@ describe("DataFetcher", () => {
     let fetcher = new DataFetcher();
     fetcher.fetch("test url", options);
 
-    expect(mockFetch.mock.calls.length).toBe(1);
-    expect(mockFetch.mock.calls[0][0]).toBe("test url");
-    expect(mockFetch.mock.calls[0][1]).toEqual(
+    expect(mockFetch.callCount).to.equal(1);
+    expect(mockFetch.args[0][0]).to.equal("test url");
+    expect(mockFetch.args[0][1]).to.deep.equal(
       Object.assign({ credentials: "same-origin", headers: {
         "X-Requested-With": "XMLHttpRequest"
       } }, options)
@@ -48,48 +48,63 @@ describe("DataFetcher", () => {
   });
 
   it("uses proxy url if provided", () => {
+    class MockFormData {
+      data: any;
+
+      constructor() {
+        this.data = {};
+      }
+
+      append(key, val) {
+        this.data[key] = val;
+      }
+
+      get(key) {
+        return { value: this.data[key] };
+      }
+    }
+
+    let formDataStub = stub(window, "FormData", MockFormData);
+
     let proxyUrl = "http://example.com";
     let fetcher = new DataFetcher({ proxyUrl });
     fetcher.fetch("test url");
 
-    let formData = new FormData();
-    formData.append("url", proxyUrl);
-    expect(mockFetch.mock.calls.length).toBe(1);
-    expect(mockFetch.mock.calls[0][0]).toBe(proxyUrl);
-    expect(mockFetch.mock.calls[0][1].method).toBe("POST");
-    expect(mockFetch.mock.calls[0][1].body.get("url").value).toEqual("test url");
+    expect(mockFetch.callCount).to.equal(1);
+    expect(mockFetch.args[0][0]).to.equal(proxyUrl);
+    expect(mockFetch.args[0][1].method).to.equal("POST");
+    expect(mockFetch.args[0][1].body.get("url").value).to.equal("test url");
   });
 
   it("prepares basic auth headers", () => {
     let fetcher = new DataFetcher();
     fetcher.getBasicAuthCredentials = () => "credentials";
     fetcher.fetch("test url");
-    expect(mockFetch.mock.calls[0][1].headers["Authorization"]).toBe("Basic credentials");
+    expect(mockFetch.args[0][1].headers["Authorization"]).to.equal("Basic credentials");
   });
 
   it("sets basic auth credentials", () => {
     let fetcher = new DataFetcher();
     fetcher.setBasicAuthCredentials("credentials");
-    expect(Cookie.get(fetcher.basicAuthKey)).toBe("credentials");
+    expect(Cookie.get(fetcher.basicAuthKey)).to.equal("credentials");
   });
 
   it("gets basic auth credentials", () => {
     let fetcher = new DataFetcher();
     Cookie.set(fetcher.basicAuthKey, "credentials");
-    expect(fetcher.getBasicAuthCredentials()).toBe("credentials");
+    expect(fetcher.getBasicAuthCredentials()).to.equal("credentials");
   });
 
   it("clears basic auth credentials", () => {
     let fetcher = new DataFetcher();
     Cookie.set(fetcher.basicAuthKey, "credentials");
     fetcher.clearBasicAuthCredentials();
-    expect(Cookie.get(fetcher.basicAuthKey)).toBe(undefined);
+    expect(Cookie.get(fetcher.basicAuthKey)).to.equal(undefined);
   });
 
   describe("fetchOPDSData()", () => {
     it("throws error if response isn't 200", (done) => {
-      mockFetch = jest.genMockFunction();
-      mockFetch.mockReturnValue(new Promise<any>((resolve, reject) => {
+      mockFetch = stub().returns(new Promise<any>((resolve, reject) => {
         resolve({
           status: 401,
           text: () => new Promise((resolve, reject) => resolve("unauthorized"))
@@ -99,9 +114,9 @@ describe("DataFetcher", () => {
 
       let fetcher = new DataFetcher();
       fetcher.fetchOPDSData("test url").catch(err => {
-        expect(err.status).toBe(401);
-        expect(err.response).toBe("unauthorized");
-        expect(err.url).toBe("test url");
+        expect(err.status).to.equal(401);
+        expect(err.response).to.equal("unauthorized");
+        expect(err.url).to.equal("test url");
         done();
       });
     });

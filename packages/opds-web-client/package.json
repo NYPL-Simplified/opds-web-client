@@ -11,7 +11,7 @@
   "author": "NYPL",
   "license": "Apache-2.0",
   "scripts": {
-    "test": "tslint -c tslint.json src/*.ts src/*.tsx src/**/*.ts src/**/*.tsx src/**/**/*.ts src/**/**/*.tsx && tsc && jest",
+    "test": "tslint -c tslint.json src/*.ts src/*.tsx src/**/*.ts src/**/*.tsx src/**/**/*.ts src/**/**/*.tsx && tsc && mocha --require lib/testHelper.js lib/__tests__/*.js lib/**/__tests__/*.js lib/**/**/__tests__/*.js",
     "dev": "webpack-dev-server --progress --history-api-fallback --hot --content-base build --port 8090 --config webpack.dev.config",
     "prod": "NODE_ENV=production webpack -p --progress --display-modules --config webpack.prod.config && rm -rf dist/lib",
     "prepublish": "typings install && rm -rf lib && tsc && npm run prod"
@@ -34,37 +34,18 @@
     "xml2js": "^0.4.16"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
     "enzyme": "^2.3.0",
-    "jest": "^0.1.40",
-    "jest-cli": "^0.8.2",
     "json-loader": "^0.5.4",
+    "mocha": "^2.5.3",
     "react-addons-test-utils": "^15.3.0",
     "react-hot-loader": "^1.3.0",
+    "sinon": "^1.17.4",
     "ts-loader": "^0.8.2",
     "tslint": "^3.10.2",
     "typescript": "^1.8.10",
     "typings": "^1.3.1",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
-  },
-  "jest": {
-    "rootDir": "./lib",
-    "testRunner": "../node_modules/jest-cli/src/testRunners/jasmine/jasmine2.js",
-    "testFileExtensions": [
-      "js",
-      "jsx"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "jsx",
-      "json"
-    ],
-    "unmockedModulePathPatterns": [
-      "../node_modules/*"
-    ],
-    "globals": {
-      "fetch": true
-    },
-    "persistModuleRegistryBetweenSpecs": true
   }
 }

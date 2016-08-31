@@ -1,4 +1,5 @@
-jest.autoMockOff();
+import { expect } from "chai";
+import { stub } from "sinon";
 
 import * as React from "react";
 import { shallow } from "enzyme";
@@ -12,11 +13,11 @@ describe("ErrorMessage", () => {
     );
 
     let message = wrapper.find(".errorMessage");
-    expect(message.text()).toBe("test error");
+    expect(message.text()).to.equal("test error");
   });
 
   it("retries", () => {
-    let retry = jest.genMockFunction();
+    let retry = stub();
     let wrapper = shallow(
       <ErrorMessage message="test error" retry={retry} />
     );
@@ -24,7 +25,7 @@ describe("ErrorMessage", () => {
     let button = wrapper.find(".retryButton");
     button.simulate("click");
 
-    expect(retry.mock.calls.length).toBe(1);
+    expect(retry.callCount).to.equal(1);
   });
 
   it("uses bootstrap classes", () => {
@@ -33,6 +34,6 @@ describe("ErrorMessage", () => {
     );
 
     let buttons = wrapper.find(".btn");
-    expect(buttons.length).toBe(1);
+    expect(buttons.length).to.equal(1);
   });
 });

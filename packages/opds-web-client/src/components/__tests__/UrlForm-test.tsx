@@ -1,4 +1,5 @@
-jest.autoMockOff();
+import { expect } from "chai";
+import { stub } from "sinon";
 
 import * as React from "react";
 import { shallow, mount } from "enzyme";
@@ -18,13 +19,13 @@ describe("UrlForm", () => {
     let input = wrapper.find("input");
     let button = wrapper.find("button");
 
-    expect(form.hasClass("form-inline")).toBe(true);
-    expect(input.hasClass("form-control")).toBe(true);
-    expect(button.hasClass("btn")).toBe(true);
+    expect(form.hasClass("form-inline")).to.equal(true);
+    expect(input.hasClass("form-control")).to.equal(true);
+    expect(button.hasClass("btn")).to.equal(true);
   });
 
   it("fetches the url", () => {
-    let push = jest.genMockFunction();
+    let push = stub();
     let context = mockRouterContext(push);
     let wrapper = mount(
       <UrlForm />,
@@ -37,7 +38,7 @@ describe("UrlForm", () => {
     input.value = "some url";
     form.simulate("submit");
 
-    expect(push.mock.calls.length).toEqual(1);
-    expect(push.mock.calls[0][0]).toEqual(context.pathFor("some url", null));
+    expect(push.callCount).to.equal(1);
+    expect(push.args[0][0]).to.equal(context.pathFor("some url", null));
   });
 });

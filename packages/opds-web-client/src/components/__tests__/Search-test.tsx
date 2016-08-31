@@ -1,4 +1,5 @@
-jest.autoMockOff();
+import { expect } from "chai";
+import { stub } from "sinon";
 
 import * as React from "react";
 import { shallow, mount } from "enzyme";
@@ -8,7 +9,7 @@ import { mockRouterContext } from "./routing";
 
 describe("Search", () => {
   it("fetches the search description", () => {
-    let fetchSearchDescription = jest.genMockFunction();
+    let fetchSearchDescription = stub();
     let url = "test url";
     let context = mockRouterContext();
     let search = shallow(
@@ -18,12 +19,12 @@ describe("Search", () => {
         />,
       { context }
     );
-    expect(fetchSearchDescription.mock.calls.length).toEqual(1);
-    expect(fetchSearchDescription.mock.calls[0][0]).toEqual("test url");
+    expect(fetchSearchDescription.callCount).to.equal(1);
+    expect(fetchSearchDescription.args[0][0]).to.equal("test url");
   });
 
   it("does not fetch the search description again if url doesn't change", () => {
-    let fetchSearchDescription = jest.genMockFunction();
+    let fetchSearchDescription = stub();
     let url = "test url";
     let searchData = {
       description: "description",
@@ -39,7 +40,7 @@ describe("Search", () => {
       { context }
     );
     wrapper.setProps({ url, searchData });
-    expect(fetchSearchDescription.mock.calls.length).toEqual(1);
+    expect(fetchSearchDescription.callCount).to.equal(1);
   });
 
   it("shows the search form with bootstrap classes", () => {
@@ -50,7 +51,7 @@ describe("Search", () => {
     };
     let context = mockRouterContext();
     let wrapper = shallow(
-      <Search searchData={searchData} navigate={jest.genMockFunction()} />,
+      <Search searchData={searchData} navigate={stub()} />,
       { context }
     );
 
@@ -58,22 +59,22 @@ describe("Search", () => {
     let input = wrapper.find("input");
     let button = wrapper.find("button");
 
-    expect(form.hasClass("form-inline")).toBe(true);
-    expect(input).toBeTruthy();
-    expect(input.props().placeholder).toBe("shortName");
-    expect(input.hasClass("form-control")).toBe(true);
-    expect(button).toBeTruthy();
-    expect(button.hasClass("btn")).toBe(true);
+    expect(form.hasClass("form-inline")).to.equal(true);
+    expect(input).to.be.ok;
+    expect(input.props().placeholder).to.equal("shortName");
+    expect(input.hasClass("form-control")).to.equal(true);
+    expect(button).to.be.ok;
+    expect(button.hasClass("btn")).to.equal(true);
   });
 
   it("fetches the search feed", () => {
-    let navigate = jest.genMockFunction();
+    let navigate = stub();
     let searchData = {
       description: "description",
       shortName: "shortName",
       template: (s) => s + " template"
     };
-    let push = jest.genMockFunction();
+    let push = stub();
     let context = mockRouterContext(push);
     let wrapper = mount(
       <Search searchData={searchData} navigate={navigate} />,
@@ -81,24 +82,24 @@ describe("Search", () => {
     );
 
     let form = wrapper.find("form").first();
-    expect(form).toBeTruthy();
+    expect(form).to.be.ok;
 
     let input = wrapper.find("input").get(0) as any;
     input.value = "test";
     form.simulate("submit");
 
-    expect(push.mock.calls.length).toEqual(1);
-    expect(push.mock.calls[0][0]).toBe(context.pathFor("test template", null));
+    expect(push.callCount).to.equal(1);
+    expect(push.args[0][0]).to.equal(context.pathFor("test template", null));
   });
 
   it("escapes search terms", () => {
-    let navigate = jest.genMockFunction();
+    let navigate = stub();
     let searchData = {
       description: "description",
       shortName: "shortName",
       template: (s) => s + " template"
     };
-    let push = jest.genMockFunction();
+    let push = stub();
     let context = mockRouterContext(push);
     let wrapper = mount(
       <Search searchData={searchData} navigate={navigate} />,
@@ -106,13 +107,13 @@ describe("Search", () => {
     );
 
     let form = wrapper.find("form").first();
-    expect(form).toBeTruthy();
+    expect(form).to.be.ok;
 
     let input = wrapper.find("input").get(0) as any;
     input.value = "Indésirable";
     form.simulate("submit");
 
-    expect(push.mock.calls.length).toEqual(1);
-    expect(push.mock.calls[0][0]).toBe(context.pathFor("Ind%C3%A9sirable template", null));
+    expect(push.callCount).to.equal(1);
+    expect(push.args[0][0]).to.equal(context.pathFor("Ind%C3%A9sirable template", null));
   });
 });

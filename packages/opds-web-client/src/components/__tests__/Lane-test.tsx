@@ -1,4 +1,4 @@
-jest.autoMockOff();
+import { expect } from "chai";
 
 import * as React from "react";
 import { shallow } from "enzyme";
@@ -36,7 +36,7 @@ describe("Lane", () => {
 
   it("shows the lane title in a CatalogLink", () => {
     let titleLink = wrapper.find(CatalogLink);
-    expect(titleLink.first().children().get(0)).toBe(laneData.title);
+    expect(titleLink.first().children().get(0)).to.equal(laneData.title);
   });
 
   it("shows LaneBooks", () => {
@@ -44,26 +44,26 @@ describe("Lane", () => {
     let bookDatas = laneBooks.map(book => book.props().book);
     let uniqueCollectionUrls = Array.from(new Set(laneBooks.map(book => book.props().collectionUrl)));
 
-    expect(laneBooks.length).toBe(books.length);
-    expect(bookDatas).toEqual(books);
-    expect(uniqueCollectionUrls).toEqual(["test collection"]);
+    expect(laneBooks.length).to.equal(books.length);
+    expect(bookDatas).to.deep.equal(books);
+    expect(uniqueCollectionUrls).to.deep.equal(["test collection"]);
   });
 
   it("shows more link", () => {
     let moreLink = wrapper.find(LaneMoreLink);
-    expect(moreLink.prop("lane")).toBe(laneData);
+    expect(moreLink.prop("lane")).to.equal(laneData);
   });
 
   it("hides more link", () => {
     wrapper.setProps({ hideMoreLink: true });
     let moreLink = wrapper.find(LaneMoreLink);
-    expect(moreLink.length).toBe(0);
+    expect(moreLink.length).to.equal(0);
   });
 
   it("hides books by id", () => {
     wrapper.setProps({ hiddenBookIds: ["test book id 1"] });
     let laneBooks = wrapper.find(LaneBook);
-    expect(laneBooks.length).toBe(books.length - 1);
-    expect(laneBooks.at(0).props().book).toBe(books[1]);
+    expect(laneBooks.length).to.equal(books.length - 1);
+    expect(laneBooks.at(0).props().book).to.equal(books[1]);
   });
 });

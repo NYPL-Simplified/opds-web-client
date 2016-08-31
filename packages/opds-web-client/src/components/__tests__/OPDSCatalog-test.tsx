@@ -1,4 +1,5 @@
-jest.autoMockOff();
+import { expect } from "chai";
+import { stub } from "sinon";
 
 import * as React from "react";
 import { shallow } from "enzyme";
@@ -15,7 +16,7 @@ describe("OPDSCatalog", () => {
     collectionUrl: "collection url",
     bookUrl: "book url",
     proxyUrl: "proxy url",
-    navigate: jest.genMockFunction(),
+    navigate: stub(),
     pathFor: (collectionUrl: string, bookUrl: string): string => { return "path"; },
     bookData: {
       id: "book id",
@@ -30,7 +31,7 @@ describe("OPDSCatalog", () => {
       <OPDSCatalog {...props} />
     );
     let root = wrapper.find<RootProps>(Root);
-    expect(root.props().store).toBeTruthy();
+    expect(root.props().store).to.be.ok;
   });
 
   it("passes state to Root if given one", () => {
@@ -40,7 +41,7 @@ describe("OPDSCatalog", () => {
       <OPDSCatalog {...props} initialState={state} />
     );
     let root = wrapper.find<RootProps>(Root);
-    expect(root.props().store.getState()).toBe(state);
+    expect(root.props().store.getState()).to.equal(state);
   });
 
   it("passes props to Root", () => {
@@ -50,7 +51,7 @@ describe("OPDSCatalog", () => {
     let root = wrapper.find<RootProps>(Root);
 
     Object.keys(props).forEach(key => {
-      expect(root.props()[key]).toEqual(props[key]);
+      expect(root.props()[key]).to.equal(props[key]);
     });
   });
 });

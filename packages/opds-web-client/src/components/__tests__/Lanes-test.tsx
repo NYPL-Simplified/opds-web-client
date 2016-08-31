@@ -1,4 +1,5 @@
-jest.autoMockOff();
+import { expect } from "chai";
+import { stub } from "sinon";
 
 import * as React from "react";
 import { shallow, mount } from "enzyme";
@@ -29,20 +30,20 @@ describe("Lanes", () => {
     let lanes = wrapper.find(Lane);
 
     lanes.forEach((lane, i) => {
-      expect(lane.props().lane).toBe(groupedCollectionData.lanes[i]);
-      expect(lane.props().collectionUrl).toEqual(groupedCollectionData.url);
-      expect(lane.props().hideMoreLink).toBe(true);
-      expect(lane.props().hiddenBookIds).toBe(hiddenBookIds);
+      expect(lane.props().lane).to.equal(groupedCollectionData.lanes[i]);
+      expect(lane.props().collectionUrl).to.equal(groupedCollectionData.url);
+      expect(lane.props().hideMoreLink).to.equal(true);
+      expect(lane.props().hiddenBookIds).to.equal(hiddenBookIds);
     });
   });
 
   it("shows spinner", () => {
     let spinnerImage = wrapper.find("img.lanesSpinner");
-    expect(spinnerImage.props().src).toBe(spinner);
+    expect(spinnerImage.props().src).to.equal(spinner);
   });
 
   it("fetches collection on mount", () => {
-    let fetchCollection = jest.genMockFunction();
+    let fetchCollection = stub();
     wrapper = shallow(
       <Lanes
         url={groupedCollectionData.url}
@@ -51,13 +52,13 @@ describe("Lanes", () => {
         />
     );
 
-    expect(fetchCollection.mock.calls.length).toBe(1);
-    expect(fetchCollection.mock.calls[0][0]).toBe(groupedCollectionData.url);
+    expect(fetchCollection.callCount).to.equal(1);
+    expect(fetchCollection.args[0][0]).to.equal(groupedCollectionData.url);
   });
 
   it("fetches new collection on componentWillReceiveProps if there's a new url", () => {
-    let clearCollection = jest.genMockFunction();
-    let fetchCollection = jest.genMockFunction();
+    let clearCollection = stub();
+    let fetchCollection = stub();
     wrapper = shallow(
       <Lanes
         url={"test1"}
@@ -66,21 +67,21 @@ describe("Lanes", () => {
         fetchCollection={fetchCollection}
         />
     );
-    expect(clearCollection.mock.calls.length).toBe(0);
-    expect(fetchCollection.mock.calls.length).toBe(1);
+    expect(clearCollection.callCount).to.equal(0);
+    expect(fetchCollection.callCount).to.equal(1);
 
     wrapper.instance().componentWillReceiveProps({url: "test1"});
-    expect(clearCollection.mock.calls.length).toBe(0);
-    expect(fetchCollection.mock.calls.length).toBe(1);
+    expect(clearCollection.callCount).to.equal(0);
+    expect(fetchCollection.callCount).to.equal(1);
 
     wrapper.instance().componentWillReceiveProps({url: "test2"});
-    expect(clearCollection.mock.calls.length).toBe(1);
-    expect(fetchCollection.mock.calls.length).toBe(2);
-    expect(fetchCollection.mock.calls[1][0]).toBe("test2");
+    expect(clearCollection.callCount).to.equal(1);
+    expect(fetchCollection.callCount).to.equal(2);
+    expect(fetchCollection.args[1][0]).to.equal("test2");
   });
 
   it("clears collection on unmount", () => {
-    let clearCollection = jest.genMockFunction();
+    let clearCollection = stub();
     wrapper = shallow(
       <Lanes
         url={groupedCollectionData.url}
@@ -89,6 +90,6 @@ describe("Lanes", () => {
         />
     );
     wrapper.instance().componentWillUnmount();
-    expect(clearCollection.mock.calls.length).toBe(1);
+    expect(clearCollection.callCount).to.equal(1);
   });
 });

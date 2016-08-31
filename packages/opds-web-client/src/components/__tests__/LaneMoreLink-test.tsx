@@ -1,4 +1,4 @@
-jest.autoMockOff();
+import { expect } from "chai";
 
 import * as React from "react";
 import { shallow } from "enzyme";
@@ -34,7 +34,7 @@ describe("LaneMoreLink", () => {
 
   it("shows CatalogLink pointing to lane url", () => {
     let link = wrapper.find(CatalogLink);
-    expect(link.prop("collectionUrl")).toBe(laneData.url);
-    expect(link.children().text()).toBe("More" + laneData.title); // text() ignores line break
+    expect(link.prop("collectionUrl")).to.equal(laneData.url);
+    expect(link.children().text()).to.equal("More" + laneData.title); // text() ignores line break
   });
 });

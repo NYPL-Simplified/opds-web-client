@@ -1,4 +1,4 @@
-jest.dontMock("../OpenSearchDescriptionParser");
+import { expect } from "chai";
 
 import OpenSearchDescriptionParser from "../OpenSearchDescriptionParser";
 
@@ -17,9 +17,9 @@ describe("OpenSearchDescriptionParser", () => {
           <Url template="http://example.com/{searchTerms}" />
         </OpenSearchDescription>
         `, "http://example.com").then((result) => {
-      expect(result.searchData.description).toEqual("d");
-      expect(result.searchData.shortName).toEqual("s");
-      expect(result.searchData.template("test")).toEqual("http://example.com/test");
+      expect(result.searchData.description).to.equal("d");
+      expect(result.searchData.shortName).to.equal("s");
+      expect(result.searchData.template("test")).to.equal("http://example.com/test");
       done();
     }).catch(err => done.fail(err));
   });
@@ -32,9 +32,9 @@ describe("OpenSearchDescriptionParser", () => {
           <Url template="/{searchTerms}" />
         </OpenSearchDescription>
         `, "http://example.com").then((result) => {
-      expect(result.searchData.description).toEqual("d");
-      expect(result.searchData.shortName).toEqual("s");
-      expect(result.searchData.template("test")).toEqual("http://example.com/test");
+      expect(result.searchData.description).to.equal("d");
+      expect(result.searchData.shortName).to.equal("s");
+      expect(result.searchData.template("test")).to.equal("http://example.com/test");
       done();
     }).catch(err => done.fail(err));
   });

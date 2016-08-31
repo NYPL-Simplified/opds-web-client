@@ -1,5 +1,5 @@
-jest.dontMock("../auth");
-jest.dontMock("../../actions");
+import { expect } from "chai";
+import { stub } from "sinon";
 
 import reducer from "../auth";
 import DataFetcher from "../../DataFetcher";
@@ -23,11 +23,11 @@ describe("auth reducer", () => {
   };
 
   it("returns the initial state", () => {
-    expect(reducer(undefined, {})).toEqual(initState);
+    expect(reducer(undefined, {})).to.deep.equal(initState);
   });
 
   it("handles SHOW_BASIC_AUTH_FORM", () => {
-    let callback = jest.genMockFunction();
+    let callback = stub();
     let labels = { login: "barcode", password: "pin" };
     let action = actions.showBasicAuthForm(callback, labels, "library");
     let newState = Object.assign({}, initState, {
@@ -40,7 +40,7 @@ describe("auth reducer", () => {
       })
     });
 
-    expect(reducer(initState, action)).toEqual(newState);
+    expect(reducer(initState, action)).to.deep.equal(newState);
   });
 
   it("handles HIDE_BASIC_AUTH_FORM", () => {
@@ -58,7 +58,7 @@ describe("auth reducer", () => {
       })
     });
 
-    expect(reducer(oldState, action)).toEqual(newState);
+    expect(reducer(oldState, action)).to.deep.equal(newState);
   });
 
   it("handles SAVE_BASIC_AUTH_CREDENTIALS", () => {
@@ -69,6 +69,6 @@ describe("auth reducer", () => {
       })
     });
 
-    expect(reducer(initState, action)).toEqual(newState);
+    expect(reducer(initState, action)).to.deep.equal(newState);
   });
 });

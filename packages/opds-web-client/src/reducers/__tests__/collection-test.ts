@@ -1,8 +1,7 @@
-jest.dontMock("../collection");
-jest.dontMock("../../actions");
-jest.setMock("../history", {
-  default: (state, action) => state.history
-});
+import { expect } from "chai";
+import { stub } from "sinon";
+
+import * as history from "../history";
 
 import reducer from "../collection";
 import DataFetcher from "../../DataFetcher";
@@ -84,8 +83,18 @@ describe("collection reducer", () => {
     history: []
   };
 
+  let historyStub;
+
+  beforeEach(() => {
+    historyStub = stub(history, "default", (state, action) => state.history);
+  });
+
+  afterEach(() => {
+    historyStub.restore();
+  });
+
   it("should return the initial state", () => {
-    expect(reducer(undefined, {})).toEqual(initState);
+    expect(reducer(undefined, {})).to.deep.equal(initState);
   });
 
   it("should handle FETCH_COLLECTION_REQUEST", () => {
@@ -95,7 +104,7 @@ describe("collection reducer", () => {
       error: null
     });
 
-    expect(reducer(errorState, action)).toEqual(newState);
+    expect(reducer(errorState, action)).to.deep.equal(newState);
   });
 
   it("should handle FETCH_COLLECTION_FAILURE", () => {
@@ -113,7 +122,7 @@ describe("collection reducer", () => {
       }
     });
 
-    expect(reducer(fetchingState, action)).toEqual(newState);
+    expect(reducer(fetchingState, action)).to.deep.equal(newState);
   });
 
   it("should handle LOAD_COLLECTION", () => {
@@ -132,7 +141,7 @@ describe("collection reducer", () => {
       isFetching: false
     });
 
-    expect(reducer(currentState, action)).toEqual(newState);
+    expect(reducer(currentState, action)).to.deep.equal(newState);
   });
 
   it("should handle LOAD_COLLECTION after an error", () => {
@@ -152,7 +161,7 @@ describe("collection reducer", () => {
       error: null
     });
 
-    expect(reducer(errorState, action)).toEqual(newState);
+    expect(reducer(errorState, action)).to.deep.equal(newState);
   });
 
   it("should handle CLEAR_COLLECTION", () => {
@@ -162,7 +171,7 @@ describe("collection reducer", () => {
       data: null
     });
 
-    expect(reducer(currentState, action)).toEqual(newState);
+    expect(reducer(currentState, action)).to.deep.equal(newState);
   });
 
   it("should handle FETCH_PAGE_REQUEST", () => {
@@ -172,7 +181,7 @@ describe("collection reducer", () => {
       isFetchingPage: true
     });
 
-    expect(reducer(currentState, action)).toEqual(newState);
+    expect(reducer(currentState, action)).to.deep.equal(newState);
   });
 
   it("should handle FETCH_PAGE_FAILURE", () => {
@@ -190,7 +199,7 @@ describe("collection reducer", () => {
       }
     });
 
-    expect(reducer(fetchingPageState, action)).toEqual(newState);
+    expect(reducer(fetchingPageState, action)).to.deep.equal(newState);
   });
 
   it("should handle LOAD_PAGE", () => {
@@ -219,7 +228,7 @@ describe("collection reducer", () => {
       isFetchingPage: false
     });
 
-    expect(reducer(fetchingPageState, action)).toEqual(newState);
+    expect(reducer(fetchingPageState, action)).to.deep.equal(newState);
   });
 
   it("should handle LOAD_SEARCH_DESCRIPTION", () => {
@@ -231,10 +240,10 @@ describe("collection reducer", () => {
     let action = actions.loadSearchDescription({ searchData });
 
     let newState = reducer(currentState, action);
-    expect(newState.data.search).toBeTruthy();
-    expect(newState.data.search.searchData.description).toEqual("d");
-    expect(newState.data.search.searchData.shortName).toEqual("s");
-    expect(newState.data.search.searchData.template("test")).toEqual("test template");
+    expect(newState.data.search).to.be.ok;
+    expect(newState.data.search.searchData.description).to.equal("d");
+    expect(newState.data.search.searchData.shortName).to.equal("s");
+    expect(newState.data.search.searchData.template("test")).to.equal("test template");
   });
 
   it("should handle CLOSE_ERROR", () => {
@@ -243,6 +252,6 @@ describe("collection reducer", () => {
       error: null
     });
 
-    expect(reducer(errorState, action)).toEqual(newState);
+    expect(reducer(errorState, action)).to.deep.equal(newState);
   });
 });

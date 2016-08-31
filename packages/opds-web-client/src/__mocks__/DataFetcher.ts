@@ -1,4 +1,8 @@
-export default class MockDataFetcher {
+import { stub } from "sinon";
+
+import DataFetcher from "../DataFetcher";
+
+export default class MockDataFetcher extends DataFetcher {
   resolve: boolean = true;
   testData: any = "test";
 
@@ -20,10 +24,10 @@ export default class MockDataFetcher {
     });
   }
 
-  setBasicAuthCredentials() {
-  }
-
   getBasicAuthCredentials() {
     return "credentials";
   }
 };
+
+MockDataFetcher.prototype.setBasicAuthCredentials = stub();
+MockDataFetcher.prototype.clearBasicAuthCredentials = stub();

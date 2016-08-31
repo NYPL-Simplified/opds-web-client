@@ -1,4 +1,4 @@
-jest.autoMockOff();
+import { expect } from "chai";
 
 import * as React from "react";
 import { shallow } from "enzyme";
@@ -25,10 +25,10 @@ describe("Book", () => {
     );
 
     let links = wrapper.find(CatalogLink);
-    expect(links.length).toEqual(2);
+    expect(links.length).to.equal(2);
     let cover = links.at(0).children().at(0);
-    expect(cover.type()).toBe(BookCover);
-    expect(cover.props().book).toBe(book);
+    expect(cover.type()).to.equal(BookCover);
+    expect(cover.props().book).to.equal(book);
   });
 
   it("shows book info", () => {
@@ -37,13 +37,13 @@ describe("Book", () => {
     );
 
     let links = wrapper.find(CatalogLink);
-    expect(links.length).toEqual(2);
+    expect(links.length).to.equal(2);
     let bookInfo = links.at(1);
     let title = bookInfo.find(".bookTitle");
     let authors = bookInfo.find(".bookAuthors");
 
-    expect(title.text()).toEqual(book.title);
-    expect(authors.text()).toEqual(book.authors.join(", "));
+    expect(title.text()).to.equal(book.title);
+    expect(authors.text()).to.equal(book.authors.join(", "));
   });
 
   it("shows contributors when there's no author", () => {
@@ -58,6 +58,6 @@ describe("Book", () => {
     let links = wrapper.find(CatalogLink);
     let bookInfo = links.at(1).children().at(1);
     let authors = bookInfo.find(".bookAuthors");
-    expect(authors.text()).toEqual(bookCopy.contributors[0]);
+    expect(authors.text()).to.equal(bookCopy.contributors[0]);
   });
 });
