@@ -1,5 +1,5 @@
-jest.dontMock("../BorrowButton");
-jest.dontMock("./collectionData");
+import { expect } from "chai";
+import { stub } from "sinon";
 
 import * as React from "react";
 import { shallow } from "enzyme";
@@ -16,8 +16,7 @@ describe("BorrowButton", () => {
   bookData.borrowUrl = "borrow url";
 
   beforeEach(() => {
-    borrow = jest.genMockFunction();
-    borrow.mockReturnValue(
+    borrow = stub().returns(
       new Promise((resolve, reject) => resolve({ blob: "blob", mimeType: "mime/type" }))
     );
     style = { border: "100px solid black" };
@@ -33,13 +32,13 @@ describe("BorrowButton", () => {
 
   it("shows button", () => {
     let button = wrapper.find("button");
-    expect(button.props().style).toBe(style);
-    expect(button.text()).toBe("Borrow");
+    expect(button.props().style).to.equal(style);
+    expect(button.text()).to.equal("Borrow");
   });
 
   it("borrows when clicked", () => {
     let button = wrapper.find("button");
     button.simulate("click");
-    expect(borrow.mock.calls.length).toBe(1);
+    expect(borrow.callCount).to.equal(1);
   });
 });

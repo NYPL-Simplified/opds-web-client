@@ -1,4 +1,4 @@
-jest.autoMockOff();
+import { expect } from "chai";
 
 import * as React from "react";
 import { shallow } from "enzyme";
@@ -35,8 +35,8 @@ describe("CatalogLink", () => {
     let instance = wrapper.instance() as any;
     let linkContextRouterKeys = Object.keys(instance.getChildContext().router);
 
-    expect(link.props()).toEqual(linkProps);
-    expect(linkContextRouterKeys).toEqual(requiredRouterKeys);
+    expect(link.props()).to.deep.equal(linkProps);
+    expect(linkContextRouterKeys).to.deep.equal(requiredRouterKeys);
   });
 
   it("passes children to Link", () => {
@@ -57,6 +57,6 @@ describe("CatalogLink", () => {
     );
 
     let child = wrapper.children().first();
-    expect(child.hasClass("child")).toBe(true);
+    expect(child.hasClass("child")).to.equal(true);
   });
 });

@@ -1,4 +1,4 @@
-jest.autoMockOff();
+import { expect } from "chai";
 
 import * as React from "react";
 import { shallow } from "enzyme";
@@ -25,7 +25,7 @@ describe("LaneBook", () => {
     );
 
     let cover = wrapper.find(BookCover);
-    expect(cover.props().book).toBe(book);
+    expect(cover.props().book).to.equal(book);
   });
 
   it("shows book title in a CatalogLink", () => {
@@ -36,7 +36,7 @@ describe("LaneBook", () => {
     let link = wrapper.find<CatalogLinkProps>(CatalogLink);
     let title = link.find(".bookTitle");
 
-    expect(link.props().bookUrl).toBe(book.url);
-    expect(title.text()).toBe(book.title);
+    expect(link.props().bookUrl).to.equal(book.url);
+    expect(title.text()).to.equal(book.title);
   });
 });

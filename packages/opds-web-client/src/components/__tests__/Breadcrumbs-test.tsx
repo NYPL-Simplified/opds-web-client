@@ -1,4 +1,4 @@
-jest.autoMockOff();
+import { expect } from "chai";
 
 import * as React from "react";
 import { shallow } from "enzyme";
@@ -30,13 +30,13 @@ describe("Breadcrumbs", () => {
 
     let list = wrapper.find("ol");
     let links = wrapper.find(CatalogLink);
-    expect(list.hasClass("breadcrumb")).toBe(true);
-    expect(links.length).toBe(2);
-    expect(links.at(0).props().children).toContain("2nd title");
-    expect(links.at(0).props().collectionUrl).toEqual("2nd url");
+    expect(list.hasClass("breadcrumb")).to.equal(true);
+    expect(links.length).to.equal(2);
+    expect(links.at(0).props().children).to.contain("2nd title");
+    expect(links.at(0).props().collectionUrl).to.equal("2nd url");
     // last link is wrapped in <strong>
-    expect((links.at(1).props().children as any).props.children).toContain("last title");
-    expect(links.at(1).props().collectionUrl).toEqual("last url");
+    expect((links.at(1).props().children as any).props.children).to.contain("last title");
+    expect(links.at(1).props().collectionUrl).to.equal("last url");
   });
 });
 
@@ -56,7 +56,7 @@ describe("hierarchyComputeBreadcrumbs", () => {
   let history = [];
 
   it("returns only collection link without root or parent", () => {
-    expect(hierarchyComputeBreadcrumbs(collection, history)).toEqual([collectionLink]);
+    expect(hierarchyComputeBreadcrumbs(collection, history)).to.deep.equal([collectionLink]);
   });
 
   it("returns root and collection if parent not present", () => {
@@ -65,7 +65,7 @@ describe("hierarchyComputeBreadcrumbs", () => {
       text: "new root url"
     };
     let data = Object.assign({}, collection, { catalogRootLink });
-    expect(hierarchyComputeBreadcrumbs(data, history)).toEqual([catalogRootLink, collectionLink]);
+    expect(hierarchyComputeBreadcrumbs(data, history)).to.deep.equal([catalogRootLink, collectionLink]);
   });
 
   it("provides default catalog root title", () => {
@@ -74,7 +74,7 @@ describe("hierarchyComputeBreadcrumbs", () => {
       text: null
     };
     let data = Object.assign({}, collection, { catalogRootLink });
-    expect(hierarchyComputeBreadcrumbs(data, history)).toEqual([{
+    expect(hierarchyComputeBreadcrumbs(data, history)).to.deep.equal([{
       url: catalogRootLink.url,
       text: "Catalog"
     }, collectionLink]);
@@ -86,7 +86,7 @@ describe("hierarchyComputeBreadcrumbs", () => {
       text: "new parent text"
     };
     let data = Object.assign({}, collection, { parentLink });
-    expect(hierarchyComputeBreadcrumbs(data, history)).toEqual([parentLink, collectionLink]);
+    expect(hierarchyComputeBreadcrumbs(data, history)).to.deep.equal([parentLink, collectionLink]);
   });
 
   it("returns only root and collection if parent is same as root", () => {
@@ -99,7 +99,7 @@ describe("hierarchyComputeBreadcrumbs", () => {
       text: "new root text"
     };
     let data = Object.assign({}, collection, { catalogRootLink, parentLink });
-    expect(hierarchyComputeBreadcrumbs(data, history)).toEqual([catalogRootLink, collectionLink]);
+    expect(hierarchyComputeBreadcrumbs(data, history)).to.deep.equal([catalogRootLink, collectionLink]);
   });
 
   it("return only parent and collection if collection is same as root", () => {
@@ -112,7 +112,7 @@ describe("hierarchyComputeBreadcrumbs", () => {
       text: "new parent text"
     };
     let data = Object.assign({}, collection, { catalogRootLink, parentLink });
-    expect(hierarchyComputeBreadcrumbs(data, history)).toEqual([parentLink , collectionLink]);
+    expect(hierarchyComputeBreadcrumbs(data, history)).to.deep.equal([parentLink , collectionLink]);
   });
 
   it("return only root and parent if collection is same as parent", () => {
@@ -125,6 +125,6 @@ describe("hierarchyComputeBreadcrumbs", () => {
       text: "new title"
     };
     let data = Object.assign({}, collection, { catalogRootLink, parentLink });
-    expect(hierarchyComputeBreadcrumbs(data, history)).toEqual([catalogRootLink, parentLink]);
+    expect(hierarchyComputeBreadcrumbs(data, history)).to.deep.equal([catalogRootLink, parentLink]);
   });
 });

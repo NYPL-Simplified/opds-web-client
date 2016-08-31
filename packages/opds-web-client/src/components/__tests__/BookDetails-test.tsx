@@ -1,4 +1,5 @@
-jest.autoMockOff();
+import { expect } from "chai";
+import { stub } from "sinon";
 
 import * as React from "react";
 import * as moment from "moment";
@@ -34,41 +35,41 @@ describe("BookDetails", () => {
     wrapper = shallow(
       <BookDetails
         book={book}
-        updateBook={jest.genMockFunction()}
-        fulfillBook={jest.genMockFunction()}
-        indirectFulfillBook={jest.genMockFunction()}
+        updateBook={stub()}
+        fulfillBook={stub()}
+        indirectFulfillBook={stub()}
         />
     );
   });
 
   it("shows cover", () => {
     let cover = wrapper.find(BookCover);
-    expect(cover.props().book).toBe(book);
+    expect(cover.props().book).to.equal(book);
   });
 
   it("shows title", () => {
     let title = wrapper.find("h1");
-    expect(title.text()).toBe(book.title);
+    expect(title.text()).to.equal(book.title);
   });
 
   it("shows series", () => {
     let series = wrapper.find(".bookDetailsSeries");
-    expect(series.text()).toBe(book.series.name);
+    expect(series.text()).to.equal(book.series.name);
   });
 
   it("shows authors", () => {
     let author = wrapper.find(".bookDetailsAuthors");
-    expect(author.text()).toBe(book.authors.join(", "));
+    expect(author.text()).to.equal(book.authors.join(", "));
   });
 
   it("shows contributors", () => {
     let contributor = wrapper.find(".bookDetailsContributors");
-    expect(contributor.text()).toBe("Contributors: " + book.contributors.join(", "));
+    expect(contributor.text()).to.equal("Contributors: " + book.contributors.join(", "));
   });
 
   it("shows publisher", () => {
     let publisher = wrapper.find(".bookDetails-Publisher");
-    expect(publisher.text()).toBe("Publisher: " + book.publisher);
+    expect(publisher.text()).to.equal("Publisher: " + book.publisher);
   });
 
   it("doesn't show publisher when there isn't one", () => {
@@ -78,24 +79,24 @@ describe("BookDetails", () => {
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
-        updateBook={jest.genMockFunction()}
-        fulfillBook={jest.genMockFunction()}
-        indirectFulfillBook={jest.genMockFunction()}
+        updateBook={stub()}
+        fulfillBook={stub()}
+        indirectFulfillBook={stub()}
         />
     );
 
     let publisher = wrapper.find(".bookDetails-Publisher");
-    expect(publisher.length).toBe(0);
+    expect(publisher.length).to.equal(0);
   });
 
   it("shows publish date", () => {
     let published = wrapper.find(".bookDetails-Published");
-    expect(published.text()).toBe("Published: " + book.published);
+    expect(published.text()).to.equal("Published: " + book.published);
   });
 
   it("shows categories", () => {
     let categories = wrapper.find(".bookDetails-Categories");
-    expect(categories.text()).toBe("Categories: category 1, category 2");
+    expect(categories.text()).to.equal("Categories: category 1, category 2");
   });
 
   it("doesn't show categories when there aren't any", () => {
@@ -103,54 +104,54 @@ describe("BookDetails", () => {
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
-        updateBook={jest.genMockFunction()}
-        fulfillBook={jest.genMockFunction()}
-        indirectFulfillBook={jest.genMockFunction()}
+        updateBook={stub()}
+        fulfillBook={stub()}
+        indirectFulfillBook={stub()}
         />
     );
 
     let categories = wrapper.find(".bookDetails-Categories");
-    expect(categories.length).toBe(0);
+    expect(categories.length).to.equal(0);
   });
 
   it("shows summary", () => {
     let summary = wrapper.find(".bookDetailsSummary");
-    expect(summary.html()).toContain("Sam and Remi");
+    expect(summary.html()).to.contain("Sam and Remi");
   });
 
   it("shows download button for open access url", () => {
     let button = wrapper.find(DownloadButton);
-    expect(button.props().url).toBe("secrets.epub");
-    expect(button.props().mimeType).toBe("application/epub+zip");
-    expect(button.props().isPlainLink).toBe(true);
+    expect(button.props().url).to.equal("secrets.epub");
+    expect(button.props().mimeType).to.equal("application/epub+zip");
+    expect(button.props().isPlainLink).to.equal(true);
   });
 
   it("shows borrow/hold button", () => {
     let bookCopy = Object.assign({}, book, {
       borrowUrl: "borrow url"
     });
-    let updateBook = jest.genMockFunction();
+    let updateBook = stub();
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
         updateBook={updateBook}
-        fulfillBook={jest.genMockFunction()}
-        indirectFulfillBook={jest.genMockFunction()}
+        fulfillBook={stub()}
+        indirectFulfillBook={stub()}
         />
     );
 
     let button = wrapper.find(BorrowButton);
-    expect(button.children().text()).toBe("Borrow");
+    expect(button.children().text()).to.equal("Borrow");
     button.props().borrow();
-    expect(updateBook.mock.calls.length).toBe(1);
-    expect(updateBook.mock.calls[0][0]).toBe(bookCopy.borrowUrl);
+    expect(updateBook.callCount).to.equal(1);
+    expect(updateBook.args[0][0]).to.equal(bookCopy.borrowUrl);
     wrapper.setProps({
       book: Object.assign({}, bookCopy, {
         copies: { total: 2, available: 0 }
       })
     });
     button = wrapper.find(BorrowButton);
-    expect(button.children().text()).toBe("Hold");
+    expect(button.children().text()).to.equal("Hold");
   });
 
   it("shows fulfill button if there's no download button", () => {
@@ -159,24 +160,24 @@ describe("BookDetails", () => {
       openAccessLinks: [],
       fulfillmentLinks: [link]
     });
-    let fulfillBook = jest.genMockFunction();
-    let indirectFulfillBook = jest.genMockFunction();
+    let fulfillBook = stub();
+    let indirectFulfillBook = stub();
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
-        updateBook={jest.genMockFunction()}
+        updateBook={stub()}
         fulfillBook={fulfillBook}
         indirectFulfillBook={indirectFulfillBook}
         isSignedIn={false}
         />
     );
     let button = wrapper.find(DownloadButton);
-    expect(button.props().fulfill).toBe(fulfillBook);
-    expect(button.props().indirectFulfill).toBe(indirectFulfillBook);
-    expect(button.props().url).toBe(link.url);
-    expect(button.props().title).toBe(bookCopy.title);
-    expect(button.props().mimeType).toBe(link.type);
-    expect(button.props().isPlainLink).toBe(true);
+    expect(button.props().fulfill).to.equal(fulfillBook);
+    expect(button.props().indirectFulfill).to.equal(indirectFulfillBook);
+    expect(button.props().url).to.equal(link.url);
+    expect(button.props().title).to.equal(bookCopy.title);
+    expect(button.props().mimeType).to.equal(link.type);
+    expect(button.props().isPlainLink).to.equal(true);
   });
 
   it("shows 'on hold'", () => {
@@ -187,14 +188,14 @@ describe("BookDetails", () => {
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
-        updateBook={jest.genMockFunction()}
-        fulfillBook={jest.genMockFunction()}
-        indirectFulfillBook={jest.genMockFunction()}
+        updateBook={stub()}
+        fulfillBook={stub()}
+        indirectFulfillBook={stub()}
         />
     );
     let button = wrapper.find("button");
-    expect(button.text()).toBe("On Hold");
-    expect(button.props().className).toContain("disabled");
+    expect(button.text()).to.equal("On Hold");
+    expect(button.props().className).to.contain("disabled");
   });
 
   it("shows holds when there are no copies available", () => {
@@ -211,14 +212,14 @@ describe("BookDetails", () => {
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
-        updateBook={jest.genMockFunction()}
-        fulfillBook={jest.genMockFunction()}
-        indirectFulfillBook={jest.genMockFunction()}
+        updateBook={stub()}
+        fulfillBook={stub()}
+        indirectFulfillBook={stub()}
         />
     );
     let circulationInfo = wrapper.find(".circulationInfo");
-    expect(circulationInfo.text()).toContain("0 of 12 copies available");
-    expect(circulationInfo.text()).toContain("6 patrons in hold queue");
+    expect(circulationInfo.text()).to.contain("0 of 12 copies available");
+    expect(circulationInfo.text()).to.contain("6 patrons in hold queue");
   });
 
   it("doesn't show holds when there are copies available", () => {
@@ -235,19 +236,19 @@ describe("BookDetails", () => {
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
-        updateBook={jest.genMockFunction()}
-        fulfillBook={jest.genMockFunction()}
-        indirectFulfillBook={jest.genMockFunction()}
+        updateBook={stub()}
+        fulfillBook={stub()}
+        indirectFulfillBook={stub()}
         />
     );
     let circulationInfo = wrapper.find(".circulationInfo");
-    expect(circulationInfo.text()).toContain("5 of 12 copies available");
-    expect(circulationInfo.text()).not.toContain("6");
+    expect(circulationInfo.text()).to.contain("5 of 12 copies available");
+    expect(circulationInfo.text()).not.to.contain("6");
   });
 
   it("shows circulation info for open access book", () => {
     let circulationInfo = wrapper.find(".circulationInfo");
-    expect(circulationInfo.text()).toContain("open-access");
+    expect(circulationInfo.text()).to.contain("open-access");
   });
 
   it("shows circulation info for borrowed book", () => {
@@ -260,13 +261,13 @@ describe("BookDetails", () => {
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
-        updateBook={jest.genMockFunction()}
-        fulfillBook={jest.genMockFunction()}
-        indirectFulfillBook={jest.genMockFunction()}
+        updateBook={stub()}
+        fulfillBook={stub()}
+        indirectFulfillBook={stub()}
         />
     );
     let circulationInfo = wrapper.find(".circulationInfo");
-    expect(circulationInfo.text()).toContain("on loan for a day");
+    expect(circulationInfo.text()).to.contain("on loan for a day");
   });
 
   it("shows circulation info for reserved book", () => {
@@ -285,14 +286,14 @@ describe("BookDetails", () => {
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
-        updateBook={jest.genMockFunction()}
-        fulfillBook={jest.genMockFunction()}
-        indirectFulfillBook={jest.genMockFunction()}
+        updateBook={stub()}
+        fulfillBook={stub()}
+        indirectFulfillBook={stub()}
         />
     );
     let circulationInfo = wrapper.find(".circulationInfo");
-    expect(circulationInfo.text()).toContain("0 of 12 copies available");
-    expect(circulationInfo.text()).toContain("6 patrons in hold queue");
-    expect(circulationInfo.text()).toContain("Your holds position: 3");
+    expect(circulationInfo.text()).to.contain("0 of 12 copies available");
+    expect(circulationInfo.text()).to.contain("6 patrons in hold queue");
+    expect(circulationInfo.text()).to.contain("Your holds position: 3");
   });
 });

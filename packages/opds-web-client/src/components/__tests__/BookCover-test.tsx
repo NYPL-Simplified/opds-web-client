@@ -1,4 +1,4 @@
-jest.autoMockOff();
+import { expect } from "chai";
 
 import * as React from "react";
 import { shallow } from "enzyme";
@@ -22,10 +22,10 @@ describe("BookCover", () => {
 
     it("shows title and authors", () => {
       let title = wrapper.childAt(0);
-      expect(title.text()).toBe(bookData.title);
+      expect(title.text()).to.equal(bookData.title);
 
       let authors = wrapper.childAt(1);
-      expect(authors.text()).toBe(bookData.authors.join(", "));
+      expect(authors.text()).to.equal(bookData.authors.join(", "));
     });
   });
 
@@ -46,8 +46,8 @@ describe("BookCover", () => {
 
     it("shows the book cover with empty alt", () => {
       let image = wrapper.find("img");
-      expect(image.props().src).toBe(bookData.imageUrl);
-      expect(image.props().alt).toBe("");
+      expect(image.props().src).to.equal(bookData.imageUrl);
+      expect(image.props().alt).to.equal("");
     });
 
     it("shows the placeholder cover on image error", () => {
@@ -55,10 +55,10 @@ describe("BookCover", () => {
       image.simulate("error");
 
       let title = wrapper.childAt(0);
-      expect(title.text()).toBe(bookData.title);
+      expect(title.text()).to.equal(bookData.title);
 
       let authors = wrapper.childAt(1);
-      expect(authors.text()).toBe(bookData.authors.join(", "));
+      expect(authors.text()).to.equal(bookData.authors.join(", "));
 
       // The placeholder is cleared when there are new props.
       let newBookData = {
@@ -67,7 +67,7 @@ describe("BookCover", () => {
       };
       wrapper.setProps({ book: newBookData });
       image = wrapper.find("img");
-      expect(image.props().src).toBe(newBookData.imageUrl);
+      expect(image.props().src).to.equal(newBookData.imageUrl);
     });
   });
 });

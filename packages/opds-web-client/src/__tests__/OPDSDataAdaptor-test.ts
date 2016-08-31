@@ -1,5 +1,4 @@
-jest.dontMock("../OPDSDataAdapter");
-jest.dontMock("./OPDSFactory");
+import { expect } from "chai";
 
 import {
   OPDSArtworkLink, OPDSCollectionLink, OPDSFacetLink, OPDSAcquisitionLink,
@@ -72,39 +71,39 @@ describe("OPDSDataAdapter", () => {
     });
 
     let collection = feedToCollection(acquisitionFeed, "");
-    expect(collection.books.length).toEqual(0);
-    expect(collection.lanes.length).toEqual(1);
-    expect(collection.lanes[0].url).toEqual(collectionLink.href);
-    expect(collection.raw).toBe("unparsed data");
+    expect(collection.books.length).to.equal(0);
+    expect(collection.lanes.length).to.equal(1);
+    expect(collection.lanes[0].url).to.equal(collectionLink.href);
+    expect(collection.raw).to.equal("unparsed data");
 
     let book = collection.lanes[0].books[0];
-    expect(book.id).toEqual(entry.id);
-    expect(book.title).toEqual(entry.title);
-    expect(book.authors.length).toEqual(2);
-    expect(book.authors[0]).toEqual(entry.authors[0].name);
-    expect(book.authors[1]).toEqual(entry.authors[1].name);
-    expect(book.contributors.length).toEqual(1);
-    expect(book.contributors[0]).toEqual(entry.contributors[0].name);
-    expect(book.series.name).toEqual(entry.series.name);
-    expect(book.series.position).toEqual(entry.series.position);
-    expect(book.summary).toEqual(sanitizeHtml(entry.summary.content));
-    expect(book.summary).toContain("Many men and women are going to die for that book.");
-    expect(book.summary).not.toContain("script");
-    expect(book.summary).not.toContain("danger");
-    expect(book.categories.length).toEqual(2);
-    expect(book.categories).toContain("label");
-    expect(book.categories).toContain("label 2");
-    expect(book.imageUrl).toEqual(thumbImageLink.href);
-    expect(book.publisher).toBe("Fake Publisher");
-    expect(book.published).toBe("June 8, 2014");
-    expect(book.openAccessLinks[0].url).toBe(openAccessLink.href);
-    expect(book.borrowUrl).toBe(borrowLink.href);
-    expect(book.fulfillmentLinks[0].url).toBe(fulfillmentLink.href);
-    expect(book.fulfillmentLinks[0].type).toBe(fulfillmentLink.type);
-    expect(book.fulfillmentLinks[0].indirectType).toBe(fulfillmentLink.indirectAcquisitions[0].type);
-    expect(book.availability).toEqual(borrowLink.availability);
-    expect(book.holds).toEqual(borrowLink.holds);
-    expect(book.copies).toEqual(borrowLink.copies);
+    expect(book.id).to.equal(entry.id);
+    expect(book.title).to.equal(entry.title);
+    expect(book.authors.length).to.equal(2);
+    expect(book.authors[0]).to.equal(entry.authors[0].name);
+    expect(book.authors[1]).to.equal(entry.authors[1].name);
+    expect(book.contributors.length).to.equal(1);
+    expect(book.contributors[0]).to.equal(entry.contributors[0].name);
+    expect(book.series.name).to.equal(entry.series.name);
+    expect(book.series.position).to.equal(entry.series.position);
+    expect(book.summary).to.equal(sanitizeHtml(entry.summary.content));
+    expect(book.summary).to.contain("Many men and women are going to die for that book.");
+    expect(book.summary).not.to.contain("script");
+    expect(book.summary).not.to.contain("danger");
+    expect(book.categories.length).to.equal(2);
+    expect(book.categories).to.contain("label");
+    expect(book.categories).to.contain("label 2");
+    expect(book.imageUrl).to.equal(thumbImageLink.href);
+    expect(book.publisher).to.equal("Fake Publisher");
+    expect(book.published).to.equal("June 8, 2014");
+    expect(book.openAccessLinks[0].url).to.equal(openAccessLink.href);
+    expect(book.borrowUrl).to.equal(borrowLink.href);
+    expect(book.fulfillmentLinks[0].url).to.equal(fulfillmentLink.href);
+    expect(book.fulfillmentLinks[0].type).to.equal(fulfillmentLink.type);
+    expect(book.fulfillmentLinks[0].indirectType).to.equal(fulfillmentLink.indirectAcquisitions[0].type);
+    expect(book.availability).to.equal(borrowLink.availability);
+    expect(book.holds).to.equal(borrowLink.holds);
+    expect(book.copies).to.equal(borrowLink.copies);
   });
 
   it("extracts navigation link info", () => {
@@ -124,11 +123,11 @@ describe("OPDSDataAdapter", () => {
     });
 
     let collection = feedToCollection(navigationFeed, "");
-    expect(collection.navigationLinks.length).toEqual(1);
+    expect(collection.navigationLinks.length).to.equal(1);
     let link = collection.navigationLinks[0];
-    expect(link.id).toEqual(linkEntry.id);
-    expect(link.text).toEqual(linkEntry.title);
-    expect(link.url).toEqual(navigationLink.href);
+    expect(link.id).to.equal(linkEntry.id);
+    expect(link.text).to.equal(linkEntry.title);
+    expect(link.url).to.equal(navigationLink.href);
   });
 
   it("extracts facet groups", () => {
@@ -159,30 +158,30 @@ describe("OPDSDataAdapter", () => {
     });
 
     let collection = feedToCollection(acquisitionFeed, "");
-    expect(collection.facetGroups.length).toEqual(2);
+    expect(collection.facetGroups.length).to.equal(2);
 
     let groupA = collection.facetGroups[0];
-    expect(groupA.label).toEqual("group A");
-    expect(groupA.facets.length).toEqual(2);
+    expect(groupA.label).to.equal("group A");
+    expect(groupA.facets.length).to.equal(2);
 
     let groupB = collection.facetGroups[1];
-    expect(groupB.label).toEqual("group B");
-    expect(groupB.facets.length).toEqual(1);
+    expect(groupB.label).to.equal("group B");
+    expect(groupB.facets.length).to.equal(1);
 
     let facet1 = groupA.facets[0];
-    expect(facet1.label).toEqual("title 1");
-    expect(facet1.active).toBeTruthy();
-    expect(facet1.href).toEqual("href1");
+    expect(facet1.label).to.equal("title 1");
+    expect(facet1.active).to.be.ok;
+    expect(facet1.href).to.equal("href1");
 
     let facet2 = groupB.facets[0];
-    expect(facet2.label).toEqual("title 2");
-    expect(facet2.active).toBeFalsy();
-    expect(facet2.href).toEqual("href2");
+    expect(facet2.label).to.equal("title 2");
+    expect(facet2.active).not.to.be.ok;
+    expect(facet2.href).to.equal("href2");
 
     let facet3 = groupA.facets[1];
-    expect(facet3.label).toEqual("title 3");
-    expect(facet3.active).toBeFalsy();
-    expect(facet3.href).toEqual("href3");
+    expect(facet3.label).to.equal("title 3");
+    expect(facet3.active).not.to.be.ok;
+    expect(facet3.href).to.equal("href3");
   });
 
   it("extracts search link", () => {
@@ -197,8 +196,8 @@ describe("OPDSDataAdapter", () => {
     });
 
     let collection = feedToCollection(navigationFeed, "");
-    expect(collection.search).toBeTruthy();
-    expect(collection.search.url).toEqual(searchLink.href);
+    expect(collection.search).to.be.ok;
+    expect(collection.search.url).to.equal(searchLink.href);
   });
 
   it("extracts next page url", () => {
@@ -214,8 +213,8 @@ describe("OPDSDataAdapter", () => {
     });
 
     let collection = feedToCollection(acquisitionFeed, "");
-    expect(collection.nextPageUrl).toBeTruthy();
-    expect(collection.nextPageUrl).toEqual("href");
+    expect(collection.nextPageUrl).to.be.ok;
+    expect(collection.nextPageUrl).to.equal("href");
   });
 
   it("extracts shelf url", () => {
@@ -231,7 +230,7 @@ describe("OPDSDataAdapter", () => {
     });
 
     let collection = feedToCollection(acquisitionFeed, "");
-    expect(collection.shelfUrl).toEqual(shelfLink.href);
+    expect(collection.shelfUrl).to.equal(shelfLink.href);
   });
 
   it("extracts top-level links", () => {
@@ -251,10 +250,10 @@ describe("OPDSDataAdapter", () => {
     });
 
     let collection = feedToCollection(acquisitionFeed, "");
-    expect(collection.links.length).toEqual(2);
+    expect(collection.links.length).to.equal(2);
     let urls = collection.links.map(link => link.url).sort();
     let types = collection.links.map(link => link.type).sort();
-    expect(urls).toEqual(["about", "terms"]);
-    expect(types).toEqual(["about", "terms-of-service"]);
+    expect(urls).to.deep.equal(["about", "terms"]);
+    expect(types).to.deep.equal(["about", "terms-of-service"]);
   });
 });

@@ -1,5 +1,4 @@
-jest.dontMock("../book");
-jest.dontMock("../../actions");
+import { expect } from "chai";
 
 import reducer from "../book";
 import DataFetcher from "../../DataFetcher";
@@ -54,7 +53,7 @@ describe("book reducer", () => {
   };
 
   it("should return the initial state", () => {
-    expect(reducer(undefined, {})).toEqual(initState);
+    expect(reducer(undefined, {})).to.deep.equal(initState);
   });
 
   it("should handle FETCH_BOOK_REQUEST", () => {
@@ -64,7 +63,7 @@ describe("book reducer", () => {
       error: null
     });
 
-    expect(reducer(errorState, action)).toEqual(newState);
+    expect(reducer(errorState, action)).to.deep.equal(newState);
   });
 
   it("should handle FETCH_BOOK_FAILURE", () => {
@@ -82,7 +81,7 @@ describe("book reducer", () => {
       }
     });
 
-    expect(reducer(fetchingState, action)).toEqual(newState);
+    expect(reducer(fetchingState, action)).to.deep.equal(newState);
   });
 
   it("should handle LOAD_BOOK", () => {
@@ -97,7 +96,7 @@ describe("book reducer", () => {
       isFetching: false
     });
 
-    expect(reducer(bookState, action)).toEqual(newState);
+    expect(reducer(bookState, action)).to.deep.equal(newState);
   });
 
   it("should handle CLEAR_BOOK", () => {
@@ -107,6 +106,6 @@ describe("book reducer", () => {
       data: null
     });
 
-    expect(reducer(bookState, action)).toEqual(newState);
+    expect(reducer(bookState, action)).to.deep.equal(newState);
   });
 });

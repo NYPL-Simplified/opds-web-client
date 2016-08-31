@@ -1,4 +1,4 @@
-jest.autoMockOff();
+import { expect } from "chai";
 
 import * as React from "react";
 import { shallow } from "enzyme";
@@ -12,7 +12,7 @@ describe("SkipNavigationLink", () => {
     );
 
     let element = wrapper.find(".skipNavigation");
-    expect(element.text()).toBe("Skip Navigation");
-    expect(element.props().href).toBe("#main");
+    expect(element.text()).to.equal("Skip Navigation");
+    expect(element.props().href).to.equal("#main");
   });
 });

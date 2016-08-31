@@ -1,17 +1,25 @@
-jest.dontMock("../mergeRootProps");
-jest.dontMock("./collectionData");
+import { expect } from "chai";
+import { stub, spy } from "sinon";
+
+import * as ActionCreator from "../../actions";
 
 // synchronous actions for simple testing
 // of createFetchCollectionAndBook
-class MockActionCreator {
-  fetchCollection(url) {
-    return "fetchCollection:" + url;
+let fetchCollectionStub = stub().returns(new Promise((resolve, reject) => { resolve({}); }));
+let fetchBookStub = stub().returns(new Promise((resolve, reject) => { resolve({}); }));
+
+class MockActionCreator extends ActionCreator.default {
+  fetchCollection(url: string) {
+    return fetchCollectionStub;
   }
+
   fetchBook(url) {
-    return "fetchBook:" + url ;
+    return fetchBookStub;
   }
 }
-jest.setMock("../../actions", { default: MockActionCreator });
+
+import * as DataFetcher from "../../DataFetcher";
+import MockDataFetcher from "../../__mocks__/DataFetcher";
 
 import { mergeRootProps, findBookInCollection, createFetchCollectionAndBook } from "../mergeRootProps";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
@@ -19,47 +27,59 @@ import { groupedCollectionData, ungroupedCollectionData } from "./collectionData
 describe("findBookInCollection", () => {
   it("returns nothing if no collection", () => {
     let result = findBookInCollection(null, "test");
-    expect(result).toBe(null);
+    expect(result).to.equal(null);
   });
 
   it("finds a book in the collection by url", () => {
     let collection = groupedCollectionData;
     let book = groupedCollectionData.lanes[0].books[0];
     let result = findBookInCollection(collection, book.url);
-    expect(result).toEqual(book);
+    expect(result).to.equal(book);
   });
 
   it("finds a book in the collection by id", () => {
     let collection = groupedCollectionData;
     let book = groupedCollectionData.lanes[0].books[0];
     let result = findBookInCollection(collection, book.id);
-    expect(result).toEqual(book);
+    expect(result).to.equal(book);
   });
 
   it("returns nothing if given a book url/id not in the collection", () => {
     let collection = groupedCollectionData;
     let result = findBookInCollection(collection, "nonexistent");
-    expect(result).toBeFalsy();
+    expect(result).not.to.be.ok;
   });
 });
 
 describe("createFetchCollectionAndBook", () => {
   let collectionUrl = "collection url";
   let bookUrl = "book url";
-  let dispatch = jest.genMockFunction();
-  dispatch.mockImplementation(url => new Promise((resolve, reject) => resolve(url)));
+  let dispatch = stub().returns(new Promise((resolve, reject) => resolve()));
+  let dataFetcherStub;
+  let actionCreatorStub;
+
+  beforeEach(() => {
+    dataFetcherStub = stub(DataFetcher, "default", MockDataFetcher);
+    actionCreatorStub = stub(ActionCreator, "default", MockActionCreator);
+  });
+
+  afterEach(() => {
+    dataFetcherStub.restore();
+    actionCreatorStub.restore();
+  });
 
   it("returns fetch function that uses the provided dispatch", (done) => {
-    let actions = new MockActionCreator();
+    let fetcher = new MockDataFetcher();
+    let actions = new MockActionCreator(fetcher);
     let fetchCollectionAndBook = createFetchCollectionAndBook(dispatch);
     fetchCollectionAndBook(collectionUrl, bookUrl).then(({ collectionData, bookData }) => {
       // we are only testing that the provided dispatch is called twice,
       // once for fetchCollection and once for fetchBook
-      expect(dispatch.mock.calls.length).toBe(2);
-      expect(dispatch.mock.calls[0][0]).toBe(actions.fetchCollection(collectionUrl));
-      expect(dispatch.mock.calls[1][0]).toBe(actions.fetchBook(bookUrl));
+      expect(dispatch.callCount).to.equal(2);
+      expect(dispatch.args[0][0]).to.equal(fetchCollectionStub);
+      expect(dispatch.args[1][0]).to.equal(fetchBookStub);
       done();
-    }).catch(err => done(err));
+    }).catch(err => { console.log(err); throw(err); });
   });
 });
 
@@ -74,23 +94,23 @@ describe("mergeRootProps", () => {
   };
 
   beforeEach(() => {
-    fetchCollection = jest.genMockFunction().mockImplementation(url => {
+    fetchCollection = spy(url => {
       return new Promise((resolve, reject) => {
         resolve(fakeCollection);
       });
     });
-    fetchBook = jest.genMockFunction().mockImplementation(url => {
+    fetchBook = spy(url => {
       return new Promise((resolve, reject) => {
         resolve(fakeBook);
       });
     });
-    loadBook = jest.genMockFunction();
-    clearCollection = jest.genMockFunction();
-    clearBook = jest.genMockFunction();
-    updateBook = jest.genMockFunction().mockImplementation(url => {
+    loadBook = stub();
+    clearCollection = stub();
+    clearBook = stub();
+    updateBook = spy(url => {
       return new Promise((resolve, reject) => resolve(fakeBook));
     });
-    fetchLoans = jest.genMockFunction();
+    fetchLoans = stub();
     dispatchProps = { createDispatchProps: (fetcher) => {
       return {
         fetchCollection, clearCollection, loadBook, fetchBook, clearBook,
@@ -114,30 +134,30 @@ describe("mergeRootProps", () => {
 
     it("fetches collection data if given a collection url", (done) => {
       props.setCollection("new collection url").then(data => {
-        expect(data).toBe(fakeCollection);
-        expect(fetchCollection.mock.calls.length).toBe(1);
-        expect(fetchCollection.mock.calls[0][0]).toBe("new collection url");
-        expect(clearCollection.mock.calls.length).toBe(0);
+        expect(data).to.equal(fakeCollection);
+        expect(fetchCollection.callCount).to.equal(1);
+        expect(fetchCollection.args[0][0]).to.equal("new collection url");
+        expect(clearCollection.callCount).to.equal(0);
         done();
-      }).catch(err => done.fail(err));
+     }).catch(err => { console.log(err); throw(err); });
     });
 
     it("does nothing and returns existing data if given the existing collection url", (done) => {
       props.setCollection("test url").then(data => {
-        expect(data).toBe(groupedCollectionData);
-        expect(fetchCollection.mock.calls.length).toBe(0);
-        expect(clearCollection.mock.calls.length).toBe(0);
+        expect(data).to.equal(groupedCollectionData);
+        expect(fetchCollection.callCount).to.equal(0);
+        expect(clearCollection.callCount).to.equal(0);
         done();
-      }).catch(err => done.fail(err));
+      }).catch(err => { console.log(err); throw(err); });
     });
 
     it("clears collection data if given a falsy collection url", (done) => {
       props.setCollection(null).then(data => {
-        expect(data).toBeFalsy();
-        expect(fetchCollection.mock.calls.length).toBe(0);
-        expect(clearCollection.mock.calls.length).toBe(1);
+        expect(data).not.to.be.ok;
+        expect(fetchCollection.callCount).to.equal(0);
+        expect(clearCollection.callCount).to.equal(1);
         done();
-      }).catch(err => done.fail(err));
+      }).catch(err => { console.log(err); throw(err); });
     });
   });
 
@@ -160,21 +180,21 @@ describe("mergeRootProps", () => {
 
     it("fetches book data if given a book url not in the current collection", (done) => {
       props.setBook("fake book url", groupedCollectionData).then(data => {
-        expect(data).toBe(fakeBook);
-        expect(fetchBook.mock.calls.length).toBe(1);
-        expect(fetchBook.mock.calls[0][0]).toBe("fake book url");
-        expect(clearBook.mock.calls.length).toBe(0);
+        expect(data).to.equal(fakeBook);
+        expect(fetchBook.callCount).to.equal(1);
+        expect(fetchBook.args[0][0]).to.equal("fake book url");
+        expect(clearBook.callCount).to.equal(0);
         done();
-      }).catch(err => done.fail(err));
+      }).catch(err => { console.log(err); throw(err); });
     });
 
     it("doesn't fetch book data if given a book url in the current collection", (done) => {
       props.setBook(groupedCollectionData.lanes[0].books[0].url, groupedCollectionData).then(data => {
-        expect(data).toBe(groupedCollectionData.lanes[0].books[0]);
-        expect(fetchBook.mock.calls.length).toBe(0);
-        expect(clearBook.mock.calls.length).toBe(0);
+        expect(data).to.equal(groupedCollectionData.lanes[0].books[0]);
+        expect(fetchBook.callCount).to.equal(0);
+        expect(clearBook.callCount).to.equal(0);
         done();
-      }).catch(err => done.fail(err));
+      }).catch(err => { console.log(err); throw(err); });
     });
 
     it("does nothing and returns book data if given book data", (done) => {
@@ -183,29 +203,29 @@ describe("mergeRootProps", () => {
         "title": "test title"
       };
       props.setBook(bookDataWithoutUrl).then(data => {
-        expect(data).toBe(bookDataWithoutUrl);
-        expect(fetchBook.mock.calls.length).toBe(0);
-        expect(clearBook.mock.calls.length).toBe(0);
+        expect(data).to.equal(bookDataWithoutUrl);
+        expect(fetchBook.callCount).to.equal(0);
+        expect(clearBook.callCount).to.equal(0);
         done();
-      }).catch(err => done.fail(err));
+      }).catch(err => { console.log(err); throw(err); });
     });
 
     it("tries to refresh book data if given the existing book url and no collection", (done) => {
       props.setBook("test book url").then(data => {
-        expect(data).toBe(fakeBook);
-        expect(fetchBook.mock.calls.length).toBe(1);
-        expect(clearBook.mock.calls.length).toBe(0);
+        expect(data).to.equal(fakeBook);
+        expect(fetchBook.callCount).to.equal(1);
+        expect(clearBook.callCount).to.equal(0);
         done();
-      }).catch(err => done.fail(err));
+      }).catch(err => { console.log(err); throw(err); });
     });
 
     it("clears book data if given a falsy book url", (done) => {
       props.setBook(null).then(data => {
-        expect(data).toBeFalsy();
-        expect(fetchBook.mock.calls.length).toBe(0);
-        expect(clearBook.mock.calls.length).toBe(1);
+        expect(data).not.to.be.ok;
+        expect(fetchBook.callCount).to.equal(0);
+        expect(clearBook.callCount).to.equal(1);
         done();
-      }).catch(err => done.fail(err));
+      }).catch(err => { console.log(err); throw(err); });
     });
   });
 
@@ -223,70 +243,70 @@ describe("mergeRootProps", () => {
 
     it("does not fetch book if given book url belonging to given collection", (done) => {
       props.setCollectionAndBook(fakeCollection.url, fakeCollection.books[0].url).then(data => {
-        expect(data).toEqual({
+        expect(data).to.deep.equal({
           collectionData: fakeCollection,
           bookData: fakeCollection.books[0]
         });
-        expect(fetchCollection.mock.calls.length).toBe(1);
-        expect(fetchCollection.mock.calls[0][0]).toBe(fakeCollection.url);
-        expect(fetchBook.mock.calls.length).toBe(0);
+        expect(fetchCollection.callCount).to.equal(1);
+        expect(fetchCollection.args[0][0]).to.equal(fakeCollection.url);
+        expect(fetchBook.callCount).to.equal(0);
         done();
-      }).catch(err => done.fail(err));
+      }).catch(err => { console.log(err); throw(err); });
     });
 
     it("fetches book if given book url not belonging to given collection", (done) => {
       props.setCollectionAndBook(fakeCollection.url, "fake book url").then(data => {
-        expect(data).toEqual({
+        expect(data).to.deep.equal({
           collectionData: fakeCollection,
           bookData: fakeBook
         });
-        expect(fetchCollection.mock.calls.length).toBe(1);
-        expect(fetchCollection.mock.calls[0][0]).toBe(fakeCollection.url);
-        expect(fetchBook.mock.calls.length).toBe(1);
-        expect(fetchBook.mock.calls[0][0]).toBe("fake book url");
+        expect(fetchCollection.callCount).to.equal(1);
+        expect(fetchCollection.args[0][0]).to.equal(fakeCollection.url);
+        expect(fetchBook.callCount).to.equal(1);
+        expect(fetchBook.args[0][0]).to.equal("fake book url");
         done();
-      }).catch(err => done.fail(err));
+      }).catch(err => { console.log(err); throw(err); });
     });
 
     it("fetches book if not given a collection url", (done) => {
       props.setCollectionAndBook(null, "fake book url").then(data => {
-        expect(data).toEqual({
+        expect(data).to.deep.equal({
           collectionData: null,
           bookData: fakeBook
         });
-        expect(fetchCollection.mock.calls.length).toBe(0);
-        expect(fetchBook.mock.calls.length).toBe(1);
-        expect(fetchBook.mock.calls[0][0]).toBe("fake book url");
+        expect(fetchCollection.callCount).to.equal(0);
+        expect(fetchBook.callCount).to.equal(1);
+        expect(fetchBook.args[0][0]).to.equal("fake book url");
         done();
-      }).catch(err => done.fail(err));
+      }).catch(err => { console.log(err); throw(err); });
     });
 
     it("does nothing and returns existing data if given the existing collection and book urls", (done) => {
       props.setCollectionAndBook(stateProps.loadedCollectionUrl, stateProps.bookData.url).then(data => {
-        expect(data).toEqual({
+        expect(data).to.deep.equal({
           collectionData: stateProps.collectionData,
           bookData: stateProps.bookData
         });
-        expect(fetchCollection.mock.calls.length).toBe(0);
-        expect(fetchBook.mock.calls.length).toBe(0);
-        expect(clearCollection.mock.calls.length).toBe(0);
-        expect(clearBook.mock.calls.length).toBe(0);
+        expect(fetchCollection.callCount).to.equal(0);
+        expect(fetchBook.callCount).to.equal(0);
+        expect(clearCollection.callCount).to.equal(0);
+        expect(clearBook.callCount).to.equal(0);
         done();
-      }).catch(err => done.fail(err));
+      }).catch(err => { console.log(err); throw(err); });
     });
 
     it("clears collection and book data if given falsy urls", (done) => {
       props.setCollectionAndBook(null, null).then(data => {
-        expect(data).toEqual({
+        expect(data).to.deep.equal({
           collectionData: null,
           bookData: null
         });
-        expect(fetchCollection.mock.calls.length).toBe(0);
-        expect(fetchBook.mock.calls.length).toBe(0);
-        expect(clearCollection.mock.calls.length).toBe(1);
-        expect(clearBook.mock.calls.length).toBe(1);
+        expect(fetchCollection.callCount).to.equal(0);
+        expect(fetchBook.callCount).to.equal(0);
+        expect(clearCollection.callCount).to.equal(1);
+        expect(clearBook.callCount).to.equal(1);
         done();
-      }).catch(err => done.fail(err));
+      }).catch(err => { console.log(err); throw(err); });
     });
   });
 
@@ -301,8 +321,8 @@ describe("mergeRootProps", () => {
       props = mergeRootProps(stateProps, dispatchProps, componentProps);
       props.refreshCollectionAndBook();
 
-      expect(fetchCollection.mock.calls.length).toBe(1);
-      expect(fetchCollection.mock.calls[0][0]).toBe("test collection");
+      expect(fetchCollection.callCount).to.equal(1);
+      expect(fetchCollection.args[0][0]).to.equal("test collection");
     });
 
     it("calls fetchBook", (done) => {
@@ -313,10 +333,10 @@ describe("mergeRootProps", () => {
       props = mergeRootProps(stateProps, dispatchProps, componentProps);
 
       props.refreshCollectionAndBook().then(data => {
-        expect(fetchBook.mock.calls.length).toBe(1);
-        expect(fetchBook.mock.calls[0][0]).toBe("test book");
+        expect(fetchBook.callCount).to.equal(1);
+        expect(fetchBook.args[0][0]).to.equal("test book");
         done();
-      });
+      }).catch(err => { console.log(err); throw(err); });
     });
 
     it("only fetches collection if only collection is loaded", () => {
@@ -327,9 +347,9 @@ describe("mergeRootProps", () => {
       props = mergeRootProps(stateProps, dispatchProps, componentProps);
       props.refreshCollectionAndBook();
 
-      expect(fetchCollection.mock.calls.length).toBe(1);
-      expect(fetchCollection.mock.calls[0][0]).toBe("test collection");
-      expect(fetchBook.mock.calls.length).toBe(0);
+      expect(fetchCollection.callCount).to.equal(1);
+      expect(fetchCollection.args[0][0]).to.equal("test collection");
+      expect(fetchBook.callCount).to.equal(0);
     });
 
     it("only fetches book if only book is loaded", (done) => {
@@ -340,11 +360,11 @@ describe("mergeRootProps", () => {
       props = mergeRootProps(stateProps, dispatchProps, componentProps);
 
       props.refreshCollectionAndBook().then(data => {
-        expect(fetchBook.mock.calls.length).toBe(1);
-        expect(fetchBook.mock.calls[0][0]).toBe("test book");
-        expect(fetchCollection.mock.calls.length).toBe(0);
+        expect(fetchBook.callCount).to.equal(1);
+        expect(fetchBook.args[0][0]).to.equal("test book");
+        expect(fetchCollection.callCount).to.equal(0);
         done();
-      });
+      }).catch(err => { console.log(err); throw(err); });
     });
 
     it("does not fetch if neither collection nor book are loaded", (done) => {
@@ -355,10 +375,10 @@ describe("mergeRootProps", () => {
       props = mergeRootProps(stateProps, dispatchProps, componentProps);
 
       props.refreshCollectionAndBook().then(data => {
-        expect(fetchCollection.mock.calls.length).toBe(0);
-        expect(fetchBook.mock.calls.length).toBe(0);
+        expect(fetchCollection.callCount).to.equal(0);
+        expect(fetchBook.callCount).to.equal(0);
         done();
-      });
+      }).catch(err => { console.log(err); throw(err); });
     });
   });
 
@@ -375,8 +395,8 @@ describe("mergeRootProps", () => {
       props = mergeRootProps(stateProps, dispatchProps, componentProps);
       props.retryCollectionAndBook();
 
-      expect(fetchCollection.mock.calls.length).toBe(1);
-      expect(fetchCollection.mock.calls[0][0]).toBe("test collection");
+      expect(fetchCollection.callCount).to.equal(1);
+      expect(fetchCollection.args[0][0]).to.equal("test collection");
     });
 
     it("calls fetchBook", (done) => {
@@ -389,10 +409,10 @@ describe("mergeRootProps", () => {
       props = mergeRootProps(stateProps, dispatchProps, componentProps);
 
       props.retryCollectionAndBook().then(data => {
-        expect(fetchBook.mock.calls.length).toBe(1);
-        expect(fetchBook.mock.calls[0][0]).toBe("test book");
+        expect(fetchBook.callCount).to.equal(1);
+        expect(fetchBook.args[0][0]).to.equal("test book");
         done();
-      });
+      }).catch(err => { console.log(err); throw(err); });
     });
 
     it("only fetches collection if only collectionUrl is present", () => {
@@ -405,9 +425,9 @@ describe("mergeRootProps", () => {
       props = mergeRootProps(stateProps, dispatchProps, componentProps);
       props.retryCollectionAndBook();
 
-      expect(fetchCollection.mock.calls.length).toBe(1);
-      expect(fetchCollection.mock.calls[0][0]).toBe("test collection");
-      expect(fetchBook.mock.calls.length).toBe(0);
+      expect(fetchCollection.callCount).to.equal(1);
+      expect(fetchCollection.args[0][0]).to.equal("test collection");
+      expect(fetchBook.callCount).to.equal(0);
     });
 
     it("only fetches book if only book is loaded", (done) => {
@@ -420,11 +440,11 @@ describe("mergeRootProps", () => {
       props = mergeRootProps(stateProps, dispatchProps, componentProps);
 
       props.retryCollectionAndBook().then(data => {
-        expect(fetchBook.mock.calls.length).toBe(1);
-        expect(fetchBook.mock.calls[0][0]).toBe("test book");
-        expect(fetchCollection.mock.calls.length).toBe(0);
+        expect(fetchBook.callCount).to.equal(1);
+        expect(fetchBook.args[0][0]).to.equal("test book");
+        expect(fetchCollection.callCount).to.equal(0);
         done();
-      });
+      }).catch(err => { console.log(err); throw(err); });
     });
 
     it("does not fetch if neither collection nor book are loaded", (done) => {
@@ -437,10 +457,10 @@ describe("mergeRootProps", () => {
       props = mergeRootProps(stateProps, dispatchProps, componentProps);
 
       props.retryCollectionAndBook().then(data => {
-        expect(fetchCollection.mock.calls.length).toBe(0);
-        expect(fetchBook.mock.calls.length).toBe(0);
+        expect(fetchCollection.callCount).to.equal(0);
+        expect(fetchBook.callCount).to.equal(0);
         done();
-      });
+      }).catch(err => { console.log(err); throw(err); });
     });
   });
 
@@ -454,8 +474,8 @@ describe("mergeRootProps", () => {
       props = mergeRootProps(stateProps, dispatchProps, componentProps);
       props.updateBook("borrow url");
 
-      expect(updateBook.mock.calls.length).toBe(1);
-      expect(updateBook.mock.calls[0][0]).toBe("borrow url");
+      expect(updateBook.callCount).to.equal(1);
+      expect(updateBook.args[0][0]).to.equal("borrow url");
     });
 
     it("calls fetchLoans if loansUrl is present", (done) => {
@@ -465,20 +485,20 @@ describe("mergeRootProps", () => {
       props = mergeRootProps(stateProps, dispatchProps, componentProps);
 
       props.updateBook().then(data => {
-        expect(fetchLoans.mock.calls.length).toBe(1);
-        expect(fetchLoans.mock.calls[0][0]).toBe("loans");
-        expect(data).toEqual(fakeBook);
+        expect(fetchLoans.callCount).to.equal(1);
+        expect(fetchLoans.args[0][0]).to.equal("loans");
+        expect(data).to.equal(fakeBook);
         done();
-      }).catch(done.fail);
+      }).catch(err => { console.log(err); throw(err); });
     });
 
     it("doesn't call fetchLoans if loansUrl is blank", (done) => {
       props = mergeRootProps({}, dispatchProps, componentProps);
 
       props.updateBook().then(data => {
-        expect(fetchLoans.mock.calls.length).toBe(0);
+        expect(fetchLoans.callCount).to.equal(0);
         done();
-      }).catch(done.fail);
+      }).catch(err => { console.log(err); throw(err); });
     });
   });
 });

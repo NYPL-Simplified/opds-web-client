@@ -1,5 +1,4 @@
-jest.dontMock("../loans");
-jest.dontMock("../../actions");
+import { expect } from "chai";
 
 import reducer from "../loans";
 import DataFetcher from "../../DataFetcher";
@@ -30,7 +29,7 @@ describe("loans reducer", () => {
   };
 
   it("returns the initial state", () => {
-    expect(reducer(undefined, {})).toEqual(initState);
+    expect(reducer(undefined, {})).to.deep.equal(initState);
   });
 
   it("handles LOAD_COLLECTION", () => {
@@ -38,7 +37,7 @@ describe("loans reducer", () => {
     let newState = Object.assign({}, initState, {
       url: "loans url"
     });
-    expect(reducer(initState, action)).toEqual(newState);
+    expect(reducer(initState, action)).to.deep.equal(newState);
   });
 
   it("handles LOAD_COLLECTION for loans feed", () => {
@@ -50,7 +49,7 @@ describe("loans reducer", () => {
     let newState = Object.assign({}, oldState, {
       books: loansData
     });
-    expect(reducer(oldState, action)).toEqual(newState);
+    expect(reducer(oldState, action)).to.deep.equal(newState);
   });
 
   it("handles LOAD_LOANS", () => {
@@ -62,7 +61,7 @@ describe("loans reducer", () => {
       books: loansData
     });
 
-    expect(reducer(oldState, action)).toEqual(newState);
+    expect(reducer(oldState, action)).to.deep.equal(newState);
   });
 
   it("clears books on LOAD_UPDATE_BOOK_DATA", () => {
@@ -79,6 +78,6 @@ describe("loans reducer", () => {
       books: []
     });
 
-    expect(reducer(oldState, action)).toEqual(newState);
+    expect(reducer(oldState, action)).to.deep.equal(newState);
   });
 });

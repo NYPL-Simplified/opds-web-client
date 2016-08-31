@@ -1,5 +1,5 @@
 import * as React from "react";
-const download = require("downloadjs");
+import download from "./download";
 
 export interface DownloadButtonProps extends React.HTMLProps<any> {
   url: string;
