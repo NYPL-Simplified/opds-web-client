@@ -39,8 +39,8 @@ describe("Book", () => {
     let links = wrapper.find(CatalogLink);
     expect(links.length).to.equal(2);
     let bookInfo = links.at(1);
-    let title = bookInfo.find(".bookTitle");
-    let authors = bookInfo.find(".bookAuthors");
+    let title = bookInfo.find(".title");
+    let authors = bookInfo.find(".authors");
 
     expect(title.text()).to.equal(book.title);
     expect(authors.text()).to.equal(book.authors.join(", "));
@@ -57,7 +57,7 @@ describe("Book", () => {
 
     let links = wrapper.find(CatalogLink);
     let bookInfo = links.at(1).children().at(1);
-    let authors = bookInfo.find(".bookAuthors");
+    let authors = bookInfo.find(".authors");
     expect(authors.text()).to.equal(bookCopy.contributors[0]);
   });
 });
