@@ -264,7 +264,7 @@ describe("Root", () => {
         />
     );
 
-    let bookWrapper = wrapper.find(".bookDetailsWrapper");
+    let bookWrapper = wrapper.find(".book-details-wrapper");
     let book = wrapper.find(BookDetails);
 
     expect(bookWrapper.length).to.equal(1);
@@ -430,7 +430,7 @@ describe("Root", () => {
     expect(showPrevBook.callCount).to.equal(1);
   });
 
-  it("calls showNextBook() on right key press but not if meta key is also presssed", () => {
+  it("calls showNextBook() on right key press but not if meta key is also pressed", () => {
     let showNextBook = stub();
     let context = mockRouterContext();
     let wrapper = mount(

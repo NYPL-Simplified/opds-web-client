@@ -1,4 +1,5 @@
 import * as React from "react";
+import "../stylesheets/root.scss";
 import { Store } from "redux";
 import { connect } from "react-redux";
 import { State } from "../state";
@@ -100,53 +101,16 @@ export class Root extends React.Component<RootProps, any> {
     let showBreadcrumbs = showCollection && breadcrumbsLinks.length > 0;
     let showFooter = showCollection && Footer;
 
-    let padding = 10;
-    let headerHeight = 50;
-    let breadcrumbsHeight = showBreadcrumbs ? 40 : 0;
-    let marginTop = headerHeight + breadcrumbsHeight;
-
-    let footerHeight = 0;
-    if (showFooter) {
-      footerHeight = 50;
+    let bodyClass = "body";
+    if (showBreadcrumbs) {
+      bodyClass += " with-breadcrumbs";
     }
-    let marginBottom = footerHeight;
-
-    let breadcrumbsStyle = {
-      position: "fixed",
-      top: `${headerHeight}px`,
-      width: "100%",
-      zIndex: 100
-    };
-
-    let bodyStyle = {
-      paddingTop: `${marginTop + padding}px`,
-      paddingBottom: `${marginBottom + padding}px`,
-      overflow: "auto"
-    };
-
-    let bookWrapperStyle = {
-      position: "fixed",
-      width: "100%",
-      top: `${marginTop}px`,
-      height: `calc(100% - ${marginTop + marginBottom}px)`,
-      backgroundColor: "white",
-      zIndex: 100,
-      transform: "translateZ(0)",
-      overflowY: "scroll"
-    };
-
-    let footerStyle = {
-      position: "fixed",
-      bottom: 0,
-      width: "100%",
-      height: `${footerHeight}px`,
-      padding: `${padding}px`,
-      backgroundColor: "#eee",
-      borderTop: "1px solid #ccc"
-    };
+    if (showFooter) {
+      bodyClass += " with-footer";
+    }
 
     return (
-      <div className="catalog" style={{ fontFamily: "Arial, sans-serif" }}>
+      <div className="catalog">
         <SkipNavigationLink />
 
         { this.props.error && (!this.props.basicAuth || !this.props.basicAuth.showForm) &&
@@ -193,7 +157,7 @@ export class Root extends React.Component<RootProps, any> {
           </Header> :
           <nav className="header navbar navbar-default navbar-fixed-top">
             <div className="container-fluid">
-              <span className="navbar-brand" style={{ fontSize: "1.8em", color: "black" }}>
+              <span className="navbar-brand">
                 OPDS Web Client
               </span>
 
@@ -222,14 +186,14 @@ export class Root extends React.Component<RootProps, any> {
         }
 
         { showBreadcrumbs &&
-          <div className="breadcrumbsWrapper" style={breadcrumbsStyle}>
+          <div className="breadcrumbs-wrapper">
             <Breadcrumbs links={breadcrumbsLinks} />
           </div>
         }
 
-        <div className="body" style={bodyStyle}>
+        <div className={bodyClass}>
           { showBookWrapper &&
-            <div className="bookDetailsWrapper" style={bookWrapperStyle}>
+            <div className="book-details-wrapper">
               { showBook &&
                 ( BookDetailsContainer && (this.props.bookUrl || this.props.bookData.url) ?
                   <BookDetailsContainer
@@ -246,7 +210,7 @@ export class Root extends React.Component<RootProps, any> {
                       isSignedIn={this.props.isSignedIn}
                       />
                   </BookDetailsContainer> :
-                  <div style={{ padding: "40px", maxWidth: "700px", margin: "0 auto" }}>
+                  <div className="without-container">
                     <BookDetails
                       book={this.loanedBookData() || this.props.bookData}
                       updateBook={this.props.updateBook}
@@ -271,7 +235,7 @@ export class Root extends React.Component<RootProps, any> {
           }
         </div>
         { showFooter &&
-          <footer style={ footerStyle }>
+          <footer>
             <Footer collection={this.props.collectionData} />
           </footer>
         }
