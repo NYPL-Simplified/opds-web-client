@@ -38,7 +38,7 @@ describe("Lanes", () => {
   });
 
   it("shows spinner", () => {
-    let spinnerImage = wrapper.find("img.lanesSpinner");
+    let spinnerImage = wrapper.find(".spinner img");
     expect(spinnerImage.props().src).to.equal(spinner);
   });
 
