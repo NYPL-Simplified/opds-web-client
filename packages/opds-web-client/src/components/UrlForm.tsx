@@ -1,4 +1,5 @@
 import * as React from "react";
+import "../stylesheets/url_form.scss";
 import { NavigateContext } from "../interfaces";
 
 export interface UrlFormProps {
@@ -22,7 +23,7 @@ export default class UrlForm extends React.Component<UrlFormProps, any> {
     let placeholder = "e.g. http://feedbooks.github.io/opds-test-catalog/catalog/root.xml";
 
     return (
-      <div id="urlForm" style={{ width: "800px", margin: "200px auto" }}>
+      <div className="url-form">
         <h2>View OPDS Feed</h2>
         <form onSubmit={this.onSubmit} className="form-inline">
           <input
@@ -30,7 +31,6 @@ export default class UrlForm extends React.Component<UrlFormProps, any> {
             name="collection"
             type="text"
             className="form-control input-lg"
-            style={{ width: "650px" }}
             defaultValue={this.props.collectionUrl}
             placeholder={placeholder} />
           &nbsp;
