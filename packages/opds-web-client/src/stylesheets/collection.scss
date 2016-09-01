@@ -25,13 +25,13 @@ $padding: 10px;
   }
 
   .navigation-links a {
-    text-align: center;
-    background-color: #ddd;
+    display: block;
     margin: 25px;
+    text-align: center;
+    background-color: #DDD;
     padding: 10px;
     overflow: hidden;
     font-size: 500%;
-    display: block;
   }
 
   .loading-next-page {
