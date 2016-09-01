@@ -34,7 +34,7 @@ describe("LaneBook", () => {
     );
 
     let link = wrapper.find<CatalogLinkProps>(CatalogLink);
-    let title = link.find(".bookTitle");
+    let title = link.find(".title");
 
     expect(link.props().bookUrl).to.equal(book.url);
     expect(title.text()).to.equal(book.title);

@@ -1,4 +1,5 @@
 import * as React from "react";
+import "../stylesheets/lane.scss";
 import LaneBook from "./LaneBook";
 import CatalogLink from "./CatalogLink";
 import LaneMoreLink from "./LaneMoreLink";
@@ -13,18 +14,6 @@ export interface LaneProps {
 
 export default class Lane extends React.Component<LaneProps, any> {
   render(): JSX.Element {
-    let laneBooksStyle = {
-      display: "block",
-      height: "260px",
-      width: "100%",
-      whiteSpace: "nowrap",
-      overflowX: "scroll",
-      overflowY: "hidden",
-      padding: 0,
-      margin: 0,
-      listStyleType: "none"
-    };
-
     let visibleBooks = this.visibleBooks();
 
     if (visibleBooks.length === 0) {
@@ -33,17 +22,17 @@ export default class Lane extends React.Component<LaneProps, any> {
 
     return (
       <div className="lane">
-        <h2 style={{ clear: "both", cursor: "pointer" }}>
+        <h2>
           <CatalogLink
-            className="laneTitle"
+            className="title"
             collectionUrl={this.props.lane.url}>
             {this.props.lane.title}
           </CatalogLink>
         </h2>
 
-        <ul className="laneBooks" aria-label={"books in " + this.props.lane.title} style={laneBooksStyle}>
+        <ul className="lane-books" aria-label={"books in " + this.props.lane.title}>
           { visibleBooks.map(book =>
-            <li key={book.id} style={{ display: "inline-block" }}>
+            <li key={book.id}>
               <LaneBook
                 book={book}
                 collectionUrl={this.props.collectionUrl}
@@ -51,7 +40,7 @@ export default class Lane extends React.Component<LaneProps, any> {
             </li>
           ) }
           { !this.props.hideMoreLink &&
-            <li key="more" style={{ display: "inline-block" }}>
+            <li key="more">
               <LaneMoreLink lane={this.props.lane} />
             </li>
           }
