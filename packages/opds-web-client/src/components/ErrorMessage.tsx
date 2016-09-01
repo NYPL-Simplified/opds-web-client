@@ -1,5 +1,5 @@
 import * as React from "react";
-import { popupStyle } from "./styles";
+import "../stylesheets/error_message.scss";
 
 export interface ErrorMessageProps {
   message: string;
@@ -8,19 +8,15 @@ export interface ErrorMessageProps {
 
 export default class ErrorMessage extends React.Component<ErrorMessageProps, any> {
   render(): JSX.Element {
-    let errorWidth = Math.max(400, this.maxWordLength() * 5);
-    let errorStyle = popupStyle(errorWidth);
-
     return (
-      <div className="error" style={errorStyle}>
-        <h1 style={{ marginTop: "0px" }}>Error</h1>
-        <div className="errorMessage">
+      <div className="error">
+        <h1>Error</h1>
+        <div className="message">
           {this.props.message}
         </div>
         <br />
         <button
-          className="retryButton btn btn-default"
-          style={{ fontSize: "1.2em" }}
+          className="retry-button btn btn-default"
           onClick={this.props.retry}>
           Try again
         </button>

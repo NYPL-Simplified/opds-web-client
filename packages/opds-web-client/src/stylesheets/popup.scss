@@ -1,4 +1,4 @@
-@mixin popup($width, $height) {
+@mixin popup($width, $height: 200px) {
   position: fixed;
   top: 50%;
   left: 50%;

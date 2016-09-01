@@ -12,7 +12,7 @@ describe("ErrorMessage", () => {
       <ErrorMessage message="test error" />
     );
 
-    let message = wrapper.find(".errorMessage");
+    let message = wrapper.find(".message");
     expect(message.text()).to.equal("test error");
   });
 
@@ -22,7 +22,7 @@ describe("ErrorMessage", () => {
       <ErrorMessage message="test error" retry={retry} />
     );
 
-    let button = wrapper.find(".retryButton");
+    let button = wrapper.find(".retry-button");
     button.simulate("click");
 
     expect(retry.callCount).to.equal(1);
