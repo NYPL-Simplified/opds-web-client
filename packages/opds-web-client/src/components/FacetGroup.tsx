@@ -3,7 +3,6 @@ import "../stylesheets/facet_group.scss";
 import "../stylesheets/subtle_list.scss";
 import CatalogLink from "./CatalogLink";
 import { FacetGroupData } from "../interfaces";
-import { subtleListStyle } from "./styles";
 
 export interface FacetGroupProps {
   facetGroup: FacetGroupData;
