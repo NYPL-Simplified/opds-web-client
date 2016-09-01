@@ -1,4 +1,5 @@
 import * as React from "react";
+import "../stylesheets/book_details.scss";
 import * as moment from "moment";
 import CatalogLink from "./CatalogLink";
 import BorrowButton from "./BorrowButton";
@@ -22,46 +23,41 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
   }
 
   render(): JSX.Element {
-    let bookSummaryStyle = {
-      paddingTop: "2em",
-      borderTop: "1px solid #ccc"
-    };
-
     let fields = this.fields();
 
     return (
-      <div className="bookDetails">
-        <div className="bookDetailsTop" style={{ textAlign: "left", display: "table-row" }}>
-          <div className="bookImage" style={{ display: "table-cell", paddingRight: "20px", verticalAlign: "top" }}>
+      <div className="book-details">
+        <div className="top">
+          <div className="cover">
             <BookCover book={this.props.book} />
           </div>
-          <div className="bookDetailsHeader" style={{ display: "table-cell", verticalAlign: "top", textAlign: "left", maxWidth: "500px" }}>
-            <h1 className="bookDetailsTitle" style={{ margin: 0 }}>{this.props.book.title}</h1>
+          <div className="header">
+            <h1 className="title">{this.props.book.title}</h1>
             {
               this.props.book.series && this.props.book.series.name ?
-              <h3 className="bookDetailsSeries" style={{ marginTop: "0.5em", fontSize: "1em" }}>{ this.props.book.series.name }</h3> :
+              <h3 className="series">{ this.props.book.series.name }</h3> :
               ""
             }
             {
               this.props.book.authors && this.props.book.authors.length ?
-              <h2 className="bookDetailsAuthors" style={{ marginTop: "0.5em", fontSize: "1.2em" }}>{this.props.book.authors.join(", ")}</h2> :
+              <h2 className="authors">{this.props.book.authors.join(", ")}</h2> :
               ""
             }
             {
               this.props.book.contributors && this.props.book.contributors.length ?
-              <h2 className="bookDetailsContributors" style={{ marginTop: "0.5em", fontSize: "1.2em" }}>Contributors: {this.props.book.contributors.join(", ")}</h2> :
+              <h2 className="contributors">Contributors: {this.props.book.contributors.join(", ")}</h2> :
               ""
             }
-            <div style={{ marginTop: "2em", color: "#888", fontSize: "0.9em" }}>
+            <div className="fields">
               { this.fields().map(field =>
-                field.value ? <div className={"bookDetails-" + field.name.replace(" ", "-")} key={field.name}>{field.name}: {field.value}</div> : null
+                field.value ? <div className={field.name.toLowerCase().replace(" ", "-")} key={field.name}>{field.name}: {field.value}</div> : null
               ) }
             </div>
           </div>
         </div>
-        <div style={{ clear: "both", marginTop: "1em" }}></div>
+        <div className="divider"></div>
         <div
-          style={bookSummaryStyle}>
+          className="main">
           <div className="row">
             <div className="col-sm-3">
               { this.props.book.url &&
@@ -73,20 +69,20 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
                 </CatalogLink>
               }
             </div>
-            <div className="col-sm-6" style={{textAlign: "center", marginBottom: "30px"}}>
-              <div style={{ marginBottom: "5px" }}>
+            <div className="top col-sm-6">
+              <div className="circulation-links">
                 { this.circulationLinks() }
               </div>
-              <div className="circulationInfo">
+              <div className="circulation-info">
                 { this.circulationInfo() }
               </div>
             </div>
-            <div className="col-sm-3" style={{ textAlign: "right" }}>
+            <div className="right-column-links col-sm-3">
               { this.rightColumnLinks() }
             </div>
           </div>
 
-          <div className="bookDetailsSummary"
+          <div className="summary"
                dangerouslySetInnerHTML={{ __html: this.props.book.summary }}></div>
         </div>
       </div>
@@ -137,7 +133,6 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
           return (
             <DownloadButton
               key={link.url}
-              style={{ marginRight: "0.5em" }}
               url={link.url}
               mimeType={link.type}
               isPlainLink={true}
@@ -152,7 +147,6 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
           return (
             <DownloadButton
               key={link.url}
-              style={{ marginRight: "0.5em" }}
               fulfill={this.props.fulfillBook}
               indirectFulfill={this.props.indirectFulfillBook}
               url={link.url}
@@ -178,7 +172,6 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
       links.push(
         <BorrowButton
           key={this.props.book.borrowUrl}
-          style={{ marginRight: "0.5em" }}
           borrow={this.borrow}>
           { label }
         </BorrowButton>

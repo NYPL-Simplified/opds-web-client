@@ -1,0 +1,66 @@
+.book-details {
+  .top {
+    text-align: left;
+    display: table-row;
+  }
+
+  .cover {
+    display: table-cell;
+    padding-right: 20px;
+    vertical-align: top;
+  }
+
+  .header {
+    display: table-cell;
+    vertical-align: top;
+    text-align: left;
+    max-width: 500px;
+
+    h1 {
+      margin: 0;
+    }
+
+    h3 {
+      margin-top: 0.5em;
+      font-size: 1em;
+    }
+
+    h2 {
+      margin-top: 0.5em;
+      font-size: 1.2em;
+    }
+
+    .fields {
+      margin-top: 2em;
+      color: #888;
+      font-size: 0.9em;
+    }
+  }
+
+  .divider {
+    clear: both;
+    margin-top: 1em;
+  }
+
+  .main {
+    padding-top: 2em;
+    border-top: 1px solid #ccc;
+
+    .top {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .circulation-links {
+      margin-bottom: 5px;
+
+      .btn {
+        margin-right: 0.5em;
+      }
+    }
+
+    .right-column-links {
+      text-align: right;
+    }
+  }
+}
