@@ -1,0 +1,5 @@
+@import "popup";
+
+.loading {
+  @include popup(300px);
+}
