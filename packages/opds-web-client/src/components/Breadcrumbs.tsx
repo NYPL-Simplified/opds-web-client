@@ -1,4 +1,5 @@
 import * as React from "react";
+import "../stylesheets/breadcrumbs.scss";
 import CatalogLink from "./CatalogLink";
 import { CollectionData, BookData, LinkData } from "../interfaces";
 
@@ -12,14 +13,8 @@ export interface ComputeBreadcrumbs {
 
 export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> {
   render(): JSX.Element {
-    let linkStyle = {
-      fontSize: "1.2em",
-      marginRight: "5px",
-      cursor: "pointer"
-    };
-
     return (
-        <ol className="breadcrumb" style={{ fontSize: "1.2em", height: "40px" }} aria-label="breadcrumbs" role="navigation">
+        <ol className="breadcrumb" aria-label="breadcrumbs" role="navigation">
           { this.props.links && this.props.links.map((link, i) =>
             <li key={link.url}>
               <CatalogLink
