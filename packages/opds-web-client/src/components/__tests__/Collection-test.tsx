@@ -35,7 +35,7 @@ describe("Collection", () => {
     });
 
     it("contains #main anchor", () => {
-      let link = wrapper.find(".mainAnchor");
+      let link = wrapper.find(".main-anchor");
       expect(link.props().name).to.equal("main");
     });
 
@@ -57,7 +57,7 @@ describe("Collection", () => {
     });
 
     it("shows #main anchor", () => {
-      let link = wrapper.find(".mainAnchor");
+      let link = wrapper.find(".main-anchor");
       expect(link.props().name).to.equal("main");
     });
 
@@ -181,7 +181,7 @@ describe("Collection", () => {
         <Collection collection={collectionData} isFetchingPage={true} />
       );
 
-      let loadings = wrapper.find(".loadingNextPage");
+      let loadings = wrapper.find(".loading-next-page");
       expect(loadings.length).to.equal(1);
     });
 
@@ -194,7 +194,7 @@ describe("Collection", () => {
         <Collection collection={collectionData} isFetchingPage={false} fetchPage={fetchPage} />
       );
 
-      let link = wrapper.find(".nextPageLink");
+      let link = wrapper.find(".next-page-link");
       expect(link.text()).to.equal("Load more books");
     });
   });

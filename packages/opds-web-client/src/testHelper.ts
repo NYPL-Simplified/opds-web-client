@@ -11,3 +11,8 @@ Object.keys(window).forEach((key) => {
     global[key] = window[key];
   }
 });
+
+
+// Ignore imported stylesheets.
+let noop = () => {};
+require.extensions[".scss"] = noop;

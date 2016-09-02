@@ -1,0 +1,43 @@
+$leftPanelWidth: 190px;
+$padding: 10px;
+
+.collection {
+  .facet-groups {
+    width: $leftPanelWidth;
+    position: fixed;
+    left: 0;
+  }
+
+  .body {
+    padding: $padding;
+    height: 100%;
+
+    &.with-facets {
+      margin-left: $leftPanelWidth + $padding;
+    }
+  }
+
+  .empty-collection-message {
+    padding: 1em;
+    text-align: center;
+    color: #888;
+    font-size: 3em;
+  }
+
+  .navigation-links a {
+    display: block;
+    margin: 25px;
+    text-align: center;
+    background-color: #DDD;
+    padding: 10px;
+    overflow: hidden;
+    font-size: 500%;
+  }
+
+  .loading-next-page {
+    clear: both;
+    height: 50px;
+    text-align: center;
+    padding: 10px;
+  }
+}

@@ -1,12 +1,10 @@
 import * as React from "react";
-import { popupStyle } from "./styles";
+import "../stylesheets/loading_indicator.scss";
 
 export default class LoadingIndicator extends React.Component<any, any> {
   render(): JSX.Element {
-    let loadingStyle = popupStyle(300);
-
     return (
-      <h1 className="loading" style={loadingStyle}>Loading</h1>
+      <h1 className="loading">Loading</h1>
     );
   }
 }

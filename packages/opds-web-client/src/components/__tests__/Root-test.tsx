@@ -264,7 +264,7 @@ describe("Root", () => {
         />
     );
 
-    let bookWrapper = wrapper.find(".bookDetailsWrapper");
+    let bookWrapper = wrapper.find(".book-details-wrapper");
     let book = wrapper.find(BookDetails);
 
     expect(bookWrapper.length).to.equal(1);
@@ -430,7 +430,7 @@ describe("Root", () => {
     expect(showPrevBook.callCount).to.equal(1);
   });
 
-  it("calls showNextBook() on right key press but not if meta key is also presssed", () => {
+  it("calls showNextBook() on right key press but not if meta key is also pressed", () => {
     let showNextBook = stub();
     let context = mockRouterContext();
     let wrapper = mount(
@@ -680,7 +680,7 @@ describe("Root", () => {
     });
 
     it("uses router to show a collection", () => {
-      let collectionLink = wrapper.find(".laneTitle").first();
+      let collectionLink = wrapper.find(".lane .title").first();
       let collectionUrl = collectionData.lanes[0].url;
       collectionLink.simulate("click", { button: 0 });
 
@@ -689,7 +689,7 @@ describe("Root", () => {
     });
 
     it("uses router to show a book", () => {
-      let bookLink =  wrapper.find(".laneBookLink").first();
+      let bookLink =  wrapper.find(".lane-book a").first();
       let collectionUrl = collectionData.url;
       let bookUrl = collectionData.lanes[0].books[0].url;
       bookLink.simulate("click", { button: 0 });

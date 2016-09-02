@@ -1,0 +1,22 @@
+.lane {
+  h2 {
+    clear: both;
+    cursor: pointer;
+  }
+
+  .lane-books {
+    display: block;
+    height: 260px;
+    width: 100%;
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+
+    li {
+      display: inline-block;
+    }
+  }
+}

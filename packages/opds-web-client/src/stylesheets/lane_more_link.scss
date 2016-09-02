@@ -1,0 +1,19 @@
+.more-link {
+  display: block;
+  height: 250px;
+  white-space: normal;
+  text-decoration: none;
+
+  div {
+    display: table-cell;
+    vertical-align: middle;
+    background-color: #EEE;
+    text-align: center;
+    padding: 10px;
+    color: #888;
+    font-weight: bold;
+    width: 150px;
+    height: 200px;
+    lineHeight: 1.1em;
+  }
+}

@@ -1,4 +1,6 @@
 import * as React from "react";
+import "../stylesheets/lanes.scss";
+import "../stylesheets/subtle_list.scss";
 import { Store } from "redux";
 import { connect } from "react-redux";
 import { adapter } from "../OPDSDataAdapter";
@@ -6,7 +8,6 @@ import DataFetcher from "../DataFetcher";
 import ActionsCreator from "../actions";
 import Lane from "./Lane";
 import { CollectionData, LaneData, FetchErrorData } from "../interfaces";
-import { subtleListStyle } from "./styles";
 import spinner from "../images/spinner";
 
 export interface LanesProps {
@@ -27,17 +28,15 @@ export class Lanes extends React.Component<any, any> {
     return (
       <div className="lanes">
         { this.props.isFetching &&
-          <div style={{ textAlign: "center" }}>
+          <div className="spinner">
             <img
-              className="lanesSpinner"
               src={spinner}
-              style={{ width: "30px", height: "30px" }}
               />
           </div>
         }
 
         { this.props.lanes && this.props.lanes.length > 0 ?
-          <ul aria-label="groups of books" style={subtleListStyle}>
+          <ul aria-label="groups of books" className="subtle-list">
           { this.props.lanes && this.props.lanes.map(lane =>
             <li key={lane.title}>
               <Lane

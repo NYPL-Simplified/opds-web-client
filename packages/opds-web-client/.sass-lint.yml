@@ -1,0 +1,37 @@
+# Linter Options
+options:
+  # Don't merge default rules
+  merge-default-rules: false
+# File Options
+files:
+  include: 'src/stylesheets/**/*.scss'
+# Rule Configuration
+rules:
+  extends-before-mixins: 2
+  extends-before-declarations: 2
+  placeholder-in-extend: 2
+  mixins-before-declarations:
+    - 2
+    -
+      exclude:
+        - breakpoint
+        - mq
+
+  no-warn: 2
+  no-debug: 2
+  no-ids: 2
+  no-important: 2
+  hex-notation:
+    - 2
+    -
+      style: uppercase
+  indentation:
+    - 2
+    -
+      size: 2
+  property-sort-order:
+    - 2
+    -
+      order:
+        - display
+      ignore-custom-properties: true

@@ -1,4 +1,5 @@
 var webpack = require('webpack');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var config = {
   entry: {
@@ -16,10 +17,17 @@ var config = {
     new webpack.DefinePlugin({ "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV) }),
     // jsdom is needed for server rendering, but causes errors
     // in the browser even if it is never used, so we ignore it:
-    new webpack.IgnorePlugin(/jsdom$/)
+    new webpack.IgnorePlugin(/jsdom$/),
+
+    // Extract separate css file.
+    new ExtractTextPlugin("opds-web-client.css")
   ],
   module: {
     loaders: [
+      {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
+      },
       {
         test: /\.tsx?$/,
         exclude: [/node_modules/],
@@ -34,7 +42,7 @@ var config = {
     ],
   },
   resolve: {
-    extensions: ["", ".webpack.js", ".web.js", ".js", ".ts", ".tsx"]
+    extensions: ["", ".webpack.js", ".web.js", ".js", ".ts", ".tsx", ".scss"]
   }
 };
 

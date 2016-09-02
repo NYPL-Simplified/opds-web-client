@@ -48,27 +48,27 @@ describe("BookDetails", () => {
   });
 
   it("shows title", () => {
-    let title = wrapper.find("h1");
+    let title = wrapper.find(".title");
     expect(title.text()).to.equal(book.title);
   });
 
   it("shows series", () => {
-    let series = wrapper.find(".bookDetailsSeries");
+    let series = wrapper.find(".series");
     expect(series.text()).to.equal(book.series.name);
   });
 
   it("shows authors", () => {
-    let author = wrapper.find(".bookDetailsAuthors");
+    let author = wrapper.find(".authors");
     expect(author.text()).to.equal(book.authors.join(", "));
   });
 
   it("shows contributors", () => {
-    let contributor = wrapper.find(".bookDetailsContributors");
+    let contributor = wrapper.find(".contributors");
     expect(contributor.text()).to.equal("Contributors: " + book.contributors.join(", "));
   });
 
   it("shows publisher", () => {
-    let publisher = wrapper.find(".bookDetails-Publisher");
+    let publisher = wrapper.find(".publisher");
     expect(publisher.text()).to.equal("Publisher: " + book.publisher);
   });
 
@@ -85,17 +85,17 @@ describe("BookDetails", () => {
         />
     );
 
-    let publisher = wrapper.find(".bookDetails-Publisher");
+    let publisher = wrapper.find(".publisher");
     expect(publisher.length).to.equal(0);
   });
 
   it("shows publish date", () => {
-    let published = wrapper.find(".bookDetails-Published");
+    let published = wrapper.find(".published");
     expect(published.text()).to.equal("Published: " + book.published);
   });
 
   it("shows categories", () => {
-    let categories = wrapper.find(".bookDetails-Categories");
+    let categories = wrapper.find(".categories");
     expect(categories.text()).to.equal("Categories: category 1, category 2");
   });
 
@@ -110,12 +110,12 @@ describe("BookDetails", () => {
         />
     );
 
-    let categories = wrapper.find(".bookDetails-Categories");
+    let categories = wrapper.find(".categories");
     expect(categories.length).to.equal(0);
   });
 
   it("shows summary", () => {
-    let summary = wrapper.find(".bookDetailsSummary");
+    let summary = wrapper.find(".summary");
     expect(summary.html()).to.contain("Sam and Remi");
   });
 
@@ -217,7 +217,7 @@ describe("BookDetails", () => {
         indirectFulfillBook={stub()}
         />
     );
-    let circulationInfo = wrapper.find(".circulationInfo");
+    let circulationInfo = wrapper.find(".circulation-info");
     expect(circulationInfo.text()).to.contain("0 of 12 copies available");
     expect(circulationInfo.text()).to.contain("6 patrons in hold queue");
   });
@@ -241,13 +241,13 @@ describe("BookDetails", () => {
         indirectFulfillBook={stub()}
         />
     );
-    let circulationInfo = wrapper.find(".circulationInfo");
+    let circulationInfo = wrapper.find(".circulation-info");
     expect(circulationInfo.text()).to.contain("5 of 12 copies available");
     expect(circulationInfo.text()).not.to.contain("6");
   });
 
   it("shows circulation info for open access book", () => {
-    let circulationInfo = wrapper.find(".circulationInfo");
+    let circulationInfo = wrapper.find(".circulation-info");
     expect(circulationInfo.text()).to.contain("open-access");
   });
 
@@ -266,7 +266,7 @@ describe("BookDetails", () => {
         indirectFulfillBook={stub()}
         />
     );
-    let circulationInfo = wrapper.find(".circulationInfo");
+    let circulationInfo = wrapper.find(".circulation-info");
     expect(circulationInfo.text()).to.contain("on loan for a day");
   });
 
@@ -291,7 +291,7 @@ describe("BookDetails", () => {
         indirectFulfillBook={stub()}
         />
     );
-    let circulationInfo = wrapper.find(".circulationInfo");
+    let circulationInfo = wrapper.find(".circulation-info");
     expect(circulationInfo.text()).to.contain("0 of 12 copies available");
     expect(circulationInfo.text()).to.contain("6 patrons in hold queue");
     expect(circulationInfo.text()).to.contain("Your holds position: 3");

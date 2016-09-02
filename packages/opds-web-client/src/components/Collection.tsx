@@ -1,4 +1,7 @@
 import * as React from "react";
+import "../stylesheets/collection.scss";
+import "../stylesheets/subtle_list.scss";
+import "../stylesheets/visually_hidden.scss";
 import Book from "./Book";
 import CatalogLink from "./CatalogLink";
 import { Lanes } from "./Lanes";
@@ -6,7 +9,6 @@ import FacetGroup from "./FacetGroup";
 import Search from "./Search";
 import SkipNavigationLink from "./SkipNavigationLink";
 import { CollectionData, LinkData, FetchErrorData } from "../interfaces";
-import { visuallyHiddenStyle, subtleListStyle } from "./styles";
 
 export interface CollectionProps extends React.HTMLProps<Collection> {
   collection: CollectionData;
@@ -23,45 +25,13 @@ export default class Collection extends React.Component<CollectionProps, any> {
   }
 
   render(): JSX.Element {
-    let leftPanelWidth = 190;
-    let padding = 10;
-
-    let collectionBodyStyle: any = {
-      padding: `${padding}px`,
-      height: "100%"
-    };
-
-    if (this.props.collection.facetGroups && this.props.collection.facetGroups.length) {
-      collectionBodyStyle.marginLeft = `${leftPanelWidth + padding}px`;
-    }
-
-    let leftPanelStyle = {
-      width: `${leftPanelWidth}px`,
-      position: "fixed",
-      left: "0px"
-    };
-
-    let linkStyle = {
-      textAlign: "center",
-      backgroundColor: "#ddd",
-      margin: "25px",
-      padding: "10px",
-      overflow: "hidden",
-      fontSize: "500%",
-      display: "block"
-    };
-
-    let loadingNextPageStyle = {
-      clear: "both",
-      height: "50px",
-      textAlign: "center",
-      padding: "10px"
-    };
+    let hasFacets = (this.props.collection.facetGroups && this.props.collection.facetGroups.length > 0);
+    let bodyClass = hasFacets ? "body with-facets" : "body";
 
     return (
       <div className="collection">
-        { this.props.collection.facetGroups && this.props.collection.facetGroups.length > 0 && (
-          <div className="facetGroups" style={leftPanelStyle} role="navigation" aria-label="filters">
+        { hasFacets && (
+          <div className="facet-groups" role="navigation" aria-label="filters">
             <SkipNavigationLink />
             { this.props.collection.facetGroups.map(facetGroup =>
                 <FacetGroup
@@ -73,11 +43,10 @@ export default class Collection extends React.Component<CollectionProps, any> {
         )}
 
         <div
-          className="collectionBody"
-          style={collectionBodyStyle}
+          className={bodyClass}
           role="main"
           aria-label={"books in " + this.props.collection.title}>
-          <a className="mainAnchor" name="main"></a>
+          <a className="main-anchor" name="main"></a>
 
           { (this.props.collection.lanes && this.props.collection.lanes.length > 0) ?
             <Lanes
@@ -87,7 +56,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
           }
 
           { this.props.collection.books &&
-            <ul aria-label="books" style={subtleListStyle}>
+            <ul aria-label="books" className="subtle-list">
             { this.props.collection.books.map(book =>
               <li key={book.id}>
                 <Book
@@ -99,12 +68,12 @@ export default class Collection extends React.Component<CollectionProps, any> {
           }
 
           { this.props.collection.navigationLinks &&
-            <ul aria-label="navigation links" style={subtleListStyle} role="navigation">
+            <ul aria-label="navigation links" className="navigation-links subtle-list" role="navigation">
             { this.props.collection.navigationLinks.map(link =>
               <li key={link.id}>
                 <CatalogLink
                   collectionUrl={link.url}
-                  style={linkStyle}>
+                  >
                   {link.text}
                 </CatalogLink>
               </li>) }
@@ -112,22 +81,21 @@ export default class Collection extends React.Component<CollectionProps, any> {
           }
 
           { this.isEmpty() &&
-            <div style={{ padding: "1em", textAlign: "center", color: "#888", fontSize: "3em" }}>
+            <div className="empty-collection-message">
               No books here.
             </div>
           }
 
           { this.canFetch() &&
             <button
-              className="nextPageLink"
-              style={visuallyHiddenStyle}
+              className="next-page-link visually-hidden"
               onClick={this.fetch}>
               Load more books
             </button>
           }
 
           { this.props.isFetchingPage &&
-            <div className="loadingNextPage" style={loadingNextPageStyle}>
+            <div className="loading-next-page">
               <h3>Loading next page...</h3>
             </div>
           }

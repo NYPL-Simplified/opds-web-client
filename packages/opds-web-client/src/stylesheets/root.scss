@@ -1,0 +1,76 @@
+$padding: 10px;
+$headerHeight: 50px;
+$breadcrumbsHeight: 40px;
+$footerHeight: 50px;
+
+.catalog {
+  font-family: Arial, sans-serif;
+
+  .header .navbar-brand {
+    font-size: 1.8em;
+    color: black;
+  }
+
+  .breadcrumbs-wrapper {
+    position: fixed;
+    top: $headerHeight;
+    width: 100%;
+    z-index: 100;
+  }
+
+  .body {
+    padding-top: $headerHeight + $padding;
+    padding-bottom: $padding;
+    overflow: auto;
+
+    .book-details-wrapper {
+      position: fixed;
+      width: 100%;
+      top: $headerHeight;
+      height: calc(100% - #{$headerHeight});
+      background-color: white;
+      z-index: 100;
+      transform: translateZ(0);
+      overflow-y: scroll;
+
+      .without-container {
+        padding: 40px;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+    }
+
+    &.with-breadcrumbs {
+      padding-top: $headerHeight + $breadcrumbsHeight + $padding;
+
+      .book-details-wrapper {
+        top: $headerHeight + $breadcrumbsHeight;
+        height: calc(100% - #{$headerHeight} - #{$breadcrumbsHeight});
+      }
+
+      &.with-footer {
+        .book-details-wrapper {
+          height: calc(100% - #{$headerHeight} - #{$breadcrumbsHeight} - #{$footerHeight});
+        }
+      }
+    }
+
+    &.with-footer {
+      padding-bottom: $footerHeight + $padding;
+
+      .book-details-wrapper {
+        height: calc(100% - #{$headerHeight} - #{$footerHeight});
+      }      
+    }
+  }
+
+  footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: $footerHeight;
+    padding: $padding;
+    background-color: #EEE;
+    border-top: 1px solid #CCC;
+  }
+}

@@ -1,0 +1,18 @@
+.lane-book {
+  white-space: normal;
+  margin-right: 10px;
+  overflow: hidden;
+  height: 250px;
+
+  .info {
+    clear: left;
+    width: 150px;
+    text-align: center;
+    margin-top: 5px;
+  }
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
+}
