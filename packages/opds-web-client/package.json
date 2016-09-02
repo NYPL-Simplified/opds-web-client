@@ -1,6 +1,6 @@
 {
   "name": "opds-web-client",
-  "version": "0.0.35",
+  "version": "0.0.36",
   "description": "OPDS web client",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -15,7 +15,7 @@
     "test": "npm run lint && tsc && cp -r src/stylesheets lib && mocha --require lib/testHelper.js lib/__tests__/*.js lib/**/__tests__/*.js lib/**/**/__tests__/*.js",
     "dev": "webpack-dev-server --progress --history-api-fallback --hot --content-base build --port 8090 --config webpack.dev.config",
     "prod": "NODE_ENV=production webpack -p --progress --display-modules --config webpack.prod.config && rm -rf dist/lib",
-    "prepublish": "typings install && rm -rf lib && tsc && npm run prod"
+    "prepublish": "typings install && rm -rf lib && tsc && cp -r src/stylesheets lib && npm run prod"
   },
   "dependencies": {
     "dompurify": "^0.8.1",
