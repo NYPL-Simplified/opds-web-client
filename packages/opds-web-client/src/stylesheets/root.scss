@@ -1,11 +1,29 @@
-$padding: 10px;
-$headerHeight: 50px;
-$breadcrumbsHeight: 40px;
-$footerHeight: 50px;
+@import "variables";
+
+html {
+  background-color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: $basefont;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  &:link {
+    color: $linkcolor;
+  }
+
+  &:visited {
+    color: $linkvisitedcolor;
+  }
+
+  &:visited:hover, &:hover {
+    color: $linkhovercolor;
+    text-decoration: none;
+  }
+}
 
 .catalog {
-  font-family: Arial, sans-serif;
-
   .header .navbar-brand {
     font-size: 1.8em;
     color: black;
