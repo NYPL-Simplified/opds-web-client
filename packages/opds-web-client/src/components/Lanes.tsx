@@ -38,7 +38,7 @@ export class Lanes extends React.Component<any, any> {
         { this.props.lanes && this.props.lanes.length > 0 ?
           <ul aria-label="groups of books" className="subtle-list">
           { this.props.lanes && this.props.lanes.map(lane =>
-            <li key={lane.title}>
+            <li key={lane.url}>
               <Lane
                 lane={lane}
                 collectionUrl={this.props.url}
