@@ -1,12 +1,18 @@
+@import "variables";
+
 .lane {
   h2 {
     clear: both;
     cursor: pointer;
+
+    a {
+      display: block;
+    }
   }
 
   .lane-books {
     display: block;
-    height: 260px;
+    height: $bookHeight + $padding;
     width: 100%;
     white-space: nowrap;
     overflow-x: scroll;

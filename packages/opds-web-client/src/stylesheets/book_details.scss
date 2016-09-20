@@ -1,3 +1,5 @@
+@import "variables";
+
 .book-details {
   .top {
     display: table-row;
@@ -22,18 +24,18 @@
 
     h3 {
       margin-top: 0.5em;
-      font-size: 1em;
+      font-size: 1.5em;
     }
 
     h2 {
       margin-top: 0.5em;
-      font-size: 1.2em;
+      font-size: 1.5em;
     }
 
     .fields {
       margin-top: 2em;
       color: #888;
-      font-size: 0.9em;
+      font-size: 1em;
     }
   }
 
@@ -56,6 +58,17 @@
 
       .btn {
         margin-right: 0.5em;
+        background-color: $linkcolor;
+        color: white;
+        border: none;
+        border-radius: 0;
+        font-size: 2em;
+        transition: all 0.2s;
+
+        &:hover {
+          color: $linkcolor;
+          background-color: rgba($linkcolor, 0.2);
+        }
       }
     }
 

@@ -1,15 +1,30 @@
+@import "variables";
+
 .lane-book {
   white-space: normal;
-  margin-right: 10px;
+  margin-right: $padding;
   overflow: hidden;
-  height: 250px;
+  height: $bookHeight;
   position: relative;
 
   .info {
-    clear: left;
-    width: 150px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-top: 2px solid $linkcolor;
+    bottom: 0;
+    box-shadow: inset 0px -5px 6px -7px black;
+    font-size: 1.3em;
+    left: 0;
+    height: $bookHeight * 0.25;
+    padding: $padding;
+    position: absolute;
+    right: 0;
     text-align: center;
-    margin-top: 5px;
+    transition: all 0.2s;
+  }
+
+  &:hover .info {
+    height: $bookHeight - $padding;
+    background-color: rgba(255, 255, 255, 1);
   }
 
   a {
