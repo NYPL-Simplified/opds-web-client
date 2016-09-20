@@ -12,7 +12,8 @@
     border-top: 2px solid $linkcolor;
     bottom: 0;
     box-shadow: inset 0px -5px 6px -7px black;
-    font-size: 1.3em;
+    font-size: 1em;
+    font-weight: bold;
     left: 0;
     height: $bookHeight * 0.25;
     padding: $padding;
@@ -23,7 +24,7 @@
   }
 
   &:hover .info {
-    height: $bookHeight - $padding;
+    height: calc(70%);
     background-color: rgba(255, 255, 255, 1);
   }
 
