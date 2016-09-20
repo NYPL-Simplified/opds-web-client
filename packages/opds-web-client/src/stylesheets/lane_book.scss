@@ -15,8 +15,8 @@
     font-size: 1em;
     font-weight: bold;
     left: 0;
-    height: $bookHeight * 0.25;
-    padding: $padding;
+    height: $bookHeight * 0.0;
+    padding: 0;
     position: absolute;
     right: 0;
     text-align: center;
@@ -26,6 +26,7 @@
   &:hover .info {
     height: calc(70%);
     background-color: rgba(255, 255, 255, 1);
+    padding: $padding 0;
   }
 
   a {
