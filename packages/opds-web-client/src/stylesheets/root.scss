@@ -78,7 +78,7 @@ a {
 
       .book-details-wrapper {
         height: calc(100% - #{$headerHeight} - #{$footerHeight});
-      }      
+      }
     }
   }
 
@@ -91,4 +91,21 @@ a {
     background-color: #EEE;
     border-top: 1px solid #CCC;
   }
+}
+
+// override bootstrap
+.form-control {
+  font-size: 1rem;
+  color: $pagetextcolor;
+  background-color: $pagecolor;
+  border: 1px solid $pagetextcolor;
+  border-radius: 0;
+}
+
+.btn-default {
+  font-size: 1rem;
+  color: $pagecolor;
+  background-color: $linkcolor;
+  border: none;
+  border-radius: 0;
 }
