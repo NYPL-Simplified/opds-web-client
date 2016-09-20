@@ -1,10 +1,6 @@
 @import "variables";
 
 .lane {
-  &:before {
-    content: "<";
-  }
-
   h2 {
     clear: both;
     cursor: pointer;
