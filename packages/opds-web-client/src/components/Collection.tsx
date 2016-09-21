@@ -96,7 +96,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
 
           { this.props.isFetchingPage &&
             <div className="loading-next-page">
-              <h3>Loading next page...</h3>
+              <h3>Loading more books...</h3>
             </div>
           }
         </div>
