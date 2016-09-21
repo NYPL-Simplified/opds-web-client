@@ -1,5 +1,15 @@
 @import "variables";
 
+@-webkit-keyframes barberpole {
+  from { background-position: 0 0; }
+  to   { background-position: -($stripeWidth * 2) $stripeWidth; }
+}
+
+@keyframes barberpole {
+  from { background-position: 0 0; }
+  to   { background-position: -($stripeWidth * 2) $stripeWidth; }
+}
+
 .collection {
   .facet-groups {
     width: $leftPanelWidth;
@@ -35,8 +45,26 @@
 
   .loading-next-page {
     clear: both;
-    height: 50px;
     text-align: center;
+    height: 20px;
     padding: 10px 10px $bookHeight 10px;
+
+    background-size: $stripeWidth $stripeWidth;
+    background-image: linear-gradient(
+      45deg,
+      darken($pagecolor, 5%)  25%,
+      $pagecolor      25%,
+      $pagecolor      50%,
+      darken($pagecolor, 5%)  50%,
+      darken($pagecolor, 5%)  75%,
+      $pagecolor      75%,
+      $pagecolor
+    );
+    -webkit-animation: barberpole 2s linear infinite;
+    animation: barberpole 2s linear infinite;
+
+    h3 {
+      line-height: 5;
+    }
   }
 }
