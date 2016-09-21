@@ -12,6 +12,15 @@
 
   .lane-books-container {
     overflow-x: hidden;
+    position: relative;
+  }
+
+  .scroll-button {
+    background-color: $linkcolor;
+    color: $pagecolor;
+    position: absolute;
+    z-index: 1;
+    height: 100%;
   }
 
   .lane-books {
