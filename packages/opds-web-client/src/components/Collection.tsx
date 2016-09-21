@@ -107,6 +107,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
   componentWillReceiveProps(nextProps) {
     if (this.props.isFetching && !nextProps.isFetching && !nextProps.error) {
        document.body.scrollTop = 0;
+       document.documentElement.scrollTop = 0;
     }
   }
 
