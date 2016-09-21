@@ -83,10 +83,18 @@ export default class Lane extends React.Component<LaneProps, any> {
     );
   }
 
+  getContainerWidth(): number {
+    return (this.refs["container"] as any).clientWidth;
+  }
+
+  getScrollWidth(): number {
+    return (this.refs["list"] as any).scrollWidth;
+  }
+
   scrollBack() {
     let atLeft = false;
     let atRight = false;
-    let containerWidth = (this.refs["container"] as any).clientWidth;
+    let containerWidth = this.getContainerWidth();
     let newMarginLeft = this.state.marginLeft + containerWidth - 20;
     if (newMarginLeft >= 0) {
       newMarginLeft = 0;
@@ -98,8 +106,8 @@ export default class Lane extends React.Component<LaneProps, any> {
   scrollForward() {
     let atLeft = false;
     let atRight = false;
-    let scrollWidth = (this.refs["list"] as any).scrollWidth;
-    let containerWidth = (this.refs["container"] as any).clientWidth;
+    let scrollWidth = this.getScrollWidth();
+    let containerWidth = this.getContainerWidth();
     let minMarginLeft = containerWidth - scrollWidth;
     let newMarginLeft = this.state.marginLeft - containerWidth + 20;
     if (newMarginLeft <= minMarginLeft) {
