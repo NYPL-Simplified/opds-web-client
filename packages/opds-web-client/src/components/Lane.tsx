@@ -39,12 +39,12 @@ export default class Lane extends React.Component<LaneProps, any> {
 
         <div ref="container" className="lane-books-container">
           { !this.state.atLeft &&
-            <div className="scroll-button" onClick={this.scrollBack}>
+            <div className="scroll-button left" onClick={this.scrollBack}>
               &lt;
             </div>
           }
           { !this.state.atRight &&
-            <div className="scroll-button" onClick={this.scrollForward}>
+            <div className="scroll-button right" onClick={this.scrollForward}>
               &gt;
             </div>
           }
@@ -86,7 +86,7 @@ export default class Lane extends React.Component<LaneProps, any> {
   scrollBack() {
     let atLeft = false;
     let atRight = false;
-    let containerWidth = (this.refs['container'] as any).clientWidth;
+    let containerWidth = (this.refs["container"] as any).clientWidth;
     let newMarginLeft = this.state.marginLeft + containerWidth - 20;
     if (newMarginLeft >= 0) {
       newMarginLeft = 0;
@@ -98,8 +98,8 @@ export default class Lane extends React.Component<LaneProps, any> {
   scrollForward() {
     let atLeft = false;
     let atRight = false;
-    let scrollWidth = (this.refs['list'] as any).scrollWidth;
-    let containerWidth = (this.refs['container'] as any).clientWidth;
+    let scrollWidth = (this.refs["list"] as any).scrollWidth;
+    let containerWidth = (this.refs["container"] as any).clientWidth;
     let minMarginLeft = containerWidth - scrollWidth;
     let newMarginLeft = this.state.marginLeft - containerWidth + 20;
     if (newMarginLeft <= minMarginLeft) {
