@@ -19,8 +19,26 @@
     background-color: $linkcolor;
     color: $pagecolor;
     position: absolute;
+    padding: 0 1rem;
     z-index: 1;
     height: 100%;
+    font-size: 2em;
+    line-height: 7;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      color: $linkcolor;
+      background-color: $pagecolor;
+    }
+
+    &.left {
+      left: 0;
+    }
+
+    &.right {
+      right: 0;
+    }
   }
 
   .lane-books {
