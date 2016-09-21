@@ -10,16 +10,19 @@
     }
   }
 
+  .lane-books-container {
+    overflow-x: hidden;
+  }
+
   .lane-books {
     display: block;
     height: $bookHeight + $padding;
-    width: 100%;
     white-space: nowrap;
-    overflow-x: scroll;
-    overflow-y: hidden;
+    overflow: hidden;
     padding: 0;
     margin: 0;
     list-style-type: none;
+    transition: margin-left 1s ease-in-out;
 
     li {
       display: inline-block;

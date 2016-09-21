@@ -13,6 +13,13 @@ export interface LaneProps {
 }
 
 export default class Lane extends React.Component<LaneProps, any> {
+  constructor(props) {
+    super(props);
+    this.state = { marginLeft: 0, atLeft: true, atRight: false };
+    this.scrollBack = this.scrollBack.bind(this);
+    this.scrollForward = this.scrollForward.bind(this);
+  }
+
   render(): JSX.Element {
     let visibleBooks = this.visibleBooks();
 
@@ -30,21 +37,38 @@ export default class Lane extends React.Component<LaneProps, any> {
           </CatalogLink>
         </h2>
 
-        <ul className="lane-books" aria-label={"books in " + this.props.lane.title}>
-          { visibleBooks.map(book =>
-            <li key={book.id}>
-              <LaneBook
-                book={book}
-                collectionUrl={this.props.collectionUrl}
-                />
-            </li>
-          ) }
-          { !this.props.hideMoreLink &&
-            <li key="more">
-              <LaneMoreLink lane={this.props.lane} />
-            </li>
+        <div ref="container" className="lane-books-container">
+          { !this.state.atLeft &&
+            <div className="scroll-button" onClick={this.scrollBack}>
+              &lt;
+            </div>
           }
-        </ul>
+          { !this.state.atRight &&
+            <div className="scroll-button" onClick={this.scrollForward}>
+              &gt;
+            </div>
+          }
+          <ul
+            ref="list"
+            className="lane-books"
+            aria-label={"books in " + this.props.lane.title}
+            style={{ marginLeft: this.state.marginLeft }}
+            >
+            { visibleBooks.map(book =>
+              <li key={book.id}>
+                <LaneBook
+                  book={book}
+                  collectionUrl={this.props.collectionUrl}
+                  />
+              </li>
+            ) }
+            { !this.props.hideMoreLink &&
+              <li key="more">
+                <LaneMoreLink lane={this.props.lane} />
+              </li>
+            }
+          </ul>
+        </div>
       </div>
     );
   }
@@ -57,5 +81,31 @@ export default class Lane extends React.Component<LaneProps, any> {
     return this.props.lane.books.filter(book =>
       this.props.hiddenBookIds.indexOf(book.id) === -1
     );
+  }
+
+  scrollBack() {
+    let atLeft = false;
+    let atRight = false;
+    let containerWidth = (this.refs['container'] as any).clientWidth;
+    let newMarginLeft = this.state.marginLeft + containerWidth - 20;
+    if (newMarginLeft >= 0) {
+      newMarginLeft = 0;
+      atLeft = true;
+    }
+    this.setState({ marginLeft: newMarginLeft, atLeft, atRight });
+  }
+
+  scrollForward() {
+    let atLeft = false;
+    let atRight = false;
+    let scrollWidth = (this.refs['list'] as any).scrollWidth;
+    let containerWidth = (this.refs['container'] as any).clientWidth;
+    let minMarginLeft = containerWidth - scrollWidth;
+    let newMarginLeft = this.state.marginLeft - containerWidth + 20;
+    if (newMarginLeft <= minMarginLeft) {
+      newMarginLeft = minMarginLeft;
+      atRight = true;
+    }
+    this.setState({ marginLeft: newMarginLeft, atLeft, atRight });
   }
 }
