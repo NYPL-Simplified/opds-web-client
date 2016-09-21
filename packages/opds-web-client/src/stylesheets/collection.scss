@@ -1,15 +1,5 @@
 @import "variables";
 
-@-webkit-keyframes barberpole {
-  from { background-position: 0 0; }
-  to   { background-position: -($stripeWidth * 2) $stripeWidth; }
-}
-
-@keyframes barberpole {
-  from { background-position: 0 0; }
-  to   { background-position: -($stripeWidth * 2) $stripeWidth; }
-}
-
 .collection {
   .facet-groups {
     width: $leftPanelWidth;
