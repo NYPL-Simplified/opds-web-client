@@ -1,7 +1,6 @@
 @import "variables";
 
 .more-link {
-  display: block;
   height: $bookHeight;
   white-space: normal;
   text-decoration: none;
@@ -16,6 +15,6 @@
     font-weight: bold;
     width: $bookWidth;
     height: $bookHeight;
-    lineHeight: 1.1em;
+    line-height: 1.1em;
   }
 }

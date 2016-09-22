@@ -6,13 +6,15 @@ export default class LaneMoreLink extends React.Component<any, any> {
     let fontSize = this.computeFontSize();
 
     return (
-      <CatalogLink
-        className="more-link"
-        collectionUrl={this.props.lane.url}>
-        <div style={{ fontSize: fontSize }}>
-          More<br />{ this.props.lane.title }
-        </div>
-      </CatalogLink>
+      <div className="book">
+        <CatalogLink
+          className="more-link"
+          collectionUrl={this.props.lane.url}>
+          <div style={{ fontSize: fontSize }}>
+            More<br />{ this.props.lane.title }
+          </div>
+        </CatalogLink>
+      </div>
     );
   }
 
