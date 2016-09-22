@@ -115,4 +115,13 @@ export default class Lane extends React.Component<LaneProps, any> {
     }
     this.setState({ marginLeft: newMarginLeft, atLeft, atRight });
   }
+
+  componentDidMount() {
+    let scrollWidth = this.getScrollWidth();
+    let containerWidth = this.getContainerWidth();
+    let minMarginLeft = containerWidth - scrollWidth;
+    if (this.state.marginLeft === minMarginLeft) {
+      this.setState({ atRight: true });
+    }
+  }
 }
