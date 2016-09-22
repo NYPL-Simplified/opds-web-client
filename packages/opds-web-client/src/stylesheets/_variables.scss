@@ -3,19 +3,6 @@ $basefont: $basefontraw * 1px;
 $focus-width: 3px;
 
 // colors
-$nyplyellow: #FEE24A;
-$nyplorange: #ffb81d;
-$nyplred: #ed1c24;
-$nypldarkgreen: #437529;
-$nypllightgreen: lighten($nypldarkgreen, 20%);
-$nyplblue: #1DA1D4;
-$nyplbluedark: #1980a9;
-$nyplsearchcolor: $nyplblue;
-$nyplsearchcolordark: $nyplbluedark;
-$nyplsearchcolorlight: lighten(#1DA1D4, 20%);
-$nyplgray: #7B756F;
-$nypldarkgray: darken($nyplgray, 40%);
-$nypllightgray: lighten($nyplgray, 40%);
 $focuscolor: $nyplorange;
 $pagecolor: white;
 $pagecolorlight: $nypllightgray;
