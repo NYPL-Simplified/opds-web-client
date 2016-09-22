@@ -15,6 +15,7 @@ export default class Book extends React.Component<BookProps, any> {
         <CatalogLink
           collectionUrl={this.props.collectionUrl}
           bookUrl={this.props.book.url || this.props.book.id}
+          title={this.props.book.title}
           >
           <BookCover book={this.props.book} />
           <div className="info">
