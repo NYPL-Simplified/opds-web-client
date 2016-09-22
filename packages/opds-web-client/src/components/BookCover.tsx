@@ -1,6 +1,5 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import "../stylesheets/book_cover.scss";
 import { BookData } from "../interfaces";
 const seedrandom = require("seedrandom");
 

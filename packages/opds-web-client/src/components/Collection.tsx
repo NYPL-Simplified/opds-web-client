@@ -1,7 +1,4 @@
 import * as React from "react";
-import "../stylesheets/collection.scss";
-import "../stylesheets/subtle_list.scss";
-import "../stylesheets/visually_hidden.scss";
 import Book from "./Book";
 import CatalogLink from "./CatalogLink";
 import { Lanes } from "./Lanes";

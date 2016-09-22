@@ -1,5 +1,4 @@
 import * as React from "react";
-import "../stylesheets/book.scss";
 import CatalogLink from "./CatalogLink";
 import BookCover from "./BookCover";
 import { BookData } from "../interfaces";

@@ -1,5 +1,4 @@
 import * as React from "react";
-import "../stylesheets/lane.scss";
 import LaneBook from "./LaneBook";
 import CatalogLink from "./CatalogLink";
 import LaneMoreLink from "./LaneMoreLink";

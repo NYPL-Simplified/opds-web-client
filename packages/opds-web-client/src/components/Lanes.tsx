@@ -1,6 +1,4 @@
 import * as React from "react";
-import "../stylesheets/lanes.scss";
-import "../stylesheets/subtle_list.scss";
 import { Store } from "redux";
 import { connect } from "react-redux";
 import { adapter } from "../OPDSDataAdapter";

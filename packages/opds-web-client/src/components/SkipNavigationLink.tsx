@@ -1,5 +1,4 @@
 import * as React from "react";
-import "../stylesheets/visually_hidden.scss";
 
 export default class SkipNavigationLink extends React.Component<any, any> {
   render(): JSX.Element {
