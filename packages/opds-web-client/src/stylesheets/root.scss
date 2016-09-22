@@ -8,6 +8,10 @@ html {
   -webkit-font-smoothing: antialiased;
 }
 
+body {
+  background-color: $pagecolor;
+}
+
 @each $tag in a, input, select {
   #{$tag} {
     border-radius: 0;
@@ -46,7 +50,7 @@ a {
 .catalog {
   .header .navbar-brand {
     font-size: 1.8em;
-    color: black;
+    color: white;
   }
 
   .breadcrumbs-wrapper {
@@ -113,6 +117,27 @@ a {
 }
 
 // override bootstrap
+.navbar-default {
+  background-color: $dark;
+  border: none;
+  color: white;
+}
+
+.navbar-default .navbar-nav>li>a {
+  color: white;
+  text-decoration: underline;
+
+  &:hover {
+    color: white;
+    text-decoration: none;
+  }
+}
+
+.breadcrumb {
+  background-color: $pagecolorlight;
+  border-radius: 0;
+}
+
 .form-control {
   font-size: 1rem;
   color: $pagetextcolor;
