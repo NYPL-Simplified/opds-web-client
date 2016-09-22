@@ -4,7 +4,7 @@ import * as React from "react";
 import { shallow, mount } from "enzyme";
 
 import Lane from "../Lane";
-import LaneBook from "../LaneBook";
+import Book from "../Book";
 import CatalogLink from "../CatalogLink";
 import LaneMoreLink from "../LaneMoreLink";
 import { LaneData, BookData } from "../../interfaces";
@@ -41,12 +41,12 @@ describe("Lane", () => {
       expect(titleLink.first().children().get(0)).to.equal(laneData.title);
     });
 
-    it("shows LaneBooks", () => {
-      let laneBooks = wrapper.find(LaneBook);
-      let bookDatas = laneBooks.map(book => book.props().book);
-      let uniqueCollectionUrls = Array.from(new Set(laneBooks.map(book => book.props().collectionUrl)));
+    it("shows Books", () => {
+      let bookComponents = wrapper.find(Book);
+      let bookDatas = bookComponents.map(book => book.props().book);
+      let uniqueCollectionUrls = Array.from(new Set(bookComponents.map(book => book.props().collectionUrl)));
 
-      expect(laneBooks.length).to.equal(books.length);
+      expect(bookComponents.length).to.equal(books.length);
       expect(bookDatas).to.deep.equal(books);
       expect(uniqueCollectionUrls).to.deep.equal(["test collection"]);
     });
@@ -64,9 +64,9 @@ describe("Lane", () => {
 
     it("hides books by id", () => {
       wrapper.setProps({ hiddenBookIds: ["test book id 1"] });
-      let laneBooks = wrapper.find(LaneBook);
-      expect(laneBooks.length).to.equal(books.length - 1);
-      expect(laneBooks.at(0).props().book).to.equal(books[1]);
+      let bookComponents = wrapper.find(Book);
+      expect(bookComponents.length).to.equal(books.length - 1);
+      expect(bookComponents.at(0).props().book).to.equal(books[1]);
     });
 
     it("shows left scroll button when it's not all the way left", () => {

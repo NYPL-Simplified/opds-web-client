@@ -53,7 +53,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
           }
 
           { this.props.collection.books &&
-            <ul aria-label="books" className="subtle-list">
+            <ul aria-label="books" className="subtle-list books">
             { this.props.collection.books.map(book =>
               <li key={book.id}>
                 <Book

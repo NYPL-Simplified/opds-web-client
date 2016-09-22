@@ -25,7 +25,7 @@ describe("Book", () => {
     );
 
     let links = wrapper.find(CatalogLink);
-    expect(links.length).to.equal(2);
+    expect(links.length).to.equal(1);
     let cover = links.at(0).children().at(0);
     expect(cover.type()).to.equal(BookCover);
     expect(cover.props().book).to.equal(book);
@@ -37,8 +37,8 @@ describe("Book", () => {
     );
 
     let links = wrapper.find(CatalogLink);
-    expect(links.length).to.equal(2);
-    let bookInfo = links.at(1);
+    expect(links.length).to.equal(1);
+    let bookInfo = links.at(0).children().at(1);
     let title = bookInfo.find(".title");
     let authors = bookInfo.find(".authors");
 
@@ -56,7 +56,7 @@ describe("Book", () => {
     );
 
     let links = wrapper.find(CatalogLink);
-    let bookInfo = links.at(1).children().at(1);
+    let bookInfo = links.at(0).children().at(1);
     let authors = bookInfo.find(".authors");
     expect(authors.text()).to.equal(bookCopy.contributors[0]);
   });

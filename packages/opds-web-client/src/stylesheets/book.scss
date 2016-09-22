@@ -2,29 +2,34 @@
 
 .book {
   white-space: normal;
-  margin-right: 10px;
-  margin-bottom: 10px;
+  margin-right: $padding;
+  margin-bottom: $padding;
   overflow: hidden;
-  height: 200px;
+  height: $bookHeight;
+  position: relative;
   float: left;
-  text-align: center;
 
   .info {
-    width: 160px;
-    text-align: left;
-    margin-top: 15px;
-    margin-left: 5px;
-    float: left;
-
-    .title {
-      font-size: 1.2em;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
+    background-color: rgba(255, 255, 255, 0.8);
+    border-top: 2px solid $linkcolor;
+    bottom: 0;
+    box-shadow: inset 0px -5px 6px -7px black;
+    font-size: 1em;
+    font-weight: bold;
+    left: 0;
+    height: $bookHeight * 0.0;
+    width: 150px;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    transition: all 0.2s;
   }
 
-  .links {
-    margin-top: 10px;
+  a:focus .info, a:hover .info {
+    height: calc(70%);
+    background-color: rgba(255, 255, 255, 1);
+    padding: $padding 0;
   }
 
   a {
@@ -32,4 +37,3 @@
     text-decoration: none;
   }
 }
-

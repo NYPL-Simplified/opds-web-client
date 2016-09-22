@@ -1,5 +1,5 @@
 import * as React from "react";
-import LaneBook from "./LaneBook";
+import Book from "./Book";
 import CatalogLink from "./CatalogLink";
 import LaneMoreLink from "./LaneMoreLink";
 import { LaneData, BookData } from "../interfaces";
@@ -55,7 +55,7 @@ export default class Lane extends React.Component<LaneProps, any> {
             >
             { visibleBooks.map(book =>
               <li key={book.id}>
-                <LaneBook
+                <Book
                   book={book}
                   collectionUrl={this.props.collectionUrl}
                   />
