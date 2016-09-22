@@ -8,6 +8,18 @@ html {
   -webkit-font-smoothing: antialiased;
 }
 
+@each $tag in a, input, select {
+  #{$tag} {
+    border-radius: 0;
+  }
+
+  #{$tag}:focus {
+    outline-color: $focuscolor;
+    outline-style: solid;
+    outline-width: $focus-width;
+  }
+}
+
 a {
   &:link {
     color: $linkcolor;
