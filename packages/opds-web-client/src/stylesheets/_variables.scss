@@ -2,19 +2,25 @@ $basefontraw: 16 !default;
 $basefont: $basefontraw * 1px !default;
 $focus-width: 3px !default;
 
+$blue: #3a7dfd;
+$darkblue: #234c99;
+$gray: #7f786e;
+$light: #fff2dd;
+$dark: #403d37;
+
 // colors
-$focuscolor: $nyplorange !default;
-$pagecolor: white !default;
-$pagecolorlight: $nypllightgray !default;
-$pagetextcolor: $nypldarkgray !default;
+$focuscolor: orange !default;
+$pagecolor: $light !default;
+$pagecolorlight: $gray !default;
+$pagetextcolor: $dark !default;
 $footercolor: #54514A !default;
-$highlightcolor: $nyplbluedark !default;
+$highlightcolor: $darkblue !default;
 
 // link colors
-$linkcolor: $nyplred !default;
+$linkcolor: $blue !default;
 $linkvisitedcolor: darken($linkcolor, 20%) !default;
 $linkhovercolor: lighten($linkcolor, 10%) !default;
-$invertedlinkcolor: white !default;
+$invertedlinkcolor: $light !default;
 $invertedlinkvisitedcolor: darken($invertedlinkcolor, 10%) !default;
 
 // original vars
