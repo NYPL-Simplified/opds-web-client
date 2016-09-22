@@ -17,12 +17,13 @@ html {
     outline-color: $focuscolor;
     outline-style: solid;
     outline-width: $focus-width;
+    outline-offset: -$focus-width;
   }
 }
 
 input[type=text], input[type=button], input[type=submit], button, button.btn {
   &:focus {
-    box-shadow: inset 0 0 0 4px $focuscolor;
+    box-shadow: inset 0 0 0 $focus-width $focuscolor;
     outline: none;
   }
 }
