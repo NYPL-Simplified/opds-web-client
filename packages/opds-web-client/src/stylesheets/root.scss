@@ -141,6 +141,10 @@ a {
 .breadcrumb {
   background-color: $pagecolorlight;
   border-radius: 0;
+
+  >li+li:before {
+    color: $pagetextcolor;
+  }
 }
 
 .form-control {
