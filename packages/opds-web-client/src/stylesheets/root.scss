@@ -48,9 +48,13 @@ a {
 }
 
 .catalog {
-  .header .navbar-brand {
+  .navbar-brand {
     font-size: 1.8em;
     color: white;
+
+    &:hover {
+      color: white;
+    }
   }
 
   .breadcrumbs-wrapper {
@@ -111,7 +115,7 @@ a {
     width: 100%;
     height: $footerHeight;
     padding: $padding;
-    background-color: #EEE;
+    background-color: $footercolor;
     border-top: 1px solid #CCC;
   }
 }
