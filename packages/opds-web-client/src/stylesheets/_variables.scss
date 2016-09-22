@@ -1,33 +1,33 @@
-$basefontraw: 16;
-$basefont: $basefontraw * 1px;
-$focus-width: 3px;
+$basefontraw: 16 !default;
+$basefont: $basefontraw * 1px !default;
+$focus-width: 3px !default;
 
 // colors
-$focuscolor: $nyplorange;
-$pagecolor: white;
-$pagecolorlight: $nypllightgray;
-$pagetextcolor: $nypldarkgray;
-$footercolor: #54514A;
-$highlightcolor: $nyplbluedark;
+$focuscolor: $nyplorange !default;
+$pagecolor: white !default;
+$pagecolorlight: $nypllightgray !default;
+$pagetextcolor: $nypldarkgray !default;
+$footercolor: #54514A !default;
+$highlightcolor: $nyplbluedark !default;
 
 // link colors
-$linkcolor: $nyplred;
-$linkvisitedcolor: darken($linkcolor, 20%);
-$linkhovercolor: lighten($linkcolor, 10%);
-$invertedlinkcolor: white;
-$invertedlinkvisitedcolor: darken($invertedlinkcolor, 10%);
+$linkcolor: $nyplred !default;
+$linkvisitedcolor: darken($linkcolor, 20%) !default;
+$linkhovercolor: lighten($linkcolor, 10%) !default;
+$invertedlinkcolor: white !default;
+$invertedlinkvisitedcolor: darken($invertedlinkcolor, 10%) !default;
 
 // original vars
-$leftPanelWidth: 190px;
-$padding: 10px;
-$headerHeight: 50px;
-$breadcrumbsHeight: 40px;
-$footerHeight: 50px;
+$leftPanelWidth: 190px !default;
+$padding: 10px !default;
+$headerHeight: 50px !default;
+$breadcrumbsHeight: 40px !default;
+$footerHeight: 50px !default;
 
 // book stuff
-$bookHeight: 200px;
-$bookWidth: 150px;
-$stripeWidth: 200px;
+$bookHeight: 200px !default;
+$bookWidth: 150px !default;
+$stripeWidth: 200px !default;
 
 @-webkit-keyframes barberpole {
   from { background-position: 0 0; }
