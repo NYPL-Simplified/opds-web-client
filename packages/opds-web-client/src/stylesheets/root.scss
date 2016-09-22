@@ -117,6 +117,7 @@ a {
     padding: $padding;
     background-color: $footercolor;
     border-top: 1px solid #CCC;
+    z-index: 200;
   }
 }
 
