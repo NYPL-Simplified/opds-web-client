@@ -57,12 +57,13 @@
       margin-bottom: 5px;
 
       .btn {
-        margin-right: 0.5em;
+        display: inline-block;
+        margin: 0 0.5em 0.5em;
         background-color: $linkcolor;
         color: white;
         border: none;
         border-radius: 0;
-        font-size: 2em;
+        font-size: 1.5em;
         transition: all 0.2s;
 
         &:hover {

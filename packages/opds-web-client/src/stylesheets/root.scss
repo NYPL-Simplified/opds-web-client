@@ -69,7 +69,7 @@ a {
       width: 100%;
       top: $headerHeight;
       height: calc(100% - #{$headerHeight});
-      background-color: white;
+      background-color: $pagecolor;
       z-index: 100;
       transform: translateZ(0);
       overflow-y: scroll;
