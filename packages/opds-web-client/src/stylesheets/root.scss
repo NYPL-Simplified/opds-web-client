@@ -20,6 +20,13 @@ html {
   }
 }
 
+input[type=text], input[type=button], input[type=submit], button, button.btn {
+  &:focus {
+    box-shadow: inset 0 0 0 4px $focuscolor;
+    outline: none;
+  }
+}
+
 a {
   &:link {
     color: $linkcolor;
