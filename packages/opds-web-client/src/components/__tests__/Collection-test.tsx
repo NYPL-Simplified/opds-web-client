@@ -126,7 +126,7 @@ describe("Collection", () => {
       );
 
       document.body.scrollTop = 1000;
-      document.body.scrollHeight = 1;
+      (document.body as any).scrollHeight = 1;
       window.dispatchEvent(new (window as any).UIEvent("scroll", {detail: 0}));
 
       expect(fetchPage.callCount).to.equal(1);
@@ -135,7 +135,7 @@ describe("Collection", () => {
       // firefox puts scrollTop in document.documentElement instead of document.body
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 1000;
-      document.body.scrollHeight = 1;
+      (document.body as any).scrollHeight = 1;
       window.dispatchEvent(new (window as any).UIEvent("scroll", {detail: 0}));
 
       expect(fetchPage.callCount).to.equal(2);
@@ -144,7 +144,7 @@ describe("Collection", () => {
 
     it("fetches next page if first page doesn't fill window", () => {
       document.body.scrollTop = 1000;
-      document.body.scrollHeight = 1;
+      (document.body as any).scrollHeight = 1;
 
       let fetchPage = stub();
       let collectionData = {
