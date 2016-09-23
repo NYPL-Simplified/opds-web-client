@@ -132,7 +132,7 @@ a {
   color: white;
   text-decoration: underline;
 
-  &:hover {
+  &:hover, &:focus {
     color: white;
     text-decoration: none;
   }
