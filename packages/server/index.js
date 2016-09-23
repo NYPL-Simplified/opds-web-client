@@ -6,7 +6,7 @@ var port = process.env.PORT || 3000;
 var multer  = require('multer');
 var form = multer();
 
-app.use(express.static(__dirname + "/node_modules/opds-web-client/dist"));
+app.use(express.static(__dirname + "/../opds-web-client/dist"));
 app.set('views', __dirname + "/views");
 app.set('view engine', 'ejs');
 
