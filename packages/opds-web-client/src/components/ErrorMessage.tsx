@@ -1,5 +1,4 @@
 import * as React from "react";
-import "../stylesheets/error_message.scss";
 
 export interface ErrorMessageProps {
   message: string;

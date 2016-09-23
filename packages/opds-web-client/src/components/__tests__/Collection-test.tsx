@@ -7,7 +7,6 @@ import { shallow, mount } from "enzyme";
 import Collection from "../Collection";
 import { Lanes } from "../Lanes";
 import Book from "../Book";
-import LaneBook from "../LaneBook";
 import FacetGroup from "../FacetGroup";
 import SkipNavigationLink from "../SkipNavigationLink";
 import LoadingIndicator from "../LoadingIndicator";

@@ -1,5 +1,4 @@
 import * as React from "react";
-import "../stylesheets/basic_auth_form.scss";
 import { BasicAuthCallback } from "../interfaces";
 
 export interface BasicAuthFormProps {

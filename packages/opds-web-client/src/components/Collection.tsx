@@ -1,7 +1,4 @@
 import * as React from "react";
-import "../stylesheets/collection.scss";
-import "../stylesheets/subtle_list.scss";
-import "../stylesheets/visually_hidden.scss";
 import Book from "./Book";
 import CatalogLink from "./CatalogLink";
 import { Lanes } from "./Lanes";
@@ -56,7 +53,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
           }
 
           { this.props.collection.books &&
-            <ul aria-label="books" className="subtle-list">
+            <ul aria-label="books" className="subtle-list books">
             { this.props.collection.books.map(book =>
               <li key={book.id}>
                 <Book
@@ -96,7 +93,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
 
           { this.props.isFetchingPage &&
             <div className="loading-next-page">
-              <h3>Loading next page...</h3>
+              <h3>Loading more books...</h3>
             </div>
           }
         </div>
@@ -107,6 +104,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
   componentWillReceiveProps(nextProps) {
     if (this.props.isFetching && !nextProps.isFetching && !nextProps.error) {
        document.body.scrollTop = 0;
+       document.documentElement.scrollTop = 0;
     }
   }
 

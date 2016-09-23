@@ -1,14 +1,60 @@
-$padding: 10px;
-$headerHeight: 50px;
-$breadcrumbsHeight: 40px;
-$footerHeight: 50px;
+@import "variables";
+
+html {
+  background-color: $pagecolor;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: $basefont;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background-color: $pagecolor;
+}
+
+@each $tag in a, input, select {
+  #{$tag} {
+    border-radius: 0;
+  }
+
+  #{$tag}:focus {
+    outline-color: $focuscolor;
+    outline-style: solid;
+    outline-width: $focus-width;
+    outline-offset: -$focus-width;
+  }
+}
+
+input[type=text], input[type=button], input[type=submit], button, button.btn {
+  &:focus {
+    box-shadow: inset 0 0 0 $focus-width $focuscolor;
+    outline: none;
+  }
+}
+
+a {
+  &:link {
+    color: $linkcolor;
+  }
+
+  &:visited {
+    color: $linkvisitedcolor;
+  }
+
+  &:visited:hover, &:hover {
+    color: $linkhovercolor;
+    text-decoration: none;
+  }
+}
 
 .catalog {
-  font-family: Arial, sans-serif;
-
-  .header .navbar-brand {
+  .navbar-brand {
     font-size: 1.8em;
-    color: black;
+    color: white;
+
+    &:hover {
+      color: white;
+    }
   }
 
   .breadcrumbs-wrapper {
@@ -19,7 +65,6 @@ $footerHeight: 50px;
   }
 
   .body {
-    padding-top: $headerHeight + $padding;
     padding-bottom: $padding;
     overflow: auto;
 
@@ -28,7 +73,7 @@ $footerHeight: 50px;
       width: 100%;
       top: $headerHeight;
       height: calc(100% - #{$headerHeight});
-      background-color: white;
+      background-color: $pagecolor;
       z-index: 100;
       transform: translateZ(0);
       overflow-y: scroll;
@@ -60,7 +105,7 @@ $footerHeight: 50px;
 
       .book-details-wrapper {
         height: calc(100% - #{$headerHeight} - #{$footerHeight});
-      }      
+      }
     }
   }
 
@@ -70,7 +115,50 @@ $footerHeight: 50px;
     width: 100%;
     height: $footerHeight;
     padding: $padding;
-    background-color: #EEE;
+    background-color: $footercolor;
     border-top: 1px solid #CCC;
+    z-index: 200;
   }
+}
+
+// override bootstrap
+.navbar-default {
+  background-color: $dark;
+  border: none;
+  color: white;
+}
+
+.navbar-default .navbar-nav>li>a {
+  color: white;
+  text-decoration: underline;
+
+  &:hover {
+    color: white;
+    text-decoration: none;
+  }
+}
+
+.breadcrumb {
+  background-color: $pagecolorlight;
+  border-radius: 0;
+
+  >li+li:before {
+    color: $pagetextcolor;
+  }
+}
+
+.form-control {
+  font-size: 1rem;
+  color: $pagetextcolor;
+  background-color: $pagecolor;
+  border: 1px solid $pagetextcolor;
+  border-radius: 0;
+}
+
+.btn-default {
+  font-size: 1rem;
+  color: $pagecolor;
+  background-color: $linkcolor;
+  border: none;
+  border-radius: 0;
 }

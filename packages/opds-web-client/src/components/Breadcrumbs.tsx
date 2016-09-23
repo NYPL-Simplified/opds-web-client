@@ -1,5 +1,4 @@
 import * as React from "react";
-import "../stylesheets/breadcrumbs.scss";
 import CatalogLink from "./CatalogLink";
 import { CollectionData, BookData, LinkData } from "../interfaces";
 

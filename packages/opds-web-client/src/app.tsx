@@ -5,6 +5,7 @@ import OPDSCatalog from "./components/OPDSCatalog";
 import { RootProps } from "./components/Root";
 import { PathFor } from "./interfaces";
 import { State } from "./state";
+import "./stylesheets/app.scss";
 
 class OPDSWebClient {
   elementId: string;

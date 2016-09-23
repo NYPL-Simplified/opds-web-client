@@ -1,5 +1,4 @@
 import * as React from "react";
-import "../stylesheets/book_details.scss";
 import * as moment from "moment";
 import CatalogLink from "./CatalogLink";
 import BorrowButton from "./BorrowButton";

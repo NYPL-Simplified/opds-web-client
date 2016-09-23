@@ -1,19 +1,55 @@
+@import "variables";
+
 .lane {
   h2 {
     clear: both;
     cursor: pointer;
+
+    a {
+      display: block;
+    }
+  }
+
+  .lane-books-container {
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  .scroll-button {
+    background-color: $linkcolor;
+    color: $pagecolor;
+    position: absolute;
+    padding: 0 1rem;
+    z-index: 1;
+    height: 100%;
+    font-size: 2em;
+    line-height: 7;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      color: $linkcolor;
+      background-color: $pagecolor;
+    }
+
+    &.left {
+      left: 0;
+    }
+
+    &.right {
+      right: 0;
+    }
   }
 
   .lane-books {
     display: block;
-    height: 260px;
-    width: 100%;
+    height: $bookHeight + $padding;
     white-space: nowrap;
-    overflow-x: scroll;
-    overflow-y: hidden;
+    overflow: hidden;
     padding: 0;
     margin: 0;
     list-style-type: none;
+    transition: margin-left 1s ease-in-out;
 
     li {
       display: inline-block;

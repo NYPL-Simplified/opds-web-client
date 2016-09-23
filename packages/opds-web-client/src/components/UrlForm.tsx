@@ -1,5 +1,4 @@
 import * as React from "react";
-import "../stylesheets/url_form.scss";
 import { NavigateContext } from "../interfaces";
 
 export interface UrlFormProps {

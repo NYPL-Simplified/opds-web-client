@@ -20,7 +20,7 @@ describe("FacetGroup", () => {
     );
 
     let label = wrapper.find(".facet-group-label");
-    expect(label.text()).to.equal(facetGroup.label + ":");
+    expect(label.text()).to.equal(facetGroup.label);
   });
 
   it("shows facets", () => {

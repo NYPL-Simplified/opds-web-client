@@ -1,5 +1,4 @@
 import * as React from "react";
-import "../stylesheets/root.scss";
 import { Store } from "redux";
 import { connect } from "react-redux";
 import { State } from "../state";

@@ -689,7 +689,7 @@ describe("Root", () => {
     });
 
     it("uses router to show a book", () => {
-      let bookLink =  wrapper.find(".lane-book a").first();
+      let bookLink =  wrapper.find(".book a").first();
       let collectionUrl = collectionData.url;
       let bookUrl = collectionData.lanes[0].books[0].url;
       bookLink.simulate("click", { button: 0 });
