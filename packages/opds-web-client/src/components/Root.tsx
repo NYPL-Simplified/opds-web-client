@@ -8,7 +8,7 @@ import {
 import BookDetails from "./BookDetails";
 import LoadingIndicator from "./LoadingIndicator";
 import ErrorMessage from "./ErrorMessage";
-import BasicAuthForm  from "./BasicAuthForm";
+import AuthProviderSelectionForm  from "./AuthProviderSelectionForm";
 import Search from "./Search";
 import Breadcrumbs, {
   ComputeBreadcrumbs, defaultComputeBreadcrumbs
@@ -19,7 +19,7 @@ import SkipNavigationLink from "./SkipNavigationLink";
 import CatalogLink from "./CatalogLink";
 import {
   CollectionData, BookData, LinkData, StateProps, NavigateContext,
-  BasicAuthCallback, BasicAuthLabels
+  AuthCallback, AuthCredentials
 } from "../interfaces";
 
 export interface HeaderProps extends React.Props<any> {
@@ -27,8 +27,8 @@ export interface HeaderProps extends React.Props<any> {
   bookTitle: string;
   loansUrl?: string;
   isSignedIn: boolean;
-  showBasicAuthForm: (callback: BasicAuthCallback, labels: BasicAuthLabels, title: string) => void;
-  clearBasicAuthCredentials: () => void;
+  fetchLoans?: (url: string) => Promise<any>;
+  clearAuthCredentials: () => void;
 }
 
 export interface FooterProps extends React.Props<any> {
@@ -67,10 +67,10 @@ export interface RootProps extends StateProps {
   fulfillBook?: (url: string) => Promise<Blob>;
   indirectFulfillBook?: (url: string, type: string) => Promise<string>;
   fetchLoans?: (url: string) => Promise<any>;
-  saveBasicAuthCredentials?: (credentials: string) => void;
-  clearBasicAuthCredentials?: () => void;
-  showBasicAuthForm?: (callback: BasicAuthCallback, labels: BasicAuthLabels, title: string) => void;
-  closeErrorAndHideBasicAuthForm?: () => void;
+  saveAuthCredentials?: (credentials: AuthCredentials) => void;
+  clearAuthCredentials?: () => void;
+  showAuthForm?: (callback: AuthCallback, providers: any, title: string) => void;
+  closeErrorAndHideAuthForm?: () => void;
 }
 
 export class Root extends React.Component<RootProps, any> {
@@ -112,7 +112,7 @@ export class Root extends React.Component<RootProps, any> {
       <div className="catalog">
         <SkipNavigationLink />
 
-        { this.props.error && (!this.props.basicAuth || !this.props.basicAuth.showForm) &&
+        { this.props.error && (!this.props.auth || !this.props.auth.showForm) &&
           <ErrorMessage
             message={"Could not fetch data: " + this.props.error.url}
             retry={this.props.retryCollectionAndBook} />
@@ -122,15 +122,15 @@ export class Root extends React.Component<RootProps, any> {
           <LoadingIndicator />
         }
 
-        { this.props.basicAuth && this.props.basicAuth.showForm &&
-          <BasicAuthForm
-            saveCredentials={this.props.saveBasicAuthCredentials}
-            hide={this.props.closeErrorAndHideBasicAuthForm}
-            callback={this.props.basicAuth.callback}
-            title={this.props.basicAuth.title}
-            loginLabel={this.props.basicAuth.loginLabel}
-            passwordLabel={this.props.basicAuth.passwordLabel}
-            error={this.props.basicAuth.error}
+        { this.props.auth && this.props.auth.showForm &&
+          <AuthProviderSelectionForm
+            saveCredentials={this.props.saveAuthCredentials}
+            hide={this.props.closeErrorAndHideAuthForm}
+            callback={this.props.auth.callback}
+            cancel={this.props.auth.cancel}
+            title={this.props.auth.title}
+            error={this.props.auth.error}
+            providers={this.props.auth.providers}
             />
         }
 
@@ -144,8 +144,8 @@ export class Root extends React.Component<RootProps, any> {
             bookTitle={bookTitle}
             loansUrl={this.props.loansUrl}
             isSignedIn={this.props.isSignedIn}
-            showBasicAuthForm={this.props.showBasicAuthForm}
-            clearBasicAuthCredentials={this.props.clearBasicAuthCredentials}>
+            fetchLoans={this.props.fetchLoans}
+            clearAuthCredentials={this.props.clearAuthCredentials}>
             { this.props.collectionData && this.props.collectionData.search &&
               <Search
                 url={this.props.collectionData.search.url}
@@ -168,6 +168,11 @@ export class Root extends React.Component<RootProps, any> {
                       bookUrl={null}>
                       Loans
                     </CatalogLink>
+                  </li>
+                  <li>
+                  { this.props.isSignedIn &&
+                    <a onClick={this.props.clearAuthCredentials}>Sign Out</a>
+                  }
                   </li>
                 </ul>
               }
@@ -245,8 +250,8 @@ export class Root extends React.Component<RootProps, any> {
   componentWillMount() {
     this.updatePageTitle(this.props);
 
-    if (this.props.basicAuthCredentials && this.props.saveBasicAuthCredentials) {
-      this.props.saveBasicAuthCredentials(this.props.basicAuthCredentials);
+    if (this.props.authCredentials && this.props.saveAuthCredentials) {
+      this.props.saveAuthCredentials(this.props.authCredentials);
     }
 
     if (this.props.collectionUrl || this.props.bookUrl) {
@@ -254,7 +259,7 @@ export class Root extends React.Component<RootProps, any> {
         this.props.collectionUrl,
         this.props.bookUrl
       ).then(({ collectionData, bookData }) => {
-        if (this.props.basicAuthCredentials && collectionData.shelfUrl) {
+        if (this.props.authCredentials && collectionData.shelfUrl) {
           this.props.fetchLoans(collectionData.shelfUrl);
         }
       });

@@ -15,7 +15,7 @@ import CatalogLink, { CatalogLinkProps } from "../CatalogLink";
 import Search from "../Search";
 import LoadingIndicator from "../LoadingIndicator";
 import ErrorMessage from "../ErrorMessage";
-import BasicAuthForm from "../BasicAuthForm";
+import AuthProviderSelectionForm from "../AuthProviderSelectionForm";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 import buildStore from "../../store";
 import { State } from "../../state";
@@ -136,12 +136,13 @@ describe("Root", () => {
       }));
     };
     let fetchLoans = stub();
+    let credentials = { provider: "test", credentials: "credentials" };
     let wrapper = shallow(
       <Root
         collectionUrl={collectionUrl}
         setCollectionAndBook={setCollectionAndBook}
         fetchLoans={fetchLoans}
-        basicAuthCredentials="credentials"
+        authCredentials={credentials}
         />
     );
 
@@ -159,16 +160,17 @@ describe("Root", () => {
     expect(document.title).to.equal("page title");
   });
 
-  it("sets basic auth credentials on mount", () => {
-    let saveBasicAuthCredentials = stub();
+  it("sets auth credentials on mount", () => {
+    let credentials = { provider: "test", credentials: "credentials" };
+    let saveAuthCredentials = stub();
     let wrapper = shallow(
       <Root
-        saveBasicAuthCredentials={saveBasicAuthCredentials}
-        basicAuthCredentials="credentials"
+        saveAuthCredentials={saveAuthCredentials}
+        authCredentials={credentials}
         />
     );
-    expect(saveBasicAuthCredentials.callCount).to.equal(1);
-    expect(saveBasicAuthCredentials.args[0][0]).to.equal("credentials");
+    expect(saveAuthCredentials.callCount).to.equal(1);
+    expect(saveAuthCredentials.args[0][0]).to.equal(credentials);
   });
 
   it("fetches a collection url when updated", () => {
@@ -213,42 +215,42 @@ describe("Root", () => {
     expect(error.props().retry).to.equal(retry);
   });
 
-  it("shows basic auth form", () => {
-    let basicAuth = {
+  it("shows auth provider selection form", () => {
+    let auth = {
       showForm: true,
-      credentials: "gibberish",
+      credentials: { provider: "test", credentials: "gibberish"},
       title: "Super Classified Archive",
-      loginLabel: "Clearance ID",
-      passwordLabel: "Access Key",
+      providers: [],
       error: "Invalid Clearance ID and/or Access Key",
-      callback: stub()
+      callback: stub(),
+      cancel: stub()
     };
-    let saveBasicAuthCredentials = stub();
-    let closeErrorAndHideBasicAuthForm = stub();
+    let saveAuthCredentials = stub();
+    let closeErrorAndHideAuthForm = stub();
     let wrapper = shallow(
       <Root
-        basicAuth={basicAuth}
-        saveBasicAuthCredentials={saveBasicAuthCredentials}
-        closeErrorAndHideBasicAuthForm={closeErrorAndHideBasicAuthForm}
+        auth={auth}
+        saveAuthCredentials={saveAuthCredentials}
+        closeErrorAndHideAuthForm={closeErrorAndHideAuthForm}
         />
     );
-    let form = wrapper.find(BasicAuthForm);
+    let form = wrapper.find(AuthProviderSelectionForm);
     let {
-      saveCredentials, hide, callback, title, loginLabel, passwordLabel, error
+      saveCredentials, hide, callback, cancel, title, error, providers
     } = form.props();
-    expect(saveCredentials).to.equal(saveBasicAuthCredentials);
-    expect(hide).to.equal(closeErrorAndHideBasicAuthForm);
-    expect(callback).to.equal(basicAuth.callback);
-    expect(title).to.equal(basicAuth.title);
-    expect(loginLabel).to.equal(basicAuth.loginLabel);
-    expect(passwordLabel).to.equal(basicAuth.passwordLabel);
-    expect(error).to.equal(basicAuth.error);
+    expect(saveCredentials).to.equal(saveAuthCredentials);
+    expect(hide).to.equal(closeErrorAndHideAuthForm);
+    expect(callback).to.equal(auth.callback);
+    expect(cancel).to.equal(auth.cancel);
+    expect(title).to.equal(auth.title);
+    expect(providers).to.deep.equal(auth.providers);
+    expect(error).to.equal(auth.error);
   });
 
   it("shows book detail", () => {
     let bookData = groupedCollectionData.lanes[0].books[0];
     let loans = [Object.assign({}, bookData, {
-      availability: { status: "availabile" }
+      availability: { status: "available" }
     })];
     let updateBook = stub();
     let fulfillBook = stub();
@@ -470,8 +472,8 @@ describe("Root", () => {
       }
     });
     let bookData: BookData = ungroupedCollectionData.books[0];
-    let showBasicAuthForm;
-    let clearBasicAuthCredentials;
+    let fetchLoans;
+    let clearAuthCredentials;
 
     class Header extends React.Component<HeaderProps, any> {
       render(): JSX.Element {
@@ -487,13 +489,16 @@ describe("Root", () => {
     }
 
     beforeEach(() => {
+      fetchLoans = stub();
+      clearAuthCredentials = stub();
       wrapper = shallow(
         <Root
           Header={Header}
           collectionData={collectionData}
           bookData={bookData}
           fetchSearchDescription={(url: string) => {}}
-          showBasicAuthForm={showBasicAuthForm}
+          fetchLoans={fetchLoans}
+          clearAuthCredentials={clearAuthCredentials}
           isSignedIn={true}
           loansUrl="loans"
           />
@@ -506,8 +511,8 @@ describe("Root", () => {
       expect(header.props().collectionTitle).to.equal(collectionData.title);
       expect(header.props().bookTitle).to.equal(bookData.title);
       expect(header.props().isSignedIn).to.equal(true);
-      expect(header.props().showBasicAuthForm).to.equal(showBasicAuthForm);
-      expect(header.props().clearBasicAuthCredentials).to.equal(clearBasicAuthCredentials);
+      expect(header.props().fetchLoans).to.equal(fetchLoans);
+      expect(header.props().clearAuthCredentials).to.equal(clearAuthCredentials);
       expect(header.props().loansUrl).to.equal("loans");
       expect(search.type()).to.equal(Search);
     });

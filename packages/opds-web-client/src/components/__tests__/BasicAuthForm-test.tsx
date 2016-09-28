@@ -5,27 +5,32 @@ import * as React from "react";
 import { shallow, mount } from "enzyme";
 
 import BasicAuthForm from "../BasicAuthForm";
+import BasicAuthPlugin from "../../BasicAuthPlugin";
 
 describe("BasicAuthForm", () => {
   describe("rendering", () => {
-    let wrapper;
+    let wrapper, provider;
 
     beforeEach(() => {
+      provider = {
+        name: "Test Basic Auth",
+        plugin: BasicAuthPlugin,
+        method: {
+          labels: {
+            login: "code name",
+            password: "secret password"
+          }
+        }
+      };
+
       wrapper = shallow(
         <BasicAuthForm
           hide={stub()}
           saveCredentials={stub()}
-          title="Intergalactic Spy Network"
-          loginLabel="code name"
-          passwordLabel="secret password"
           error="you forgot the secret password! what kind of spy arre you?"
+          provider={provider}
           />
       );
-    });
-
-    it("shows title", () => {
-      let title = wrapper.find("h3");
-      expect(title.text()).to.equal("Intergalactic Spy Network Login");
     });
 
     it("shows username input", () => {
@@ -51,6 +56,7 @@ describe("BasicAuthForm", () => {
 
   describe("behavior", () => {
     let wrapper;
+    let provider;
     let hide;
     let saveCredentials;
     let callback;
@@ -59,15 +65,25 @@ describe("BasicAuthForm", () => {
       hide = stub();
       saveCredentials = stub();
       callback = stub();
+
+      provider = {
+        name: "Test Basic Auth",
+        plugin: BasicAuthPlugin,
+        method: {
+          labels: {
+            login: "code name",
+            password: "secret password"
+          }
+        }
+      };
+
       wrapper = mount(
         <BasicAuthForm
           hide={hide}
           saveCredentials={saveCredentials}
           callback={callback}
-          title="Intergalactic Spy Network"
-          loginLabel="code name"
-          passwordLabel="secret password"
           error="you forgot the secret password! what kind of spy arre you?"
+          provider={provider}
           />
       );
     });
@@ -125,7 +141,10 @@ describe("BasicAuthForm", () => {
 
       it("saves credentials", () => {
         expect(saveCredentials.callCount).to.equal(1);
-        expect(saveCredentials.args[0][0]).to.equal(credentials);
+        expect(saveCredentials.args[0][0]).to.deep.equal({
+          provider: "Test Basic Auth",
+          credentials: credentials
+        });
       });
 
       it("hides", () => {
@@ -134,7 +153,6 @@ describe("BasicAuthForm", () => {
 
       it("executes callback", () => {
         expect(callback.callCount).to.equal(1);
-        expect(callback.args[0][0]).to.equal(credentials);
       });
     });
 

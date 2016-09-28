@@ -4,7 +4,7 @@
   @include popup(300px, 300px);
   background-color: $pagecolor;
 
-  h3 {
+  h3, li {
     text-align: left;
     max-width: 300px;
     margin: 0 auto 20px;

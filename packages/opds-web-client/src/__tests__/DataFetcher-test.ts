@@ -76,30 +76,34 @@ describe("DataFetcher", () => {
     expect(mockFetch.args[0][1].body.get("url").value).to.equal("test url");
   });
 
-  it("prepares basic auth headers", () => {
+  it("prepares auth headers", () => {
     let fetcher = new DataFetcher();
-    fetcher.getBasicAuthCredentials = () => "credentials";
+    let credentials = { provider: "test", credentials: "credentials" };
+    fetcher.getAuthCredentials = () => credentials;
     fetcher.fetch("test url");
-    expect(mockFetch.args[0][1].headers["Authorization"]).to.equal("Basic credentials");
+    expect(mockFetch.args[0][1].headers["Authorization"]).to.equal("credentials");
   });
 
-  it("sets basic auth credentials", () => {
+  it("sets auth credentials", () => {
     let fetcher = new DataFetcher();
-    fetcher.setBasicAuthCredentials("credentials");
-    expect(Cookie.get(fetcher.basicAuthKey)).to.equal("credentials");
+    let credentials = { provider: "test", credentials: "credentials" };
+    fetcher.setAuthCredentials(credentials);
+    expect(Cookie.get(fetcher.authKey)).to.deep.equal(JSON.stringify(credentials));
   });
 
-  it("gets basic auth credentials", () => {
+  it("gets auth credentials", () => {
     let fetcher = new DataFetcher();
-    Cookie.set(fetcher.basicAuthKey, "credentials");
-    expect(fetcher.getBasicAuthCredentials()).to.equal("credentials");
+    let credentials = { provider: "test", credentials: "credentials" };
+    Cookie.set(fetcher.authKey, JSON.stringify(credentials));
+    expect(fetcher.getAuthCredentials()).to.deep.equal(credentials);
   });
 
-  it("clears basic auth credentials", () => {
+  it("clears auth credentials", () => {
     let fetcher = new DataFetcher();
-    Cookie.set(fetcher.basicAuthKey, "credentials");
-    fetcher.clearBasicAuthCredentials();
-    expect(Cookie.get(fetcher.basicAuthKey)).to.equal(undefined);
+    let credentials = { provider: "test", credentials: "credentials" };
+    Cookie.set(fetcher.authKey, JSON.stringify(credentials));
+    fetcher.clearAuthCredentials();
+    expect(Cookie.get(fetcher.authKey)).to.equal(undefined);
   });
 
   describe("fetchOPDSData()", () => {

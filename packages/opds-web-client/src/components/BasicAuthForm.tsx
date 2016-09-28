@@ -1,17 +1,8 @@
 import * as React from "react";
-import { BasicAuthCallback } from "../interfaces";
+import { AuthCallback, AuthProvider } from "../interfaces";
+import { AuthFormProps } from "./AuthProviderSelectionForm";
 
-export interface BasicAuthFormProps {
-  hide: () => void;
-  saveCredentials: (credentials: string) => void;
-  callback?: BasicAuthCallback;
-  title?: string;
-  loginLabel?: string;
-  passwordLabel?: string;
-  error?: string;
-}
-
-export default class BasicAuthForm extends React.Component<BasicAuthFormProps, any> {
+export default class BasicAuthForm extends React.Component<AuthFormProps, any> {
   constructor(props) {
     super(props);
     this.state = { error: this.props.error };
@@ -20,31 +11,28 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, a
 
   render() {
     return (
-      <div className="auth-form">
-        <h3>{ this.props.title + " " || ""}Login</h3>
+      <form onSubmit={this.submit}>
         { this.state.error &&
           <div className="error">
             { this.state.error }
           </div>
         }
-        <form onSubmit={this.submit}>
-          <input
-            className="form-control"
-            ref="login"
-            type="text"
-            placeholder={this.loginLabel()}
-            />
-          <br />
-          <input
-            className="form-control"
-            ref="password"
-            type="password"
-            placeholder={this.passwordLabel()}
-            />
-          <br />
-          <input type="submit" className="btn btn-default" value="Submit" />
-        </form>
-      </div>
+        <input
+          className="form-control"
+          ref="login"
+          type="text"
+          placeholder={this.loginLabel()}
+          />
+        <br />
+        <input
+          className="form-control"
+          ref="password"
+          type="password"
+          placeholder={this.passwordLabel()}
+          />
+        <br />
+        <input type="submit" className="btn btn-default" value="Submit" />
+      </form>
     );
   }
 
@@ -53,11 +41,11 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, a
   }
 
   loginLabel() {
-    return this.props.loginLabel || "username";
+    return this.props.provider.method.labels.login || "username";
   }
 
   passwordLabel() {
-    return this.props.passwordLabel || "password";
+    return this.props.provider.method.labels.password || "password";
   }
 
   validate() {
@@ -84,16 +72,19 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, a
       let password = (this.refs["password"] as any).value;
       let credentials = this.generateCredentials(login, password);
 
-      this.props.saveCredentials(credentials);
+      this.props.saveCredentials({
+        provider: this.props.provider.name,
+        credentials: credentials
+      });
       this.props.hide();
 
       if (this.props.callback) {
-        this.props.callback(credentials);
+        this.props.callback();
       }
     }
   }
 
   generateCredentials(login, password) {
-    return btoa(login + ":" + password);
+    return "Basic " + btoa(login + ":" + password);
   }
 }

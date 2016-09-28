@@ -1,7 +1,7 @@
 import ActionsCreator from "../actions";
 import DataFetcher from "../DataFetcher";
 import { adapter } from "../OPDSDataAdapter";
-import { CollectionData, BookData, BasicAuthCallback, BasicAuthLabels } from "../interfaces";
+import { CollectionData, BookData, AuthCallback, AuthCredentials } from "../interfaces";
 import { State } from "../state";
 
 export function findBookInCollection(collection: CollectionData, book: string) {
@@ -30,8 +30,8 @@ export function mapStateToProps(state, ownProps) {
     bookUrl: ownProps.bookUrl,
     loansUrl: state.loans.url,
     loans: state.loans.books,
-    basicAuth: state.auth.basic,
-    isSignedIn: !!state.auth.basic.credentials
+    auth: state.auth,
+    isSignedIn: !!state.auth.credentials
   };
 };
 
@@ -52,10 +52,10 @@ export function mapDispatchToProps(dispatch) {
         fulfillBook: (url: string) => dispatch(actions.fulfillBook(url)),
         indirectFulfillBook: (url: string, type: string) => dispatch(actions.indirectFulfillBook(url, type)),
         fetchLoans: (url: string) => dispatch(actions.fetchLoans(url)),
-        saveBasicAuthCredentials: (credentials: string) => dispatch(actions.saveBasicAuthCredentials(credentials)),
-        clearBasicAuthCredentials: () => dispatch(actions.clearBasicAuthCredentials()),
-        showBasicAuthForm: (callback: BasicAuthCallback, labels: BasicAuthLabels, title: string) => dispatch(actions.showBasicAuthForm(callback, labels, title)),
-        closeErrorAndHideBasicAuthForm: () => dispatch(actions.closeErrorAndHideBasicAuthForm())
+        saveAuthCredentials: (credentials: AuthCredentials) => dispatch(actions.saveAuthCredentials(credentials)),
+        clearAuthCredentials: () => dispatch(actions.clearAuthCredentials()),
+        showAuthForm: (callback: AuthCallback, cancel: () => void, providers: any, title: string) => dispatch(actions.showAuthForm(callback, cancel, providers, title)),
+        closeErrorAndHideAuthForm: () => dispatch(actions.closeErrorAndHideAuthForm())
       };
     }
   };
@@ -107,6 +107,7 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
     adapter: adapter
   });
   let dispatchProps = createDispatchProps.createDispatchProps(fetcher);
+  let authCredentials = fetcher.getAuthCredentials();
 
   let setCollection = (url: string) => {
     return new Promise((resolve, reject) => {
@@ -177,6 +178,7 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
   };
 
   return Object.assign({}, componentProps, stateProps, dispatchProps, {
+    authCredentials: authCredentials,
     setCollection: setCollection,
     setBook: setBook,
     setCollectionAndBook: setCollectionAndBook,
