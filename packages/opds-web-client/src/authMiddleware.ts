@@ -30,7 +30,7 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                 return;
               }
 
-              if (err.headers && err.headers.has("www-authenticate")) {
+              if (err.headers && err.headers["www-authenticate"]) {
                 // browser's default basic auth form was shown,
                 // so don't show ours
                 reject(err);
@@ -78,11 +78,14 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                   let cancel;
                   if (pathFor(oldCollectionUrl, oldBookUrl) === currentUrl) {
                     cancel = () => {
-                      store.dispatch(actions.hideAuthForm());
+                      store.dispatch(actions.hideAuthForm()).then(() => {
+                        resolve();
+                      }).catch(reject);
                     };
                   } else {
                     cancel = () => {
                       history.back();
+                      resolve();
                     };
                   }
 
