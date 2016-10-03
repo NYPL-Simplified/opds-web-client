@@ -1,17 +1,17 @@
 import * as React from "react";
-import { AuthCallback, AuthCredentials, AuthProvider } from "../interfaces";
+import { AuthCallback, AuthCredentials, AuthProvider, AuthMethod } from "../interfaces";
 
-export interface AuthFormProps {
+export interface AuthFormProps<T extends AuthMethod> {
   hide?: () => void;
   saveCredentials?: (credentials: AuthCredentials) => void;
   callback?: AuthCallback;
   cancel?: () => void;
   error?: string;
-  provider?: AuthProvider;
+  provider?: AuthProvider<T>;
 }
 
-export interface AuthButtonProps {
-  provider?: AuthProvider;
+export interface AuthButtonProps<T extends AuthMethod> {
+  provider?: AuthProvider<T>;
 }
 
 export interface AuthProviderSelectionFormProps {
@@ -21,7 +21,7 @@ export interface AuthProviderSelectionFormProps {
   cancel: () => void;
   title?: string;
   error?: string;
-  providers?: AuthProvider[];
+  providers?: AuthProvider<AuthMethod>[];
 }
 
 export default class AuthProviderSelectionForm extends React.Component<AuthProviderSelectionFormProps, any> {

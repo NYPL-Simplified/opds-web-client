@@ -145,11 +145,13 @@ export interface AuthCallback {
   (): any;
 }
 
-export interface AuthProvider {
+export interface AuthProvider<T extends AuthMethod> {
   name: string;
   plugin: AuthPlugin;
-  method: any;
+  method: T;
 }
+
+export interface AuthMethod {}
 
 export interface AuthData {
   showForm: boolean;
@@ -158,10 +160,12 @@ export interface AuthData {
   credentials: AuthCredentials;
   title: string;
   error: string;
-  providers: AuthProvider[];
+  providers: AuthProvider<AuthMethod>[];
 }
 
-export interface BasicAuthLabels {
-  login: string;
-  password: string;
+export interface BasicAuthMethod extends AuthMethod {
+  labels: {
+    login: string;
+    password: string;
+  };
 }

@@ -1,8 +1,10 @@
 import * as React from "react";
-import { AuthCallback, AuthProvider } from "../interfaces";
+import { AuthCallback, AuthProvider, BasicAuthMethod } from "../interfaces";
 import { AuthFormProps } from "./AuthProviderSelectionForm";
 
-export default class BasicAuthForm extends React.Component<AuthFormProps, any> {
+export interface BasicAuthFormProps extends AuthFormProps<BasicAuthMethod> {}
+
+export default class BasicAuthForm extends React.Component<BasicAuthFormProps, any> {
   constructor(props) {
     super(props);
     this.state = { error: this.props.error };

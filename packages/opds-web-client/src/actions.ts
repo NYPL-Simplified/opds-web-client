@@ -1,8 +1,7 @@
 import DataFetcher from "./DataFetcher";
-import { AuthProvider } from "./interfaces";
 import {
   CollectionData, BookData, SearchData, FetchErrorData,
-  AuthCallback, AuthCredentials
+  AuthCallback, AuthCredentials, AuthProvider, AuthMethod
 } from "./interfaces";
 
 export interface LoadCollectionAction {
@@ -314,7 +313,7 @@ export default class ActionCreator {
   showAuthForm(
     callback: AuthCallback,
     cancel: () => void,
-    providers: AuthProvider[],
+    providers: AuthProvider<AuthMethod>[],
     title: string,
     error?: string
   ) {

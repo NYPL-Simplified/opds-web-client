@@ -1,7 +1,7 @@
 import DataFetcher from "./DataFetcher";
 import AuthPlugin from "./AuthPlugin";
 import ActionCreator from "./actions";
-import { AuthCallback, AuthProvider, PathFor } from "./interfaces";
+import { AuthCallback, AuthProvider, AuthMethod, PathFor } from "./interfaces";
 
 // see Redux Middleware docs:
 // http://redux.js.org/docs/advanced/Middleware.html
@@ -45,7 +45,7 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                 }
 
                 // find providers with supported auth method
-                let authProviders: AuthProvider[] = [];
+                let authProviders: AuthProvider<AuthMethod>[] = [];
                 authPlugins.forEach(plugin => {
                   let providerKey = data.providers && Object.keys(data.providers).find(key => {
                     return Object.keys(data.providers[key].methods).indexOf(plugin.type) !== -1;

@@ -19,7 +19,7 @@ import SkipNavigationLink from "./SkipNavigationLink";
 import CatalogLink from "./CatalogLink";
 import {
   CollectionData, BookData, LinkData, StateProps, NavigateContext,
-  AuthCallback, AuthCredentials
+  AuthCallback, AuthProvider, AuthMethod, AuthCredentials
 } from "../interfaces";
 
 export interface HeaderProps extends React.Props<any> {
@@ -27,7 +27,7 @@ export interface HeaderProps extends React.Props<any> {
   bookTitle: string;
   loansUrl?: string;
   isSignedIn: boolean;
-  fetchLoans?: (url: string) => Promise<any>;
+  fetchLoans?: (url: string) => Promise<CollectionData>;
   clearAuthCredentials: () => void;
 }
 
@@ -53,12 +53,12 @@ export interface RootProps extends StateProps {
   clearBook?: () => void;
   fetchSearchDescription?: (url: string) => void;
   closeError?: () => void;
-  fetchBook?: (bookUrl: string) => Promise<any>;
+  fetchBook?: (bookUrl: string) => Promise<BookData>;
   refreshCollectionAndBook?: () => Promise<any>;
   retryCollectionAndBook?: () => Promise<any>;
   pageTitleTemplate?: (collectionTitle: string, bookTitle: string) => string;
   headerTitle?: string;
-  fetchPage?: (url: string) => Promise<any>;
+  fetchPage?: (url: string) => Promise<CollectionData>;
   Header?: new() => __React.Component<HeaderProps, any>;
   Footer?: new() => __React.Component<FooterProps, any>;
   BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
@@ -66,10 +66,10 @@ export interface RootProps extends StateProps {
   updateBook?: (url: string) => Promise<BookData>;
   fulfillBook?: (url: string) => Promise<Blob>;
   indirectFulfillBook?: (url: string, type: string) => Promise<string>;
-  fetchLoans?: (url: string) => Promise<any>;
+  fetchLoans?: (url: string) => Promise<CollectionData>;
   saveAuthCredentials?: (credentials: AuthCredentials) => void;
   clearAuthCredentials?: () => void;
-  showAuthForm?: (callback: AuthCallback, providers: any, title: string) => void;
+  showAuthForm?: (callback: AuthCallback, providers: AuthProvider<AuthMethod>[], title: string) => void;
   closeErrorAndHideAuthForm?: () => void;
 }
 
