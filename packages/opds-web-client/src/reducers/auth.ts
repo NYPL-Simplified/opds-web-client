@@ -1,59 +1,43 @@
-import { BasicAuthCallback, BasicAuthData } from "../interfaces";
+import { AuthCallback, AuthData } from "../interfaces";
 
-export interface AuthState {
-  basic: BasicAuthData;
-}
+export interface AuthState extends AuthData {};
 
 const initialState: AuthState = {
-  basic: {
-    showForm: false,
-    callback: null,
-    credentials: null,
-    title: null,
-    loginLabel: null,
-    passwordLabel: null,
-    error: null
-  }
+  showForm: false,
+  callback: null,
+  cancel: null,
+  credentials: null,
+  title: null,
+  error: null,
+  providers: []
 };
 
 export default (state: AuthState = initialState, action): AuthState => {
   switch (action.type) {
-    case "SHOW_BASIC_AUTH_FORM":
+    case "SHOW_AUTH_FORM":
       return Object.assign({}, state, {
-        basic: Object.assign({}, state.basic, {
-          showForm: true,
-          callback: action.callback,
-          title: action.error ? state.basic.title : action.title,
-          loginLabel: action.labels && action.labels.login ?
-                      action.labels.login :
-                      state.basic.loginLabel,
-          passwordLabel: action.labels && action.labels.password ?
-                         action.labels.password :
-                         state.basic.passwordLabel,
-          error: action.error || null
-        })
+        showForm: true,
+        callback: action.callback,
+        cancel: action.cancel,
+        title: action.error ? state.title : action.title,
+        error: action.error || null,
+        providers: action.providers
       });
 
-    case "HIDE_BASIC_AUTH_FORM":
+    case "HIDE_AUTH_FORM":
       return Object.assign({}, state, {
-        basic: Object.assign({}, state.basic, {
-          showForm: false,
-          error: null
-        })
+        showForm: false,
+        error: null
       });
 
-    case "SAVE_BASIC_AUTH_CREDENTIALS":
+    case "SAVE_AUTH_CREDENTIALS":
       return Object.assign({}, state, {
-        basic: Object.assign({}, state.basic, {
-          credentials: action.credentials
-        })
+        credentials: action.credentials
       });
 
-    case "CLEAR_BASIC_AUTH_CREDENTIALS":
+    case "CLEAR_AUTH_CREDENTIALS":
       return Object.assign({}, state, {
-        basic: Object.assign({}, state.basic, {
-          credentials: null
-        })
+        credentials: null
       });
 
     default:

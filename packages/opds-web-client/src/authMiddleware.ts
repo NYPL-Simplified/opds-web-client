@@ -1,113 +1,136 @@
 import DataFetcher from "./DataFetcher";
+import AuthPlugin from "./AuthPlugin";
 import ActionCreator from "./actions";
-import { BasicAuthCallback } from "./interfaces";
+import { AuthCallback, AuthProvider, AuthMethod, PathFor } from "./interfaces";
 
 // see Redux Middleware docs:
 // http://redux.js.org/docs/advanced/Middleware.html
 
-const BASIC_AUTH = "http://opds-spec.org/auth/basic";
+export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
+  return store => next => action => {
+    let fetcher = new DataFetcher();
+    let actions = new ActionCreator(fetcher);
 
-export default store => next => action => {
-  let fetcher = new DataFetcher();
-  let actions = new ActionCreator(fetcher);
+    if (typeof action === "function") {
+      return new Promise((resolve, reject) => {
+        next(actions.hideAuthForm());
+        let result = next(action);
 
-  if (typeof action === "function") {
-    return new Promise((resolve, reject) => {
-      next(actions.hideBasicAuthForm());
-      let result = next(action);
+        if (result && result.then) {
+          result.then(resolve).catch(err => {
+            if (err.status === 401) {
+              let error;
+              let data;
 
-      if (result && result.then) {
-        result.then(resolve).catch(err => {
-          if (err.status === 401) {
-            let error;
-            let data;
-
-            // response might not be JSON
-            try {
-              data = JSON.parse(err.response);
-            } catch (e) {
-              reject(err);
-              return;
-            }
-
-            if (err.headers && err.headers.has("www-authenticate")) {
-              // browser's default basic auth form was shown,
-              // so don't show ours
-              reject(err);
-            } else {
-              // clear any invalid credentials
-              let usedBasicAuth = !!fetcher.getBasicAuthCredentials();
-              if (usedBasicAuth) {
-                // 401s resulting from wrong username/password return
-                // problem detail documents, not auth documents
-                error = data.title;
-                store.dispatch(actions.clearBasicAuthCredentials());
+              // response might not be JSON
+              try {
+                data = JSON.parse(err.response);
+              } catch (e) {
+                reject(err);
+                return;
               }
 
-              // find provider with basic auth method
-              let provider = data.providers && Object.keys(data.providers).find(key => {
-                return Object.keys(data.providers[key].methods).indexOf(BASIC_AUTH) !== -1;
-              });
-
-              if (
-                usedBasicAuth ||
-                provider
-              ) {
-                let callback: BasicAuthCallback = () => {
-                  // use dispatch() instead of next() to start from the top
-                  store.dispatch(action).then(blob => {
-                    resolve(blob);
-                  }).catch(reject);
-                };
-
-                let title, labels;
-
-                // if previous basic auth failed, we have to get title and
-                // labels from store, instead of response data
-                if (usedBasicAuth) {
-                  let state = store.getState();
-                  title = state.auth.title;
-                  labels = {
-                    login: state.auth.loginLabel,
-                    password: state.auth.passwordLabel
-                  };
-                } else {
-                  title = data.name;
-                  labels = data.providers[provider].methods[BASIC_AUTH].labels;
+              if (err.headers && err.headers["www-authenticate"]) {
+                // browser's default basic auth form was shown,
+                // so don't show ours
+                reject(err);
+              } else {
+                // clear any invalid credentials
+                let existingAuth = !!fetcher.getAuthCredentials();
+                if (existingAuth) {
+                  // 401s resulting from wrong username/password return
+                  // problem detail documents, not auth documents
+                  error = data.title;
+                  store.dispatch(actions.clearAuthCredentials());
                 }
 
-                next(actions.closeError());
-                next(actions.showBasicAuthForm(
-                  callback,
-                  labels,
-                  title,
-                  error
-                ));
-              } else {
-                // no provider found with basic auth method
-                // currently this custom response will not make it to the user,
-                // becuase the fetch error has already been dispatched by
-                // fetchCollectionFailure, fetchBookFailure, etc
-                next(actions.hideBasicAuthForm());
-                reject({
-                  status: 401,
-                  response: "Authentication is required but no compatible authentication method was found.",
-                  url: err.url
+                // find providers with supported auth method
+                let authProviders: AuthProvider<AuthMethod>[] = [];
+                authPlugins.forEach(plugin => {
+                  let providerKey = data.providers && Object.keys(data.providers).find(key => {
+                    return Object.keys(data.providers[key].methods).indexOf(plugin.type) !== -1;
+                  });
+                  if (providerKey) {
+                    let provider = data.providers[providerKey];
+                    let method = provider.methods[plugin.type];
+                    authProviders.push({ name: provider.name, plugin, method });
+                  }
                 });
-              }
-            }
-          } else {
-            next(actions.hideBasicAuthForm());
-            reject(err);
-          }
-        });
-      }
-    }).catch(err => {
-      // this is where we could potentially dispatch a custom auth error action
-      // displaying a more informative error
-    });
-  }
 
-  next(actions.hideBasicAuthForm());
-  next(action);
+                if (
+                  existingAuth ||
+                  authProviders.length
+                ) {
+                  let callback: AuthCallback = () => {
+                    // use dispatch() instead of next() to start from the top
+                    store.dispatch(action);
+                    resolve();
+                  };
+
+                  // if the collection and book urls in the state don't match
+                  // the current url, we're on a page that requires authentication
+                  // and cancel should go back to the previous page. otherwise,
+                  // it should just close the form.
+                  let oldCollectionUrl = store.getState().collection.url;
+                  let oldBookUrl = store.getState().book.url;
+                  let currentUrl = window.location.pathname;
+                  let cancel;
+                  if (pathFor(oldCollectionUrl, oldBookUrl) === currentUrl) {
+                    cancel = () => {
+                      next(actions.hideAuthForm());
+                    };
+                  } else {
+                    cancel = () => {
+                      history.back();
+                    };
+                  }
+
+                  let title;
+
+                  // if previous auth failed, we have to get providers
+                  // from store, instead of response data
+                  if (existingAuth) {
+                    let state = store.getState();
+                    title = state.auth.title;
+                    authProviders = state.auth.providers;
+                  } else {
+                    title = data.name;
+                  }
+
+                  next(actions.closeError());
+                  next(actions.showAuthForm(
+                    callback,
+                    cancel,
+                    authProviders,
+                    title,
+                    error
+                  ));
+                } else {
+                  // no provider found with basic auth method
+                  // currently this custom response will not make it to the user,
+                  // becuase the fetch error has already been dispatched by
+                  // fetchCollectionFailure, fetchBookFailure, etc
+                  next(actions.hideAuthForm());
+                  reject({
+                    status: 401,
+                    response: "Authentication is required but no compatible authentication method was found.",
+                    url: err.url
+                  });
+                }
+              }
+            } else {
+              next(actions.hideAuthForm());
+              reject(err);
+            }
+          });
+        }
+      }).catch(err => {
+        // this is where we could potentially dispatch a custom auth error action
+        // displaying a more informative error
+      });
+    }
+
+    next(actions.hideAuthForm());
+    next(action);
+  };
 };

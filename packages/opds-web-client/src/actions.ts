@@ -1,7 +1,7 @@
 import DataFetcher from "./DataFetcher";
 import {
   CollectionData, BookData, SearchData, FetchErrorData,
-  BasicAuthCallback, BasicAuthLabels
+  AuthCallback, AuthCredentials, AuthProvider, AuthMethod
 } from "./interfaces";
 
 export interface LoadCollectionAction {
@@ -47,10 +47,10 @@ export default class ActionCreator {
   FETCH_LOANS_FAILURE = "FETCH_LOANS_FAILURE";
   LOAD_LOANS = "LOAD_LOANS";
 
-  SHOW_BASIC_AUTH_FORM = "SHOW_BASIC_AUTH_FORM";
-  HIDE_BASIC_AUTH_FORM = "HIDE_BASIC_AUTH_FORM";
-  SAVE_BASIC_AUTH_CREDENTIALS = "SAVE_BASIC_AUTH_CREDENTIALS";
-  CLEAR_BASIC_AUTH_CREDENTIALS = "CLEAR_BASIC_AUTH_CREDENTIALS";
+  SHOW_AUTH_FORM = "SHOW_AUTH_FORM";
+  HIDE_AUTH_FORM = "HIDE_AUTH_FORM";
+  SAVE_AUTH_CREDENTIALS = "SAVE_AUTH_CREDENTIALS";
+  CLEAR_AUTH_CREDENTIALS = "CLEAR_AUTH_CREDENTIALS";
 
   constructor(fetcher: DataFetcher) {
     this.fetcher = fetcher;
@@ -310,33 +310,34 @@ export default class ActionCreator {
     return { type: this.LOAD_LOANS, books };
   }
 
-  showBasicAuthForm(
-    callback: BasicAuthCallback,
-    labels: BasicAuthLabels,
+  showAuthForm(
+    callback: AuthCallback,
+    cancel: () => void,
+    providers: AuthProvider<AuthMethod>[],
     title: string,
     error?: string
   ) {
-    return { type: this.SHOW_BASIC_AUTH_FORM, callback, labels, title, error };
+    return { type: this.SHOW_AUTH_FORM, callback, cancel, providers, title, error };
   }
 
-  closeErrorAndHideBasicAuthForm() {
+  closeErrorAndHideAuthForm() {
     return (dispatch) => {
       dispatch(this.closeError());
-      dispatch(this.hideBasicAuthForm());
+      dispatch(this.hideAuthForm());
     };
   }
 
-  hideBasicAuthForm() {
-    return { type: this.HIDE_BASIC_AUTH_FORM };
+  hideAuthForm() {
+    return { type: this.HIDE_AUTH_FORM };
   }
 
-  saveBasicAuthCredentials(credentials: string) {
-    this.fetcher.setBasicAuthCredentials(credentials);
-    return { type: this.SAVE_BASIC_AUTH_CREDENTIALS, credentials };
+  saveAuthCredentials(credentials: AuthCredentials) {
+    this.fetcher.setAuthCredentials(credentials);
+    return { type: this.SAVE_AUTH_CREDENTIALS, credentials };
   }
 
-  clearBasicAuthCredentials() {
-    this.fetcher.clearBasicAuthCredentials();
-    return { type: this.CLEAR_BASIC_AUTH_CREDENTIALS };
+  clearAuthCredentials() {
+    this.fetcher.clearAuthCredentials();
+    return { type: this.CLEAR_AUTH_CREDENTIALS };
   }
 }

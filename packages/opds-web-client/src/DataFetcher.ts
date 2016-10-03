@@ -1,6 +1,7 @@
 import { feedToCollection, entryToBook } from "./OPDSDataAdapter";
 import OPDSParser, { OPDSFeed, OPDSEntry } from "opds-feed-parser";
 import OpenSearchDescriptionParser from "./OpenSearchDescriptionParser";
+import { AuthCredentials } from "./interfaces";
 const Cookie = require("js-cookie");
 require("isomorphic-fetch");
 
@@ -16,7 +17,7 @@ export interface RequestRejector {
 }
 
 export default class DataFetcher {
-  public basicAuthKey: string;
+  public authKey: string;
   private proxyUrl: string;
   private adapter: any;
 
@@ -26,7 +27,7 @@ export default class DataFetcher {
   } = {}) {
     this.proxyUrl = config.proxyUrl;
     this.adapter = config.adapter;
-    this.basicAuthKey = "basicAuthCredentials";
+    this.authKey = "authCredentials";
   }
 
   fetchOPDSData(url: string) {
@@ -99,33 +100,37 @@ export default class DataFetcher {
       url = this.proxyUrl;
     }
 
-    options["headers"] = this.prepareBasicAuthHeaders(options["headers"]);
+    options["headers"] = this.prepareAuthHeaders(options["headers"]);
 
     return fetch(url, options);
   }
 
-  setBasicAuthCredentials(credentials: string): void {
+  setAuthCredentials(credentials: AuthCredentials): void {
     if (credentials) {
-      Cookie.set(this.basicAuthKey, credentials);
+      Cookie.set(this.authKey, JSON.stringify(credentials));
     }
   }
 
-  getBasicAuthCredentials(): string {
-    return Cookie.get(this.basicAuthKey);
+  getAuthCredentials(): AuthCredentials {
+    let credentials = Cookie.get(this.authKey);
+    if (credentials) {
+      return JSON.parse(credentials);
+    }
   }
 
-  clearBasicAuthCredentials(): void {
-    Cookie.remove(this.basicAuthKey);
+  clearAuthCredentials(): void {
+    Cookie.remove(this.authKey);
   }
 
-  prepareBasicAuthHeaders(headers: any = {}): any {
+  prepareAuthHeaders(headers: any = {}): any {
     // server needs to know request came from JS in order to omit
     // 'Www-Authenticate: Basic' header, which triggers browser's
     // ugly basic auth popup
     headers["X-Requested-With"] = "XMLHttpRequest";
 
-    if (this.getBasicAuthCredentials()) {
-      headers["Authorization"] = "Basic " + this.getBasicAuthCredentials();
+    let credentials = this.getAuthCredentials();
+    if (credentials) {
+      headers["Authorization"] = credentials.credentials;
     }
 
     return headers;

@@ -1,3 +1,5 @@
+import AuthPlugin from "./AuthPlugin";
+
 export interface BookData {
   id: string;
   title: string;
@@ -101,8 +103,8 @@ export interface StateProps {
   bookUrl?: string;
   isFetchingPage?: boolean;
   history?: LinkData[];
-  basicAuth?: BasicAuthData;
-  basicAuthCredentials?: string;
+  auth?: AuthData;
+  authCredentials?: AuthCredentials;
   isSignedIn?: boolean;
   loansUrl?: string;
   loans?: BookData[];
@@ -134,21 +136,36 @@ export interface NavigateContext {
   pathFor: PathFor;
 }
 
-export interface BasicAuthCallback {
-  (credentials: string): any;
-}
-
-export interface BasicAuthData {
-  showForm: boolean;
-  callback: BasicAuthCallback;
+export interface AuthCredentials {
+  provider: string;
   credentials: string;
-  title: string;
-  loginLabel: string;
-  passwordLabel: string;
-  error: string;
 }
 
-export interface BasicAuthLabels {
-  login: string;
-  password: string;
+export interface AuthCallback {
+  (): any;
+}
+
+export interface AuthProvider<T extends AuthMethod> {
+  name: string;
+  plugin: AuthPlugin;
+  method: T;
+}
+
+export interface AuthMethod {}
+
+export interface AuthData {
+  showForm: boolean;
+  callback: AuthCallback;
+  cancel: () => void;
+  credentials: AuthCredentials;
+  title: string;
+  error: string;
+  providers: AuthProvider<AuthMethod>[];
+}
+
+export interface BasicAuthMethod extends AuthMethod {
+  labels: {
+    login: string;
+    password: string;
+  };
 }

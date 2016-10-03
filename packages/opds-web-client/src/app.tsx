@@ -5,6 +5,7 @@ import OPDSCatalog from "./components/OPDSCatalog";
 import { RootProps } from "./components/Root";
 import { PathFor } from "./interfaces";
 import { State } from "./state";
+import AuthPlugin from "./AuthPlugin";
 import "./stylesheets/app.scss";
 
 class OPDSWebClient {
@@ -15,6 +16,7 @@ class OPDSWebClient {
   constructor(config: {
     headerTitle?: string;
     proxyUrl?: string;
+    authPlugins?: AuthPlugin[];
     pageTitleTemplate?: (collectionTitle: string, bookTitle: string) => string;
     pathPattern?: string;
     pathFor: PathFor;

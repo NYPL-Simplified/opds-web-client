@@ -258,29 +258,30 @@ describe("actions", () => {
     });
   });
 
-  describe("closeErrorAndHideBasicAuthForm", () => {
+  describe("closeErrorAndHideAuthForm", () => {
     it("closes error message", () => {
       let dispatch = stub();
-      actions.closeErrorAndHideBasicAuthForm()(dispatch);
+      actions.closeErrorAndHideAuthForm()(dispatch);
       expect(dispatch.callCount).to.equal(2);
       expect(dispatch.args[0][0].type).to.equal(actions.CLOSE_ERROR);
-      expect(dispatch.args[1][0].type).to.equal(actions.HIDE_BASIC_AUTH_FORM);
+      expect(dispatch.args[1][0].type).to.equal(actions.HIDE_AUTH_FORM);
     });
   });
 
-  describe("saveBasicAuthCredentials", () => {
-    it("sets fetcher credentaials", () => {
-      actions.saveBasicAuthCredentials("credentials");
-      expect((fetcher.setBasicAuthCredentials as any).callCount).to.equal(1);
-      expect((fetcher.setBasicAuthCredentials as any).args[0][0]).to.equal("credentials");
+  describe("saveAuthCredentials", () => {
+    it("sets fetcher credentials", () => {
+      let credentials = { provider: "test", credentials: "credentials" };
+      actions.saveAuthCredentials(credentials);
+      expect((fetcher.setAuthCredentials as any).callCount).to.equal(1);
+      expect((fetcher.setAuthCredentials as any).args[0][0]).to.deep.equal(credentials);
     });
   });
 
-  describe("clearBasicAuthCredentials", () => {
-    it("clears fetcher credentaials", () => {
-      fetcher.clearBasicAuthCredentials = stub();
-      actions.clearBasicAuthCredentials();
-      expect((fetcher.clearBasicAuthCredentials as any).callCount).to.equal(1);
+  describe("clearAuthCredentials", () => {
+    it("clears fetcher credentials", () => {
+      fetcher.clearAuthCredentials = stub();
+      actions.clearAuthCredentials();
+      expect((fetcher.clearAuthCredentials as any).callCount).to.equal(1);
     });
   });
 });

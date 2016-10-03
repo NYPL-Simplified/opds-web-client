@@ -4,20 +4,22 @@
   @include popup(300px, 300px);
   background-color: $pagecolor;
 
-  h3 {
-    text-align: left;
+  h3, li {
     max-width: 300px;
     margin: 0 auto 20px;
   }
 
   form {
     max-width: 300px;
-    margin: 0 auto;
-    text-align: left;
+    margin: 0 auto 10px auto;
   }
 
   .error {
     padding: 0.5em;
     color: #F00;
+  }
+
+  .btn {
+    margin: 10px;
   }
 }

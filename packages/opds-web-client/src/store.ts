@@ -3,10 +3,12 @@ import reducers from "./reducers/index";
 import collection from "./reducers/collection";
 import { State } from "./state";
 const thunk = require("redux-thunk").default;
-import authMiddleware from "./authMiddleware";
+import createAuthMiddleware from "./authMiddleware";
+import AuthPlugin from "./AuthPlugin";
+import { PathFor } from "./interfaces";
 
-export default function buildStore(initialState?: State, withAuth: boolean = true): Store<State> {
-  const middlewares = withAuth ? [authMiddleware, thunk] : [thunk];
+export default function buildStore(initialState?: State, authPlugins?: AuthPlugin[], pathFor?: PathFor): Store<State> {
+  const middlewares = authPlugins && authPlugins.length ? [createAuthMiddleware(authPlugins, pathFor), thunk] : [thunk];
   return createStore<State>(
     reducers,
     initialState,
