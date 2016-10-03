@@ -64,6 +64,17 @@ describe("loans reducer", () => {
     expect(reducer(oldState, action)).to.deep.equal(newState);
   });
 
+  it("clears books on CLEAR_AUTH_CREDENTIALS", () => {
+    let oldState = Object.assign({}, initState, {
+      books: loansData
+    });
+    let action = actions.clearAuthCredentials();
+    let newState = Object.assign({}, oldState, {
+      books: []
+    });
+    expect(reducer(oldState, action)).to.deep.equal(newState);
+  });
+
   it("clears books on LOAD_UPDATE_BOOK_DATA", () => {
     let oldState = Object.assign({}, initState, {
         books: loansData

@@ -26,6 +26,13 @@ export default (state: LoansState = initialState, action): LoansState => {
         books: action.books
       });
 
+    case "CLEAR_AUTH_CREDENTIALS":
+      // Clear auth credentials should remove the authenticated
+      // user's loans as well.
+      return Object.assign({}, state, {
+        books: []
+      });
+
     case "LOAD_UPDATE_BOOK_DATA":
       // A book has been updated, so the loans feed is now outdated.
       // If we remove the loans, the components showing the book that
