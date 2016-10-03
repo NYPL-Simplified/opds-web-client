@@ -5,15 +5,13 @@
   background-color: $pagecolor;
 
   h3, li {
-    text-align: left;
     max-width: 300px;
     margin: 0 auto 20px;
   }
 
   form {
     max-width: 300px;
-    margin: 0 auto;
-    text-align: left;
+    margin: 0 auto 10px auto;
   }
 
   .error {

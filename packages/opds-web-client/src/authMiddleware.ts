@@ -63,9 +63,8 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                 ) {
                   let callback: AuthCallback = () => {
                     // use dispatch() instead of next() to start from the top
-                    store.dispatch(action).then(blob => {
-                      resolve(blob);
-                    }).catch(reject);
+                    store.dispatch(action);
+                    resolve();
                   };
 
                   // if the collection and book urls in the state don't match
@@ -78,9 +77,8 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                   let cancel;
                   if (pathFor(oldCollectionUrl, oldBookUrl) === currentUrl) {
                     cancel = () => {
-                      store.dispatch(actions.hideAuthForm()).then(() => {
-                        resolve();
-                      }).catch(reject);
+                      store.dispatch(actions.hideAuthForm());
+                      resolve();
                     };
                   } else {
                     cancel = () => {

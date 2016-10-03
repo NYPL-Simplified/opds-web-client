@@ -80,7 +80,7 @@ describe("AuthProviderSelectionForm", () => {
       });
 
       it("shows cancel button", () => {
-        let button = wrapper.find("input[type=\"reset\"]");
+        let button = wrapper.find("button");
         expect(button.length).to.equal(1);
       });
     });
@@ -123,7 +123,7 @@ describe("AuthProviderSelectionForm", () => {
       });
 
       it("shows cancel button", () => {
-        let button = wrapper.find("input[type=\"reset\"]");
+        let button = wrapper.find("button");
         expect(button.length).to.equal(1);
       });
     });

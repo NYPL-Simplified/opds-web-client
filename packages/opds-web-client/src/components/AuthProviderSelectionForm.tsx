@@ -54,7 +54,7 @@ export default class AuthProviderSelectionForm extends React.Component<AuthProvi
             ) }
           </ul>
         }
-        <input type="reset" className="btn" value="Cancel" onClick={this.props.cancel} />
+        <button className="btn btn-default" onClick={this.props.cancel}>Cancel</button>
       </div>
     );
   }
