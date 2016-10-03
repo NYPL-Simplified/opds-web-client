@@ -77,13 +77,11 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                   let cancel;
                   if (pathFor(oldCollectionUrl, oldBookUrl) === currentUrl) {
                     cancel = () => {
-                      store.dispatch(actions.hideAuthForm());
-                      resolve();
+                      next(actions.hideAuthForm());
                     };
                   } else {
                     cancel = () => {
                       history.back();
-                      resolve();
                     };
                   }
 

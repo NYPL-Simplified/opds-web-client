@@ -27,6 +27,7 @@ describe("BasicAuthForm", () => {
         <BasicAuthForm
           hide={stub()}
           saveCredentials={stub()}
+          cancel={stub()}
           error="you forgot the secret password! what kind of spy arre you?"
           provider={provider}
           />
@@ -48,6 +49,11 @@ describe("BasicAuthForm", () => {
       expect(input.prop("value")).to.equal("Submit");
     });
 
+    it("shows cancel button", () => {
+      let button = wrapper.find("input[type='reset']");
+      expect(button.prop("value")).to.equal("Cancel");
+    });
+
     it("shows error", () => {
       let error = wrapper.find(".error");
       expect(error.text()).to.equal("you forgot the secret password! what kind of spy arre you?");
@@ -60,11 +66,13 @@ describe("BasicAuthForm", () => {
     let hide;
     let saveCredentials;
     let callback;
+    let cancel;
 
     beforeEach(() => {
       hide = stub();
       saveCredentials = stub();
       callback = stub();
+      cancel = stub();
 
       provider = {
         name: "Test Basic Auth",
@@ -82,6 +90,7 @@ describe("BasicAuthForm", () => {
           hide={hide}
           saveCredentials={saveCredentials}
           callback={callback}
+          cancel={cancel}
           error="you forgot the secret password! what kind of spy arre you?"
           provider={provider}
           />
@@ -161,6 +170,12 @@ describe("BasicAuthForm", () => {
         Object.assign({}, wrapper.props(), { error: "new error" })
       );
       expect(wrapper.state("error")).to.equal("new error");
+    });
+
+    it("cancels", () => {
+      let cancelButton = wrapper.find("input[type='reset']");
+      cancelButton.simulate("click");
+      expect(cancel.callCount).to.equal(1);
     });
   });
 });

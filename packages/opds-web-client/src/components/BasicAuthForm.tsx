@@ -32,6 +32,9 @@ export default class BasicAuthForm extends React.Component<AuthFormProps, any> {
           />
         <br />
         <input type="submit" className="btn btn-default" value="Submit" />
+        { this.props.cancel &&
+          <input type="reset" className="btn btn-default" onClick={this.props.cancel} value="Cancel" />
+        }
       </form>
     );
   }

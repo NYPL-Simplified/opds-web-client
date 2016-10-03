@@ -70,6 +70,7 @@ describe("AuthProviderSelectionForm", () => {
         expect(form.length).to.equal(1);
         expect(form.props().provider).to.deep.equal(provider1);
         expect(form.props().hide).to.equal(hide);
+        expect(form.props().cancel).to.equal(cancel);
         expect(form.props().saveCredentials).to.equal(saveCredentials);
         expect(form.props().error).to.equal("you forgot the secret password! what kind of spy arre you?");
       });
@@ -79,9 +80,9 @@ describe("AuthProviderSelectionForm", () => {
         expect(button.length).to.equal(0);
       });
 
-      it("shows cancel button", () => {
+      it("does not show cancel button", () => {
         let button = wrapper.find("button");
-        expect(button.length).to.equal(1);
+        expect(button.length).to.equal(0);
       });
     });
   });
@@ -143,6 +144,7 @@ describe("AuthProviderSelectionForm", () => {
         expect(form.length).to.equal(1);
         expect(form.props().provider).to.deep.equal(provider1);
         expect(form.props().hide).to.equal(hide);
+        expect(form.props().cancel).to.equal(cancel);
         expect(form.props().saveCredentials).to.equal(saveCredentials);
         expect(form.props().error).to.equal("you forgot the secret password! what kind of spy arre you?");
       });
