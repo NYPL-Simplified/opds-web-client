@@ -9,7 +9,7 @@ const initialState: AuthState = {
   credentials: null,
   title: null,
   error: null,
-  providers: []
+  providers: null
 };
 
 export default (state: AuthState = initialState, action): AuthState => {

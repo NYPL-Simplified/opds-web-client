@@ -189,6 +189,24 @@ describe("authMiddleware", () => {
     }).catch(err => { console.log(err); throw(err); });
   });
 
+  it("retries action without credentials if existing credentials failed and there aren't providers in the store", (done) => {
+    dataFetcher.setAuthCredentials({ provider: "test", credentials: "credentials" });
+    store.getState.returns({ auth: { providers: null }, collection: {}, book: {} });
+    let error = {
+      status: 401,
+      response: JSON.stringify({ title: "error" })
+    };
+    next.onCall(1).returns(new Promise((resolve, reject) => { reject(error); }));
+    let action = stub();
+    authMiddleware(store)(next)(action).then(() => {
+      expect(showAuthFormStub.callCount).to.equal(0);
+      expect(clearAuthCredentialsStub.callCount).to.equal(1);
+      expect(store.dispatch.callCount).to.equal(2);
+      expect(store.dispatch.args[1][0]).to.equal(action);
+      done();
+    }).catch(err => { console.log(err); throw(err); });
+  });
+
   it("does not call showAuthForm if there's no supported auth method in the provider info", (done) => {
     store.getState.returns({ auth: {}, collection: {}, book: {} });
     let providers = {
