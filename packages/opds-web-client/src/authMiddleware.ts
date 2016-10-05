@@ -97,14 +97,22 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                     title = data.name;
                   }
 
-                  next(actions.closeError());
-                  next(actions.showAuthForm(
-                    callback,
-                    cancel,
-                    authProviders,
-                    title,
-                    error
-                  ));
+                  // if previous auth failed and we didn't have any providers
+                  // in the store, we need to start the request again from the top
+                  // (with cleared credentials) to get the opds authentication document.
+                  if (existingAuth && authProviders === null) {
+                    store.dispatch(action);
+                    resolve();
+                  } else {
+                    next(actions.closeError());
+                    next(actions.showAuthForm(
+                      callback,
+                      cancel,
+                      authProviders,
+                      title,
+                      error
+                    ));
+                  }
                 } else {
                   // no provider found with basic auth method
                   // currently this custom response will not make it to the user,

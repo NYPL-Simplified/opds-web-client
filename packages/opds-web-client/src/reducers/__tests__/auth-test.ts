@@ -18,7 +18,7 @@ describe("auth reducer", () => {
     credentials: null,
     title: null,
     error: null,
-    providers: []
+    providers: null
   };
 
   it("returns the initial state", () => {
