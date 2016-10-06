@@ -40,6 +40,15 @@ describe("Root", () => {
     expect(links.length).to.equal(1);
   });
 
+  it("shows main anchor", () => {
+    let wrapper = shallow(
+      <Root />
+    );
+
+    let main = wrapper.find("#main");
+    expect(main.props().href).to.equal("#");
+  });
+
   it("shows search and treats it as top-level", () => {
     let collectionData = Object.assign({}, ungroupedCollectionData, {
       search: {
