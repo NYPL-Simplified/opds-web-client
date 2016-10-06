@@ -3,7 +3,7 @@ import { AuthMethod } from "./interfaces";
 
 interface AuthPlugin {
   type: string;
-  lookForCredentials: () => void;
+  lookForCredentials: () => string | void;
   formComponent: new(props: AuthFormProps<AuthMethod>) => __React.Component<AuthFormProps<AuthMethod>, any>;
   buttonComponent: new(props: AuthButtonProps<AuthMethod>) => __React.Component<AuthButtonProps<AuthMethod>, any>;
 }
