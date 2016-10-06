@@ -183,26 +183,30 @@ describe("Root", () => {
   });
 
   it("checks for credentials on mount", () => {
+    let credentials = { provider: "test", credentials: "credentials" };
     let plugin = {
       type: "test",
-      lookForCredentials: stub(),
+      lookForCredentials: stub().returns({ credentials }),
       formComponent: null,
       buttonComponent: null
     };
     let propsWithAuthPlugin = {
-      authPlugins: [plugin]
+      authPlugins: [plugin],
+      saveAuthCredentials: stub()
     };
 
     let wrapper = shallow(
       <Root {...propsWithAuthPlugin} />
     );
     expect(plugin.lookForCredentials.callCount).to.equal(1);
+    expect(propsWithAuthPlugin.saveAuthCredentials.callCount).to.equal(1);
+    expect(propsWithAuthPlugin.saveAuthCredentials.args[0][0]).to.deep.equal(credentials);
   });
 
   it("sets auth error in state on mount if lookForCredentials returns an error", () => {
     let plugin = {
       type: "test",
-      lookForCredentials: stub().returns("error!"),
+      lookForCredentials: stub().returns({ error: "error!" }),
       formComponent: null,
       buttonComponent: null
     };

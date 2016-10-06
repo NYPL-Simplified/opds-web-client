@@ -272,9 +272,12 @@ export class Root extends React.Component<RootProps, any> {
     let authError;
     if (this.props.authPlugins) {
       this.props.authPlugins.forEach(plugin => {
-        let error = plugin.lookForCredentials();
-        if (error) {
-          authError = error;
+        let result = plugin.lookForCredentials();
+        if (result && result.error) {
+          authError = result.error;
+        }
+        if (result && result.credentials && this.props.saveAuthCredentials) {
+          this.props.saveAuthCredentials(result.credentials);
         }
       });
     }
