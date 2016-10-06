@@ -28,9 +28,21 @@ describe("ErrorMessage", () => {
     expect(retry.callCount).to.equal(1);
   });
 
+  it("closes", () => {
+    let close = stub();
+    let wrapper = shallow(
+      <ErrorMessage message="test error" close={close} />
+    );
+
+    let button = wrapper.find(".close-button");
+    button.simulate("click");
+
+    expect(close.callCount).to.equal(1);
+  });
+
   it("uses bootstrap classes", () => {
     let wrapper = shallow(
-      <ErrorMessage message="test error" />
+      <ErrorMessage message="test error" retry={stub()}/>
     );
 
     let buttons = wrapper.find(".btn");

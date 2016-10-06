@@ -21,6 +21,7 @@ import {
   CollectionData, BookData, LinkData, StateProps, NavigateContext,
   AuthCallback, AuthProvider, AuthMethod, AuthCredentials
 } from "../interfaces";
+import AuthPlugin from "../AuthPlugin";
 
 export interface HeaderProps extends React.Props<any> {
   collectionTitle: string;
@@ -44,6 +45,7 @@ export interface BookDetailsContainerProps extends React.Props<any> {
 
 export interface RootProps extends StateProps {
   store?: Store<State>;
+  authPlugins?: AuthPlugin[];
   collectionUrl?: string;
   bookUrl?: string;
   proxyUrl?: string;
@@ -80,6 +82,11 @@ export class Root extends React.Component<RootProps, any> {
     router: React.PropTypes.object,
     pathFor: React.PropTypes.func
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
   render(): JSX.Element {
     let BookDetailsContainer = this.props.BookDetailsContainer;
@@ -171,6 +178,12 @@ export class Root extends React.Component<RootProps, any> {
 
         <a className="main-anchor" id="main" href="#"></a>
 
+        { this.state.authError &&
+          <ErrorMessage
+            message={this.state.authError}
+            close={() => { this.setState({ authError: null }); }} />
+        }
+
         { this.props.error && (!this.props.auth || !this.props.auth.showForm) &&
           <ErrorMessage
             message={"Could not fetch data: " + this.props.error.url}
@@ -256,7 +269,19 @@ export class Root extends React.Component<RootProps, any> {
       this.props.saveAuthCredentials(this.props.authCredentials);
     }
 
-    if (this.props.collectionUrl || this.props.bookUrl) {
+    let authError;
+    if (this.props.authPlugins) {
+      this.props.authPlugins.forEach(plugin => {
+        let error = plugin.lookForCredentials();
+        if (error) {
+          authError = error;
+        }
+      });
+    }
+
+    if (authError) {
+      this.setState({ authError });
+    } else if (this.props.collectionUrl || this.props.bookUrl) {
       return this.props.setCollectionAndBook(
         this.props.collectionUrl,
         this.props.bookUrl
