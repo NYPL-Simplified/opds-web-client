@@ -93,12 +93,12 @@ export class Root extends React.Component<RootProps, any> {
 
     let headerTitle = this.props.headerTitle || (this.props.collectionData ? this.props.collectionData.title : null);
 
-    let showCollection = this.props.collectionData;
+    let showCollection = this.props.collectionData && !this.props.bookData;
     let showBook = this.props.bookData;
     let showBookWrapper = this.props.bookUrl || this.props.bookData;
     let showUrlForm = !this.props.collectionUrl && !this.props.bookUrl;
-    let showBreadcrumbs = showCollection && breadcrumbsLinks.length > 0;
-    let showFooter = showCollection && Footer;
+    let showBreadcrumbs = this.props.collectionData && breadcrumbsLinks.length > 0;
+    let showFooter = this.props.collectionData && Footer;
 
     let bodyClass = "body";
     if (showBreadcrumbs) {
@@ -110,33 +110,7 @@ export class Root extends React.Component<RootProps, any> {
 
     return (
       <div className="catalog">
-        <SkipNavigationLink />
-
-        { this.props.error && (!this.props.auth || !this.props.auth.showForm) &&
-          <ErrorMessage
-            message={"Could not fetch data: " + this.props.error.url}
-            retry={this.props.retryCollectionAndBook} />
-        }
-
-        { this.props.isFetching &&
-          <LoadingIndicator />
-        }
-
-        { this.props.auth && this.props.auth.showForm &&
-          <AuthProviderSelectionForm
-            saveCredentials={this.props.saveAuthCredentials}
-            hide={this.props.closeErrorAndHideAuthForm}
-            callback={this.props.auth.callback}
-            cancel={this.props.auth.cancel}
-            title={this.props.auth.title}
-            error={this.props.auth.error}
-            providers={this.props.auth.providers}
-            />
-        }
-
-        { showUrlForm &&
-          <UrlForm collectionUrl={this.props.collectionUrl} />
-        }
+        <SkipNavigationLink target="#main" />
 
         { Header ?
           <Header
@@ -193,6 +167,34 @@ export class Root extends React.Component<RootProps, any> {
           <div className="breadcrumbs-wrapper">
             <Breadcrumbs links={breadcrumbsLinks} />
           </div>
+        }
+
+        <a className="main-anchor" id="main" href="#"></a>
+
+        { this.props.error && (!this.props.auth || !this.props.auth.showForm) &&
+          <ErrorMessage
+            message={"Could not fetch data: " + this.props.error.url}
+            retry={this.props.retryCollectionAndBook} />
+        }
+
+        { this.props.isFetching &&
+          <LoadingIndicator />
+        }
+
+        { this.props.auth && this.props.auth.showForm &&
+          <AuthProviderSelectionForm
+            saveCredentials={this.props.saveAuthCredentials}
+            hide={this.props.closeErrorAndHideAuthForm}
+            callback={this.props.auth.callback}
+            cancel={this.props.auth.cancel}
+            title={this.props.auth.title}
+            error={this.props.auth.error}
+            providers={this.props.auth.providers}
+            />
+        }
+
+        { showUrlForm &&
+          <UrlForm collectionUrl={this.props.collectionUrl} />
         }
 
         <div className={bodyClass}>

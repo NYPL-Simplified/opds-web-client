@@ -1,0 +1,26 @@
+@import "variables";
+
+.skip-navigation {
+  a {
+    display: block;
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    background-color: $pagecolor;
+    margin: 5px;
+    padding: 5px 10px;
+    z-index: 2000;
+  }
+
+  a:focus, a:visited {
+    outline: 0;
+    left: auto;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    top: 5px;
+  }
+}

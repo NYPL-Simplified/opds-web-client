@@ -8,10 +8,10 @@ import SkipNavigationLink from "../SkipNavigationLink";
 describe("SkipNavigationLink", () => {
   it("shows link", () => {
     let wrapper = shallow(
-      <SkipNavigationLink />
+      <SkipNavigationLink target="#main" />
     );
 
-    let element = wrapper.find(".skipNavigation");
+    let element = wrapper.find(".skip-navigation a");
     expect(element.text()).to.equal("Skip Navigation");
     expect(element.props().href).to.equal("#main");
   });

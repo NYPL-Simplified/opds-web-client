@@ -23,6 +23,7 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, a
           className="form-control"
           ref="login"
           type="text"
+          autoFocus
           placeholder={this.loginLabel()}
           />
         <br />

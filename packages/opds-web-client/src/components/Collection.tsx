@@ -29,7 +29,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
       <div className="collection">
         { hasFacets && (
           <div className="facet-groups" role="navigation" aria-label="filters">
-            <SkipNavigationLink />
+            <SkipNavigationLink target="#collection-main" />
             { this.props.collection.facetGroups.map(facetGroup =>
                 <FacetGroup
                   key={facetGroup.label}
@@ -43,8 +43,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
           className={bodyClass}
           role="main"
           aria-label={"books in " + this.props.collection.title}>
-          <a className="main-anchor" name="main"></a>
-
+          <a href="#" id="collection-main" />
           { (this.props.collection.lanes && this.props.collection.lanes.length > 0) ?
             <Lanes
               url={this.props.collection.url}

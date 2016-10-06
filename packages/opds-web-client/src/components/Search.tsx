@@ -27,6 +27,7 @@ export default class Search extends React.Component<SearchProps, any> {
               className="form-control"
               ref="input"
               type="text"
+              title={this.props.searchData.shortName}
               placeholder={this.props.searchData.shortName} />&nbsp;
             <button
               className="btn btn btn-default"
