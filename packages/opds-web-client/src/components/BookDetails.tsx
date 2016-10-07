@@ -59,14 +59,6 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
           className="main">
           <div className="row">
             <div className="col-sm-3">
-              { this.props.book.url &&
-                <CatalogLink
-                  className="btn btn-link"
-                  target="_blank"
-                  bookUrl={this.props.book.url}>
-                  Permalink
-                </CatalogLink>
-              }
             </div>
             <div className="top col-sm-6">
               <div className="circulation-links">
