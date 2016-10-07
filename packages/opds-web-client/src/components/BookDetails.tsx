@@ -161,13 +161,13 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
 
     if (this.isReserved()) {
       links.push(
-        <button key="onhold" className="btn btn-default disabled">On Hold</button>
+        <button key="onhold" className="btn btn-default disabled">Reserved</button>
       );
     } else if (this.props.book.borrowUrl) {
       let label = this.props.book.copies &&
                   this.props.book.copies.available === 0 ?
-                  "Hold" :
-                  "Borrow";
+                  "Reserve" :
+                  "Get";
       links.push(
         <BorrowButton
           key={this.props.book.borrowUrl}

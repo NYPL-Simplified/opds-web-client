@@ -147,7 +147,7 @@ export class Root extends React.Component<RootProps, any> {
                     <CatalogLink
                       collectionUrl={this.props.loansUrl}
                       bookUrl={null}>
-                      Loans
+                      My Books
                     </CatalogLink>
                   </li>
                   <li>
