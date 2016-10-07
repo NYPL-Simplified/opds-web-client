@@ -54,21 +54,4 @@ describe("OPDSCatalog", () => {
       expect(root.props()[key]).to.equal(props[key]);
     });
   });
-
-  it("checks for credentials on mount", () => {
-    let plugin = {
-      type: "test",
-      lookForCredentials: stub(),
-      formComponent: null,
-      buttonComponent: null
-    };
-    let propsWithAuthPlugin = Object.assign({}, props, {
-      authPlugins: [plugin]
-    });
-
-    let wrapper = shallow(
-      <OPDSCatalog {...propsWithAuthPlugin} />
-    );
-    expect(plugin.lookForCredentials.callCount).to.equal(1);
-  });
 });

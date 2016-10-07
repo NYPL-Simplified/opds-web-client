@@ -182,6 +182,58 @@ describe("Root", () => {
     expect(saveAuthCredentials.args[0][0]).to.equal(credentials);
   });
 
+  it("checks for credentials on mount", () => {
+    let credentials = { provider: "test", credentials: "credentials" };
+    let plugin = {
+      type: "test",
+      lookForCredentials: stub().returns({ credentials }),
+      formComponent: null,
+      buttonComponent: null
+    };
+    let propsWithAuthPlugin = {
+      authPlugins: [plugin],
+      saveAuthCredentials: stub()
+    };
+
+    let wrapper = shallow(
+      <Root {...propsWithAuthPlugin} />
+    );
+    expect(plugin.lookForCredentials.callCount).to.equal(1);
+    expect(propsWithAuthPlugin.saveAuthCredentials.callCount).to.equal(1);
+    expect(propsWithAuthPlugin.saveAuthCredentials.args[0][0]).to.deep.equal(credentials);
+  });
+
+  it("sets auth error in state on mount if lookForCredentials returns an error", () => {
+    let plugin = {
+      type: "test",
+      lookForCredentials: stub().returns({ error: "error!" }),
+      formComponent: null,
+      buttonComponent: null
+    };
+    let propsWithAuthPlugin = {
+      authPlugins: [plugin]
+    };
+
+    let wrapper = shallow(
+      <Root {...propsWithAuthPlugin} />
+    );
+    expect(plugin.lookForCredentials.callCount).to.equal(1);
+    expect(wrapper.state().authError).to.equal("error!");
+  });
+
+  it("shows error message if there's an auth error in the state", () => {
+    let wrapper = shallow(
+      <Root />
+    );
+    wrapper.setState({ authError: "error!" });
+    let error = wrapper.find(ErrorMessage);
+    expect(error.length).to.equal(1);
+    expect(error.props().message).to.equal("error!");
+
+    error.props().close();
+    expect(wrapper.state().authError).to.be.null;
+  });
+
   it("fetches a collection url when updated", () => {
     let elem = document.createElement("div");
     let collectionUrl = "http://feedbooks.github.io/opds-test-catalog/catalog/acquisition/blocks.xml";

@@ -3,6 +3,7 @@ import * as React from "react";
 export interface ErrorMessageProps {
   message: string;
   retry?: () => void;
+  close?: () => void;
 }
 
 export default class ErrorMessage extends React.Component<ErrorMessageProps, any> {
@@ -14,11 +15,20 @@ export default class ErrorMessage extends React.Component<ErrorMessageProps, any
           {this.props.message}
         </div>
         <br />
-        <button
-          className="retry-button btn btn-default"
-          onClick={this.props.retry}>
-          Try again
-        </button>
+        { this.props.retry &&
+          <button
+            className="retry-button btn btn-default"
+            onClick={this.props.retry}>
+            Try again
+          </button>
+        }
+        { this.props.close &&
+          <button
+            className="close-button btn btn-default"
+            onClick={this.props.close}>
+            Close
+          </button>
+        }
       </div>
     );
   }

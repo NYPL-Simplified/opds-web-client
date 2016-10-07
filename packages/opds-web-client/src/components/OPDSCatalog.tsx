@@ -42,12 +42,4 @@ export default class OPDSCatalog extends React.Component<OPDSCatalogProps, any> 
       <Root {...props} />
     );
   }
-
-  componentWillMount() {
-    if (this.props.authPlugins) {
-      this.props.authPlugins.forEach(plugin => {
-        plugin.lookForCredentials();
-      });
-    }
-  }
 }
