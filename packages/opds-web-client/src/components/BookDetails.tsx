@@ -58,9 +58,9 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
         <div
           className="main">
           <div className="row">
-            <div className="col-sm-3">
+            <div className="col-sm-2">
             </div>
-            <div className="top col-sm-6">
+            <div className="top col-sm-8">
               <div className="circulation-links">
                 { this.circulationLinks() }
               </div>
@@ -68,7 +68,7 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
                 { this.circulationInfo() }
               </div>
             </div>
-            <div className="right-column-links col-sm-3">
+            <div className="right-column-links col-sm-2">
               { this.rightColumnLinks() }
             </div>
           </div>
@@ -175,7 +175,7 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
   circulationInfo() {
     if (this.isOpenAccess()) {
       return [(
-        <div key="oa">This open-access book is available to keep.</div>
+        <div key="oa" className="open-access-info">This open-access book is available to keep.</div>
       )];
     }
 
@@ -184,7 +184,7 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
       if (availableUntil) {
         let timeLeft = moment(availableUntil).fromNow(true);
         return [(
-          <div key="loan">You have this book on loan for { timeLeft }.</div>
+          <div key="loan" className="loan-info">You have this book on loan for { timeLeft }.</div>
         )];
       }
       return [];
@@ -200,7 +200,7 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
     if (availableCopies !== undefined && availableCopies !== null
           && totalCopies !== undefined && totalCopies !== null) {
       info.push(
-        <div key="copies">
+        <div key="copies" className="copies-info">
           { availableCopies } of { totalCopies } copies available
         </div>
       );
@@ -208,13 +208,13 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
 
     if (totalHolds && availableCopies === 0) {
       info.push(
-        <div key="holds">
+        <div key="holds" className="holds-info">
           { totalHolds } patrons in hold queue
         </div>
       );
       if (this.isReserved() && holdsPosition !== undefined && holdsPosition !== null) {
         info.push(
-          <div key="holds-position">
+          <div key="holds-position" className="holds-info">
             Your holds position: { holdsPosition }
           </div>
         );
