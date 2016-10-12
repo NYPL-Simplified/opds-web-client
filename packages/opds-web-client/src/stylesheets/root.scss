@@ -2,7 +2,7 @@
 
 html {
   background-color: $pagecolor;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: $fontfamily;
   font-size: $basefont;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
@@ -10,6 +10,7 @@ html {
 
 body {
   background-color: $pagecolor;
+  font-family: $fontfamily;
 }
 
 @each $tag in a, input, select {
