@@ -123,19 +123,19 @@ a {
 }
 
 // override bootstrap
-.navbar-default {
+.navbar-default, .navbar-collapse {
   background-color: $dark;
   border: none;
   color: white;
-}
 
-.navbar-default .navbar-nav>li>a {
-  color: white;
-  text-decoration: underline;
-
-  &:hover, &:focus {
+  .navbar-nav>li>a {
     color: white;
-    text-decoration: none;
+    text-decoration: underline;
+
+    &:hover, &:focus {
+      color: white;
+      text-decoration: none;
+    }
   }
 }
 
