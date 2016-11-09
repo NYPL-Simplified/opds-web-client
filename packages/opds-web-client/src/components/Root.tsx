@@ -105,11 +105,12 @@ export class Root extends React.Component<RootProps, any> {
     let showBookWrapper = this.props.bookUrl || this.props.bookData;
     let showUrlForm = !this.props.collectionUrl && !this.props.bookUrl;
     let showBreadcrumbs = this.props.collectionData && breadcrumbsLinks.length > 0;
+    let showSearch = this.props.collectionData && this.props.collectionData.search;
     let showFooter = this.props.collectionData && Footer;
 
     let bodyClass = "body";
-    if (showBreadcrumbs) {
-      bodyClass += " with-breadcrumbs";
+    if (showBreadcrumbs || showSearch) {
+      bodyClass += " with-breadcrumbs-or-search";
     }
     if (showFooter) {
       bodyClass += " with-footer";
@@ -127,7 +128,7 @@ export class Root extends React.Component<RootProps, any> {
             isSignedIn={this.props.isSignedIn}
             fetchLoans={this.props.fetchLoans}
             clearAuthCredentials={this.props.clearAuthCredentials}>
-            { this.props.collectionData && this.props.collectionData.search &&
+            { showSearch &&
               <Search
                 url={this.props.collectionData.search.url}
                 searchData={this.props.collectionData.search.searchData}
@@ -157,15 +158,6 @@ export class Root extends React.Component<RootProps, any> {
                   </li>
                 </ul>
               }
-
-              { this.props.collectionData && this.props.collectionData.search &&
-                <Search
-                  className="navbar-form navbar-right"
-                  url={this.props.collectionData.search.url}
-                  searchData={this.props.collectionData.search.searchData}
-                  fetchSearchDescription={this.props.fetchSearchDescription}
-                  />
-              }
             </div>
           </nav>
         }
@@ -173,6 +165,15 @@ export class Root extends React.Component<RootProps, any> {
         { showBreadcrumbs &&
           <div className="breadcrumbs-wrapper">
             <Breadcrumbs links={breadcrumbsLinks} />
+          </div>
+        }
+        { showSearch &&
+          <div className="search-wrapper">
+            <Search
+              url={this.props.collectionData.search.url}
+              searchData={this.props.collectionData.search.searchData}
+              fetchSearchDescription={this.props.fetchSearchDescription}
+              />
           </div>
         }
 

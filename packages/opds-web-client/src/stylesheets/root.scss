@@ -65,6 +65,18 @@ a {
     z-index: 100;
   }
 
+  .search-wrapper {
+    position: fixed;
+    top: $headerHeight;
+    right: 0;
+    z-index: 101;
+    padding-top: 2px;
+
+    button {
+      float: right;
+    }
+  }
+
   .body {
     padding-bottom: $padding;
     overflow: auto;
@@ -86,12 +98,20 @@ a {
       }
     }
 
-    &.with-breadcrumbs {
+    .collection {
+      padding-top: $headerHeight;
+    }
+
+    &.with-breadcrumbs-or-search {
       padding-top: $headerHeight + $breadcrumbsHeight + $padding;
 
       .book-details-wrapper {
         top: $headerHeight + $breadcrumbsHeight;
         height: calc(100% - #{$headerHeight} - #{$breadcrumbsHeight});
+      }
+
+      .collection {
+        padding-top: 0;
       }
 
       &.with-footer {
@@ -128,9 +148,15 @@ a {
   border: none;
   color: white;
 
+  .navbar-nav {
+    margin: 0;
+  }
+
   .navbar-nav>li>a {
     color: white;
     text-decoration: underline;
+    padding-top: 15px;
+    padding-bottom: 15px;
 
     &:hover, &:focus {
       color: white;
