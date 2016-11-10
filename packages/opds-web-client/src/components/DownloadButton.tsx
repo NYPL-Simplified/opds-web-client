@@ -29,14 +29,14 @@ export default class DownloadButton extends React.Component<DownloadButtonProps,
       <span>
         { this.props.isPlainLink ?
           <a
-            className="btn btn-default"
+            className="btn btn-default download-button"
             {...props}
             href={this.props.url}
             target="_blank">
             {this.downloadLabel()}
           </a> :
           <button
-            className="btn btn-default"
+            className={"btn btn-default download-button download-" + this.fileExtension().slice(1) + "-button"}
             {...props}
             onClick={this.fulfill}>
             {this.downloadLabel()}

@@ -141,7 +141,7 @@ describe("BookDetails", () => {
     );
 
     let button = wrapper.find(BorrowButton);
-    expect(button.children().text()).to.equal("Borrow");
+    expect(button.children().text()).to.equal("Get");
     button.props().borrow();
     expect(updateBook.callCount).to.equal(1);
     expect(updateBook.args[0][0]).to.equal(bookCopy.borrowUrl);
@@ -151,7 +151,7 @@ describe("BookDetails", () => {
       })
     });
     button = wrapper.find(BorrowButton);
-    expect(button.children().text()).to.equal("Hold");
+    expect(button.children().text()).to.equal("Reserve");
   });
 
   it("shows fulfill button if there's no download button", () => {
@@ -194,7 +194,7 @@ describe("BookDetails", () => {
         />
     );
     let button = wrapper.find("button");
-    expect(button.text()).to.equal("On Hold");
+    expect(button.text()).to.equal("Reserved");
     expect(button.props().className).to.contain("disabled");
   });
 

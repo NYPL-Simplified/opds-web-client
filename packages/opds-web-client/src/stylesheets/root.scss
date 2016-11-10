@@ -2,7 +2,7 @@
 
 html {
   background-color: $pagecolor;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: $fontfamily;
   font-size: $basefont;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
@@ -10,6 +10,8 @@ html {
 
 body {
   background-color: $pagecolor;
+  font-family: $fontfamily;
+  font-size: $basefont;
 }
 
 @each $tag in a, input, select {
@@ -64,6 +66,18 @@ a {
     z-index: 100;
   }
 
+  .search-wrapper {
+    position: fixed;
+    top: $headerHeight;
+    right: 0;
+    z-index: 101;
+    padding-top: 2px;
+
+    button {
+      float: right;
+    }
+  }
+
   .body {
     padding-bottom: $padding;
     overflow: auto;
@@ -85,12 +99,20 @@ a {
       }
     }
 
-    &.with-breadcrumbs {
+    .collection {
+      padding-top: $headerHeight;
+    }
+
+    &.with-breadcrumbs-or-search {
       padding-top: $headerHeight + $breadcrumbsHeight + $padding;
 
       .book-details-wrapper {
         top: $headerHeight + $breadcrumbsHeight;
         height: calc(100% - #{$headerHeight} - #{$breadcrumbsHeight});
+      }
+
+      .collection {
+        padding-top: 0;
       }
 
       &.with-footer {
@@ -122,19 +144,25 @@ a {
 }
 
 // override bootstrap
-.navbar-default {
+.navbar-default, .navbar-collapse {
   background-color: $dark;
   border: none;
   color: white;
-}
 
-.navbar-default .navbar-nav>li>a {
-  color: white;
-  text-decoration: underline;
+  .navbar-nav {
+    margin: 0;
+  }
 
-  &:hover, &:focus {
+  .navbar-nav>li>a {
     color: white;
-    text-decoration: none;
+    text-decoration: underline;
+    padding-top: 15px;
+    padding-bottom: 15px;
+
+    &:hover, &:focus {
+      color: white;
+      text-decoration: none;
+    }
   }
 }
 
