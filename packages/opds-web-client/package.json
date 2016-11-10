@@ -1,6 +1,6 @@
 {
   "name": "opds-web-client",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "OPDS web client",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",

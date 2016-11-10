@@ -58,9 +58,9 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
         <div
           className="main">
           <div className="row">
-            <div className="col-sm-2">
+            <div className="col-sm-3">
             </div>
-            <div className="top col-sm-8">
+            <div className="top col-sm-6">
               <div className="circulation-links">
                 { this.circulationLinks() }
               </div>
@@ -68,7 +68,7 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
                 { this.circulationInfo() }
               </div>
             </div>
-            <div className="right-column-links col-sm-2">
+            <div className="right-column-links col-sm-3">
               { this.rightColumnLinks() }
             </div>
           </div>
