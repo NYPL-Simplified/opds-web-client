@@ -105,6 +105,9 @@ export default class Collection extends React.Component<CollectionProps, any> {
        document.body.scrollTop = 0;
        document.documentElement.scrollTop = 0;
     }
+
+    // the component might be loading a new collection that doesn't fill the page
+    this.handleScrollOrResize();
   }
 
   componentDidMount() {
