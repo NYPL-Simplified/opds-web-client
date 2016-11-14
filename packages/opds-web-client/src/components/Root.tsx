@@ -290,7 +290,7 @@ export class Root extends React.Component<RootProps, any> {
         this.props.collectionUrl,
         this.props.bookUrl
       ).then(({ collectionData, bookData }) => {
-        if (this.props.authCredentials && collectionData.shelfUrl) {
+        if (this.props.authCredentials && collectionData && collectionData.shelfUrl) {
           this.props.fetchLoans(collectionData.shelfUrl);
         }
       });

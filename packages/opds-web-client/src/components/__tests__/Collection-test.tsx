@@ -166,6 +166,35 @@ describe("Collection", () => {
       expect(fetchPage.args[0][0]).to.equal("next");
     });
 
+    it("fetches next page if newly loaded page doesn't fill window", () => {
+      let fetchPage = stub();
+      let collectionData = {
+        id: "test collection",
+        url: "test url",
+        title: "title",
+        books: [],
+        lanes: [],
+        navigationLinks: [],
+        nextPageUrl: "next"
+      };
+      let context = mockRouterContext();
+      let wrapper = mount(
+        <Collection collection={collectionData} fetchPage={fetchPage} />,
+        { context }
+      );
+
+      expect(fetchPage.callCount).to.equal(1);
+      expect(fetchPage.args[0][0]).to.equal("next");
+
+      document.body.scrollTop = 1;
+      (document.body as any).scrollHeight = 1000;
+
+      wrapper.setProps({ isFetching: false });
+
+      expect(fetchPage.callCount).to.equal(2);
+      expect(fetchPage.args[1][0]).to.equal("next");
+    });
+
     it("shows loading indicator for next page", () => {
       let collectionData = {
         id: "test collection",
