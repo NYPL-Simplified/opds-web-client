@@ -127,4 +127,23 @@ describe("hierarchyComputeBreadcrumbs", () => {
     let data = Object.assign({}, collection, { catalogRootLink, parentLink });
     expect(hierarchyComputeBreadcrumbs(data, history)).to.deep.equal([catalogRootLink, parentLink]);
   });
+
+  it("uses a custom comparator if passed one", () => {
+    let catalogRootLink = {
+      url: "new root url",
+      text: "new root text"
+    };
+    let data = Object.assign({}, collection, { catalogRootLink });
+
+    // no comparator
+    expect(hierarchyComputeBreadcrumbs(data, history)).to.deep.equal([catalogRootLink, collectionLink]);
+
+    // comparator that says links are equal
+    let comparator = (url1, url2) => true;
+    expect(hierarchyComputeBreadcrumbs(data, history, comparator)).to.deep.equal([collectionLink]);
+
+    // comparator that says links are not equal
+    comparator = (url1, url2) => false;
+    expect(hierarchyComputeBreadcrumbs(data, history, comparator)).to.deep.equal([catalogRootLink, collectionLink]);
+  });
 });
