@@ -11,7 +11,7 @@ export interface BookProps {
 export default class Book extends React.Component<BookProps, any> {
   render(): JSX.Element {
     return (
-      <div className="book">
+      <div className="book" lang={this.props.book.language}>
         <CatalogLink
           collectionUrl={this.props.collectionUrl}
           bookUrl={this.props.book.url || this.props.book.id}

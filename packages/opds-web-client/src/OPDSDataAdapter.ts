@@ -147,6 +147,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
     publisher: entry.publisher,
     published: entry.published && formatDate(entry.published),
     categories: categories,
+    language: entry.language,
     url: detailUrl,
     raw: entry.unparsed
   };

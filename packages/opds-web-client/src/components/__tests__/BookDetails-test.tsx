@@ -25,7 +25,8 @@ let book = {
   categories: ["category 1", "category 2"],
   series: {
     name: "Fake Series"
-  }
+  },
+  language: "de"
 };
 
 describe("BookDetails", () => {
@@ -114,9 +115,20 @@ describe("BookDetails", () => {
     expect(categories.length).to.equal(0);
   });
 
-  it("shows summary", () => {
+  it("has book's language as overall language for the top details", () => {
+    let top = wrapper.find(".book-details > .top");
+    expect(top.props().lang).to.equal("de");
+  });
+
+  it("has english as the language for the fields", () => {
+    let fields = wrapper.find(".fields");
+    expect(fields.props().lang).to.equal("en");
+  });
+
+  it("shows summary, in book's language", () => {
     let summary = wrapper.find(".summary");
     expect(summary.html()).to.contain("Sam and Remi");
+    expect(summary.props().lang).to.equal("de");
   });
 
   it("shows download button for open access url", () => {

@@ -38,6 +38,7 @@ export interface BookData {
   publisher?: string;
   published?: string;
   categories?: string[];
+  language?: string;
   raw?: any;
 }
 
