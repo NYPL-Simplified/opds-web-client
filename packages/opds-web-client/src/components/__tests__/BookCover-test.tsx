@@ -44,10 +44,10 @@ describe("BookCover", () => {
       );
     });
 
-    it("shows the book cover with empty alt", () => {
+    it("shows the book cover with title as alt", () => {
       let image = wrapper.find("img");
       expect(image.props().src).to.equal(bookData.imageUrl);
-      expect(image.props().alt).to.equal("");
+      expect(image.props().alt).to.equal(bookData.title);
     });
 
     it("shows the placeholder cover on image error", () => {
