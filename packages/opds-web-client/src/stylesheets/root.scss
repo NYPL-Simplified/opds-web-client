@@ -34,6 +34,21 @@ input[type=text], input[type=button], input[type=submit], button, button.btn {
   }
 }
 
+input[type=text]::-webkit-input-placeholder {
+  color: $pagetextcolor;
+}
+input[type=text]::-moz-placeholder {
+  color: $pagetextcolor;
+  opacity: 1;
+}
+input[type=text]:-ms-input-placeholder {
+  color: $pagetextcolor;
+}
+input[type=text]:-moz-placeholder {
+  color: $pagetextcolor;
+  opacity: 1;
+}
+
 a {
   &:link {
     color: $linkcolor;
@@ -59,23 +74,26 @@ a {
     }
   }
 
-  .breadcrumbs-wrapper {
+  .breadcrumbs-or-search-wrapper {
+    background-color: $pagecolorlight;
     position: fixed;
     top: $headerHeight;
     width: 100%;
     z-index: 100;
-  }
 
-  .search-wrapper {
-    position: fixed;
-    top: $headerHeight;
-    right: 0;
-    z-index: 101;
-    padding-top: 2px;
-
-    button {
-      float: right;
+    ol.breadcrumb {
+      float: left;
+      white-space: nowrap;
     }
+
+    .search {
+      float: right;
+      padding-top: 2px;
+      input, button {
+        width: auto;
+        float: left;
+      }
+    }    
   }
 
   .body {
@@ -104,7 +122,7 @@ a {
     }
 
     &.with-breadcrumbs-or-search {
-      padding-top: $headerHeight + $breadcrumbsHeight + $padding;
+      padding-top: $headerHeight + $breadcrumbsHeight * 2 + $padding;
 
       .book-details-wrapper {
         top: $headerHeight + $breadcrumbsHeight;
@@ -169,6 +187,8 @@ a {
 .breadcrumb {
   background-color: $pagecolorlight;
   border-radius: 0;
+  max-width: 100%;
+  overflow-x: scroll;
 
   >li+li:before {
     color: $pagetextcolor;

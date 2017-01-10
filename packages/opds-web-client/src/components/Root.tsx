@@ -162,18 +162,18 @@ export class Root extends React.Component<RootProps, any> {
           </nav>
         }
 
-        { showBreadcrumbs &&
-          <div className="breadcrumbs-wrapper">
-            <Breadcrumbs links={breadcrumbsLinks} />
-          </div>
-        }
-        { showSearch &&
-          <div className="search-wrapper">
-            <Search
-              url={this.props.collectionData.search.url}
-              searchData={this.props.collectionData.search.searchData}
-              fetchSearchDescription={this.props.fetchSearchDescription}
-              />
+        { (showBreadcrumbs || showSearch) &&
+          <div className="breadcrumbs-or-search-wrapper">
+            { showBreadcrumbs &&
+              <Breadcrumbs links={breadcrumbsLinks} />
+            }
+            { showSearch &&
+              <Search
+                url={this.props.collectionData.search.url}
+                searchData={this.props.collectionData.search.searchData}
+                fetchSearchDescription={this.props.fetchSearchDescription}
+                />
+            }
           </div>
         }
 
