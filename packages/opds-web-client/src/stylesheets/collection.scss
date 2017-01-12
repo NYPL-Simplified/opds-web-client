@@ -4,6 +4,9 @@
   display: flex;
   flex-direction: row;
   height: 100%;
+  width: 100%;
+  // position is necessary to use 100% of flex item parent's height in safari
+  position: absolute;
 
   .facet-groups {
     height: 100%;
