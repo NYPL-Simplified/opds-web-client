@@ -53,8 +53,8 @@ export default class Collection extends React.Component<CollectionProps, any> {
 
           { this.props.collection.books &&
             <ul aria-label="books" className="subtle-list books">
-            { this.props.collection.books.map(book =>
-              <li key={book.id}>
+            { this.props.collection.books.map((book, index) =>
+              <li key={index}>
                 <Book
                   book={book}
                   collectionUrl={this.props.collection.url} />
@@ -65,8 +65,8 @@ export default class Collection extends React.Component<CollectionProps, any> {
 
           { this.props.collection.navigationLinks &&
             <ul aria-label="navigation links" className="navigation-links subtle-list" role="navigation">
-            { this.props.collection.navigationLinks.map(link =>
-              <li key={link.id}>
+            { this.props.collection.navigationLinks.map((link, index) =>
+              <li key={index}>
                 <CatalogLink
                   collectionUrl={link.url}
                   >

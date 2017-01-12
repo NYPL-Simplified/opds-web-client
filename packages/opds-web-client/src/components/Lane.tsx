@@ -53,8 +53,8 @@ export default class Lane extends React.Component<LaneProps, any> {
             aria-label={"books in " + this.props.lane.title}
             style={{ marginLeft: this.state.marginLeft }}
             >
-            { visibleBooks.map(book =>
-              <li key={book.id}>
+            { visibleBooks.map((book, index) =>
+              <li key={index}>
                 <Book
                   book={book}
                   collectionUrl={this.props.collectionUrl}
