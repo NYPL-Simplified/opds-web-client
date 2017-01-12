@@ -14,6 +14,10 @@ body {
   font-size: $basefont;
 }
 
+html, body, body > div {
+  height: 100%;
+}
+
 @each $tag in a, input, select {
   #{$tag} {
     border-radius: 0;
@@ -65,6 +69,10 @@ a {
 }
 
 .catalog {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
   .navbar-brand {
     font-size: 1.8em;
     color: white;
@@ -75,21 +83,19 @@ a {
   }
 
   .breadcrumbs-or-search-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
     background-color: $pagecolorlight;
-    position: fixed;
-    top: $headerHeight;
-    width: 100%;
     z-index: 100;
 
-    ol.breadcrumb {
-      float: left;
-      white-space: nowrap;
-    }
-
     .search {
-      float: right;
+      display: inline-flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
       padding-top: 2px;
-      input, button {
+      input, .btn {
         width: auto;
         float: left;
       }
@@ -97,18 +103,16 @@ a {
   }
 
   .body {
+    flex: 1;
+    overflow-y: hidden;
     padding-bottom: $padding;
-    overflow: auto;
 
     .book-details-wrapper {
-      position: fixed;
-      width: 100%;
-      top: $headerHeight;
-      height: calc(100% - #{$headerHeight});
+      height: 100%;
+      overflow-y: scroll;
       background-color: $pagecolor;
       z-index: 100;
       transform: translateZ(0);
-      overflow-y: scroll;
 
       .without-container {
         padding: 40px;
@@ -116,44 +120,9 @@ a {
         margin: 0 auto;
       }
     }
-
-    .collection {
-      padding-top: $headerHeight;
-    }
-
-    &.with-breadcrumbs-or-search {
-      padding-top: $headerHeight + $breadcrumbsHeight * 2 + $padding;
-
-      .book-details-wrapper {
-        top: $headerHeight + $breadcrumbsHeight;
-        height: calc(100% - #{$headerHeight} - #{$breadcrumbsHeight});
-      }
-
-      .collection {
-        padding-top: 0;
-      }
-
-      &.with-footer {
-        .book-details-wrapper {
-          height: calc(100% - #{$headerHeight} - #{$breadcrumbsHeight} - #{$footerHeight});
-        }
-      }
-    }
-
-    &.with-footer {
-      padding-bottom: $footerHeight + $padding;
-
-      .book-details-wrapper {
-        height: calc(100% - #{$headerHeight} - #{$footerHeight});
-      }
-    }
   }
 
   footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: $footerHeight;
     padding: $padding;
     background-color: $footercolor;
     border-top: 1px solid #CCC;
@@ -166,6 +135,7 @@ a {
   background-color: $dark;
   border: none;
   color: white;
+  margin-bottom: 0;
 
   .navbar-nav {
     margin: 0;
@@ -187,6 +157,7 @@ a {
 .breadcrumb {
   background-color: $pagecolorlight;
   border-radius: 0;
+  margin-bottom: 0;
   max-width: 100%;
   overflow-x: scroll;
 

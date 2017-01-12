@@ -108,14 +108,6 @@ export class Root extends React.Component<RootProps, any> {
     let showSearch = this.props.collectionData && this.props.collectionData.search;
     let showFooter = this.props.collectionData && Footer;
 
-    let bodyClass = "body";
-    if (showBreadcrumbs || showSearch) {
-      bodyClass += " with-breadcrumbs-or-search";
-    }
-    if (showFooter) {
-      bodyClass += " with-footer";
-    }
-
     return (
       <div className="catalog">
         <SkipNavigationLink target="#main" />
@@ -136,7 +128,7 @@ export class Root extends React.Component<RootProps, any> {
                 />
             }
           </Header> :
-          <nav className="header navbar navbar-default navbar-fixed-top">
+          <nav className="header navbar navbar-default">
             <div className="container-fluid">
               <span className="navbar-brand">
                 OPDS Web Client
@@ -211,7 +203,7 @@ export class Root extends React.Component<RootProps, any> {
           <UrlForm collectionUrl={this.props.collectionUrl} />
         }
 
-        <div className={bodyClass}>
+        <div className="body">
           { showBookWrapper &&
             <div className="book-details-wrapper">
               { showBook &&

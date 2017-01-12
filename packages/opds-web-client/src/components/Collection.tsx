@@ -23,7 +23,6 @@ export default class Collection extends React.Component<CollectionProps, any> {
 
   render(): JSX.Element {
     let hasFacets = (this.props.collection.facetGroups && this.props.collection.facetGroups.length > 0);
-    let bodyClass = hasFacets ? "body with-facets" : "body";
 
     return (
       <div className="collection">
@@ -40,7 +39,8 @@ export default class Collection extends React.Component<CollectionProps, any> {
         )}
 
         <div
-          className={bodyClass}
+          className="body"
+          ref="body"
           role="main"
           aria-label={"books in " + this.props.collection.title}>
           <a href="#" id="collection-main" />
@@ -102,8 +102,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.isFetching && !nextProps.isFetching && !nextProps.error) {
-       document.body.scrollTop = 0;
-       document.documentElement.scrollTop = 0;
+      (this.refs["body"] as any).scrollTop = 0;
     }
 
     // the component might be loading a new collection that doesn't fill the page
@@ -111,7 +110,8 @@ export default class Collection extends React.Component<CollectionProps, any> {
   }
 
   componentDidMount() {
-    window.addEventListener("scroll", this.handleScrollOrResize.bind(this));
+    let body = this.refs["body"] as any;
+    body.addEventListener("scroll", this.handleScrollOrResize.bind(this));
     window.addEventListener("resize", this.handleScrollOrResize.bind(this));
 
     // the first page might not fill the screen on initial load, so run handler once
@@ -119,7 +119,8 @@ export default class Collection extends React.Component<CollectionProps, any> {
   }
 
   componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScrollOrResize.bind(this));
+    let body = this.refs["body"] as any;
+    body.removeEventListener("scroll", this.handleScrollOrResize.bind(this));
     window.removeEventListener("resize", this.handleScrollOrResize.bind(this));
   }
 
@@ -134,8 +135,11 @@ export default class Collection extends React.Component<CollectionProps, any> {
   }
 
   handleScrollOrResize() {
-    let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    if ((scrollTop + window.innerHeight) >= document.body.scrollHeight) {
+    let body = this.refs["body"] as any;
+    let scrollTop = body.scrollTop;
+    let scrollHeight = body.scrollHeight;
+    let clientHeight = body.clientHeight;
+    if ((scrollTop + clientHeight) >= scrollHeight) {
       this.fetch();
     }
   }
