@@ -290,12 +290,6 @@ export class Root extends React.Component<RootProps, any> {
     }
   }
 
-  componentDidMount() {
-    if (typeof document !== "undefined") {
-      document.addEventListener("keydown", this.handleKeyDown.bind(this));
-    }
-  }
-
   componentWillReceiveProps(nextProps: RootProps) {
     if (nextProps.collectionUrl !== this.props.collectionUrl || nextProps.bookUrl !== this.props.bookUrl) {
       this.props.setCollectionAndBook(nextProps.collectionUrl, nextProps.bookUrl);
@@ -309,17 +303,6 @@ export class Root extends React.Component<RootProps, any> {
       let collectionTitle = props.collectionData && props.collectionData.title;
       let bookTitle = props.bookData && props.bookData.title;
       document.title = props.pageTitleTemplate(collectionTitle, bookTitle);
-    }
-  }
-
-  handleKeyDown(event) {
-    if (!event.metaKey && !event.altKey && !event.ctrlKey && !event.shiftKey) {
-      // event.keyCode is deprecated but not all browsers support event.code
-      if (event.code === "ArrowLeft" || event.keyCode === 37) {
-        this.showPrevBook();
-      } else if (event.code === "ArrowRight" || event.keyCode === 39) {
-        this.showNextBook();
-      }
     }
   }
 
