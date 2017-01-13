@@ -45,11 +45,11 @@
     display: block;
     height: $bookHeight + $padding;
     white-space: nowrap;
-    overflow: hidden;
+    overflow-y: hidden;
+    overflow-x: scroll;
     padding: 0;
     margin: 0;
     list-style-type: none;
-    transition: margin-left 1s ease-in-out;
 
     li {
       display: inline-block;
