@@ -38,12 +38,12 @@ export default class Lane extends React.Component<LaneProps, any> {
 
         <div ref="container" className="lane-books-container">
           { !this.state.atLeft &&
-            <div className="scroll-button left" onClick={this.scrollBack}>
+            <div className="scroll-button left" role="presentation" onClick={this.scrollBack}>
               &lt;
             </div>
           }
           { !this.state.atRight &&
-            <div className="scroll-button right" onClick={this.scrollForward}>
+            <div className="scroll-button right" role="presentation" onClick={this.scrollForward}>
               &gt;
             </div>
           }

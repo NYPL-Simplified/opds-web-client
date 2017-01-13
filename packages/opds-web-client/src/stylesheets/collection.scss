@@ -1,12 +1,10 @@
 @import "variables";
 
-.catalog .collection {
+.collection {
   display: flex;
   flex-direction: row;
   height: 100%;
   width: 100%;
-  // position is necessary to use 100% of flex item parent's height in safari
-  position: absolute;
 
   .facet-groups {
     height: 100%;
@@ -14,7 +12,7 @@
     overflow-y: scroll;
   }
 
-  .body {
+  .collection-main {
     height: 100%;
     padding: $padding;
     overflow-y: scroll;

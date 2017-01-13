@@ -40,13 +40,13 @@ describe("Root", () => {
     expect(links.length).to.equal(1);
   });
 
-  it("shows main anchor", () => {
+  it("contains main element", () => {
     let wrapper = shallow(
       <Root />
     );
 
-    let main = wrapper.find("#main");
-    expect(main.props().href).to.equal("#");
+    let main = wrapper.find("main");
+    expect(main.props().role).to.equal("main");
   });
 
   it("shows search and treats it as top-level", () => {

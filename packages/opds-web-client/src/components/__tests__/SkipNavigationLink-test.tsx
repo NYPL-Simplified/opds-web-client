@@ -12,7 +12,15 @@ describe("SkipNavigationLink", () => {
     );
 
     let element = wrapper.find(".skip-navigation a");
-    expect(element.text()).to.equal("Skip Navigation");
+    expect(element.text()).to.equal("Skip navigation");
     expect(element.props().href).to.equal("#main");
+  });
+
+  it("uses label", () => {
+    let wrapper = shallow(
+      <SkipNavigationLink target="#main" label="skippable things"/>
+    );
+    let element = wrapper.find(".skip-navigation a");
+    expect(element.text()).to.equal("Skip skippable things");
   });
 });

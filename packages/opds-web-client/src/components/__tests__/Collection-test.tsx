@@ -33,9 +33,9 @@ describe("Collection", () => {
       );
     });
 
-    it("contains #main anchor", () => {
+    it("contains main div", () => {
       let link = wrapper.find("#collection-main");
-      expect(link.props().href).to.equal("#");
+      expect(link.length).to.equal(1);
     });
 
     it("shows lanes", () => {
@@ -55,9 +55,9 @@ describe("Collection", () => {
       );
     });
 
-    it("shows #main anchor", () => {
+    it("contains main div", () => {
       let link = wrapper.find("#collection-main");
-      expect(link.props().href).to.equal("#");
+      expect(link.length).to.equal(1);
     });
 
     it("shows books in order", () => {

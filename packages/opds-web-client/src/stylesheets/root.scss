@@ -102,15 +102,21 @@ a {
     }    
   }
 
-  .body {
+  .main {
     flex: 1;
     position: relative;
     overflow-y: hidden;
     padding-bottom: $padding;
 
-    .book-details-wrapper {
+    .body {
       height: 100%;
+      width: 100%;
       overflow-y: scroll;
+      // position is necessary to use 100% of flex item parent's height in safari
+      position: absolute;
+    }
+
+    .book-details-wrapper {
       background-color: $pagecolor;
       z-index: 100;
       transform: translateZ(0);

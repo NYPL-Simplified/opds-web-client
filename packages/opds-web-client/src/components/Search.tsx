@@ -20,7 +20,7 @@ export default class Search extends React.Component<SearchProps, any> {
 
   render(): JSX.Element {
     return (
-      <div className="search">
+      <div className="search" role="search">
         { this.props.searchData && (
           <form onSubmit={this.onSubmit} className={this.props.className || "form-inline"}>
             <input
