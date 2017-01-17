@@ -27,6 +27,7 @@
     line-height: 7;
     cursor: pointer;
     transition: all 0.2s;
+    font-family: "Hiragino Sans", $fontfamily;
 
     &:hover {
       color: $linkcolor;
