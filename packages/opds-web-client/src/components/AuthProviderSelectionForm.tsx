@@ -35,9 +35,9 @@ export default class AuthProviderSelectionForm extends React.Component<AuthProvi
     let AuthForm = this.state.selectedProvider && this.state.selectedProvider.plugin.formComponent;
 
     return (
-      <div className="auth-form">
+      <div className="auth-form" role="dialog" aria-labelledby="auth-form-title">
         <div>
-          <h3>{ this.props.title ? this.props.title + " " : ""}Login</h3>
+          <h3 id="auth-form-title">{ this.props.title ? this.props.title + " " : ""}Login</h3>
           { this.state.selectedProvider &&
             <AuthForm
               hide={this.props.hide}

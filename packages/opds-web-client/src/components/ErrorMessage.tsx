@@ -9,9 +9,9 @@ export interface ErrorMessageProps {
 export default class ErrorMessage extends React.Component<ErrorMessageProps, any> {
   render(): JSX.Element {
     return (
-      <div className="error">
+      <div className="error" role="dialog" aria-labelledby="error">
         <div>
-          <h1>Error</h1>
+          <h1 id="error">Error</h1>
           <div className="message">
             {this.props.message}
           </div>
