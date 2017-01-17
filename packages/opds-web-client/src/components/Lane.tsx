@@ -42,11 +42,6 @@ export default class Lane extends React.Component<LaneProps, any> {
               &#9665;
             </div>
           }
-          { !this.state.atRight &&
-            <div className="scroll-button right" aria-label={"Scroll forward in " + this.props.lane.title} onClick={this.scrollForward}>
-              &#9655;
-            </div>
-          }
           <ul
             ref="list"
             className="lane-books"
@@ -66,6 +61,11 @@ export default class Lane extends React.Component<LaneProps, any> {
               </li>
             }
           </ul>
+          { !this.state.atRight &&
+            <div className="scroll-button right" aria-label={"Scroll forward in " + this.props.lane.title} onClick={this.scrollForward}>
+              &#9655;
+            </div>
+          }
         </div>
       </div>
     );
