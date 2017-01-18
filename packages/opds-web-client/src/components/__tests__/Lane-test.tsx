@@ -1,4 +1,5 @@
 import { expect } from "chai";
+import { stub } from "sinon";
 
 import * as React from "react";
 import { shallow, mount } from "enzyme";
@@ -96,6 +97,13 @@ describe("Lane", () => {
 
   describe("behavior", () => {
     beforeEach(() => {
+      window.requestAnimationFrame = (f) => {
+        f(0);
+        return 1;
+      };
+
+      window.cancelAnimationFrame = stub();
+
       let context = mockRouterContext();
       wrapper = mount(
         <Lane lane={laneData} collectionUrl="test collection" />,
@@ -110,45 +118,59 @@ describe("Lane", () => {
     });
 
     it("scrolls back", () => {
-      wrapper.setState({ atLeft: false, atRight: true, marginLeft: -2000 });
+      wrapper.setState({ atLeft: false, atRight: true });
       wrapper.instance().getContainerWidth = () => 200;
+      wrapper.instance().getScrollWidth = () => 1000;
+      let list = wrapper.instance().refs["list"] as any;
+      list.scrollLeft = 800;
       let button = wrapper.find(".scroll-button.left");
       button.simulate("click");
+      expect(wrapper.instance().getScroll()).to.equal(650);
+      wrapper.instance().updateScrollButtons();
       expect(wrapper.state().atLeft).to.be.false;
       expect(wrapper.state().atRight).to.be.false;
-      expect(wrapper.state().marginLeft).to.be.above(-2000);
     });
 
     it("stops at left edge when scrolling back", () => {
-      wrapper.setState({ atLeft: false, atRight: true, marginLeft: -50 });
+      wrapper.setState({ atLeft: false, atRight: true });
       wrapper.instance().getContainerWidth = () => 200;
+      wrapper.instance().getScrollWidth = () => 1000;
+      let list = wrapper.instance().refs["list"] as any;
+      list.scrollLeft = 100;
       let button = wrapper.find(".scroll-button.left");
       button.simulate("click");
+      expect(wrapper.instance().getScroll()).to.equal(0);
+      wrapper.instance().updateScrollButtons();
       expect(wrapper.state().atLeft).to.be.true;
       expect(wrapper.state().atRight).to.be.false;
-      expect(wrapper.state().marginLeft).to.equal(0);
     });
 
     it("scrolls forward", () => {
-      wrapper.setState({ atLeft: true, atRight: false, marginLeft: 0 });
+      wrapper.setState({ atLeft: true, atRight: false });
       wrapper.instance().getContainerWidth = () => 200;
-      wrapper.instance().getScrollWidth = () => 2000;
+      wrapper.instance().getScrollWidth = () => 1000;
+      let list = wrapper.instance().refs["list"] as any;
+      list.scrollLeft = 0;
       let button = wrapper.find(".scroll-button.right");
       button.simulate("click");
+      expect(wrapper.instance().getScroll()).to.equal(150);
+      wrapper.instance().updateScrollButtons();
       expect(wrapper.state().atLeft).to.be.false;
       expect(wrapper.state().atRight).to.be.false;
-      expect(wrapper.state().marginLeft).to.be.below(0);
     });
 
     it("stops at right edge when scrolling forward", () => {
-      wrapper.setState({ atLeft: true, atRight: false, marginLeft: -1700 });
+      wrapper.setState({ atLeft: true, atRight: false });
       wrapper.instance().getContainerWidth = () => 200;
-      wrapper.instance().getScrollWidth = () => 2000;
+      wrapper.instance().getScrollWidth = () => 1000;
+      let list = wrapper.instance().refs["list"] as any;
+      list.scrollLeft = 700;
       let button = wrapper.find(".scroll-button.right");
       button.simulate("click");
+      expect(wrapper.instance().getScroll()).to.equal(800);
+      wrapper.instance().updateScrollButtons();
       expect(wrapper.state().atLeft).to.be.false;
       expect(wrapper.state().atRight).to.be.true;
-      expect(wrapper.state().marginLeft).to.equal(-1800);
     });
   });
 });

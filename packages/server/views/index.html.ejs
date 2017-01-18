@@ -28,7 +28,7 @@
           var details = bookTitle || collectionTitle;
           return title + (details ? " - " + details : "");
         },
-        pathFor: (collectionUrl, bookUrl) => {
+        pathFor: function (collectionUrl, bookUrl) {
           var path = "/";
           path += collectionUrl ? `collection/${encodeURIComponent(collectionUrl)}/` : "";
           path += bookUrl ? `book/${encodeURIComponent(bookUrl)}/` : "";

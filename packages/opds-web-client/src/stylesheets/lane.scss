@@ -11,7 +11,7 @@
   }
 
   .lane-books-container {
-    overflow-x: hidden;
+    overflow: hidden;
     position: relative;
   }
 
@@ -19,6 +19,7 @@
     background-color: $linkcolor;
     color: $pagecolor;
     position: absolute;
+    top: 0;
     padding: 0 1rem;
     z-index: 1;
     height: 100%;
@@ -26,6 +27,7 @@
     line-height: 7;
     cursor: pointer;
     transition: all 0.2s;
+    font-family: "Hiragino Sans", $fontfamily;
 
     &:hover {
       color: $linkcolor;
@@ -45,11 +47,11 @@
     display: block;
     height: $bookHeight + $padding;
     white-space: nowrap;
-    overflow: hidden;
+    overflow-y: hidden;
+    overflow-x: scroll;
     padding: 0;
     margin: 0;
     list-style-type: none;
-    transition: margin-left 1s ease-in-out;
 
     li {
       display: inline-block;

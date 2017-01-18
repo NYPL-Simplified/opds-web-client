@@ -33,9 +33,9 @@ describe("Collection", () => {
       );
     });
 
-    it("contains #main anchor", () => {
+    it("contains main div", () => {
       let link = wrapper.find("#collection-main");
-      expect(link.props().href).to.equal("#");
+      expect(link.length).to.equal(1);
     });
 
     it("shows lanes", () => {
@@ -55,9 +55,9 @@ describe("Collection", () => {
       );
     });
 
-    it("shows #main anchor", () => {
+    it("contains main div", () => {
       let link = wrapper.find("#collection-main");
-      expect(link.props().href).to.equal("#");
+      expect(link.length).to.equal(1);
     });
 
     it("shows books in order", () => {
@@ -125,27 +125,17 @@ describe("Collection", () => {
         { context }
       );
 
-      document.body.scrollTop = 1000;
-      (document.body as any).scrollHeight = 1;
-      window.dispatchEvent(new (window as any).UIEvent("scroll", {detail: 0}));
+      let main = wrapper.instance().refs["collection-main"] as any;
+      main.scrollTop = 1000;
+      main.scrollHeight = 1;
+      main.clientHeight = 1;
+      (wrapper.instance() as Collection).handleScrollOrResize();
 
       expect(fetchPage.callCount).to.equal(1);
       expect(fetchPage.args[0][0]).to.equal("next");
-
-      // firefox puts scrollTop in document.documentElement instead of document.body
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 1000;
-      (document.body as any).scrollHeight = 1;
-      window.dispatchEvent(new (window as any).UIEvent("scroll", {detail: 0}));
-
-      expect(fetchPage.callCount).to.equal(2);
-      expect(fetchPage.args[1][0]).to.equal("next");
     });
 
     it("fetches next page if first page doesn't fill window", () => {
-      document.body.scrollTop = 1000;
-      (document.body as any).scrollHeight = 1;
-
       let fetchPage = stub();
       let collectionData = {
         id: "test collection",
@@ -161,6 +151,13 @@ describe("Collection", () => {
         <Collection collection={collectionData} fetchPage={fetchPage} />,
         { context }
       );
+
+      let main = wrapper.instance().refs["collection-main"] as any;
+      main.scrollTop = 1000;
+      main.scrollHeight = 1;
+      main.clientHeight = 1;
+
+      (wrapper as any).mount();
 
       expect(fetchPage.callCount).to.equal(1);
       expect(fetchPage.args[0][0]).to.equal("next");
@@ -183,13 +180,19 @@ describe("Collection", () => {
         { context }
       );
 
+      let main = wrapper.instance().refs["collection-main"] as any;
+      main.scrollTop = 1;
+      main.scrollHeight = 100;
+      main.clientHeight = 1000;
+
+      (wrapper as any).mount();
+
       expect(fetchPage.callCount).to.equal(1);
       expect(fetchPage.args[0][0]).to.equal("next");
 
-      document.body.scrollTop = 1;
-      (document.body as any).scrollHeight = 1000;
-
       wrapper.setProps({ isFetching: false });
+
+      // body's scroll attributes haven't changed
 
       expect(fetchPage.callCount).to.equal(2);
       expect(fetchPage.args[1][0]).to.equal("next");
@@ -238,6 +241,7 @@ describe("Collection", () => {
     };
     let wrapper;
     let context;
+    let main;
 
     beforeEach(() => {
       context = mockRouterContext();
@@ -245,13 +249,16 @@ describe("Collection", () => {
         <Collection collection={collectionData} isFetching={true}/>,
         { context }
       );
-      document.body.scrollTop = 1000;
+      main = wrapper.instance().refs["collection-main"] as any;
+      main.scrollTop = 1000;
+      main.scrollHeight = 1;
+      main.clientHeight = 1;
     });
 
     it("scrolls to top when new collection fetched successfully", () => {
       wrapper.setProps({ isFetching: false });
 
-      expect(document.body.scrollTop).to.equal(0);
+      expect(main.scrollTop).to.equal(0);
     });
 
     it("does not scroll when there's an error", () => {
@@ -265,7 +272,7 @@ describe("Collection", () => {
         { context }
       );
 
-      expect(document.body.scrollTop).to.equal(1000);
+      expect(main.scrollTop).to.equal(1000);
     });
   });
 

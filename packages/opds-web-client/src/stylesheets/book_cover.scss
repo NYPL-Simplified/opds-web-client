@@ -1,10 +1,12 @@
 .book-cover {
+  display: block;
   width: 150px;
   height: 200px;
   border: 1px solid #CCC;
 }
 
 .auto-book-cover {
+  display: block;
   float: left;
   width: 150px;
   height: 200px;

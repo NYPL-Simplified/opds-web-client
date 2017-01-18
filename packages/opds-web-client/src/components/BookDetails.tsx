@@ -26,7 +26,7 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
 
     return (
       <div className="book-details">
-        <div className="top">
+        <div className="top" lang={this.props.book.language}>
           <div className="cover">
             <BookCover book={this.props.book} />
           </div>
@@ -47,7 +47,7 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
               <h2 className="contributors">Contributors: {this.props.book.contributors.join(", ")}</h2> :
               ""
             }
-            <div className="fields">
+            <div className="fields" lang="en">
               { this.fields().map(field =>
                 field.value ? <div className={field.name.toLowerCase().replace(" ", "-")} key={field.name}>{field.name}: {field.value}</div> : null
               ) }
@@ -73,7 +73,7 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
             </div>
           </div>
 
-          <div className="summary"
+          <div className="summary" lang={this.props.book.language}
                dangerouslySetInnerHTML={{ __html: this.props.book.summary }}></div>
         </div>
       </div>

@@ -14,6 +14,10 @@ body {
   font-size: $basefont;
 }
 
+html, body, body > div {
+  height: 100%;
+}
+
 @each $tag in a, input, select {
   #{$tag} {
     border-radius: 0;
@@ -34,6 +38,21 @@ input[type=text], input[type=button], input[type=submit], button, button.btn {
   }
 }
 
+input[type=text]::-webkit-input-placeholder {
+  color: $pagetextcolor;
+}
+input[type=text]::-moz-placeholder {
+  color: $pagetextcolor;
+  opacity: 1;
+}
+input[type=text]:-ms-input-placeholder {
+  color: $pagetextcolor;
+}
+input[type=text]:-moz-placeholder {
+  color: $pagetextcolor;
+  opacity: 1;
+}
+
 a {
   &:link {
     color: $linkcolor;
@@ -50,6 +69,10 @@ a {
 }
 
 .catalog {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
   .navbar-brand {
     font-size: 1.8em;
     color: white;
@@ -59,38 +82,44 @@ a {
     }
   }
 
-  .breadcrumbs-wrapper {
-    position: fixed;
-    top: $headerHeight;
-    width: 100%;
+  .breadcrumbs-or-search-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background-color: $pagecolorlight;
     z-index: 100;
+
+    .search {
+      display: inline-flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      padding-top: 2px;
+      input, .btn {
+        width: auto;
+        float: left;
+      }
+    }    
   }
 
-  .search-wrapper {
-    position: fixed;
-    top: $headerHeight;
-    right: 0;
-    z-index: 101;
-    padding-top: 2px;
-
-    button {
-      float: right;
-    }
-  }
-
-  .body {
+  .main {
+    flex: 1;
+    position: relative;
+    overflow-y: hidden;
     padding-bottom: $padding;
-    overflow: auto;
+
+    .body {
+      height: 100%;
+      width: 100%;
+      overflow-y: scroll;
+      // position is necessary to use 100% of flex item parent's height in safari
+      position: absolute;
+    }
 
     .book-details-wrapper {
-      position: fixed;
-      width: 100%;
-      top: $headerHeight;
-      height: calc(100% - #{$headerHeight});
       background-color: $pagecolor;
       z-index: 100;
       transform: translateZ(0);
-      overflow-y: scroll;
 
       .without-container {
         padding: 40px;
@@ -98,44 +127,9 @@ a {
         margin: 0 auto;
       }
     }
-
-    .collection {
-      padding-top: $headerHeight;
-    }
-
-    &.with-breadcrumbs-or-search {
-      padding-top: $headerHeight + $breadcrumbsHeight + $padding;
-
-      .book-details-wrapper {
-        top: $headerHeight + $breadcrumbsHeight;
-        height: calc(100% - #{$headerHeight} - #{$breadcrumbsHeight});
-      }
-
-      .collection {
-        padding-top: 0;
-      }
-
-      &.with-footer {
-        .book-details-wrapper {
-          height: calc(100% - #{$headerHeight} - #{$breadcrumbsHeight} - #{$footerHeight});
-        }
-      }
-    }
-
-    &.with-footer {
-      padding-bottom: $footerHeight + $padding;
-
-      .book-details-wrapper {
-        height: calc(100% - #{$headerHeight} - #{$footerHeight});
-      }
-    }
   }
 
   footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: $footerHeight;
     padding: $padding;
     background-color: $footercolor;
     border-top: 1px solid #CCC;
@@ -148,6 +142,7 @@ a {
   background-color: $dark;
   border: none;
   color: white;
+  margin-bottom: 0;
 
   .navbar-nav {
     margin: 0;
@@ -169,6 +164,9 @@ a {
 .breadcrumb {
   background-color: $pagecolorlight;
   border-radius: 0;
+  margin-bottom: 0;
+  max-width: 100%;
+  overflow-x: scroll;
 
   >li+li:before {
     color: $pagetextcolor;

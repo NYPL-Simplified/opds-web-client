@@ -3,14 +3,24 @@
 @mixin popup($width, $height: 200px) {
   position: fixed;
   top: $headerHeight;
-  left: 10%;
-  width: 80%;
-  margin-top: 0;
-  margin-left: 0;
-  padding: 100px;
-  background-color: rgba($pagecolor, 0.9);
-  text-align: center;
-  z-index: 200;
-  border-radius: 0;
-  box-shadow: 0 0 2em rgba(black, 0.5);
+  left: 0;
+  width: 100%;
+  height: calc(100% - #{$headerHeight});
+  z-index: 199;
+  background-color: rgba($pagecolor, 0.5);
+
+  > * {
+    position: fixed;
+    top: $headerHeight;
+    left: 10%;
+    width: 80%;
+    margin-top: 0;
+    margin-left: 0;
+    padding: 100px;
+    background-color: rgba($pagecolor, 0.9);
+    text-align: center;
+    z-index: 200;
+    border-radius: 0;
+    box-shadow: 0 0 2em rgba(black, 0.5);
+  }
 }

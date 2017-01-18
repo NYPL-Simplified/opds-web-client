@@ -23,13 +23,12 @@ export default class Collection extends React.Component<CollectionProps, any> {
 
   render(): JSX.Element {
     let hasFacets = (this.props.collection.facetGroups && this.props.collection.facetGroups.length > 0);
-    let bodyClass = hasFacets ? "body with-facets" : "body";
 
     return (
       <div className="collection">
         { hasFacets && (
-          <div className="facet-groups" role="navigation" aria-label="filters">
-            <SkipNavigationLink target="#collection-main" />
+          <div className="facet-groups" role="complementary" aria-label="filters">
+            <SkipNavigationLink target="#collection-main" label="filters"/>
             { this.props.collection.facetGroups.map(facetGroup =>
                 <FacetGroup
                   key={facetGroup.label}
@@ -40,10 +39,10 @@ export default class Collection extends React.Component<CollectionProps, any> {
         )}
 
         <div
-          className={bodyClass}
-          role="main"
+          id="collection-main"
+          className="collection-main"
+          ref="collection-main"
           aria-label={"books in " + this.props.collection.title}>
-          <a href="#" id="collection-main" />
           { (this.props.collection.lanes && this.props.collection.lanes.length > 0) ?
             <Lanes
               url={this.props.collection.url}
@@ -53,8 +52,8 @@ export default class Collection extends React.Component<CollectionProps, any> {
 
           { this.props.collection.books &&
             <ul aria-label="books" className="subtle-list books">
-            { this.props.collection.books.map(book =>
-              <li key={book.id}>
+            { this.props.collection.books.map((book, index) =>
+              <li key={index}>
                 <Book
                   book={book}
                   collectionUrl={this.props.collection.url} />
@@ -65,8 +64,8 @@ export default class Collection extends React.Component<CollectionProps, any> {
 
           { this.props.collection.navigationLinks &&
             <ul aria-label="navigation links" className="navigation-links subtle-list" role="navigation">
-            { this.props.collection.navigationLinks.map(link =>
-              <li key={link.id}>
+            { this.props.collection.navigationLinks.map((link, index) =>
+              <li key={index}>
                 <CatalogLink
                   collectionUrl={link.url}
                   >
@@ -102,8 +101,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.isFetching && !nextProps.isFetching && !nextProps.error) {
-       document.body.scrollTop = 0;
-       document.documentElement.scrollTop = 0;
+      (this.refs["collection-main"] as HTMLElement).scrollTop = 0;
     }
 
     // the component might be loading a new collection that doesn't fill the page
@@ -111,7 +109,8 @@ export default class Collection extends React.Component<CollectionProps, any> {
   }
 
   componentDidMount() {
-    window.addEventListener("scroll", this.handleScrollOrResize.bind(this));
+    let body = this.refs["collection-main"] as HTMLElement;
+    body.addEventListener("scroll", this.handleScrollOrResize.bind(this));
     window.addEventListener("resize", this.handleScrollOrResize.bind(this));
 
     // the first page might not fill the screen on initial load, so run handler once
@@ -119,7 +118,8 @@ export default class Collection extends React.Component<CollectionProps, any> {
   }
 
   componentWillUnmount() {
-    window.removeEventListener("scroll", this.handleScrollOrResize.bind(this));
+    let body = this.refs["collection-main"] as HTMLElement;
+    body.removeEventListener("scroll", this.handleScrollOrResize.bind(this));
     window.removeEventListener("resize", this.handleScrollOrResize.bind(this));
   }
 
@@ -134,8 +134,11 @@ export default class Collection extends React.Component<CollectionProps, any> {
   }
 
   handleScrollOrResize() {
-    let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    if ((scrollTop + window.innerHeight) >= document.body.scrollHeight) {
+    let main = this.refs["collection-main"] as HTMLElement;
+    let scrollTop = main.scrollTop;
+    let scrollHeight = main.scrollHeight;
+    let clientHeight = main.clientHeight;
+    if ((scrollTop + clientHeight) >= scrollHeight) {
       this.fetch();
     }
   }

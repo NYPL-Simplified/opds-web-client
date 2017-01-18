@@ -61,7 +61,8 @@ describe("OPDSDataAdapter", () => {
       series: {
         name: "Fake Series",
         position: 2
-      }
+      },
+      language: "en"
     });
 
     let acquisitionFeed = factory.acquisitionFeed({
@@ -96,6 +97,7 @@ describe("OPDSDataAdapter", () => {
     expect(book.imageUrl).to.equal(thumbImageLink.href);
     expect(book.publisher).to.equal("Fake Publisher");
     expect(book.published).to.equal("June 8, 2014");
+    expect(book.language).to.equal("en");
     expect(book.openAccessLinks[0].url).to.equal(openAccessLink.href);
     expect(book.borrowUrl).to.equal(borrowLink.href);
     expect(book.fulfillmentLinks[0].url).to.equal(fulfillmentLink.href);

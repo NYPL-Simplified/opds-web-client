@@ -14,7 +14,7 @@ export interface LaneProps {
 export default class Lane extends React.Component<LaneProps, any> {
   constructor(props) {
     super(props);
-    this.state = { marginLeft: 0, atLeft: true, atRight: false };
+    this.state = { atLeft: true, atRight: false };
     this.scrollBack = this.scrollBack.bind(this);
     this.scrollForward = this.scrollForward.bind(this);
   }
@@ -38,23 +38,17 @@ export default class Lane extends React.Component<LaneProps, any> {
 
         <div ref="container" className="lane-books-container">
           { !this.state.atLeft &&
-            <div className="scroll-button left" onClick={this.scrollBack}>
-              &lt;
-            </div>
-          }
-          { !this.state.atRight &&
-            <div className="scroll-button right" onClick={this.scrollForward}>
-              &gt;
+            <div className="scroll-button left" aria-label={"Scroll back in " + this.props.lane.title} onClick={this.scrollBack}>
+              &#9665;
             </div>
           }
           <ul
             ref="list"
             className="lane-books"
             aria-label={"books in " + this.props.lane.title}
-            style={{ marginLeft: this.state.marginLeft }}
             >
-            { visibleBooks.map(book =>
-              <li key={book.id}>
+            { visibleBooks.map((book, index) =>
+              <li key={index}>
                 <Book
                   book={book}
                   collectionUrl={this.props.collectionUrl}
@@ -67,6 +61,11 @@ export default class Lane extends React.Component<LaneProps, any> {
               </li>
             }
           </ul>
+          { !this.state.atRight &&
+            <div className="scroll-button right" aria-label={"Scroll forward in " + this.props.lane.title} onClick={this.scrollForward}>
+              &#9655;
+            </div>
+          }
         </div>
       </div>
     );
@@ -90,38 +89,82 @@ export default class Lane extends React.Component<LaneProps, any> {
     return (this.refs["list"] as any).scrollWidth;
   }
 
-  scrollBack() {
-    let atLeft = false;
-    let atRight = false;
+  getScroll(): number {
+    return (this.refs["list"] as any).scrollLeft;
+  }
+
+  changeScroll(delta: number): void {
+    let oldScroll = this.getScroll();
+    let newScroll = oldScroll + delta;
+
+    let scrollWidth = this.getScrollWidth();
     let containerWidth = this.getContainerWidth();
-    let newMarginLeft = this.state.marginLeft + containerWidth - 20;
-    if (newMarginLeft >= 0) {
-      newMarginLeft = 0;
-      atLeft = true;
+    if (newScroll > (scrollWidth - containerWidth)) {
+      newScroll = scrollWidth - containerWidth;
     }
-    this.setState({ marginLeft: newMarginLeft, atLeft, atRight });
+    if (newScroll < 0) {
+      newScroll = 0;
+    }
+
+    let increment = 25;
+    if (delta < 0) {
+      increment = increment * -1;
+    }
+
+    let animationFrame;
+    let incrementScroll = (time: number) => {
+      let scroll = this.getScroll();
+      let remainingScroll = newScroll - scroll;
+      let list = this.refs["list"] as any;
+      if (Math.abs(remainingScroll) < Math.abs(increment)) {
+        list.scrollLeft = newScroll;
+        window.cancelAnimationFrame(animationFrame);
+      } else {
+        list.scrollLeft = scroll + increment;
+        animationFrame = window.requestAnimationFrame(incrementScroll);
+      }
+    };
+    animationFrame = window.requestAnimationFrame(incrementScroll);
+  }
+
+  scrollBack() {
+    let containerWidth = this.getContainerWidth();
+    let delta = - containerWidth + 50;
+    this.changeScroll(delta);
   }
 
   scrollForward() {
+    let containerWidth = this.getContainerWidth();
+    let delta = containerWidth - 50;
+    this.changeScroll(delta);
+  }
+
+  updateScrollButtons() {
     let atLeft = false;
     let atRight = false;
+
+    let scroll = this.getScroll();
     let scrollWidth = this.getScrollWidth();
     let containerWidth = this.getContainerWidth();
-    let minMarginLeft = containerWidth - scrollWidth;
-    let newMarginLeft = this.state.marginLeft - containerWidth + 20;
-    if (newMarginLeft <= minMarginLeft) {
-      newMarginLeft = minMarginLeft;
+    if (scroll <= 0) {
+      atLeft = true;
+    }
+    if (scroll >= (scrollWidth - containerWidth)) {
       atRight = true;
     }
-    this.setState({ marginLeft: newMarginLeft, atLeft, atRight });
+    this.setState({ atLeft, atRight });
   }
 
   componentDidMount() {
-    let scrollWidth = this.getScrollWidth();
-    let containerWidth = this.getContainerWidth();
-    let minMarginLeft = containerWidth - scrollWidth;
-    if (this.state.marginLeft === minMarginLeft) {
-      this.setState({ atRight: true });
-    }
+    let list = this.refs["list"] as any;
+    list.addEventListener("scroll", this.updateScrollButtons.bind(this));
+    window.addEventListener("resize", this.updateScrollButtons.bind(this));
+    this.updateScrollButtons();
+  }
+
+  componentWillUnmount() {
+    let list = this.refs["list"] as any;
+    list.removeEventListener("scroll", this.updateScrollButtons.bind(this));
+    window.removeEventListener("resize", this.updateScrollButtons.bind(this));
   }
 }

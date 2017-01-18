@@ -9,26 +9,28 @@ export interface ErrorMessageProps {
 export default class ErrorMessage extends React.Component<ErrorMessageProps, any> {
   render(): JSX.Element {
     return (
-      <div className="error">
-        <h1>Error</h1>
-        <div className="message">
-          {this.props.message}
+      <div className="error" role="dialog" aria-labelledby="error">
+        <div>
+          <h1 id="error">Error</h1>
+          <div className="message">
+            {this.props.message}
+          </div>
+          <br />
+          { this.props.retry &&
+            <button
+              className="retry-button btn btn-default"
+              onClick={this.props.retry}>
+              Try again
+            </button>
+          }
+          { this.props.close &&
+            <button
+              className="close-button btn btn-default"
+              onClick={this.props.close}>
+              Close
+            </button>
+          }
         </div>
-        <br />
-        { this.props.retry &&
-          <button
-            className="retry-button btn btn-default"
-            onClick={this.props.retry}>
-            Try again
-          </button>
-        }
-        { this.props.close &&
-          <button
-            className="close-button btn btn-default"
-            onClick={this.props.close}>
-            Close
-          </button>
-        }
       </div>
     );
   }

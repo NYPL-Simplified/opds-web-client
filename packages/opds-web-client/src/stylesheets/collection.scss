@@ -1,19 +1,22 @@
 @import "variables";
 
 .collection {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+
   .facet-groups {
+    height: 100%;
     width: $leftPanelWidth;
-    position: fixed;
-    left: 0;
+    overflow-y: scroll;
   }
 
-  .body {
-    padding: $padding;
+  .collection-main {
     height: 100%;
-
-    &.with-facets {
-      margin-left: $leftPanelWidth + $padding;
-    }
+    padding: $padding;
+    overflow-y: scroll;
+    flex: 1;
   }
 
   .empty-collection-message {

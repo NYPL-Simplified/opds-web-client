@@ -2,7 +2,9 @@
 
 .error {
   @include popup(400px);
-  background-color: $pagecolor;
+  > div {
+    background-color: $pagecolor;
+  }
 
   h1 {
     margin-top: 0;

@@ -40,13 +40,13 @@ describe("Root", () => {
     expect(links.length).to.equal(1);
   });
 
-  it("shows main anchor", () => {
+  it("contains main element", () => {
     let wrapper = shallow(
       <Root />
     );
 
-    let main = wrapper.find("#main");
-    expect(main.props().href).to.equal("#");
+    let main = wrapper.find("main");
+    expect(main.props().role).to.equal("main");
   });
 
   it("shows search and treats it as top-level", () => {
@@ -464,60 +464,6 @@ describe("Root", () => {
     expect(pageTitleTemplate.args[1][0]).to.equal(null);
     expect(pageTitleTemplate.args[1][1]).to.equal(null);
     expect(document.title).to.equal("testing null, null");
-  });
-
-  it("calls showPrevBook() on left key press but not if meta key is also presssed", () => {
-    let showPrevBook = stub();
-    let context = mockRouterContext();
-    let wrapper = mount(
-      <Root
-        bookUrl="test book"
-        collectionUrl="test collection"
-        setCollectionAndBook={mockSetCollectionAndBook}
-        />,
-      { context }
-    ) as any;
-    wrapper.instance().showPrevBook = showPrevBook;
-
-    document.dispatchEvent(new (window as any).KeyboardEvent("keydown", {
-      code: "ArrowLeft"
-    } as any));
-
-    expect(showPrevBook.callCount).to.equal(1);
-
-    document.dispatchEvent(new (window as any).KeyboardEvent("keydown", {
-      code: "ArrowLeft",
-      ctrlKey: true
-    } as any));
-
-    expect(showPrevBook.callCount).to.equal(1);
-  });
-
-  it("calls showNextBook() on right key press but not if meta key is also pressed", () => {
-    let showNextBook = stub();
-    let context = mockRouterContext();
-    let wrapper = mount(
-      <Root
-        bookUrl="test book"
-        collectionUrl="test collection"
-        setCollectionAndBook={mockSetCollectionAndBook}
-        />,
-      { context }
-    ) as any;
-    wrapper.instance().showNextBook = showNextBook;
-
-    document.dispatchEvent(new (window as any).KeyboardEvent("keydown", {
-      code: "ArrowRight"
-    } as any));
-
-    expect(showNextBook.callCount).to.equal(1);
-
-    document.dispatchEvent(new (window as any).KeyboardEvent("keydown", {
-      code: "ArrowRight",
-      altKey: true
-    } as any));
-
-    expect(showNextBook.callCount).to.equal(1);
   });
 
   describe("when given a header component", () => {

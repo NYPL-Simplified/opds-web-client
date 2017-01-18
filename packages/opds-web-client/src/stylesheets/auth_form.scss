@@ -2,7 +2,9 @@
 
 .auth-form {
   @include popup(300px, 300px);
-  background-color: $pagecolor;
+  > div {
+    background-color: $pagecolor;
+  }
 
   h3, li {
     max-width: 300px;

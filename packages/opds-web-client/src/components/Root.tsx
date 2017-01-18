@@ -108,14 +108,6 @@ export class Root extends React.Component<RootProps, any> {
     let showSearch = this.props.collectionData && this.props.collectionData.search;
     let showFooter = this.props.collectionData && Footer;
 
-    let bodyClass = "body";
-    if (showBreadcrumbs || showSearch) {
-      bodyClass += " with-breadcrumbs-or-search";
-    }
-    if (showFooter) {
-      bodyClass += " with-footer";
-    }
-
     return (
       <div className="catalog">
         <SkipNavigationLink target="#main" />
@@ -136,7 +128,7 @@ export class Root extends React.Component<RootProps, any> {
                 />
             }
           </Header> :
-          <nav className="header navbar navbar-default navbar-fixed-top">
+          <nav className="header navbar navbar-default" role="navigation">
             <div className="container-fluid">
               <span className="navbar-brand">
                 OPDS Web Client
@@ -162,98 +154,99 @@ export class Root extends React.Component<RootProps, any> {
           </nav>
         }
 
-        { showBreadcrumbs &&
-          <div className="breadcrumbs-wrapper">
-            <Breadcrumbs links={breadcrumbsLinks} />
+        { (showBreadcrumbs || showSearch) &&
+          <div className="breadcrumbs-or-search-wrapper">
+            { showBreadcrumbs &&
+              <Breadcrumbs links={breadcrumbsLinks} />
+            }
+            { showSearch &&
+              <Search
+                url={this.props.collectionData.search.url}
+                searchData={this.props.collectionData.search.searchData}
+                fetchSearchDescription={this.props.fetchSearchDescription}
+                />
+            }
           </div>
         }
-        { showSearch &&
-          <div className="search-wrapper">
-            <Search
-              url={this.props.collectionData.search.url}
-              searchData={this.props.collectionData.search.searchData}
-              fetchSearchDescription={this.props.fetchSearchDescription}
+
+        <main id="main" className="main" role="main" tabIndex={-1}>
+
+          { this.state.authError &&
+            <ErrorMessage
+              message={this.state.authError}
+              close={() => { this.setState({ authError: null }); }} />
+          }
+
+          { this.props.error && (!this.props.auth || !this.props.auth.showForm) &&
+            <ErrorMessage
+              message={"Could not fetch data: " + this.props.error.url}
+              retry={this.props.retryCollectionAndBook} />
+          }
+
+          { this.props.isFetching &&
+            <LoadingIndicator />
+          }
+
+          { this.props.auth && this.props.auth.showForm &&
+            <AuthProviderSelectionForm
+              saveCredentials={this.props.saveAuthCredentials}
+              hide={this.props.closeErrorAndHideAuthForm}
+              callback={this.props.auth.callback}
+              cancel={this.props.auth.cancel}
+              title={this.props.auth.title}
+              error={this.props.auth.error}
+              providers={this.props.auth.providers}
               />
+          }
+
+          { showUrlForm &&
+            <UrlForm collectionUrl={this.props.collectionUrl} />
+          }
+
+          <div className="body">
+            { showBookWrapper &&
+              <div className="book-details-wrapper">
+                { showBook &&
+                  ( BookDetailsContainer && (this.props.bookUrl || this.props.bookData.url) ?
+                    <BookDetailsContainer
+                      book={this.loanedBookData() || this.props.bookData}
+                      bookUrl={this.props.bookUrl || this.props.bookData.url}
+                      collectionUrl={this.props.collectionUrl}
+                      refreshCatalog={this.props.refreshCollectionAndBook}
+                      >
+                      <BookDetails
+                        book={this.loanedBookData() || this.props.bookData}
+                        updateBook={this.props.updateBook}
+                        fulfillBook={this.props.fulfillBook}
+                        indirectFulfillBook={this.props.indirectFulfillBook}
+                        isSignedIn={this.props.isSignedIn}
+                        />
+                    </BookDetailsContainer> :
+                    <div className="without-container">
+                      <BookDetails
+                        book={this.loanedBookData() || this.props.bookData}
+                        updateBook={this.props.updateBook}
+                        fulfillBook={this.props.fulfillBook}
+                        indirectFulfillBook={this.props.indirectFulfillBook}
+                        isSignedIn={this.props.isSignedIn}
+                        />
+                    </div>
+                  )
+                }
+              </div>
+            }
+
+            { showCollection &&
+              <Collection
+                collection={this.props.collectionData}
+                fetchPage={this.props.fetchPage}
+                isFetching={this.props.isFetching}
+                isFetchingPage={this.props.isFetchingPage}
+                error={this.props.error}
+                />
+            }
           </div>
-        }
-
-        <a className="main-anchor" id="main" href="#"></a>
-
-        { this.state.authError &&
-          <ErrorMessage
-            message={this.state.authError}
-            close={() => { this.setState({ authError: null }); }} />
-        }
-
-        { this.props.error && (!this.props.auth || !this.props.auth.showForm) &&
-          <ErrorMessage
-            message={"Could not fetch data: " + this.props.error.url}
-            retry={this.props.retryCollectionAndBook} />
-        }
-
-        { this.props.isFetching &&
-          <LoadingIndicator />
-        }
-
-        { this.props.auth && this.props.auth.showForm &&
-          <AuthProviderSelectionForm
-            saveCredentials={this.props.saveAuthCredentials}
-            hide={this.props.closeErrorAndHideAuthForm}
-            callback={this.props.auth.callback}
-            cancel={this.props.auth.cancel}
-            title={this.props.auth.title}
-            error={this.props.auth.error}
-            providers={this.props.auth.providers}
-            />
-        }
-
-        { showUrlForm &&
-          <UrlForm collectionUrl={this.props.collectionUrl} />
-        }
-
-        <div className={bodyClass}>
-          { showBookWrapper &&
-            <div className="book-details-wrapper">
-              { showBook &&
-                ( BookDetailsContainer && (this.props.bookUrl || this.props.bookData.url) ?
-                  <BookDetailsContainer
-                    book={this.loanedBookData() || this.props.bookData}
-                    bookUrl={this.props.bookUrl || this.props.bookData.url}
-                    collectionUrl={this.props.collectionUrl}
-                    refreshCatalog={this.props.refreshCollectionAndBook}
-                    >
-                    <BookDetails
-                      book={this.loanedBookData() || this.props.bookData}
-                      updateBook={this.props.updateBook}
-                      fulfillBook={this.props.fulfillBook}
-                      indirectFulfillBook={this.props.indirectFulfillBook}
-                      isSignedIn={this.props.isSignedIn}
-                      />
-                  </BookDetailsContainer> :
-                  <div className="without-container">
-                    <BookDetails
-                      book={this.loanedBookData() || this.props.bookData}
-                      updateBook={this.props.updateBook}
-                      fulfillBook={this.props.fulfillBook}
-                      indirectFulfillBook={this.props.indirectFulfillBook}
-                      isSignedIn={this.props.isSignedIn}
-                      />
-                  </div>
-                )
-              }
-            </div>
-          }
-
-          { showCollection &&
-            <Collection
-              collection={this.props.collectionData}
-              fetchPage={this.props.fetchPage}
-              isFetching={this.props.isFetching}
-              isFetchingPage={this.props.isFetchingPage}
-              error={this.props.error}
-              />
-          }
-        </div>
+        </main>
         { showFooter &&
           <footer>
             <Footer collection={this.props.collectionData} />
@@ -297,12 +290,6 @@ export class Root extends React.Component<RootProps, any> {
     }
   }
 
-  componentDidMount() {
-    if (typeof document !== "undefined") {
-      document.addEventListener("keydown", this.handleKeyDown.bind(this));
-    }
-  }
-
   componentWillReceiveProps(nextProps: RootProps) {
     if (nextProps.collectionUrl !== this.props.collectionUrl || nextProps.bookUrl !== this.props.bookUrl) {
       this.props.setCollectionAndBook(nextProps.collectionUrl, nextProps.bookUrl);
@@ -316,17 +303,6 @@ export class Root extends React.Component<RootProps, any> {
       let collectionTitle = props.collectionData && props.collectionData.title;
       let bookTitle = props.bookData && props.bookData.title;
       document.title = props.pageTitleTemplate(collectionTitle, bookTitle);
-    }
-  }
-
-  handleKeyDown(event) {
-    if (!event.metaKey && !event.altKey && !event.ctrlKey && !event.shiftKey) {
-      // event.keyCode is deprecated but not all browsers support event.code
-      if (event.code === "ArrowLeft" || event.keyCode === 37) {
-        this.showPrevBook();
-      } else if (event.code === "ArrowRight" || event.keyCode === 39) {
-        this.showNextBook();
-      }
     }
   }
 
