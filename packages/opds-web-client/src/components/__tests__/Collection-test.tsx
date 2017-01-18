@@ -125,10 +125,10 @@ describe("Collection", () => {
         { context }
       );
 
-      let body = wrapper.instance().refs["body"] as any;
-      body.scrollTop = 1000;
-      body.scrollHeight = 1;
-      body.clientHeight = 1;
+      let main = wrapper.instance().refs["collection-main"] as any;
+      main.scrollTop = 1000;
+      main.scrollHeight = 1;
+      main.clientHeight = 1;
       (wrapper.instance() as Collection).handleScrollOrResize();
 
       expect(fetchPage.callCount).to.equal(1);
@@ -152,10 +152,10 @@ describe("Collection", () => {
         { context }
       );
 
-      let body = wrapper.instance().refs["body"] as any;
-      body.scrollTop = 1000;
-      body.scrollHeight = 1;
-      body.clientHeight = 1;
+      let main = wrapper.instance().refs["collection-main"] as any;
+      main.scrollTop = 1000;
+      main.scrollHeight = 1;
+      main.clientHeight = 1;
 
       (wrapper as any).mount();
 
@@ -180,10 +180,10 @@ describe("Collection", () => {
         { context }
       );
 
-      let body = wrapper.instance().refs["body"] as any;
-      body.scrollTop = 1;
-      body.scrollHeight = 100;
-      body.clientHeight = 1000;
+      let main = wrapper.instance().refs["collection-main"] as any;
+      main.scrollTop = 1;
+      main.scrollHeight = 100;
+      main.clientHeight = 1000;
 
       (wrapper as any).mount();
 
@@ -241,7 +241,7 @@ describe("Collection", () => {
     };
     let wrapper;
     let context;
-    let body;
+    let main;
 
     beforeEach(() => {
       context = mockRouterContext();
@@ -249,16 +249,16 @@ describe("Collection", () => {
         <Collection collection={collectionData} isFetching={true}/>,
         { context }
       );
-      body = wrapper.instance().refs["body"] as any;
-      body.scrollTop = 1000;
-      body.scrollHeight = 1;
-      body.clientHeight = 1;
+      main = wrapper.instance().refs["collection-main"] as any;
+      main.scrollTop = 1000;
+      main.scrollHeight = 1;
+      main.clientHeight = 1;
     });
 
     it("scrolls to top when new collection fetched successfully", () => {
       wrapper.setProps({ isFetching: false });
 
-      expect(body.scrollTop).to.equal(0);
+      expect(main.scrollTop).to.equal(0);
     });
 
     it("does not scroll when there's an error", () => {
@@ -272,7 +272,7 @@ describe("Collection", () => {
         { context }
       );
 
-      expect(body.scrollTop).to.equal(1000);
+      expect(main.scrollTop).to.equal(1000);
     });
   });
 

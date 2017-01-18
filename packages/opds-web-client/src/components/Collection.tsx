@@ -41,7 +41,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
         <div
           id="collection-main"
           className="collection-main"
-          ref="body"
+          ref="collection-main"
           aria-label={"books in " + this.props.collection.title}>
           { (this.props.collection.lanes && this.props.collection.lanes.length > 0) ?
             <Lanes
@@ -101,7 +101,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.isFetching && !nextProps.isFetching && !nextProps.error) {
-      (this.refs["body"] as any).scrollTop = 0;
+      (this.refs["collection-main"] as HTMLElement).scrollTop = 0;
     }
 
     // the component might be loading a new collection that doesn't fill the page
@@ -109,7 +109,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
   }
 
   componentDidMount() {
-    let body = this.refs["body"] as any;
+    let body = this.refs["collection-main"] as HTMLElement;
     body.addEventListener("scroll", this.handleScrollOrResize.bind(this));
     window.addEventListener("resize", this.handleScrollOrResize.bind(this));
 
@@ -118,7 +118,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
   }
 
   componentWillUnmount() {
-    let body = this.refs["body"] as any;
+    let body = this.refs["collection-main"] as HTMLElement;
     body.removeEventListener("scroll", this.handleScrollOrResize.bind(this));
     window.removeEventListener("resize", this.handleScrollOrResize.bind(this));
   }
@@ -134,10 +134,10 @@ export default class Collection extends React.Component<CollectionProps, any> {
   }
 
   handleScrollOrResize() {
-    let body = this.refs["body"] as any;
-    let scrollTop = body.scrollTop;
-    let scrollHeight = body.scrollHeight;
-    let clientHeight = body.clientHeight;
+    let main = this.refs["collection-main"] as HTMLElement;
+    let scrollTop = main.scrollTop;
+    let scrollHeight = main.scrollHeight;
+    let clientHeight = main.clientHeight;
     if ((scrollTop + clientHeight) >= scrollHeight) {
       this.fetch();
     }
