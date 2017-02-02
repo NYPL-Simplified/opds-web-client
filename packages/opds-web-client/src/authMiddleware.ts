@@ -63,8 +63,11 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                 ) {
                   let callback: AuthCallback = () => {
                     // use dispatch() instead of next() to start from the top
-                    store.dispatch(action);
-                    resolve();
+                    store.dispatch(action).then(() => {;
+                      resolve();
+                    }).catch((err) => {
+                      reject(err);
+                    });
                   };
 
                   // if the collection and book urls in the state don't match
