@@ -195,6 +195,7 @@ export class Root extends React.Component<RootProps, any> {
               cancel={this.props.auth.cancel}
               title={this.props.auth.title}
               error={this.props.auth.error}
+              attemptedProvider={this.props.auth.attemptedProvider}
               providers={this.props.auth.providers}
               />
           }

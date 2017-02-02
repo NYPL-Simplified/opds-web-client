@@ -283,6 +283,7 @@ describe("Root", () => {
       title: "Super Classified Archive",
       providers: [],
       error: "Invalid Clearance ID and/or Access Key",
+      attemptedProvider: "Archive Login",
       callback: stub(),
       cancel: stub()
     };
@@ -297,7 +298,7 @@ describe("Root", () => {
     );
     let form = wrapper.find(AuthProviderSelectionForm);
     let {
-      saveCredentials, hide, callback, cancel, title, error, providers
+      saveCredentials, hide, callback, cancel, title, error, attemptedProvider, providers
     } = form.props();
     expect(saveCredentials).to.equal(saveAuthCredentials);
     expect(hide).to.equal(closeErrorAndHideAuthForm);
@@ -306,6 +307,7 @@ describe("Root", () => {
     expect(title).to.equal(auth.title);
     expect(providers).to.deep.equal(auth.providers);
     expect(error).to.equal(auth.error);
+    expect(attemptedProvider).to.equal(auth.attemptedProvider);
   });
 
   it("shows book detail", () => {

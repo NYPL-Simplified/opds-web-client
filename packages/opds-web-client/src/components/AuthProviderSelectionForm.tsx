@@ -21,13 +21,23 @@ export interface AuthProviderSelectionFormProps {
   cancel: () => void;
   title?: string;
   error?: string;
+  attemptedProvider?: string;
   providers?: AuthProvider<AuthMethod>[];
 }
 
 export default class AuthProviderSelectionForm extends React.Component<AuthProviderSelectionFormProps, any> {
   constructor(props) {
     super(props);
-    this.state = { selectedProvider: null };
+    let selectedProvider = null;
+    if (this.props.error && this.props.attemptedProvider) {
+        for (let provider of this.props.providers) {
+            if (this.props.attemptedProvider === provider.name) {
+                selectedProvider = provider;
+                break;
+            }
+        }
+    }
+    this.state = { selectedProvider };
     this.selectProvider = this.selectProvider.bind(this);
   }
 
