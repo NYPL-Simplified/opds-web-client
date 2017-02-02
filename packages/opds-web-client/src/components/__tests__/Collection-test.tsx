@@ -108,7 +108,11 @@ describe("Collection", () => {
   });
 
   describe("collection with next page", () => {
-    it("fetches next page on scroll to bottom", () => {
+    const pause = (ms = 0): Promise<void> => {
+        return new Promise<void>(resolve => setTimeout(resolve, ms));
+    };
+
+    it("fetches next page on scroll to bottom", async () => {
       let fetchPage = stub();
       let collectionData = {
         id: "test collection",
@@ -130,12 +134,13 @@ describe("Collection", () => {
       main.scrollHeight = 1;
       main.clientHeight = 1;
       (wrapper.instance() as Collection).handleScrollOrResize();
+      await pause(51);
 
       expect(fetchPage.callCount).to.equal(1);
       expect(fetchPage.args[0][0]).to.equal("next");
     });
 
-    it("fetches next page if first page doesn't fill window", () => {
+    it("fetches next page if first page doesn't fill window", async () => {
       let fetchPage = stub();
       let collectionData = {
         id: "test collection",
@@ -158,12 +163,13 @@ describe("Collection", () => {
       main.clientHeight = 1;
 
       (wrapper as any).mount();
+      await pause(51);
 
       expect(fetchPage.callCount).to.equal(1);
       expect(fetchPage.args[0][0]).to.equal("next");
     });
 
-    it("fetches next page if newly loaded page doesn't fill window", () => {
+    it("fetches next page if newly loaded page doesn't fill window", async () => {
       let fetchPage = stub();
       let collectionData = {
         id: "test collection",
@@ -186,11 +192,13 @@ describe("Collection", () => {
       main.clientHeight = 1000;
 
       (wrapper as any).mount();
+      await pause(51);
 
       expect(fetchPage.callCount).to.equal(1);
       expect(fetchPage.args[0][0]).to.equal("next");
 
       wrapper.setProps({ isFetching: false });
+      await pause(51);
 
       // body's scroll attributes haven't changed
 

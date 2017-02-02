@@ -1,4 +1,5 @@
 import * as React from "react";
+import { debounce } from "throttle-debounce";
 import Book from "./Book";
 import CatalogLink from "./CatalogLink";
 import { Lanes } from "./Lanes";
@@ -19,6 +20,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
   constructor(props) {
     super(props);
     this.fetch = this.fetch.bind(this);
+    this.handleScrollOrResize = debounce(50, this.handleScrollOrResize.bind(this));
   }
 
   render(): JSX.Element {
@@ -110,8 +112,8 @@ export default class Collection extends React.Component<CollectionProps, any> {
 
   componentDidMount() {
     let body = this.refs["collection-main"] as HTMLElement;
-    body.addEventListener("scroll", this.handleScrollOrResize.bind(this));
-    window.addEventListener("resize", this.handleScrollOrResize.bind(this));
+    body.addEventListener("scroll", this.handleScrollOrResize);
+    window.addEventListener("resize", this.handleScrollOrResize);
 
     // the first page might not fill the screen on initial load, so run handler once
     this.handleScrollOrResize();
@@ -119,8 +121,8 @@ export default class Collection extends React.Component<CollectionProps, any> {
 
   componentWillUnmount() {
     let body = this.refs["collection-main"] as HTMLElement;
-    body.removeEventListener("scroll", this.handleScrollOrResize.bind(this));
-    window.removeEventListener("resize", this.handleScrollOrResize.bind(this));
+    body.removeEventListener("scroll", this.handleScrollOrResize);
+    window.removeEventListener("resize", this.handleScrollOrResize);
   }
 
   canFetch() {
