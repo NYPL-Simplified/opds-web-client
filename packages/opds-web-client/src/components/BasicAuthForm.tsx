@@ -15,7 +15,7 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, a
     return (
       <form onSubmit={this.submit}>
         { this.state.error &&
-          <div className="error">
+          <div className="auth-error">
             { this.state.error }
           </div>
         }
