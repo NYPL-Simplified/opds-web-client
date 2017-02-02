@@ -79,7 +79,7 @@ export default class Collection extends React.Component<CollectionProps, any> {
 
           { this.isEmpty() &&
             <div className="empty-collection-message">
-              No books here.
+              No books found.
             </div>
           }
 

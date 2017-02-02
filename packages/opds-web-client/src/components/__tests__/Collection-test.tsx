@@ -19,7 +19,7 @@ describe("Collection", () => {
     it("says the collection is empty", () => {
       let collectionData: CollectionData = Object.assign({}, groupedCollectionData, { lanes: [] });
       let wrapper = shallow(<Collection collection={collectionData} />);
-      expect(wrapper.text()).to.equal("No books here.");
+      expect(wrapper.text()).to.equal("No books found.");
     });
   });
 
