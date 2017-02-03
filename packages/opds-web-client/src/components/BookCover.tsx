@@ -31,7 +31,7 @@ export default class BookCover extends React.Component<BookCoverProps, any> {
           src={this.props.book.imageUrl}
           onError={this.handleError}
           className="book-cover"
-          alt={this.props.book.title}
+          alt=""
           />
       );
     }

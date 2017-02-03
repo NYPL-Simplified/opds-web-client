@@ -148,6 +148,21 @@ describe("AuthProviderSelectionForm", () => {
         expect(form.props().saveCredentials).to.equal(saveCredentials);
         expect(form.props().error).to.equal("you forgot the secret password! what kind of spy arre you?");
       });
+
+      it("selects previously attempted provider if there was an error", () => {
+          wrapper = mount(
+            <AuthProviderSelectionForm
+              hide={hide}
+              saveCredentials={saveCredentials}
+              cancel={cancel}
+              title="Intergalactic Spy Network"
+              error="you forgot the secret password! what kind of spy arre you?"
+              attemptedProvider="Provider 2"
+              providers={[provider1, provider2]}
+              />
+          );
+          expect(wrapper.state().selectedProvider).to.equal(provider2);
+      });
     });
   });
 });

@@ -35,9 +35,11 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                 // so don't show ours
                 reject(err);
               } else {
-                // clear any invalid credentials
-                let existingAuth = !!fetcher.getAuthCredentials();
+                // clear any invalid credentials, after getting the provider that was used
+                let existingAuth = fetcher.getAuthCredentials();
+                let attemptedProvider: string | null = null;
                 if (existingAuth) {
+                  attemptedProvider = existingAuth.provider;
                   // 401s resulting from wrong username/password return
                   // problem detail documents, not auth documents
                   error = data.title;
@@ -63,8 +65,11 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                 ) {
                   let callback: AuthCallback = () => {
                     // use dispatch() instead of next() to start from the top
-                    store.dispatch(action);
-                    resolve();
+                    store.dispatch(action).then(() => {;
+                      resolve();
+                    }).catch((err) => {
+                      reject(err);
+                    });
                   };
 
                   // if the collection and book urls in the state don't match
@@ -110,7 +115,8 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                       cancel,
                       authProviders,
                       title,
-                      error
+                      error,
+                      attemptedProvider
                     ));
                   }
                 } else {

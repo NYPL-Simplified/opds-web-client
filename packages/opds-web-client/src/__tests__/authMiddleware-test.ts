@@ -18,9 +18,9 @@ class MockActionCreator extends ActionCreator.default {
     return clearAuthCredentialsStub();
   }
 
-  showAuthForm(callback, cancel, authProviders, title, error) {
+  showAuthForm(callback, cancel, authProviders, title, error, attemptedProvider) {
     callback();
-    return showAuthFormStub(callback, cancel, authProviders, title, error);
+    return showAuthFormStub(callback, cancel, authProviders, title, error, attemptedProvider);
   }
 }
 
@@ -185,6 +185,8 @@ describe("authMiddleware", () => {
         method: "test method"
       }]);
       expect(showAuthFormStub.args[0][3]).to.equal("Library");
+      expect(showAuthFormStub.args[0][4]).to.equal("error");
+      expect(showAuthFormStub.args[0][5]).to.equal("test");
       done();
     }).catch(err => { console.log(err); throw(err); });
   });

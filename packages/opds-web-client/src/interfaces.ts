@@ -160,7 +160,8 @@ export interface AuthData {
   cancel: () => void;
   credentials: AuthCredentials;
   title: string;
-  error: string;
+  error: string | null;
+  attemptedProvider: string | null;
   providers: AuthProvider<AuthMethod>[];
 }
 

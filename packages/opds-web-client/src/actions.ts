@@ -315,9 +315,10 @@ export default class ActionCreator {
     cancel: () => void,
     providers: AuthProvider<AuthMethod>[],
     title: string,
-    error?: string
+    error?: string,
+    attemptedProvider?: string
   ) {
-    return { type: this.SHOW_AUTH_FORM, callback, cancel, providers, title, error };
+    return { type: this.SHOW_AUTH_FORM, callback, cancel, providers, title, error, attemptedProvider };
   }
 
   closeErrorAndHideAuthForm() {

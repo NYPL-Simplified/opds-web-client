@@ -18,6 +18,7 @@ describe("auth reducer", () => {
     credentials: null,
     title: null,
     error: null,
+    attemptedProvider: null,
     providers: null
   };
 
@@ -48,6 +49,36 @@ describe("auth reducer", () => {
     });
 
     expect(reducer(initState, action)).to.deep.equal(newState);
+  });
+
+  it("handles SHOW_AUTH_FORM after error", () => {
+    let callback = stub();
+    let cancel = stub();
+    let provider = {
+      name: "library",
+      plugin: BasicAuthPlugin,
+      method: {
+        labels: {
+          login: "barcode",
+          password: "pin"
+        }
+      }
+    };
+    let error = "Invalid Credentials";
+    let attemptedProvider = "library";
+    let action = actions.showAuthForm(callback, cancel, [provider], "library", error, attemptedProvider);
+    let previousAttemptState = Object.assign({}, initState, { title: "library" });
+    let newState = Object.assign({}, previousAttemptState, {
+      showForm: true,
+      callback: callback,
+      cancel: cancel,
+      title: "library",
+      providers: [provider],
+      error: error,
+      attemptedProvider: attemptedProvider
+    });
+
+    expect(reducer(previousAttemptState, action)).to.deep.equal(newState);
   });
 
   it("handles HIDE_AUTH_FORM", () => {

@@ -55,7 +55,7 @@ describe("BasicAuthForm", () => {
     });
 
     it("shows error", () => {
-      let error = wrapper.find(".error");
+      let error = wrapper.find(".auth-error");
       expect(error.text()).to.equal("you forgot the secret password! what kind of spy arre you?");
     });
   });
