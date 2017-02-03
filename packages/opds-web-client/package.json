@@ -1,6 +1,6 @@
 {
   "name": "opds-web-client",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "OPDS web client",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -32,6 +32,7 @@
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
     "seedrandom": "^2.4.2",
+    "throttle-debounce": "^1.0.1",
     "xml2js": "^0.4.16"
   },
   "devDependencies": {
