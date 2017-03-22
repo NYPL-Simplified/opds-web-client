@@ -7,7 +7,11 @@ export interface BookCoverProps extends React.HTMLProps<BookCover> {
   book: BookData;
 }
 
-export default class BookCover extends React.Component<BookCoverProps, any> {
+export interface BookCoverState {
+  error: boolean;
+}
+
+export default class BookCover extends React.Component<BookCoverProps, BookCoverState> {
   constructor(props) {
     super(props);
     this.state = { error: false };

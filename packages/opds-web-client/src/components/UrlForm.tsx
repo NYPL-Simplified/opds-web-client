@@ -5,7 +5,7 @@ export interface UrlFormProps {
   collectionUrl?: string;
 }
 
-export default class UrlForm extends React.Component<UrlFormProps, any> {
+export default class UrlForm extends React.Component<UrlFormProps, void> {
   context: NavigateContext;
 
   constructor(props) {

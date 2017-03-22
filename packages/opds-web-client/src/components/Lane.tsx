@@ -11,7 +11,12 @@ export interface LaneProps {
   hiddenBookIds?: string[];
 }
 
-export default class Lane extends React.Component<LaneProps, any> {
+export interface LaneState {
+  atLeft: boolean;
+  atRight: boolean;
+}
+
+export default class Lane extends React.Component<LaneProps, LaneState> {
   constructor(props) {
     super(props);
     this.state = { atLeft: true, atRight: false };

@@ -1,7 +1,12 @@
 import * as React from "react";
 import CatalogLink from "./CatalogLink";
+import { LaneData } from "../interfaces";
 
-export default class LaneMoreLink extends React.Component<any, any> {
+export interface LaneMoreLinkProps {
+  lane: LaneData;
+}
+
+export default class LaneMoreLink extends React.Component<LaneMoreLinkProps, void> {
   render() {
     let fontSize = this.computeFontSize();
 

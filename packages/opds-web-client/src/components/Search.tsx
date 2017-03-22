@@ -5,7 +5,7 @@ export interface SearchProps extends SearchData, React.HTMLProps<Search> {
   fetchSearchDescription?: (url: string) => void;
 }
 
-export default class Search extends React.Component<SearchProps, any> {
+export default class Search extends React.Component<SearchProps, void> {
   context: NavigateContext;
 
   constructor(props) {

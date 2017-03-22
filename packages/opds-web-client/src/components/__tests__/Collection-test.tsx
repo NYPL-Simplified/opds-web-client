@@ -133,7 +133,7 @@ describe("Collection", () => {
       main.scrollTop = 1000;
       main.scrollHeight = 1;
       main.clientHeight = 1;
-      (wrapper.instance() as Collection).handleScrollOrResize();
+      (wrapper.instance() as any).handleScrollOrResize();
       await pause(51);
 
       expect(fetchPage.callCount).to.equal(1);

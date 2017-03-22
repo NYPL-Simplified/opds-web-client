@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export default class LoadingIndicator extends React.Component<any, any> {
+export default class LoadingIndicator extends React.Component<void, void> {
   render(): JSX.Element {
     return (
       <div className="loading" role="dialog" aria-labelledby="loading">

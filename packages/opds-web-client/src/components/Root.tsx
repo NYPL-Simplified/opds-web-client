@@ -75,7 +75,11 @@ export interface RootProps extends StateProps {
   closeErrorAndHideAuthForm?: () => void;
 }
 
-export class Root extends React.Component<RootProps, any> {
+export interface RootState {
+  authError?: string;
+}
+
+export class Root extends React.Component<RootProps, RootState> {
   context: NavigateContext;
 
   static contextTypes: React.ValidationMap<RootProps> = {

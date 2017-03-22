@@ -8,7 +8,7 @@ export interface BookProps {
   collectionUrl?: string;
 }
 
-export default class Book extends React.Component<BookProps, any> {
+export default class Book extends React.Component<BookProps, void> {
   render(): JSX.Element {
     return (
       <div className="book" lang={this.props.book.language}>

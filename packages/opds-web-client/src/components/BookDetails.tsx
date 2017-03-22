@@ -15,7 +15,7 @@ export interface BookDetailsProps extends BookProps {
   isSignedIn?: boolean;
 }
 
-export default class BookDetails<P extends BookDetailsProps> extends React.Component<P, any> {
+export default class BookDetails<P extends BookDetailsProps> extends React.Component<P, void> {
   constructor(props) {
     super(props);
     this.borrow = this.borrow.bind(this);
