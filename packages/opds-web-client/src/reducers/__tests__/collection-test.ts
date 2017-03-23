@@ -5,11 +5,12 @@ import * as history from "../history";
 
 import reducer from "../collection";
 import DataFetcher from "../../DataFetcher";
-import ActionsCreator from "../../actions";
+import ActionCreator from "../../actions";
 import { adapter } from "../../OPDSDataAdapter";
+import { CollectionData, SearchData } from "../../interfaces";
 
 let fetcher = new DataFetcher({ adapter });
-let actions = new ActionsCreator(fetcher);
+let actions = new ActionCreator(fetcher);
 
 describe("collection reducer", () => {
   let initState = {
@@ -97,8 +98,8 @@ describe("collection reducer", () => {
     expect(reducer(undefined, {})).to.deep.equal(initState);
   });
 
-  it("should handle FETCH_COLLECTION_REQUEST", () => {
-    let action = actions.fetchCollectionRequest("some other url");
+  it("should handle COLLECTION_REQUEST", () => {
+    let action = actions.request(ActionCreator.COLLECTION, "some other url");
     let newState = Object.assign({}, errorState, {
       isFetching: true,
       error: null
@@ -107,8 +108,8 @@ describe("collection reducer", () => {
     expect(reducer(errorState, action)).to.deep.equal(newState);
   });
 
-  it("should handle FETCH_COLLECTION_FAILURE", () => {
-    let action = actions.fetchCollectionFailure({
+  it("should handle COLLECTION_FAILURE", () => {
+    let action = actions.failure(ActionCreator.COLLECTION, {
       status: 500,
       response: "test error",
       url: "error url"
@@ -125,7 +126,7 @@ describe("collection reducer", () => {
     expect(reducer(fetchingState, action)).to.deep.equal(newState);
   });
 
-  it("should handle LOAD_COLLECTION", () => {
+  it("should handle COLLECTION_LOAD", () => {
     let data = {
       id: "some id",
       url: "some url",
@@ -134,7 +135,7 @@ describe("collection reducer", () => {
       books: [],
       navigationLinks: []
     };
-    let action = actions.loadCollection(data, "some other url");
+    let action = actions.load<CollectionData>(ActionCreator.COLLECTION, data, "some other url");
     let newState = Object.assign({}, currentState, {
       url: "some other url",
       data: data,
@@ -144,7 +145,7 @@ describe("collection reducer", () => {
     expect(reducer(currentState, action)).to.deep.equal(newState);
   });
 
-  it("should handle LOAD_COLLECTION after an error", () => {
+  it("should handle COLLECTION_LOAD after an error", () => {
     let data = {
       id: "some id",
       url: "some url",
@@ -153,7 +154,7 @@ describe("collection reducer", () => {
       books: [],
       navigationLinks: []
     };
-    let action = actions.loadCollection(data, "some url");
+    let action = actions.load<CollectionData>(ActionCreator.COLLECTION, data, "some url");
     let newState = Object.assign({}, errorState, {
       url: "some url",
       data: data,
@@ -164,8 +165,8 @@ describe("collection reducer", () => {
     expect(reducer(errorState, action)).to.deep.equal(newState);
   });
 
-  it("should handle CLEAR_COLLECTION", () => {
-    let action = actions.clearCollection();
+  it("should handle COLLECTION_CLEAR", () => {
+    let action = actions.clear(ActionCreator.COLLECTION);
     let newState = Object.assign({}, currentState, {
       url: null,
       data: null
@@ -174,8 +175,8 @@ describe("collection reducer", () => {
     expect(reducer(currentState, action)).to.deep.equal(newState);
   });
 
-  it("should handle FETCH_PAGE_REQUEST", () => {
-    let action = actions.fetchPageRequest("some other url");
+  it("should handle PAGE_REQUEST", () => {
+    let action = actions.request(ActionCreator.PAGE, "some other url");
     let newState = Object.assign({}, currentState, {
       pageUrl: "some other url",
       isFetchingPage: true
@@ -184,8 +185,8 @@ describe("collection reducer", () => {
     expect(reducer(currentState, action)).to.deep.equal(newState);
   });
 
-  it("should handle FETCH_PAGE_FAILURE", () => {
-    let action = actions.fetchPageFailure({
+  it("should handle PAGE_FAILURE", () => {
+    let action = actions.failure(ActionCreator.PAGE, {
       status: 500,
       response: "test error",
       url: "error url"
@@ -202,7 +203,7 @@ describe("collection reducer", () => {
     expect(reducer(fetchingPageState, action)).to.deep.equal(newState);
   });
 
-  it("should handle LOAD_PAGE", () => {
+  it("should handle PAGE_LOAD", () => {
     let data = {
       id: "some id",
       url: "test url",
@@ -219,7 +220,7 @@ describe("collection reducer", () => {
       navigationLinks: [],
       nextPageUrl: "next"
     };
-    let action = actions.loadPage(data);
+    let action = actions.load<CollectionData>(ActionCreator.PAGE, data);
     let newState = Object.assign({}, fetchingPageState, {
       data: Object.assign({}, fetchingPageState.data, {
         books: data.books,
@@ -231,13 +232,13 @@ describe("collection reducer", () => {
     expect(reducer(fetchingPageState, action)).to.deep.equal(newState);
   });
 
-  it("should handle LOAD_SEARCH_DESCRIPTION", () => {
+  it("should handle SEARCH_DESCRIPTION_LOAD", () => {
     let searchData = {
       description: "d",
       shortName: "s",
       template: (s) => s + " template"
     };
-    let action = actions.loadSearchDescription({ searchData });
+    let action = actions.load<SearchData>(ActionCreator.SEARCH_DESCRIPTION, { searchData });
 
     let newState = reducer(currentState, action);
     expect(newState.data.search).to.be.ok;

@@ -1,5 +1,5 @@
 import { CollectionState } from "./collection";
-import { LoadCollectionAction } from "../actions";
+import { LoadAction } from "../actions";
 import { CollectionData, LinkData } from "../interfaces";
 
 function newCollectionIsOldCollection(newCollection: CollectionData, oldCollection: CollectionData): boolean {
@@ -64,7 +64,7 @@ export function onlyRoot(newCollection:  CollectionData) {
   return addLink([], newCollection.catalogRootLink);
 }
 
-export default (state: CollectionState, action: LoadCollectionAction) => {
+export default (state: CollectionState, action: LoadAction<CollectionData>) => {
   let newHistory = state.history.slice(0);
   let newCollection = Object.freeze(action.data);
   let oldCollection = Object.freeze(state.data);

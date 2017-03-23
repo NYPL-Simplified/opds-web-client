@@ -27,9 +27,9 @@ describe("actions", () => {
 
       actions.fetchCollection(collectionUrl)(dispatch).then(data => {
         expect(dispatch.callCount).to.equal(3);
-        expect(dispatch.args[0][0].type).to.equal(ActionCreator.FETCH_COLLECTION_REQUEST);
-        expect(dispatch.args[1][0].type).to.equal(ActionCreator.FETCH_COLLECTION_SUCCESS);
-        expect(dispatch.args[2][0].type).to.equal(ActionCreator.LOAD_COLLECTION);
+        expect(dispatch.args[0][0].type).to.equal(ActionCreator.COLLECTION_REQUEST);
+        expect(dispatch.args[1][0].type).to.equal(ActionCreator.COLLECTION_SUCCESS);
+        expect(dispatch.args[2][0].type).to.equal(ActionCreator.COLLECTION_LOAD);
         expect(data).to.equal(testData);
         done();
       }).catch(err => { console.log(err); throw(err); });
@@ -41,8 +41,8 @@ describe("actions", () => {
 
       actions.fetchCollection(collectionUrl)(dispatch).catch(err => {
         expect(dispatch.callCount).to.equal(2);
-        expect(dispatch.args[0][0].type).to.equal(ActionCreator.FETCH_COLLECTION_REQUEST);
-        expect(dispatch.args[1][0].type).to.equal(ActionCreator.FETCH_COLLECTION_FAILURE);
+        expect(dispatch.args[0][0].type).to.equal(ActionCreator.COLLECTION_REQUEST);
+        expect(dispatch.args[1][0].type).to.equal(ActionCreator.COLLECTION_FAILURE);
         expect(err).to.equal("test error");
         done();
       }).catch(err => { console.log(err); throw(err); });
@@ -57,9 +57,9 @@ describe("actions", () => {
 
       actions.fetchPage("http://example.com/feed")(dispatch).then(data => {
         expect(dispatch.callCount).to.equal(3);
-        expect(dispatch.args[0][0].type).to.equal(ActionCreator.FETCH_PAGE_REQUEST);
-        expect(dispatch.args[1][0].type).to.equal(ActionCreator.FETCH_PAGE_SUCCESS);
-        expect(dispatch.args[2][0].type).to.equal(ActionCreator.LOAD_PAGE);
+        expect(dispatch.args[0][0].type).to.equal(ActionCreator.PAGE_REQUEST);
+        expect(dispatch.args[1][0].type).to.equal(ActionCreator.PAGE_SUCCESS);
+        expect(dispatch.args[2][0].type).to.equal(ActionCreator.PAGE_LOAD);
         expect(data).to.equal(testData);
         done();
       }).catch(err => { console.log(err); throw(err); });
@@ -71,8 +71,8 @@ describe("actions", () => {
 
       actions.fetchPage("http://example.com/feed")(dispatch).catch(err => {
         expect(dispatch.callCount).to.equal(2);
-        expect(dispatch.args[0][0].type).to.equal(ActionCreator.FETCH_PAGE_REQUEST);
-        expect(dispatch.args[1][0].type).to.equal(ActionCreator.FETCH_PAGE_FAILURE);
+        expect(dispatch.args[0][0].type).to.equal(ActionCreator.PAGE_REQUEST);
+        expect(dispatch.args[1][0].type).to.equal(ActionCreator.PAGE_FAILURE);
         expect(err).to.equal("test error");
         done();
       }).catch(err => { console.log(err); throw(err); });
@@ -86,7 +86,7 @@ describe("actions", () => {
 
       actions.fetchSearchDescription("http://example.com/search")(dispatch).then(data => {
         expect(dispatch.callCount).to.equal(1);
-        expect(dispatch.args[0][0].type).to.equal(ActionCreator.LOAD_SEARCH_DESCRIPTION);
+        expect(dispatch.args[0][0].type).to.equal(ActionCreator.SEARCH_DESCRIPTION_LOAD);
         expect(data).to.equal(testData);
         done();
       }).catch(err => { console.log(err); throw(err); });
@@ -102,9 +102,9 @@ describe("actions", () => {
 
       actions.fetchBook(bookUrl)(dispatch).then(data => {
         expect(dispatch.callCount).to.equal(3);
-        expect(dispatch.args[0][0].type).to.equal(ActionCreator.FETCH_BOOK_REQUEST);
-        expect(dispatch.args[1][0].type).to.equal(ActionCreator.FETCH_BOOK_SUCCESS);
-        expect(dispatch.args[2][0].type).to.equal(ActionCreator.LOAD_BOOK);
+        expect(dispatch.args[0][0].type).to.equal(ActionCreator.BOOK_REQUEST);
+        expect(dispatch.args[1][0].type).to.equal(ActionCreator.BOOK_SUCCESS);
+        expect(dispatch.args[2][0].type).to.equal(ActionCreator.BOOK_LOAD);
         expect(data).to.equal(testData);
         done();
       }).catch(err => { console.log(err); throw(err); });
@@ -116,8 +116,8 @@ describe("actions", () => {
 
       actions.fetchBook(bookUrl)(dispatch).catch(err => {
         expect(dispatch.callCount).to.equal(2);
-        expect(dispatch.args[0][0].type).to.equal(ActionCreator.FETCH_BOOK_REQUEST);
-        expect(dispatch.args[1][0].type).to.equal(ActionCreator.FETCH_BOOK_FAILURE);
+        expect(dispatch.args[0][0].type).to.equal(ActionCreator.BOOK_REQUEST);
+        expect(dispatch.args[1][0].type).to.equal(ActionCreator.BOOK_FAILURE);
         expect(err).to.equal("test error");
         done();
       }).catch(err => { console.log(err); throw(err); });
@@ -138,7 +138,7 @@ describe("actions", () => {
         expect(dispatch.callCount).to.equal(3);
         expect(dispatch.args[0][0].type).to.equal(ActionCreator.UPDATE_BOOK_REQUEST);
         expect(dispatch.args[1][0].type).to.equal(ActionCreator.UPDATE_BOOK_SUCCESS);
-        expect(dispatch.args[2][0].type).to.equal(ActionCreator.LOAD_UPDATE_BOOK_DATA);
+        expect(dispatch.args[2][0].type).to.equal(ActionCreator.UPDATE_BOOK_LOAD);
         expect(data).to.equal(fetcher.testData);
         done();
       }).catch(err => { console.log(err); throw(err); });
@@ -236,9 +236,9 @@ describe("actions", () => {
 
       actions.fetchLoans(loansUrl)(dispatch).then(data => {
         expect(dispatch.callCount).to.equal(3);
-        expect(dispatch.args[0][0].type).to.equal(ActionCreator.FETCH_LOANS_REQUEST);
-        expect(dispatch.args[1][0].type).to.equal(ActionCreator.FETCH_LOANS_SUCCESS);
-        expect(dispatch.args[2][0].type).to.equal(ActionCreator.LOAD_LOANS);
+        expect(dispatch.args[0][0].type).to.equal(ActionCreator.LOANS_REQUEST);
+        expect(dispatch.args[1][0].type).to.equal(ActionCreator.LOANS_SUCCESS);
+        expect(dispatch.args[2][0].type).to.equal(ActionCreator.LOANS_LOAD);
         expect(data).to.equal(testData);
         done();
       }).catch(err => { console.log(err); throw(err); });
@@ -250,8 +250,8 @@ describe("actions", () => {
 
       actions.fetchLoans(loansUrl)(dispatch).catch(err => {
         expect(dispatch.callCount).to.equal(2);
-        expect(dispatch.args[0][0].type).to.equal(ActionCreator.FETCH_LOANS_REQUEST);
-        expect(dispatch.args[1][0].type).to.equal(ActionCreator.FETCH_LOANS_FAILURE);
+        expect(dispatch.args[0][0].type).to.equal(ActionCreator.LOANS_REQUEST);
+        expect(dispatch.args[1][0].type).to.equal(ActionCreator.LOANS_FAILURE);
         expect(err).to.equal("test error");
         done();
       }).catch(err => { console.log(err); throw(err); });

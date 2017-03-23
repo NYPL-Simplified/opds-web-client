@@ -2,11 +2,12 @@ import { expect } from "chai";
 
 import reducer from "../loans";
 import DataFetcher from "../../DataFetcher";
-import ActionsCreator from "../../actions";
+import ActionCreator from "../../actions";
 import { adapter } from "../../OPDSDataAdapter";
+import { CollectionData, BookData } from "../../interfaces";
 
 let fetcher = new DataFetcher({ adapter });
-let actions = new ActionsCreator(fetcher);
+let actions = new ActionCreator(fetcher);
 let collectionData = {
   url: "collection url",
   title: "title",
@@ -16,11 +17,18 @@ let collectionData = {
   navigationLinks: [],
   shelfUrl: "loans url"
 };
-let loansData = [{
-  id: "book id",
-  url: "book url",
-  title: "book title"
-}];
+let loansData = {
+  url: "collection url",
+  title: "title",
+  id: "id",
+  books: [{
+    id: "book id",
+    url: "book url",
+    title: "book title"
+  }],
+  lanes: [],
+  navigationLinks: []
+};
 
 describe("loans reducer", () => {
   let initState = {
@@ -32,33 +40,33 @@ describe("loans reducer", () => {
     expect(reducer(undefined, {})).to.deep.equal(initState);
   });
 
-  it("handles LOAD_COLLECTION", () => {
-    let action = actions.loadCollection(collectionData);
+  it("handles COLLECTION_LOAD", () => {
+    let action = actions.load<CollectionData>(ActionCreator.COLLECTION, collectionData);
     let newState = Object.assign({}, initState, {
       url: "loans url"
     });
     expect(reducer(initState, action)).to.deep.equal(newState);
   });
 
-  it("handles LOAD_COLLECTION for loans feed", () => {
+  it("handles COLLECTION_LOAD for loans feed", () => {
     let oldState = Object.assign({}, initState, {
       url: "loans url"
     });
     let loansCollectionData = Object.assign({}, collectionData, { books: loansData });
-    let action = actions.loadCollection(loansCollectionData, "loans url");
+    let action = actions.load<CollectionData>(ActionCreator.COLLECTION, loansCollectionData, "loans url");
     let newState = Object.assign({}, oldState, {
       books: loansData
     });
     expect(reducer(oldState, action)).to.deep.equal(newState);
   });
 
-  it("handles LOAD_LOANS", () => {
+  it("handles LOANS_LOAD", () => {
     let oldState = Object.assign({}, initState, {
       url: "loans url"
     });
-    let action = actions.loadLoans(loansData);
+    let action = actions.load<CollectionData>(ActionCreator.LOANS, loansData);
     let newState = Object.assign({}, oldState, {
-      books: loansData
+      books: loansData.books
     });
 
     expect(reducer(oldState, action)).to.deep.equal(newState);
@@ -75,7 +83,7 @@ describe("loans reducer", () => {
     expect(reducer(oldState, action)).to.deep.equal(newState);
   });
 
-  it("clears books on LOAD_UPDATE_BOOK_DATA", () => {
+  it("clears books on UPDATE_BOOK_LOAD", () => {
     let oldState = Object.assign({}, initState, {
         books: loansData
     });
@@ -84,7 +92,7 @@ describe("loans reducer", () => {
       url: "book url",
       title: "new book title"
     };
-    let action = actions.loadUpdateBookData(newBookData);
+    let action = actions.load<BookData>(ActionCreator.UPDATE_BOOK, newBookData);
     let newState = Object.assign({}, oldState, {
       books: []
     });

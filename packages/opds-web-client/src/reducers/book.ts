@@ -17,26 +17,26 @@ const initialState: BookState = {
 
 const book = (state: BookState = initialState, action): BookState => {
   switch (action.type) {
-    case ActionCreator.FETCH_BOOK_REQUEST:
+    case ActionCreator.BOOK_REQUEST:
       return Object.assign({}, state, {
         isFetching: true,
         error: null
       });
 
-    case ActionCreator.FETCH_BOOK_FAILURE:
+    case ActionCreator.BOOK_FAILURE:
       return Object.assign({}, state, {
         isFetching: false,
         error: action.error
       });
 
-    case ActionCreator.LOAD_BOOK:
+    case ActionCreator.BOOK_LOAD:
       return Object.assign({}, state, {
         data: action.data,
         url: action.url ? action.url : state.url,
         isFetching: false
       });
 
-    case ActionCreator.CLEAR_BOOK:
+    case ActionCreator.BOOK_CLEAR:
       return Object.assign({}, state, {
         data: null,
         url: null,
@@ -67,7 +67,7 @@ const book = (state: BookState = initialState, action): BookState => {
         error: action.error
       });
 
-    case ActionCreator.LOAD_UPDATE_BOOK_DATA:
+    case ActionCreator.UPDATE_BOOK_LOAD:
       return Object.assign({}, state, {
         data: Object.assign({}, state.data, action.data)
       });

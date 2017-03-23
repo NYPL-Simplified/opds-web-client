@@ -3,12 +3,12 @@ import { stub } from "sinon";
 
 import reducer from "../auth";
 import DataFetcher from "../../DataFetcher";
-import ActionsCreator from "../../actions";
+import ActionCreator from "../../actions";
 import { adapter } from "../../OPDSDataAdapter";
 import BasicAuthPlugin from "../../BasicAuthPlugin";
 
 let fetcher = new DataFetcher({ adapter });
-let actions = new ActionsCreator(fetcher);
+let actions = new ActionCreator(fetcher);
 
 describe("auth reducer", () => {
   let initState = {

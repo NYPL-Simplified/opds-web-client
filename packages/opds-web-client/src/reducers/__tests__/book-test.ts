@@ -2,11 +2,12 @@ import { expect } from "chai";
 
 import reducer from "../book";
 import DataFetcher from "../../DataFetcher";
-import ActionsCreator from "../../actions";
+import ActionCreator from "../../actions";
 import { adapter } from "../../OPDSDataAdapter";
+import { BookData } from "../../interfaces";
 
 let fetcher = new DataFetcher({ adapter });
-let actions = new ActionsCreator(fetcher);
+let actions = new ActionCreator(fetcher);
 
 describe("book reducer", () => {
   let book = {
@@ -56,8 +57,8 @@ describe("book reducer", () => {
     expect(reducer(undefined, {})).to.deep.equal(initState);
   });
 
-  it("should handle FETCH_BOOK_REQUEST", () => {
-    let action = actions.fetchBookRequest("some other url");
+  it("should handle BOOK_REQUEST", () => {
+    let action = actions.request(ActionCreator.BOOK, "some other url");
     let newState = Object.assign({}, errorState, {
       isFetching: true,
       error: null
@@ -66,8 +67,8 @@ describe("book reducer", () => {
     expect(reducer(errorState, action)).to.deep.equal(newState);
   });
 
-  it("should handle FETCH_BOOK_FAILURE", () => {
-    let action = actions.fetchBookFailure({
+  it("should handle BOOK_FAILURE", () => {
+    let action = actions.failure(ActionCreator.BOOK, {
       status: 500,
       response: "test error",
       url: "error url"
@@ -84,12 +85,12 @@ describe("book reducer", () => {
     expect(reducer(fetchingState, action)).to.deep.equal(newState);
   });
 
-  it("should handle LOAD_BOOK", () => {
+  it("should handle BOOK_LOAD", () => {
     let data = {
       id: "some id",
       title: "some title"
     };
-    let action = actions.loadBook(data, "some other url");
+    let action = actions.load<BookData>(ActionCreator.BOOK, data, "some other url");
     let newState = Object.assign({}, bookState, {
       url: "some other url",
       data: data,
@@ -99,8 +100,8 @@ describe("book reducer", () => {
     expect(reducer(bookState, action)).to.deep.equal(newState);
   });
 
-  it("should handle CLEAR_BOOK", () => {
-    let action = actions.clearBook();
+  it("should handle BOOK_CLEAR", () => {
+    let action = actions.clear(ActionCreator.BOOK);
     let newState = Object.assign({}, bookState, {
       url: null,
       data: null

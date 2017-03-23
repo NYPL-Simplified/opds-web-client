@@ -22,19 +22,19 @@ const initialState: CollectionState = {
 
 const collection = (state = initialState, action) => {
   switch (action.type) {
-    case ActionCreator.FETCH_COLLECTION_REQUEST:
+    case ActionCreator.COLLECTION_REQUEST:
       return Object.assign({}, state, {
         isFetching: true,
         error: null
       });
 
-    case ActionCreator.FETCH_COLLECTION_FAILURE:
+    case ActionCreator.COLLECTION_FAILURE:
       return Object.assign({}, state, {
         isFetching: false,
         error: action.error
       });
 
-    case ActionCreator.LOAD_COLLECTION:
+    case ActionCreator.COLLECTION_LOAD:
       return Object.assign({}, state, {
         data: action.data,
         url: action.url ? action.url : state.url,
@@ -43,7 +43,7 @@ const collection = (state = initialState, action) => {
         history: history(state, action)
       });
 
-    case ActionCreator.CLEAR_COLLECTION:
+    case ActionCreator.COLLECTION_CLEAR:
       return Object.assign({}, state, {
         data: null,
         url: null,
@@ -51,20 +51,20 @@ const collection = (state = initialState, action) => {
         history: state.history.slice(0, -1)
       });
 
-    case ActionCreator.FETCH_PAGE_REQUEST:
+    case ActionCreator.PAGE_REQUEST:
       return Object.assign({}, state, {
         pageUrl: action.url,
         isFetchingPage: true,
         error: null
       });
 
-    case ActionCreator.FETCH_PAGE_FAILURE:
+    case ActionCreator.PAGE_FAILURE:
       return Object.assign({}, state, {
         isFetchingPage: false,
         error: action.error
       });
 
-    case ActionCreator.LOAD_PAGE:
+    case ActionCreator.PAGE_LOAD:
       return Object.assign({}, state, {
         data: Object.assign({}, state.data, {
           books: Object.assign([], state.data.books).concat(action.data.books),
@@ -73,7 +73,7 @@ const collection = (state = initialState, action) => {
         isFetchingPage: false
       });
 
-    case ActionCreator.LOAD_SEARCH_DESCRIPTION:
+    case ActionCreator.SEARCH_DESCRIPTION_LOAD:
       return Object.assign({}, state, {
         data: Object.assign({}, state.data, {
           search: action.data

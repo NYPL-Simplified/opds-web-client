@@ -2,12 +2,13 @@ import { expect } from "chai";
 
 import reducer, { shouldClear, shorten, addLink, addCollection } from "../history";
 import DataFetcher from "../../DataFetcher";
-import ActionsCreator from "../../actions";
+import ActionCreator from "../../actions";
 import { adapter } from "../../OPDSDataAdapter";
 import { CollectionState } from "../collection";
+import { CollectionData } from "../../interfaces";
 
 let fetcher = new DataFetcher({ adapter });
-let actions = new ActionsCreator(fetcher);
+let actions = new ActionCreator(fetcher);
 
 let rootLink = {
   id: null,
@@ -196,7 +197,7 @@ describe("history reducer", () => {
     history: []
   };
 
-  it("should handle LOAD_COLLECTION", () => {
+  it("should handle COLLECTION_LOAD", () => {
     let data = {
       id: "some id",
       url: "some url",
@@ -205,7 +206,7 @@ describe("history reducer", () => {
       books: [],
       navigationLinks: []
     };
-    let action = actions.loadCollection(data, "some other url");
+    let action = actions.load<CollectionData>(ActionCreator.COLLECTION, data, "some other url");
     let newHistory = [{
       id: "id",
       text: "title",
@@ -215,7 +216,7 @@ describe("history reducer", () => {
     expect(reducer(currentState, action)).to.deep.equal(newHistory);
   });
 
-  it("shouldn't change history on LOAD_COLLECTION with same id", () => {
+  it("shouldn't change history on COLLECTION_LOAD with same id", () => {
     let data = {
       id: "id",
       url: "some url",
@@ -224,11 +225,11 @@ describe("history reducer", () => {
       books: [],
       navigationLinks: []
     };
-    let action = actions.loadCollection(data, "some other url");
+    let action = actions.load<CollectionData>(ActionCreator.COLLECTION, data, "some other url");
     expect(reducer(currentState, action)).to.deep.equal(currentState.history);
   });
 
-  it("should clear history on LOAD_COLLECTION with the old catalog root", () => {
+  it("should clear history on COLLECTION_LOAD with the old catalog root", () => {
     let stateWithHistory = Object.assign({}, currentState, {
       history: [{
         id: "test id",
@@ -244,11 +245,11 @@ describe("history reducer", () => {
       books: [],
       navigationLinks: []
     };
-    let action = actions.loadCollection(data, "root url");
+    let action = actions.load<CollectionData>(ActionCreator.COLLECTION, data, "root url");
     expect(reducer(stateWithHistory, action)).to.deep.equal([]);
   });
 
-  it("should clear history on LOAD_COLLECTION with a new catalog", () => {
+  it("should clear history on COLLECTION_LOAD with a new catalog", () => {
     let stateWithHistory = Object.assign({}, currentState, {
       history: [{
         id: "test id",
@@ -268,7 +269,7 @@ describe("history reducer", () => {
       books: [],
       navigationLinks: []
     };
-    let action = actions.loadCollection(data, "some url");
+    let action = actions.load<CollectionData>(ActionCreator.COLLECTION, data, "some url");
     let newHistory = [{
       id: null,
       url: "new root url",
@@ -278,7 +279,7 @@ describe("history reducer", () => {
     expect(reducer(stateWithHistory, action)).to.deep.equal(newHistory);
   });
 
-  it("should remove history up to loaded url on LOAD_COLLECTION with url in history", () => {
+  it("should remove history up to loaded url on COLLECTION_LOAD with url in history", () => {
     let stateWithHistory = Object.assign({}, currentState, {
       history: [{
         id: "first id",
@@ -302,7 +303,7 @@ describe("history reducer", () => {
       books: [],
       navigationLinks: []
     };
-    let action = actions.loadCollection(data, "test url");
+    let action = actions.load<CollectionData>(ActionCreator.COLLECTION, data, "test url");
     let newHistory = [{
       id: "first id",
       url: "first url",
@@ -312,7 +313,7 @@ describe("history reducer", () => {
     expect(reducer(stateWithHistory, action)).to.deep.equal(newHistory);
   });
 
-  it("should handle LOAD_COLLECTION after an error", () => {
+  it("should handle COLLECTION_LOAD after an error", () => {
     let data = {
       id: "some id",
       url: "some url",
@@ -321,7 +322,7 @@ describe("history reducer", () => {
       books: [],
       navigationLinks: []
     };
-    let action = actions.loadCollection(data, "some url");
+    let action = actions.load<CollectionData>(ActionCreator.COLLECTION, data, "some url");
 
     expect(reducer(errorState, action)).to.deep.equal([]);
   });
