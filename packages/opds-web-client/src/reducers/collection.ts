@@ -1,5 +1,6 @@
 import { CollectionData, LinkData, FetchErrorData } from "../interfaces";
 import history from "./history";
+import ActionCreator from "../actions";
 
 export interface CollectionState {
   url: string;
@@ -21,19 +22,19 @@ const initialState: CollectionState = {
 
 const collection = (state = initialState, action) => {
   switch (action.type) {
-    case "FETCH_COLLECTION_REQUEST":
+    case ActionCreator.FETCH_COLLECTION_REQUEST:
       return Object.assign({}, state, {
         isFetching: true,
         error: null
       });
 
-    case "FETCH_COLLECTION_FAILURE":
+    case ActionCreator.FETCH_COLLECTION_FAILURE:
       return Object.assign({}, state, {
         isFetching: false,
         error: action.error
       });
 
-    case "LOAD_COLLECTION":
+    case ActionCreator.LOAD_COLLECTION:
       return Object.assign({}, state, {
         data: action.data,
         url: action.url ? action.url : state.url,
@@ -42,7 +43,7 @@ const collection = (state = initialState, action) => {
         history: history(state, action)
       });
 
-    case "CLEAR_COLLECTION":
+    case ActionCreator.CLEAR_COLLECTION:
       return Object.assign({}, state, {
         data: null,
         url: null,
@@ -50,20 +51,20 @@ const collection = (state = initialState, action) => {
         history: state.history.slice(0, -1)
       });
 
-    case "FETCH_PAGE_REQUEST":
+    case ActionCreator.FETCH_PAGE_REQUEST:
       return Object.assign({}, state, {
         pageUrl: action.url,
         isFetchingPage: true,
         error: null
       });
 
-    case "FETCH_PAGE_FAILURE":
+    case ActionCreator.FETCH_PAGE_FAILURE:
       return Object.assign({}, state, {
         isFetchingPage: false,
         error: action.error
       });
 
-    case "LOAD_PAGE":
+    case ActionCreator.LOAD_PAGE:
       return Object.assign({}, state, {
         data: Object.assign({}, state.data, {
           books: Object.assign([], state.data.books).concat(action.data.books),
@@ -72,14 +73,14 @@ const collection = (state = initialState, action) => {
         isFetchingPage: false
       });
 
-    case "LOAD_SEARCH_DESCRIPTION":
+    case ActionCreator.LOAD_SEARCH_DESCRIPTION:
       return Object.assign({}, state, {
         data: Object.assign({}, state.data, {
           search: action.data
         })
       });
 
-    case "CLOSE_ERROR":
+    case ActionCreator.CLOSE_ERROR:
       return Object.assign({}, state, {
         error: null
       });

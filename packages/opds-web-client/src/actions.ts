@@ -13,44 +13,44 @@ export interface LoadCollectionAction {
 export default class ActionCreator {
   private fetcher: DataFetcher;
 
-  FETCH_COLLECTION_REQUEST = "FETCH_COLLECTION_REQUEST";
-  FETCH_COLLECTION_SUCCESS = "FETCH_COLLECTION_SUCCESS";
-  FETCH_COLLECTION_FAILURE = "FETCH_COLLECTION_FAILURE";
-  LOAD_COLLECTION = "LOAD_COLLECTION";
-  CLEAR_COLLECTION = "CLEAR_COLLECTION";
+  static readonly FETCH_COLLECTION_REQUEST = "FETCH_COLLECTION_REQUEST";
+  static readonly FETCH_COLLECTION_SUCCESS = "FETCH_COLLECTION_SUCCESS";
+  static readonly FETCH_COLLECTION_FAILURE = "FETCH_COLLECTION_FAILURE";
+  static readonly LOAD_COLLECTION = "LOAD_COLLECTION";
+  static readonly CLEAR_COLLECTION = "CLEAR_COLLECTION";
 
-  FETCH_PAGE_REQUEST = "FETCH_PAGE_REQUEST";
-  FETCH_PAGE_SUCCESS = "FETCH_PAGE_SUCCESS";
-  FETCH_PAGE_FAILURE = "FETCH_PAGE_FAILURE";
-  LOAD_PAGE = "LOAD_PAGE";
+  static readonly FETCH_PAGE_REQUEST = "FETCH_PAGE_REQUEST";
+  static readonly FETCH_PAGE_SUCCESS = "FETCH_PAGE_SUCCESS";
+  static readonly FETCH_PAGE_FAILURE = "FETCH_PAGE_FAILURE";
+  static readonly LOAD_PAGE = "LOAD_PAGE";
 
-  FETCH_BOOK_REQUEST = "FETCH_BOOK_REQUEST";
-  FETCH_BOOK_SUCCESS = "FETCH_BOOK_SUCCESS";
-  FETCH_BOOK_FAILURE = "FETCH_BOOK_FAILURE";
-  LOAD_BOOK = "LOAD_BOOK";
-  CLEAR_BOOK = "CLEAR_BOOK";
+  static readonly FETCH_BOOK_REQUEST = "FETCH_BOOK_REQUEST";
+  static readonly FETCH_BOOK_SUCCESS = "FETCH_BOOK_SUCCESS";
+  static readonly FETCH_BOOK_FAILURE = "FETCH_BOOK_FAILURE";
+  static readonly LOAD_BOOK = "LOAD_BOOK";
+  static readonly CLEAR_BOOK = "CLEAR_BOOK";
 
-  LOAD_SEARCH_DESCRIPTION = "LOAD_SEARCH_DESCRIPTION";
-  CLOSE_ERROR = "CLOSE_ERROR";
+  static readonly LOAD_SEARCH_DESCRIPTION = "LOAD_SEARCH_DESCRIPTION";
+  static readonly CLOSE_ERROR = "CLOSE_ERROR";
 
-  UPDATE_BOOK_REQUEST = "UPDATE_BOOK_REQUEST";
-  UPDATE_BOOK_SUCCESS = "UPDATE_BOOK_SUCCESS";
-  UPDATE_BOOK_FAILURE = "UPDATE_BOOK_FAILURE";
-  LOAD_UPDATE_BOOK_DATA = "LOAD_UPDATE_BOOK_DATA";
+  static readonly UPDATE_BOOK_REQUEST = "UPDATE_BOOK_REQUEST";
+  static readonly UPDATE_BOOK_SUCCESS = "UPDATE_BOOK_SUCCESS";
+  static readonly UPDATE_BOOK_FAILURE = "UPDATE_BOOK_FAILURE";
+  static readonly LOAD_UPDATE_BOOK_DATA = "LOAD_UPDATE_BOOK_DATA";
 
-  FULFILL_BOOK_REQUEST = "FULFILL_BOOK_REQUEST";
-  FULFILL_BOOK_SUCCESS = "FULFILL_BOOK_SUCCESS";
-  FULFILL_BOOK_FAILURE = "FULFILL_BOOK_FAILURE";
+  static readonly FULFILL_BOOK_REQUEST = "FULFILL_BOOK_REQUEST";
+  static readonly FULFILL_BOOK_SUCCESS = "FULFILL_BOOK_SUCCESS";
+  static readonly FULFILL_BOOK_FAILURE = "FULFILL_BOOK_FAILURE";
 
-  FETCH_LOANS_REQUEST = "FETCH_LOANS_REQUEST";
-  FETCH_LOANS_SUCCESS = "FETCH_LOANS_SUCCESS";
-  FETCH_LOANS_FAILURE = "FETCH_LOANS_FAILURE";
-  LOAD_LOANS = "LOAD_LOANS";
+  static readonly FETCH_LOANS_REQUEST = "FETCH_LOANS_REQUEST";
+  static readonly FETCH_LOANS_SUCCESS = "FETCH_LOANS_SUCCESS";
+  static readonly FETCH_LOANS_FAILURE = "FETCH_LOANS_FAILURE";
+  static readonly LOAD_LOANS = "LOAD_LOANS";
 
-  SHOW_AUTH_FORM = "SHOW_AUTH_FORM";
-  HIDE_AUTH_FORM = "HIDE_AUTH_FORM";
-  SAVE_AUTH_CREDENTIALS = "SAVE_AUTH_CREDENTIALS";
-  CLEAR_AUTH_CREDENTIALS = "CLEAR_AUTH_CREDENTIALS";
+  static readonly SHOW_AUTH_FORM = "SHOW_AUTH_FORM";
+  static readonly HIDE_AUTH_FORM = "HIDE_AUTH_FORM";
+  static readonly SAVE_AUTH_CREDENTIALS = "SAVE_AUTH_CREDENTIALS";
+  static readonly CLEAR_AUTH_CREDENTIALS = "CLEAR_AUTH_CREDENTIALS";
 
   constructor(fetcher: DataFetcher) {
     this.fetcher = fetcher;
@@ -116,67 +116,67 @@ export default class ActionCreator {
   }
 
   fetchCollectionRequest(url: string) {
-    return { type: this.FETCH_COLLECTION_REQUEST, url };
+    return { type: ActionCreator.FETCH_COLLECTION_REQUEST, url };
   }
 
   fetchCollectionSuccess() {
-    return { type: this.FETCH_COLLECTION_SUCCESS };
+    return { type: ActionCreator.FETCH_COLLECTION_SUCCESS };
   }
 
   fetchCollectionFailure(error?: FetchErrorData) {
-    return { type: this.FETCH_COLLECTION_FAILURE, error };
+    return { type: ActionCreator.FETCH_COLLECTION_FAILURE, error };
   }
 
   loadCollection(data: CollectionData, url?: string): LoadCollectionAction {
-    return { type: this.LOAD_COLLECTION, data, url };
+    return { type: ActionCreator.LOAD_COLLECTION, data, url };
   }
 
   fetchPageRequest(url: string) {
-    return { type: this.FETCH_PAGE_REQUEST, url };
+    return { type: ActionCreator.FETCH_PAGE_REQUEST, url };
   }
 
   fetchPageSuccess() {
-    return { type: this.FETCH_PAGE_SUCCESS };
+    return { type: ActionCreator.FETCH_PAGE_SUCCESS };
   }
 
   fetchPageFailure(error?: FetchErrorData) {
-    return { type: this.FETCH_PAGE_FAILURE, error };
+    return { type: ActionCreator.FETCH_PAGE_FAILURE, error };
   }
 
   loadPage(data: CollectionData) {
-    return { type: this.LOAD_PAGE, data };
+    return { type: ActionCreator.LOAD_PAGE, data };
   }
 
   clearCollection() {
-    return { type: this.CLEAR_COLLECTION };
+    return { type: ActionCreator.CLEAR_COLLECTION };
   }
 
   loadSearchDescription(data: SearchData) {
-    return { type: this.LOAD_SEARCH_DESCRIPTION, data };
+    return { type: ActionCreator.LOAD_SEARCH_DESCRIPTION, data };
   }
 
   closeError() {
-    return { type: this.CLOSE_ERROR };
+    return { type: ActionCreator.CLOSE_ERROR };
   }
 
   fetchBookRequest(url: string) {
-    return { type: this.FETCH_BOOK_REQUEST, url };
+    return { type: ActionCreator.FETCH_BOOK_REQUEST, url };
   }
 
   fetchBookSuccess() {
-    return { type: this.FETCH_BOOK_SUCCESS };
+    return { type: ActionCreator.FETCH_BOOK_SUCCESS };
   }
 
   fetchBookFailure(error?: FetchErrorData) {
-    return { type: this.FETCH_BOOK_FAILURE, error };
+    return { type: ActionCreator.FETCH_BOOK_FAILURE, error };
   }
 
   loadBook(data: BookData, url: string) {
-    return { type: this.LOAD_BOOK, data, url };
+    return { type: ActionCreator.LOAD_BOOK, data, url };
   }
 
   clearBook() {
-    return { type: this.CLEAR_BOOK };
+    return { type: ActionCreator.CLEAR_BOOK };
   }
 
   updateBook(url: string): (dispatch: any) => Promise<BookData> {
@@ -196,19 +196,19 @@ export default class ActionCreator {
   }
 
   updateBookRequest() {
-    return { type: this.UPDATE_BOOK_REQUEST };
+    return { type: ActionCreator.UPDATE_BOOK_REQUEST };
   }
 
   updateBookSuccess() {
-    return { type: this.UPDATE_BOOK_SUCCESS };
+    return { type: ActionCreator.UPDATE_BOOK_SUCCESS };
   }
 
   updateBookFailure(error) {
-    return { type: this.UPDATE_BOOK_FAILURE, error };
+    return { type: ActionCreator.UPDATE_BOOK_FAILURE, error };
   }
 
   loadUpdateBookData(data) {
-    return { type: this.LOAD_UPDATE_BOOK_DATA, data };
+    return { type: ActionCreator.LOAD_UPDATE_BOOK_DATA, data };
   }
 
   fulfillBook(url: string): (dispatch: any) => Promise<Blob> {
@@ -267,15 +267,15 @@ export default class ActionCreator {
   }
 
   fulfillBookRequest() {
-    return { type: this.FULFILL_BOOK_REQUEST };
+    return { type: ActionCreator.FULFILL_BOOK_REQUEST };
   }
 
   fulfillBookSuccess() {
-    return { type: this.FULFILL_BOOK_SUCCESS };
+    return { type: ActionCreator.FULFILL_BOOK_SUCCESS };
   }
 
   fulfillBookFailure(error) {
-    return { type: this.FULFILL_BOOK_FAILURE, error };
+    return { type: ActionCreator.FULFILL_BOOK_FAILURE, error };
   }
 
   fetchLoans(url: string) {
@@ -295,19 +295,19 @@ export default class ActionCreator {
   }
 
   fetchLoansRequest(url: string) {
-    return { type: this.FETCH_LOANS_REQUEST, url };
+    return { type: ActionCreator.FETCH_LOANS_REQUEST, url };
   }
 
   fetchLoansSuccess() {
-    return { type: this.FETCH_LOANS_SUCCESS };
+    return { type: ActionCreator.FETCH_LOANS_SUCCESS };
   }
 
   fetchLoansFailure(error?: FetchErrorData) {
-    return { type: this.FETCH_LOANS_FAILURE, error };
+    return { type: ActionCreator.FETCH_LOANS_FAILURE, error };
   }
 
   loadLoans(books: BookData[]) {
-    return { type: this.LOAD_LOANS, books };
+    return { type: ActionCreator.LOAD_LOANS, books };
   }
 
   showAuthForm(
@@ -318,7 +318,7 @@ export default class ActionCreator {
     error?: string,
     attemptedProvider?: string
   ) {
-    return { type: this.SHOW_AUTH_FORM, callback, cancel, providers, title, error, attemptedProvider };
+    return { type: ActionCreator.SHOW_AUTH_FORM, callback, cancel, providers, title, error, attemptedProvider };
   }
 
   closeErrorAndHideAuthForm() {
@@ -329,16 +329,16 @@ export default class ActionCreator {
   }
 
   hideAuthForm() {
-    return { type: this.HIDE_AUTH_FORM };
+    return { type: ActionCreator.HIDE_AUTH_FORM };
   }
 
   saveAuthCredentials(credentials: AuthCredentials) {
     this.fetcher.setAuthCredentials(credentials);
-    return { type: this.SAVE_AUTH_CREDENTIALS, credentials };
+    return { type: ActionCreator.SAVE_AUTH_CREDENTIALS, credentials };
   }
 
   clearAuthCredentials() {
     this.fetcher.clearAuthCredentials();
-    return { type: this.CLEAR_AUTH_CREDENTIALS };
+    return { type: ActionCreator.CLEAR_AUTH_CREDENTIALS };
   }
 }
