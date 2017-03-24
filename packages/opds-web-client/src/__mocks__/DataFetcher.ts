@@ -5,6 +5,7 @@ import DataFetcher from "../DataFetcher";
 export default class MockDataFetcher extends DataFetcher {
   resolve: boolean = true;
   testData: any = "test";
+  testError: any = "test error";
 
   fetchOPDSData(url) {
     return this.fetch(url);
@@ -19,7 +20,7 @@ export default class MockDataFetcher extends DataFetcher {
       if (this.resolve) {
         resolve(this.testData);
       } else {
-        reject("test error");
+        reject(this.testError);
       }
     });
   }
