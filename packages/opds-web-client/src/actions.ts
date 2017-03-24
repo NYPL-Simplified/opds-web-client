@@ -1,4 +1,5 @@
 import DataFetcher from "./DataFetcher";
+import { RequestError } from "./DataFetcher";
 import {
   CollectionData, BookData, SearchData, FetchErrorData,
   AuthCallback, AuthCredentials, AuthProvider, AuthMethod
@@ -71,7 +72,7 @@ export default class ActionCreator {
   }
 
 
-  fetch(type: string, url?: string) {
+  fetchBlob(type: string, url?: string) {
     return (dispatch): Promise<Blob> => {
       dispatch(this.request(type, url));
       return new Promise<Blob>((resolve, reject) => {
@@ -89,6 +90,53 @@ export default class ActionCreator {
           dispatch(this.success(type));
           resolve(blob);
         }).catch(err => {
+          dispatch(this.failure(type, err));
+          reject(err);
+        });
+      });
+    };
+  }
+
+  fetchJSON<T>(type: string, url?: string) {
+    let err: RequestError;
+    return (dispatch): Promise<T> => {
+      return new Promise<T>((resolve, reject) => {
+        dispatch(this.request(type, url));
+        this.fetcher.fetch(url).then(response => {
+          if (response.ok) {
+            response.json().then((data: T) => {
+              dispatch(this.success(type));
+              dispatch(this.load<T>(type, data));
+              resolve(data);
+            }).catch(err => {
+              dispatch(this.failure(type));
+              reject(err);
+            });
+          } else {
+            response.json().then(data => {
+              err = {
+                status: response.status,
+                response: data.detail,
+                url: url
+              };
+              dispatch(this.failure(type, err));
+              reject(err);
+            }).catch(parseError => {
+              err = {
+                status: response.status,
+                response: "Request failed",
+                url: url
+              };
+              dispatch(this.failure(type, err));
+              reject(err);
+            });
+          }
+        }).catch(err => {
+          err = {
+            status: null,
+            response: err.message,
+            url: url
+          };
           dispatch(this.failure(type, err));
           reject(err);
         });
@@ -177,7 +225,7 @@ export default class ActionCreator {
   }
 
   fulfillBook(url: string): (dispatch: any) => Promise<Blob> {
-    return this.fetch(ActionCreator.FULFILL_BOOK, url);
+    return this.fetchBlob(ActionCreator.FULFILL_BOOK, url);
   }
 
   indirectFulfillBook(url: string, type: string): (dispatch: any) => Promise<string> {
