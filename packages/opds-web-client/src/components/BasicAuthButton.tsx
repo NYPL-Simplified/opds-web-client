@@ -2,7 +2,7 @@ import * as React from "react";
 import { AuthProvider, BasicAuthMethod } from "../interfaces";
 import { AuthButtonProps } from "./AuthProviderSelectionForm";
 
-export default class BasicAuthButton extends React.Component<AuthButtonProps<BasicAuthMethod>, any> {
+export default class BasicAuthButton extends React.Component<AuthButtonProps<BasicAuthMethod>, void> {
   render() {
     let label = "Log in with " + this.props.provider.name;
 

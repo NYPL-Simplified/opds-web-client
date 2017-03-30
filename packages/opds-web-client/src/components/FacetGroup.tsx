@@ -6,7 +6,7 @@ export interface FacetGroupProps {
   facetGroup: FacetGroupData;
 }
 
-export default class FacetGroup extends React.Component<FacetGroupProps, any> {
+export default class FacetGroup extends React.Component<FacetGroupProps, void> {
   render(): JSX.Element {
     return (
       <div className="facet-group">

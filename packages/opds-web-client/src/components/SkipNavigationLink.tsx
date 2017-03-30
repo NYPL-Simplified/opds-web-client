@@ -5,7 +5,7 @@ export interface SkipNavigationLinkProps extends React.HTMLProps<SkipNavigationL
   label?: string;
 }
 
-export default class SkipNavigationLink extends React.Component<SkipNavigationLinkProps, any> {
+export default class SkipNavigationLink extends React.Component<SkipNavigationLinkProps, void> {
   render(): JSX.Element {
     let tabIndex = -1;
     let label = "Skip " + (this.props.label || "navigation");

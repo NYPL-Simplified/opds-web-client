@@ -7,7 +7,7 @@ export interface CatalogLinkProps extends React.HTMLProps<any> {
   bookUrl?: string;
 }
 
-export default class CatalogLink extends React.Component<CatalogLinkProps, any> {
+export default class CatalogLink extends React.Component<CatalogLinkProps, void> {
   context: NavigateContext;
 
   static contextTypes: React.ValidationMap<NavigateContext> = {

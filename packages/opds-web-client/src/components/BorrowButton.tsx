@@ -4,7 +4,7 @@ export interface BorrowButtonProps extends React.HTMLProps<any> {
   borrow: () => Promise<any>;
 }
 
-export default class BorrowButton extends React.Component<BorrowButtonProps, any> {
+export default class BorrowButton extends React.Component<BorrowButtonProps, void> {
   render() {
     let props = Object.assign({}, this.props);
     delete props["book"];

@@ -25,7 +25,11 @@ export interface AuthProviderSelectionFormProps {
   providers?: AuthProvider<AuthMethod>[];
 }
 
-export default class AuthProviderSelectionForm extends React.Component<AuthProviderSelectionFormProps, any> {
+export interface AuthProviderSelectionFormState {
+  selectedProvider: AuthProvider<AuthMethod>;
+}
+
+export default class AuthProviderSelectionForm extends React.Component<AuthProviderSelectionFormProps, AuthProviderSelectionFormState> {
   constructor(props) {
     super(props);
     let selectedProvider = null;

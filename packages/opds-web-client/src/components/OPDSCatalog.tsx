@@ -19,7 +19,7 @@ export interface OPDSCatalogProps {
   initialState?: State;
 }
 
-export default class OPDSCatalog extends React.Component<OPDSCatalogProps, any> {
+export default class OPDSCatalog extends React.Component<OPDSCatalogProps, void> {
   store: Redux.Store<State>;
   context: NavigateContext;
 

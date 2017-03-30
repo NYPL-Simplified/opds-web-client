@@ -21,7 +21,7 @@ export interface LanesProps {
   isFetching?: boolean;
 }
 
-export class Lanes extends React.Component<any, any> {
+export class Lanes extends React.Component<LanesProps, void> {
   render() {
     return (
       <div className="lanes">

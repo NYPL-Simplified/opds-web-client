@@ -16,7 +16,7 @@ export interface CollectionProps extends React.HTMLProps<Collection> {
   fetchPage?: (url: string) => Promise<any>;
 }
 
-export default class Collection extends React.Component<CollectionProps, any> {
+export default class Collection extends React.Component<CollectionProps, void> {
   constructor(props) {
     super(props);
     this.fetch = this.fetch.bind(this);

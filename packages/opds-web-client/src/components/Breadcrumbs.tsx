@@ -10,7 +10,7 @@ export interface ComputeBreadcrumbs {
   (collection: CollectionData, history: LinkData[]): LinkData[];
 }
 
-export default class Breadcrumbs extends React.Component<BreadcrumbsProps, any> {
+export default class Breadcrumbs extends React.Component<BreadcrumbsProps, void> {
   render(): JSX.Element {
     return (
         <ol className="breadcrumb" aria-label="breadcrumbs" role="navigation">
