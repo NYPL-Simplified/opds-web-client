@@ -1,4 +1,5 @@
 import { BookData } from "../interfaces";
+import ActionCreator from "../actions";
 
 export interface LoansState {
   url: string;
@@ -12,7 +13,7 @@ const initialState: LoansState = {
 
 export default (state: LoansState = initialState, action): LoansState => {
   switch (action.type) {
-    case "LOAD_COLLECTION":
+    case ActionCreator.COLLECTION_LOAD:
       let loansUrl = action.data.shelfUrl || state.url;
       let isLoans = action.url === loansUrl;
 
@@ -21,19 +22,19 @@ export default (state: LoansState = initialState, action): LoansState => {
         books: isLoans ? action.data.books : state.books
       });
 
-    case "LOAD_LOANS":
+    case ActionCreator.LOANS_LOAD:
       return Object.assign({}, state, {
-        books: action.books
+        books: action.data.books
       });
 
-    case "CLEAR_AUTH_CREDENTIALS":
+    case ActionCreator.CLEAR_AUTH_CREDENTIALS:
       // Clear auth credentials should remove the authenticated
       // user's loans as well.
       return Object.assign({}, state, {
         books: []
       });
 
-    case "LOAD_UPDATE_BOOK_DATA":
+    case ActionCreator.UPDATE_BOOK_LOAD:
       // A book has been updated, so the loans feed is now outdated.
       // If we remove the loans, the components showing the book that
       // was updated can use the data from the book update request 
