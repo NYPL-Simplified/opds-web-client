@@ -59,11 +59,10 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, B
 
   validate() {
     let login = (this.refs["login"] as any).value;
-    let password = (this.refs["password"] as any).value;
 
-    if (!login || !password) {
+    if (!login) {
       this.setState({
-        error: `${this.loginLabel()} and ${this.passwordLabel()} are required`
+        error: `${this.loginLabel()} is required`
       });
       return false;
     } else {

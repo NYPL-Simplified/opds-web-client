@@ -101,22 +101,16 @@ describe("BasicAuthForm", () => {
       // both fields blank
       let isValid = wrapper.instance().validate();
       expect(isValid).to.equal(false);
-      expect(wrapper.state("error")).to.equal("code name and secret password are required");
-
-      // password blank
-      let username = wrapper.find("input[type='text']").get(0);
-      username.value = "doubleohseven";
-      isValid = wrapper.instance().validate();
-      expect(isValid).to.equal(false);
-      expect(wrapper.state("error")).to.equal("code name and secret password are required");
+      expect(wrapper.state("error")).to.equal("code name is required");
 
       // username blank
+      let username = wrapper.find("input[type='text']").get(0);
       username.value = "";
       let password = wrapper.find("input[type='password']").get(0);
       password.value = "thenameisbond";
       isValid = wrapper.instance().validate();
       expect(isValid).to.equal(false);
-      expect(wrapper.state("error")).to.equal("code name and secret password are required");
+      expect(wrapper.state("error")).to.equal("code name is required");
 
       // nothing blank
       username.value = "doubleohseven";
