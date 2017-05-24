@@ -60,6 +60,7 @@ export interface RootProps extends StateProps {
   retryCollectionAndBook?: () => Promise<any>;
   pageTitleTemplate?: (collectionTitle: string, bookTitle: string) => string;
   headerTitle?: string;
+  epubReaderUrlTemplate?: (epubUrl: string) => string;
   fetchPage?: (url: string) => Promise<CollectionData>;
   Header?: new() => __React.Component<HeaderProps, any>;
   Footer?: new() => __React.Component<FooterProps, any>;
@@ -225,6 +226,7 @@ export class Root extends React.Component<RootProps, RootState> {
                         fulfillBook={this.props.fulfillBook}
                         indirectFulfillBook={this.props.indirectFulfillBook}
                         isSignedIn={this.props.isSignedIn}
+                        epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
                         />
                     </BookDetailsContainer> :
                     <div className="without-container">
@@ -234,6 +236,7 @@ export class Root extends React.Component<RootProps, RootState> {
                         fulfillBook={this.props.fulfillBook}
                         indirectFulfillBook={this.props.indirectFulfillBook}
                         isSignedIn={this.props.isSignedIn}
+                        epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
                         />
                     </div>
                   )

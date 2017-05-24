@@ -23,7 +23,8 @@ describe("OPDSCatalog", () => {
       title: "book title",
       url: "book url"
     },
-    pageTitleTemplate: (c, b) => "test title"
+    pageTitleTemplate: (c, b) => "test title",
+    epubReaderUrlTemplate: (a) => "test reader url"
   };
 
   it("creates a store for Root if not given one", () => {

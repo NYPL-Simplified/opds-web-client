@@ -318,6 +318,7 @@ describe("Root", () => {
     let updateBook = stub();
     let fulfillBook = stub();
     let indirectFulfillBook = stub();
+    let epubReaderUrlTemplate = stub();
     let wrapper = shallow(
       <Root
         bookData={bookData}
@@ -326,6 +327,7 @@ describe("Root", () => {
         fulfillBook={fulfillBook}
         indirectFulfillBook={indirectFulfillBook}
         isSignedIn={true}
+        epubReaderUrlTemplate={epubReaderUrlTemplate}
         />
     );
 
@@ -338,6 +340,7 @@ describe("Root", () => {
     expect(book.props().fulfillBook).to.equal(fulfillBook);
     expect(book.props().indirectFulfillBook).to.equal(indirectFulfillBook);
     expect(book.props().isSignedIn).to.equal(true);
+    expect(book.props().epubReaderUrlTemplate).to.equal(epubReaderUrlTemplate);
   });
 
   it("shows breadcrumbs", () => {
@@ -395,6 +398,7 @@ describe("Root", () => {
       let refresh = stub();
       let updateBook = stub();
       let fulfillBook = stub();
+      let epubReaderUrlTemplate = stub();
       let wrapper = shallow(
         <Root
           bookData={bookData}
@@ -405,6 +409,7 @@ describe("Root", () => {
           BookDetailsContainer={Container}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
+          epubReaderUrlTemplate={epubReaderUrlTemplate}
           />
       );
 
@@ -416,6 +421,7 @@ describe("Root", () => {
       expect(container.props().book).to.equal(bookData);
       expect(child.type()).to.equal(BookDetails);
       expect(child.props().book).to.equal(bookData);
+      expect(child.props().epubReaderUrlTemplate).to.equal(epubReaderUrlTemplate);
     });
 
     it("does not render BookDetailsContainer if bookUrl and bookData.url are missing", () => {

@@ -18,7 +18,7 @@ let book = {
   contributors: ["contributor 1"],
   summary: "&lt;b&gt;Sam and Remi Fargo race for treasure&#8212;and survival&#8212;in this lightning-paced new adventure from #1&lt;i&gt; New York Times&lt;/i&gt; bestselling author Clive Cussler.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;Husband-and-wife team Sam and Remi Fargo are in Mexico when they come upon a remarkable discovery&#8212;the mummified remainsof a man clutching an ancient sealed pot. Within the pot is a Mayan book larger than any known before.&lt;br /&gt;&lt;br /&gt;The book contains astonishing information about the Mayans, their cities, and about mankind itself. The secrets are so powerful that some people would do anything to possess them&#8212;as the Fargos are about to find out. Many men and women are going to die for that book.",
   imageUrl: "https://dlotdqc6pnwqb.cloudfront.net/3M/crrmnr9/cover.jpg",
-  openAccessLinks: [{ url: "secrets.epub", type: "application/epub+zip" }],
+  openAccessLinks: [{ url: "secrets.epub", type: "application/epub+zip" }, { url: "secrets.mobi", type: "application/x-mobipocket-ebook" }],
   borrowUrl: "borrow url",
   publisher: "Penguin Publishing Group",
   published: "February 29, 2016",
@@ -39,6 +39,7 @@ describe("BookDetails", () => {
         updateBook={stub()}
         fulfillBook={stub()}
         indirectFulfillBook={stub()}
+        epubReaderUrlTemplate={stub().returns("test reader url")}
         />
     );
   });
@@ -131,11 +132,25 @@ describe("BookDetails", () => {
     expect(summary.props().lang).to.equal("de");
   });
 
-  it("shows download button for open access url", () => {
-    let button = wrapper.find(DownloadButton);
-    expect(button.props().url).to.equal("secrets.epub");
-    expect(button.props().mimeType).to.equal("application/epub+zip");
-    expect(button.props().isPlainLink).to.equal(true);
+  it("shows download button for open access urls", () => {
+    let buttons = wrapper.find(DownloadButton);
+    expect(buttons.length).to.equal(2);
+    let epubButton = buttons.at(0);
+    let mobiButton = buttons.at(1);
+
+    expect(epubButton.props().url).to.equal("secrets.epub");
+    expect(epubButton.props().mimeType).to.equal("application/epub+zip");
+    expect(epubButton.props().isPlainLink).to.equal(true);
+
+    expect(mobiButton.props().url).to.equal("secrets.mobi");
+    expect(mobiButton.props().mimeType).to.equal("application/x-mobipocket-ebook");
+    expect(mobiButton.props().isPlainLink).to.equal(true);
+  });
+
+  it("shows read button for open access epub urls", () => {
+    let buttons = wrapper.find(".read-button");
+    expect(buttons.length).to.equal(1);
+    expect(buttons.props().href).to.equal("test reader url");
   });
 
   it("shows borrow/hold button", () => {
