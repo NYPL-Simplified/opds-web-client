@@ -128,6 +128,7 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
                 <a
                   className="btn btn-default read-button"
                   href={this.props.epubReaderUrlTemplate(link.url)}
+                  target="_blank"
                   >Read
                 </a>
               </span>
