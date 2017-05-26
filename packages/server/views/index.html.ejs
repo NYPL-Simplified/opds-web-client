@@ -34,7 +34,10 @@
           path += bookUrl ? `book/${encodeURIComponent(bookUrl)}/` : "";
           return path;
         },
-        pathPattern: "/(collection/:collectionUrl/)(book/:bookUrl/)"
+        pathPattern: "/(collection/:collectionUrl/)(book/:bookUrl/)",
+        epubReaderUrlTemplate: function (epubUrl) {
+          return "/reader?url=" + encodeURIComponent(new URL("/pub/" + btoa(epubUrl) + "/manifest.json", window.location.href).href);
+        }
       }, "opds-web-client");
     </script>
   </body>

@@ -13,6 +13,7 @@ export interface BookDetailsProps extends BookProps {
   fulfillBook: (url: string) => Promise<Blob>;
   indirectFulfillBook: (url: string, type: string) => Promise<string>;
   isSignedIn?: boolean;
+  epubReaderUrlTemplate?: (epubUrl: string) => string;
 }
 
 export default class BookDetails<P extends BookDetailsProps> extends React.Component<P, void> {
@@ -119,6 +120,23 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
     let links = [];
 
     if (this.isOpenAccess()) {
+      if (this.props.epubReaderUrlTemplate) {
+        for (const link of this.props.book.openAccessLinks) {
+          if (link.type === "application/epub+zip") {
+            links.push(
+              <span>
+                <a
+                  className="btn btn-default read-button"
+                  href={this.props.epubReaderUrlTemplate(link.url)}
+                  target="_blank"
+                  >Read
+                </a>
+              </span>
+            );
+          }
+        }
+      }
+
       links.push(
         this.props.book.openAccessLinks.map(link => {
           return (

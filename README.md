@@ -21,6 +21,7 @@ For an example of OPDS Web Client in use as a standalone app, see the [demo serv
 - `computeBreadcrumbs`: optional function for customizing breadcrumbs. It defaults to `defaultComputeBreadcrumbs` in the [Breadcrumbs](packages/opds-web-client/src/components/Breadcrumbs.tsx) module, and `hierarchyComputeBreacrumbs` is also available. It should return an array of link objects, each with `url` and `text` properties. Its accepts two arguments:
   - `collection`: object representing the current collection data (see `CollectionData` in the [interfaces file](packages/opds-web-client/src/interfaces.ts))
   - `history`: an array of link objects (each with `url` and `text` properties) that is appended every time the user navigates to a new collection
+- `epubReaderUrlTemplate(epubUrl: string) => string`: optional function that returns a URL where you can read an EPUB file.
 
 ## React Component
 The application is also available as a reusable React component:
@@ -49,6 +50,7 @@ For an example of the application in use as a React component, see [NYPL-Simplif
 - `Header`: optional custom React component class to render in place of the client's default header. This `Header` will receive three props, `collectionTitle`, `bookTitle`, and a `CatalogLink` which should be used for links to collections or books that the client should load, and one child, a `Search` component that will only be present when the loaded collection links to an Open Search Description document. Default: `undefined`
 - `BookDetailsContainer`: optional custom React component class to render in place of the client's default `BookDetails` component. This `BookDetailsContainer` will receive three props: the current `collectionUrl` and `bookUrl`, and `refreshCatalog`, a function that can be called to refresh the collection and/or book. `BookDetailsContainer` will also receive the default rendered `BookDetails` component as a child. Default: `undefined`
 - `computeBreadcrumbs`: same as in "Standalone Config Options" above
+- `epubReaderUrlTemplate`: same as in "Standalone Config Options" above
 
 ### React Component Context
 

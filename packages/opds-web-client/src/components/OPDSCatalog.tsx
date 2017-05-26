@@ -17,6 +17,7 @@ export interface OPDSCatalogProps {
   pageTitleTemplate: (collectionTitle: string, bookTitle: string) => string;
   proxyUrl?: string;
   initialState?: State;
+  epubReaderUrlTemplate?: (epubUrl: string) => string;
 }
 
 export default class OPDSCatalog extends React.Component<OPDSCatalogProps, void> {
