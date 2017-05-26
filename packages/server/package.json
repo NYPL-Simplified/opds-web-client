@@ -20,6 +20,6 @@
     "r2-streamer-js": "0.0.1-alpha13",
     "request": "^2.69.0",
     "requirejs": "^2.3.2",
-    "nypl-simplified-webpub-viewer": "0.0.3"
+    "nypl-simplified-webpub-viewer": "0.0.4"
   }
 }
