@@ -207,7 +207,7 @@ describe("BookDetails", () => {
     expect(button.props().isPlainLink).to.equal(true);
   });
 
-  it("shows 'on hold'", () => {
+  it("shows 'reserved'", () => {
     let bookCopy = Object.assign({}, book, {
       openAccessLinks: [],
       availability: { status: "reserved" }

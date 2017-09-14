@@ -216,7 +216,7 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
       links.push(
         <button key="onhold" className="btn btn-default disabled">Reserved</button>
       );
-    } else if (this.props.book.borrowUrl) {
+    } else if (!this.isBorrowed() && this.props.book.borrowUrl) {
       let label = this.props.book.copies &&
                   this.props.book.copies.available === 0 ?
                   "Reserve" :
