@@ -31,7 +31,7 @@
       transition: all 0.2s;
 
       &:disabled {
-        background-color: $gray;
+        background-color: $pagecolorlight;
       }
 
       &:hover:enabled {
@@ -65,7 +65,7 @@
   }
 
   .books.list-view li:nth-child(odd) {
-    background-color: darken($pagecolor, 5%);
+    background-color: $pagecolorlight;
   }
 
   .books {

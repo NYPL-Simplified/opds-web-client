@@ -167,5 +167,5 @@
 }
 
 .list-view li:nth-child(odd) .book .expanded-info .summary a {
-  background: linear-gradient(to right, transparent, darken($pagecolor, 5%) 40%, darken($pagecolor, 5%));
+  background: linear-gradient(to right, transparent, $pagecolorlight 40%, $pagecolorlight);
 }
