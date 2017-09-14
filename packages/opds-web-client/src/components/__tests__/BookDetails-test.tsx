@@ -168,7 +168,7 @@ describe("BookDetails", () => {
     );
 
     let button = wrapper.find(BorrowButton);
-    expect(button.children().text()).to.equal("Get");
+    expect(button.children().text()).to.equal("Borrow");
     button.props().borrow();
     expect(updateBook.callCount).to.equal(1);
     expect(updateBook.args[0][0]).to.equal(bookCopy.borrowUrl);
