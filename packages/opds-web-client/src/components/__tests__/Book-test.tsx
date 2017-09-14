@@ -1,4 +1,5 @@
 import { expect } from "chai";
+import { stub } from "sinon";
 
 import * as React from "react";
 import { shallow } from "enzyme";
@@ -20,9 +21,23 @@ let book: BookData = {
 };
 
 describe("Book", () => {
+  let updateBook;
+  let fulfillBook;
+  let indirectFulfillBook;
+
+  beforeEach(() => {
+    updateBook = stub();
+    fulfillBook = stub();
+    indirectFulfillBook = stub();
+  });
+
   it("shows the book cover", () => {
     let wrapper = shallow(
-      <Book book={book} />
+      <Book book={book}
+        updateBook={updateBook}
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        />
     );
 
     let links = wrapper.find(CatalogLink);
@@ -34,7 +49,11 @@ describe("Book", () => {
 
   it("shows book info", () => {
     let wrapper = shallow(
-      <Book book={book} />
+      <Book book={book}
+        updateBook={updateBook}
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        />
     );
 
     let links = wrapper.find(CatalogLink);
@@ -53,7 +72,11 @@ describe("Book", () => {
       contributors: ["contributor"]
     });
     let wrapper = shallow(
-      <Book book={bookCopy} />
+      <Book book={bookCopy}
+        updateBook={updateBook}
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        />
     );
 
     let links = wrapper.find(CatalogLink);
@@ -64,7 +87,11 @@ describe("Book", () => {
 
   it("has language attribute matching the book's language", () => {
     let wrapper = shallow(
-      <Book book={book} />
+      <Book book={book}
+        updateBook={updateBook}
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        />
     );
 
     let bookElement = wrapper.find(".book");

@@ -1,27 +1,12 @@
 import * as React from "react";
 import * as moment from "moment";
-import CatalogLink from "./CatalogLink";
-import BorrowButton from "./BorrowButton";
-import DownloadButton from "./DownloadButton";
 import BookCover from "./BookCover";
-import { BookProps } from "./Book";
+import Book, { BookProps } from "./Book";
 import { BookData } from "../interfaces";
-const download = require("downloadjs");
 
-export interface BookDetailsProps extends BookProps {
-  updateBook: (url: string) => Promise<BookData>;
-  fulfillBook: (url: string) => Promise<Blob>;
-  indirectFulfillBook: (url: string, type: string) => Promise<string>;
-  isSignedIn?: boolean;
-  epubReaderUrlTemplate?: (epubUrl: string) => string;
-}
+export interface BookDetailsProps extends BookProps {};
 
-export default class BookDetails<P extends BookDetailsProps> extends React.Component<P, void> {
-  constructor(props) {
-    super(props);
-    this.borrow = this.borrow.bind(this);
-  }
-
+export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
   render(): JSX.Element {
     let fields = this.fields();
 
@@ -97,99 +82,6 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
     }
   }
 
-  fields() {
-    return this.props.book ? [
-      {
-        name: "Publisher",
-        value: this.props.book.publisher
-      },
-      {
-        name: "Published",
-        "value": this.props.book.published
-      },
-      {
-        name: "Categories",
-        value: this.props.book.categories ?
-                 this.props.book.categories.join(", ") :
-                 null
-      }
-    ] : [];
-  }
-
-  circulationLinks() {
-    let links = [];
-
-    if (this.isOpenAccess()) {
-      if (this.props.epubReaderUrlTemplate) {
-        for (const link of this.props.book.openAccessLinks) {
-          if (link.type === "application/epub+zip") {
-            links.push(
-              <span>
-                <a
-                  className="btn btn-default read-button"
-                  href={this.props.epubReaderUrlTemplate(link.url)}
-                  target="_blank"
-                  >Read
-                </a>
-              </span>
-            );
-          }
-        }
-      }
-
-      links.push(
-        this.props.book.openAccessLinks.map(link => {
-          return (
-            <DownloadButton
-              key={link.url}
-              url={link.url}
-              mimeType={link.type}
-              isPlainLink={true}
-              />
-            );
-        })
-      );
-    } else if (this.isBorrowed()) {
-      links.push(
-        this.props.book.fulfillmentLinks.map(link => {
-          let isStreaming = link.type === "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media";
-          return (
-            <DownloadButton
-              key={link.url}
-              fulfill={this.props.fulfillBook}
-              indirectFulfill={this.props.indirectFulfillBook}
-              url={link.url}
-              mimeType={link.type}
-              title={this.props.book.title}
-              isPlainLink={isStreaming || !this.props.isSignedIn}
-              indirectType={link.indirectType}
-              />
-          );
-        })
-      );
-    }
-
-    if (this.isReserved()) {
-      links.push(
-        <button key="onhold" className="btn btn-default disabled">Reserved</button>
-      );
-    } else if (this.props.book.borrowUrl) {
-      let label = this.props.book.copies &&
-                  this.props.book.copies.available === 0 ?
-                  "Reserve" :
-                  "Get";
-      links.push(
-        <BorrowButton
-          key={this.props.book.borrowUrl}
-          borrow={this.borrow}>
-          { label }
-        </BorrowButton>
-      );
-    }
-
-    return links;
-  }
-
   circulationInfo() {
     if (this.isOpenAccess()) {
       return [(
@@ -240,25 +132,6 @@ export default class BookDetails<P extends BookDetailsProps> extends React.Compo
     }
 
     return info;
-  }
-
-  borrow(): Promise<BookData> {
-    return this.props.updateBook(this.props.book.borrowUrl);
-  }
-
-  isReserved() {
-    return this.props.book.availability &&
-           this.props.book.availability.status === "reserved";
-  }
-
-  isBorrowed() {
-    return this.props.book.fulfillmentLinks &&
-           this.props.book.fulfillmentLinks.length > 0;
-  }
-
-  isOpenAccess() {
-    return this.props.book.openAccessLinks &&
-           this.props.book.openAccessLinks.length > 0;
   }
 
   rightColumnLinks() {

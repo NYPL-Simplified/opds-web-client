@@ -23,6 +23,8 @@ export default class DownloadButton extends React.Component<DownloadButtonProps,
     delete props["mimeType"];
     delete props["isPlainLink"];
     delete props["fulfill"];
+    delete props["indirectFulfill"];
+    delete props["indirectType"];
     delete props["title"];
 
     return (
@@ -87,7 +89,7 @@ export default class DownloadButton extends React.Component<DownloadButtonProps,
 
   downloadLabel() {
     if (this.props.indirectType === "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media") {
-      return "Open in Web Reader";
+      return "Read Online";
     }
     let type = this.fileExtension().replace(".", "").toUpperCase();
     return "Download" + (type ? " " + type : "");

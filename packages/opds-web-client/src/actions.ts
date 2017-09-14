@@ -67,6 +67,8 @@ export default class ActionCreator {
   static readonly SAVE_AUTH_CREDENTIALS = "SAVE_AUTH_CREDENTIALS";
   static readonly CLEAR_AUTH_CREDENTIALS = "CLEAR_AUTH_CREDENTIALS";
 
+  static readonly SET_PREFERENCE = "SET_PREFERENCE";
+
   constructor(fetcher: DataFetcher) {
     this.fetcher = fetcher;
   }
@@ -289,5 +291,9 @@ export default class ActionCreator {
   clearAuthCredentials() {
     this.fetcher.clearAuthCredentials();
     return { type: ActionCreator.CLEAR_AUTH_CREDENTIALS };
+  }
+
+  setPreference(key: string, value: string) {
+    return { type: ActionCreator.SET_PREFERENCE, key: key, value: value };
   }
 }

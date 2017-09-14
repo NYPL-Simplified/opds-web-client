@@ -379,4 +379,13 @@ describe("actions", () => {
       expect((fetcher.clearAuthCredentials as any).callCount).to.equal(1);
     });
   });
+
+  describe("setPreference", () => {
+    it("creates an action", () => {
+      let action = actions.setPreference("key", "value");
+      expect(action.type).to.equal(ActionCreator.SET_PREFERENCE);
+      expect(action.key).to.equal("key");
+      expect(action.value).to.equal("value");
+    });
+  });
 });

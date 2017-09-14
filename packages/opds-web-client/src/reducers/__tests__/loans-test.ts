@@ -83,9 +83,9 @@ describe("loans reducer", () => {
     expect(reducer(oldState, action)).to.deep.equal(newState);
   });
 
-  it("clears books on UPDATE_BOOK_LOAD", () => {
+  it("removes book that's no longer borrowed on UPDATE_BOOK_LOAD", () => {
     let oldState = Object.assign({}, initState, {
-        books: loansData
+        books: loansData.books
     });
     let newBookData = {
       id: "book id",
@@ -95,6 +95,44 @@ describe("loans reducer", () => {
     let action = actions.load<BookData>(ActionCreator.UPDATE_BOOK, newBookData);
     let newState = Object.assign({}, oldState, {
       books: []
+    });
+
+    expect(reducer(oldState, action)).to.deep.equal(newState);
+  });
+
+  it("adds newly borrowed book on UPDATE_BOOK_LOAD", () => {
+    let oldState = Object.assign({}, initState, {
+        books: loansData.books
+    });
+    let newBookData = {
+      id: "new book id",
+      url: "new book url",
+      title: "new book title",
+      fulfillmentLinks: [
+        { url: "url", type: "text/html", indirectType: null }
+      ]
+    };
+    let action = actions.load<BookData>(ActionCreator.UPDATE_BOOK, newBookData);
+    let newState = Object.assign({}, oldState, {
+      books: [loansData.books[0], newBookData]
+    });
+
+    expect(reducer(oldState, action)).to.deep.equal(newState);
+  });
+
+  it("adds newly reserved book on UPDATE_BOOK_LOAD", () => {
+    let oldState = Object.assign({}, initState, {
+        books: loansData.books
+    });
+    let newBookData = {
+      id: "new book id",
+      url: "new book url",
+      title: "new book title",
+      availability: { status: "reserved" }
+    };
+    let action = actions.load<BookData>(ActionCreator.UPDATE_BOOK, newBookData);
+    let newState = Object.assign({}, oldState, {
+      books: [loansData.books[0], newBookData]
     });
 
     expect(reducer(oldState, action)).to.deep.equal(newState);

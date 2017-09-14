@@ -36,12 +36,24 @@ export default (state: LoansState = initialState, action): LoansState => {
 
     case ActionCreator.UPDATE_BOOK_LOAD:
       // A book has been updated, so the loans feed is now outdated.
-      // If we remove the loans, the components showing the book that
-      // was updated can use the data from the book update request 
-      // until the next LOAD_LOANS action.
+      let updatedBook = action.data;
+      let isReserved = (updatedBook.availability && updatedBook.availability.status === "reserved");
+      let isBorrowed = (updatedBook.fulfillmentLinks && updatedBook.fulfillmentLinks.length > 0);
+
+      let newLoans = [];
+      // Copy over all the books except the updated one.
+      for (let loan of state.books) {
+        if (loan.id !== updatedBook.id) {
+          newLoans.push(loan);
+        }
+      }
+      // If the updated book should be in the loans, add it.
+      if (isReserved || isBorrowed) {
+        newLoans.push(updatedBook);
+      }
 
       return Object.assign({}, state, {
-        books: []
+        books: newLoans
       });
 
     default:

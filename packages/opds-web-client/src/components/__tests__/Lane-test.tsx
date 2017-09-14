@@ -29,11 +29,26 @@ let laneData: LaneData = {
 
 describe("Lane", () => {
   let wrapper;
+  let updateBook;
+  let fulfillBook;
+  let indirectFulfillBook;
+
+  beforeEach(() => {
+    updateBook = stub();
+    fulfillBook = stub();
+    indirectFulfillBook = stub();
+  });
 
   describe("rendering", () => {
     beforeEach(() => {
       wrapper = shallow(
-        <Lane lane={laneData} collectionUrl="test collection" />
+        <Lane
+          lane={laneData}
+          collectionUrl="test collection"
+          updateBook={updateBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          />
       );
     });
 
@@ -106,7 +121,13 @@ describe("Lane", () => {
 
       let context = mockRouterContext();
       wrapper = mount(
-        <Lane lane={laneData} collectionUrl="test collection" />,
+        <Lane
+          lane={laneData}
+          collectionUrl="test collection"
+          updateBook={updateBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          />,
         {
           context,
           childContextTypes: {
