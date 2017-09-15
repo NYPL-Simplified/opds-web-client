@@ -343,5 +343,23 @@ describe("Book", () => {
       expect(button.text()).to.equal("Reserved");
       expect(button.props().className).to.contain("disabled");
     });
+
+    it("shows 'borrow' when a reserved book becomes available", () => {
+      let bookCopy = Object.assign({}, book, {
+        openAccessLinks: [],
+        availability: { status: "ready" }
+      });
+      wrapper = shallow(
+        <Book
+          book={bookCopy}
+          updateBook={stub()}
+          fulfillBook={stub()}
+          indirectFulfillBook={stub()}
+          />
+      );
+      let button = wrapper.find(BorrowButton);
+      expect(button.length).to.equal(1);
+      expect(button.html()).to.contain("Borrow");
+    });
   });
 });
