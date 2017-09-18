@@ -77,9 +77,9 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
           </div>
           <div className="details">
           <div className="summary" lang={this.props.book.language}>
-            <span
+            <p
               dangerouslySetInnerHTML={{__html: summary}}>
-            </span>
+            </p>
             <CatalogLink
               collectionUrl={this.props.collectionUrl}
               bookUrl={this.props.book.url || this.props.book.id}
@@ -87,11 +87,11 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
               >&hellip; More
             </CatalogLink>
           </div>
-            <div className="fields" lang="en">
+            <ul className="fields" lang="en">
               { this.fields().map(field =>
-                field.value ? <div className={field.name.toLowerCase().replace(" ", "-")} key={field.name}>{field.name}: {field.value}</div> : null
+                field.value ? <li className={field.name.toLowerCase().replace(" ", "-")} key={field.name}>{field.name}: {field.value}</li> : null
               ) }
-            </div>
+            </ul>
 
           </div>
         </div>
