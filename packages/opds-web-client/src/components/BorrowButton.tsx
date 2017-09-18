@@ -9,6 +9,7 @@ export default class BorrowButton extends React.Component<BorrowButtonProps, voi
     let props = Object.assign({}, this.props);
     delete props["book"];
     delete props["borrow"];
+    delete props["key"];
 
     return (
       <button

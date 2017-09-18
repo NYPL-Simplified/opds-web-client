@@ -82,7 +82,26 @@ describe("Root", () => {
 
     let collections = wrapper.find(Collection);
     expect(collections.length).to.equal(1);
-    expect(collections.first().props().collection).to.equal(collectionData);
+    expect(collections.first().props().collection).to.deep.equal(collectionData);
+  });
+
+  it("shows a (non-grouped) collection with loans if props include collectionData and loans", () => {
+    let collectionData: CollectionData = ungroupedCollectionData;
+    // One book is on loan.
+    let loan = Object.assign({}, collectionData.books[1], {
+      fulfillmentLinks: [{ url: "fulfill", type: "text/html" }]
+    });
+    let loans = [loan];
+    let wrapper = shallow(
+      <Root collectionData={collectionData} loans={loans} />
+    );
+    let collections = wrapper.find(Collection);
+    expect(collections.length).to.equal(1);
+    let expectedBooks = [collectionData.books[0], loan, collectionData.books[2]];
+    let expectedCollection = Object.assign({}, collectionData, {
+      books: expectedBooks
+    });
+    expect(collections.first().props().collection).to.deep.equal(expectedCollection);
   });
 
   it("shows a url form if no collection url or book url", () => {
@@ -253,10 +272,16 @@ describe("Root", () => {
 
   it("shows loading message", () => {
     let wrapper = shallow(
-      <Root isFetching={true}/>
+      <Root isFetchingCollection={true}/>
     );
 
     let loadings = wrapper.find(LoadingIndicator);
+    expect(loadings.length).to.equal(1);
+
+    wrapper = shallow(
+      <Root isFetchingBook={true}/>
+    );
+    loadings = wrapper.find(LoadingIndicator);
     expect(loadings.length).to.equal(1);
   });
 

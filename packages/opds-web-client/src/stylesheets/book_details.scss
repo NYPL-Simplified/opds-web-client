@@ -56,19 +56,11 @@
     .circulation-links {
       margin-bottom: 5px;
 
-      .btn {
+      a, button {
         display: inline-block;
-        margin: 0 0.5em 0.5em;
-        background-color: $linkcolor;
-        color: white;
-        border: none;
-        border-radius: 0;
-        font-size: 1.5em;
-        transition: all 0.2s;
 
-        &:hover {
-          color: $linkcolor;
-          background-color: rgba($linkcolor, 0.2);
+        &.borrowed-button {
+          display: none;
         }
       }
     }

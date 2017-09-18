@@ -168,7 +168,7 @@ describe("BookDetails", () => {
     );
 
     let button = wrapper.find(BorrowButton);
-    expect(button.children().text()).to.equal("Get");
+    expect(button.children().text()).to.equal("Borrow");
     button.props().borrow();
     expect(updateBook.callCount).to.equal(1);
     expect(updateBook.args[0][0]).to.equal(bookCopy.borrowUrl);
@@ -207,7 +207,7 @@ describe("BookDetails", () => {
     expect(button.props().isPlainLink).to.equal(true);
   });
 
-  it("shows 'on hold'", () => {
+  it("shows 'reserved'", () => {
     let bookCopy = Object.assign({}, book, {
       openAccessLinks: [],
       availability: { status: "reserved" }

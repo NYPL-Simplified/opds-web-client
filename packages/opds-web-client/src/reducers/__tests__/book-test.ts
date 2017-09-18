@@ -109,4 +109,16 @@ describe("book reducer", () => {
 
     expect(reducer(bookState, action)).to.deep.equal(newState);
   });
+
+  it("should preserve empty state on UPDATE_BOOK_LOAD", () => {
+    let action = actions.load<BookData>(ActionCreator.UPDATE_BOOK, book, "url");
+    expect(reducer(initState, action)).to.deep.equal(initState);
+  });
+
+  it("should update book in state on UPDATE_BOOK_LOAD", () => {
+    let newBook = Object.assign({}, book, { title: "new title" });
+    let action = actions.load<BookData>(ActionCreator.UPDATE_BOOK, newBook, "url");
+    let newState = Object.assign({}, bookState, { data: newBook });
+    expect(reducer(bookState, action)).to.deep.equal(newState);
+  });
 });

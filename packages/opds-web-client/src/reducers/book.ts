@@ -68,6 +68,14 @@ const book = (state: BookState = initialState, action): BookState => {
       });
 
     case ActionCreator.UPDATE_BOOK_LOAD:
+      // We might update a book when no book was in the state, for example
+      // when borrowing a book from a collection page. In that case,
+      // we shouldn't add the book to the state.
+      if (state.data === null) {
+        return state;
+      }
+
+      // If a book was in the state already, we should replace it on update.
       return Object.assign({}, state, {
         data: Object.assign({}, state.data, action.data)
       });

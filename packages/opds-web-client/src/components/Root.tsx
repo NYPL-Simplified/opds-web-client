@@ -74,6 +74,7 @@ export interface RootProps extends StateProps {
   clearAuthCredentials?: () => void;
   showAuthForm?: (callback: AuthCallback, providers: AuthProvider<AuthMethod>[], title: string) => void;
   closeErrorAndHideAuthForm?: () => void;
+  setPreference?: (key: string, value: string) => void;
 }
 
 export interface RootState {
@@ -188,7 +189,7 @@ export class Root extends React.Component<RootProps, RootState> {
               retry={this.props.retryCollectionAndBook} />
           }
 
-          { this.props.isFetching &&
+          { (this.props.isFetchingCollection || this.props.isFetchingBook) &&
             <LoadingIndicator />
           }
 
@@ -215,13 +216,13 @@ export class Root extends React.Component<RootProps, RootState> {
                 { showBook &&
                   ( BookDetailsContainer && (this.props.bookUrl || this.props.bookData.url) ?
                     <BookDetailsContainer
-                      book={this.loanedBookData() || this.props.bookData}
+                      book={this.loanedBookData(this.props.bookData, this.props.bookUrl)}
                       bookUrl={this.props.bookUrl || this.props.bookData.url}
                       collectionUrl={this.props.collectionUrl}
                       refreshCatalog={this.props.refreshCollectionAndBook}
                       >
                       <BookDetails
-                        book={this.loanedBookData() || this.props.bookData}
+                        book={this.loanedBookData(this.props.bookData, this.props.bookUrl)}
                         updateBook={this.props.updateBook}
                         fulfillBook={this.props.fulfillBook}
                         indirectFulfillBook={this.props.indirectFulfillBook}
@@ -231,7 +232,7 @@ export class Root extends React.Component<RootProps, RootState> {
                     </BookDetailsContainer> :
                     <div className="without-container">
                       <BookDetails
-                        book={this.loanedBookData() || this.props.bookData}
+                        book={this.loanedBookData(this.props.bookData, this.props.bookUrl)}
                         updateBook={this.props.updateBook}
                         fulfillBook={this.props.fulfillBook}
                         indirectFulfillBook={this.props.indirectFulfillBook}
@@ -246,11 +247,19 @@ export class Root extends React.Component<RootProps, RootState> {
 
             { showCollection &&
               <Collection
-                collection={this.props.collectionData}
+                collection={this.collectionDataWithLoans()}
                 fetchPage={this.props.fetchPage}
-                isFetching={this.props.isFetching}
+                isFetchingCollection={this.props.isFetchingCollection}
+                isFetchingBook={this.props.isFetchingBook}
                 isFetchingPage={this.props.isFetchingPage}
                 error={this.props.error}
+                updateBook={this.props.updateBook}
+                fulfillBook={this.props.fulfillBook}
+                indirectFulfillBook={this.props.indirectFulfillBook}
+                isSignedIn={this.props.isSignedIn}
+                epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
+                preferences={this.props.preferences}
+                setPreference={this.props.setPreference}
                 />
             }
           </div>
@@ -340,19 +349,29 @@ export class Root extends React.Component<RootProps, RootState> {
     }
   };
 
-  loanedBookData(): BookData {
+  loanedBookData(book: BookData | null, bookUrl?: string): BookData {
     if (!this.props.loans || this.props.loans.length === 0) {
-      return null;
+      return book;
     }
 
-    return this.props.loans.find(book => {
-      if (this.props.bookData) {
-        return book.id === this.props.bookData.id;
-      } else if (this.props.bookUrl) {
-        return book.url === this.props.bookUrl;
+    let loan = this.props.loans.find(loanedBook => {
+      if (book) {
+        return loanedBook.id === book.id;
+      } else if (bookUrl) {
+        return loanedBook.url === bookUrl;
       } else {
-        return null;
+        return false;
       }
+    });
+    return loan || book;
+  }
+
+  collectionDataWithLoans(): CollectionData {
+    // If any books in the collection are in the loans feed, replace them with their
+    // loaned version. This currently only changes ungrouped books, not books in lanes,
+    // since lanes don't need any loan-related information.
+    return Object.assign({}, this.props.collectionData, {
+      books: this.props.collectionData.books.map(book => this.loanedBookData(book))
     });
   }
 }

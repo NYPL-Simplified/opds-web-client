@@ -19,8 +19,9 @@ export function findBookInCollection(collection: CollectionData, book: string) {
 export function mapStateToProps(state, ownProps) {
   return {
     collectionData: state.collection.data || ownProps.collectionData,
-    isFetching: state.collection.isFetching || state.book.isFetching,
+    isFetchingCollection: state.collection.isFetching,
     isFetchingPage: state.collection.isFetchingPage,
+    isFetchingBook: state.book.isFetching,
     error: (state.collection.error || state.book.error),
     bookData: state.book.data || ownProps.bookData,
     history: state.collection.history,
@@ -31,7 +32,8 @@ export function mapStateToProps(state, ownProps) {
     loansUrl: state.loans.url,
     loans: state.loans.books,
     auth: state.auth,
-    isSignedIn: !!state.auth.credentials
+    isSignedIn: !!state.auth.credentials,
+    preferences: state.preferences
   };
 };
 
@@ -55,7 +57,8 @@ export function mapDispatchToProps(dispatch) {
         saveAuthCredentials: (credentials: AuthCredentials) => dispatch(actions.saveAuthCredentials(credentials)),
         clearAuthCredentials: () => dispatch(actions.clearAuthCredentials()),
         showAuthForm: (callback: AuthCallback, cancel: () => void, providers: any, title: string) => dispatch(actions.showAuthForm(callback, cancel, providers, title)),
-        closeErrorAndHideAuthForm: () => dispatch(actions.closeErrorAndHideAuthForm())
+        closeErrorAndHideAuthForm: () => dispatch(actions.closeErrorAndHideAuthForm()),
+        setPreference: (key: string, value: string) => dispatch(actions.setPreference(key, value))
       };
     }
   };

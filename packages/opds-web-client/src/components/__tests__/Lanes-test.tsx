@@ -13,8 +13,14 @@ import { buildCollectionStore } from "../../store";
 describe("Lanes", () => {
   let wrapper;
   let hiddenBookIds = ["book id"];
+  let updateBook;
+  let fulfillBook;
+  let indirectFulfillBook;
 
   beforeEach(() => {
+    updateBook = stub();
+    fulfillBook = stub();
+    indirectFulfillBook = stub();
     wrapper = shallow(
       <Lanes
         url={groupedCollectionData.url}
@@ -22,6 +28,9 @@ describe("Lanes", () => {
         isFetching={true}
         hideMoreLinks={true}
         hiddenBookIds={hiddenBookIds}
+        updateBook={updateBook}
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
         />
     );
   });
@@ -49,6 +58,9 @@ describe("Lanes", () => {
         url={groupedCollectionData.url}
         lanes={[]}
         fetchCollection={fetchCollection}
+        updateBook={updateBook}
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
         />
     );
 
@@ -65,6 +77,9 @@ describe("Lanes", () => {
         lanes={[]}
         clearCollection={clearCollection}
         fetchCollection={fetchCollection}
+        updateBook={updateBook}
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
         />
     );
     expect(clearCollection.callCount).to.equal(0);
@@ -87,6 +102,9 @@ describe("Lanes", () => {
         url={groupedCollectionData.url}
         lanes={[]}
         clearCollection={clearCollection}
+        updateBook={updateBook}
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
         />
     );
     wrapper.instance().componentWillUnmount();

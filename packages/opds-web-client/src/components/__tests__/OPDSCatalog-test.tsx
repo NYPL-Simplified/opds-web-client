@@ -42,7 +42,7 @@ describe("OPDSCatalog", () => {
       <OPDSCatalog {...props} initialState={state} />
     );
     let root = wrapper.find<RootProps>(Root);
-    expect(root.props().store.getState()).to.equal(state);
+    expect(root.props().store.getState()).to.deep.equal(state);
   });
 
   it("passes props to Root", () => {

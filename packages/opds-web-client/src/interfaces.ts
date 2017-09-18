@@ -98,7 +98,8 @@ export interface LinkData {
 export interface StateProps {
   collectionData?: CollectionData;
   collectionUrl?: string;
-  isFetching?: boolean;
+  isFetchingCollection?: boolean;
+  isFetchingBook?: boolean;
   error?: FetchErrorData;
   bookData?: BookData;
   bookUrl?: string;
@@ -109,6 +110,9 @@ export interface StateProps {
   isSignedIn?: boolean;
   loansUrl?: string;
   loans?: BookData[];
+  preferences?: {
+    [key: string]: string;
+  };
 }
 
 export interface PathFor {

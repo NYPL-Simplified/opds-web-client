@@ -15,10 +15,29 @@ import { CollectionData } from "../../interfaces";
 import { mockRouterContext } from "./routing";
 
 describe("Collection", () => {
+  let updateBook;
+  let fulfillBook;
+  let indirectFulfillBook;
+  let setPreference;
+
+  beforeEach(() => {
+    updateBook = stub();
+    fulfillBook = stub();
+    indirectFulfillBook = stub();
+    setPreference = stub();
+  });
+
   describe("empty collection", () => {
     it("says the collection is empty", () => {
       let collectionData: CollectionData = Object.assign({}, groupedCollectionData, { lanes: [] });
-      let wrapper = shallow(<Collection collection={collectionData} />);
+      let wrapper = shallow(
+        <Collection collection={collectionData}
+          updateBook={updateBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          setPreference={setPreference}
+          />
+      );
       expect(wrapper.text()).to.equal("No books found.");
     });
   });
@@ -29,7 +48,12 @@ describe("Collection", () => {
 
     beforeEach(() => {
       wrapper = shallow(
-        <Collection collection={collectionData} />
+        <Collection collection={collectionData}
+          updateBook={updateBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          setPreference={setPreference}
+          />
       );
     });
 
@@ -43,6 +67,11 @@ describe("Collection", () => {
       expect(lanes.props().url).to.equal(collectionData.url);
       expect(lanes.props().lanes).to.equal(collectionData.lanes);
     });
+
+    it("doesn't show view toggle buttons", () => {
+      let viewToggleButtons = wrapper.find(".view-toggle button");
+      expect(viewToggleButtons.length).to.equal(0);
+    });
   });
 
   describe("collection without lanes", () => {
@@ -51,7 +80,12 @@ describe("Collection", () => {
 
     beforeEach(() => {
       wrapper = shallow(
-        <Collection collection={collectionData} />
+        <Collection collection={collectionData}
+          updateBook={updateBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          setPreference={setPreference}
+          />
       );
     });
 
@@ -68,6 +102,89 @@ describe("Collection", () => {
       expect(books.length).to.equal(collectionData.books.length);
       expect(bookDatas).to.deep.equal(collectionData.books);
       expect(uniqueCollectionUrls).to.deep.equal([collectionData.url]);
+    });
+
+    it("shows grid or list view", () => {
+      let context = mockRouterContext();
+      wrapper = mount(
+        <Collection collection={collectionData}
+          updateBook={updateBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          setPreference={setPreference}
+          />,
+        { context,
+          childContextTypes: {
+            router: React.PropTypes.object,
+            pathFor: React.PropTypes.func
+          }
+        }
+      );
+      let viewToggleButtons = wrapper.find(".view-toggle button");
+      expect(viewToggleButtons.length).to.equal(2);
+
+      let gridButton = viewToggleButtons.at(0);
+      let listButton = viewToggleButtons.at(1);
+      expect(gridButton.props().disabled).to.equal(true);
+      expect(listButton.props().disabled).to.equal(false);
+
+      let books = wrapper.find(".books");
+      expect(books.props().className).to.contain(Collection.GRID_VIEW);
+      expect(books.props().className).not.to.contain(Collection.LIST_VIEW);
+
+      let preferences = {};
+      preferences[Collection.VIEW_KEY] = Collection.LIST_VIEW;
+      wrapper.setProps({ preferences });
+
+      expect(gridButton.props().disabled).to.equal(false);
+      expect(listButton.props().disabled).to.equal(true);
+      expect(books.props().className).to.contain(Collection.LIST_VIEW);
+      expect(books.props().className).not.to.contain(Collection.GRID_VIEW);
+
+      preferences[Collection.VIEW_KEY] = Collection.GRID_VIEW;
+      wrapper.setProps({ preferences });
+
+      expect(gridButton.props().disabled).to.equal(true);
+      expect(listButton.props().disabled).to.equal(false);
+      expect(books.props().className).to.contain(Collection.GRID_VIEW);
+      expect(books.props().className).not.to.contain(Collection.LIST_VIEW);
+    });
+
+    it("sets view preference", () => {
+      let context = mockRouterContext();
+      wrapper = mount(
+        <Collection collection={collectionData}
+          updateBook={updateBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          setPreference={setPreference}
+          />,
+        { context,
+          childContextTypes: {
+            router: React.PropTypes.object,
+            pathFor: React.PropTypes.func
+          }
+        }
+      );
+      let viewToggleButtons = wrapper.find(".view-toggle button");
+      expect(viewToggleButtons.length).to.equal(2);
+
+      let gridButton = viewToggleButtons.at(0);
+      let listButton = viewToggleButtons.at(1);
+
+      listButton.simulate("click");
+      expect(setPreference.callCount).to.equal(1);
+      expect(setPreference.args[0][0]).to.equal(Collection.VIEW_KEY);
+      expect(setPreference.args[0][1]).to.equal(Collection.LIST_VIEW);
+
+      let preferences = {};
+      preferences[Collection.VIEW_KEY] = Collection.LIST_VIEW;
+      wrapper.setProps({ preferences });
+
+      gridButton.simulate("click");
+      expect(setPreference.callCount).to.equal(2);
+      expect(setPreference.args[1][0]).to.equal(Collection.VIEW_KEY);
+      expect(setPreference.args[1][1]).to.equal(Collection.GRID_VIEW);
     });
   });
 
@@ -89,7 +206,12 @@ describe("Collection", () => {
       };
 
       wrapper = shallow(
-        <Collection collection={collectionData} />
+        <Collection collection={collectionData}
+          updateBook={updateBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          setPreference={setPreference}
+          />
       );
     });
 
@@ -125,7 +247,13 @@ describe("Collection", () => {
       };
       let context = mockRouterContext();
       let wrapper = mount(
-        <Collection collection={collectionData} fetchPage={fetchPage} />,
+        <Collection collection={collectionData}
+          fetchPage={fetchPage}
+          updateBook={updateBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          setPreference={setPreference}
+          />,
         { context }
       );
 
@@ -153,7 +281,13 @@ describe("Collection", () => {
       };
       let context = mockRouterContext();
       let wrapper = mount(
-        <Collection collection={collectionData} fetchPage={fetchPage} />,
+        <Collection collection={collectionData}
+          fetchPage={fetchPage}
+          updateBook={updateBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          setPreference={setPreference}
+          />,
         { context }
       );
 
@@ -182,7 +316,13 @@ describe("Collection", () => {
       };
       let context = mockRouterContext();
       let wrapper = mount(
-        <Collection collection={collectionData} fetchPage={fetchPage} />,
+        <Collection collection={collectionData}
+          fetchPage={fetchPage}
+          updateBook={updateBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          setPreference={setPreference}
+          />,
         { context }
       );
 
@@ -197,7 +337,7 @@ describe("Collection", () => {
       expect(fetchPage.callCount).to.equal(1);
       expect(fetchPage.args[0][0]).to.equal("next");
 
-      wrapper.setProps({ isFetching: false });
+      wrapper.setProps({ isFetchingCollection: false });
       await pause(51);
 
       // body's scroll attributes haven't changed
@@ -217,7 +357,13 @@ describe("Collection", () => {
       };
 
       let wrapper = shallow(
-        <Collection collection={collectionData} isFetchingPage={true} />
+        <Collection collection={collectionData}
+          isFetchingPage={true}
+          updateBook={updateBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          setPreference={setPreference}
+          />
       );
 
       let loadings = wrapper.find(".loading-next-page");
@@ -230,7 +376,14 @@ describe("Collection", () => {
         nextPageUrl: "next page url"
       });
       let wrapper = shallow(
-        <Collection collection={collectionData} isFetchingPage={false} fetchPage={fetchPage} />
+        <Collection collection={collectionData}
+          isFetchingPage={false}
+          fetchPage={fetchPage}
+          updateBook={updateBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          setPreference={setPreference}
+          />
       );
 
       let link = wrapper.find(".next-page-link");
@@ -254,7 +407,13 @@ describe("Collection", () => {
     beforeEach(() => {
       context = mockRouterContext();
       wrapper = mount(
-        <Collection collection={collectionData} isFetching={true}/>,
+        <Collection collection={collectionData}
+          isFetchingCollection={true}
+          updateBook={updateBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          setPreference={setPreference}
+          />,
         { context }
       );
       main = wrapper.instance().refs["collection-main"] as any;
@@ -264,7 +423,7 @@ describe("Collection", () => {
     });
 
     it("scrolls to top when new collection fetched successfully", () => {
-      wrapper.setProps({ isFetching: false });
+      wrapper.setProps({ isFetchingCollection: false });
 
       expect(main.scrollTop).to.equal(0);
     });
@@ -276,7 +435,14 @@ describe("Collection", () => {
         url: "url"
       };
       wrapper = mount(
-        <Collection collection={collectionData} isFetching={false} error={error}/>,
+        <Collection collection={collectionData}
+          isFetchingCollection={false}
+          error={error}
+          updateBook={updateBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          setPreference={setPreference}
+          />,
         { context }
       );
 

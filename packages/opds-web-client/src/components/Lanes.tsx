@@ -5,7 +5,7 @@ import { adapter } from "../OPDSDataAdapter";
 import DataFetcher from "../DataFetcher";
 import ActionsCreator from "../actions";
 import Lane from "./Lane";
-import { CollectionData, LaneData, FetchErrorData } from "../interfaces";
+import { CollectionData, LaneData, FetchErrorData, BookData } from "../interfaces";
 import spinner from "../images/spinner";
 
 export interface LanesProps {
@@ -19,6 +19,11 @@ export interface LanesProps {
   hiddenBookIds?: string[];
   hideMoreLinks?: boolean;
   isFetching?: boolean;
+  updateBook: (url: string) => Promise<BookData>;
+  fulfillBook: (url: string) => Promise<Blob>;
+  indirectFulfillBook: (url: string, type: string) => Promise<string>;
+  isSignedIn?: boolean;
+  epubReaderUrlTemplate?: (epubUrl: string) => string;
 }
 
 export class Lanes extends React.Component<LanesProps, void> {
@@ -42,6 +47,11 @@ export class Lanes extends React.Component<LanesProps, void> {
                 collectionUrl={this.props.url}
                 hideMoreLink={this.props.hideMoreLinks}
                 hiddenBookIds={this.props.hiddenBookIds}
+                updateBook={this.props.updateBook}
+                fulfillBook={this.props.fulfillBook}
+                indirectFulfillBook={this.props.indirectFulfillBook}
+                isSignedIn={this.props.isSignedIn}
+                epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
                 />
             </li>
           ) }
