@@ -21,7 +21,20 @@
     color: black;
     text-decoration: none;
   }
+} // /.book
+
+
+//
+// Grid View
+// a small fix to the layout in grid view
+.grid-view {
+  .book {
+    min-height: $bookHeight;
+  }
 }
+// /.grid-view
+
+
 
 .circulation-links {
   a,
@@ -147,9 +160,9 @@
       }
     }
 
-//
-// Summary ~ Book description
-// Truncation based on http://dev.mobify.com/blog/multiline-ellipsis-in-pure-css/
+    //
+    // Summary ~ Book description
+    // Truncation based on http://dev.mobify.com/blog/multiline-ellipsis-in-pure-css/
     .summary {
       flex: 1;
       height: 7.5em;
