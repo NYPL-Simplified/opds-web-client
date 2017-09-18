@@ -23,6 +23,8 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
   }
 
   render(): JSX.Element {
+    // Remove HTML tags from the summary to fit more information into a truncated view.
+    // The summary may still contain HTML character entities and needs to be rendered as HTML.
     let summary = (this.props.book && this.props.book.summary && this.props.book.summary.replace(/<\/?[^>]+(>|$)/g, " ")) || "";
     return (
       <div className="book" lang={this.props.book.language}>
