@@ -31,13 +31,21 @@
     border: 1px solid $linkcolor;
     background-color: transparent;
     color: $linkcolor;
-    padding: 5px;
+    padding: 0.3125rem 0.625rem;
     margin: 5px;
     transition: all 0.2s;
 
     &:hover {
+      background: $linkhovercolor;
       border-color: $linkhovercolor;
-      color: $linkhovercolor;
+      color: $invertedlinkcolor;
+    }
+
+    &::after {
+      content: " ";
+      width: 10px;
+      height: 10px;
+      background: red;
     }
   }
 }

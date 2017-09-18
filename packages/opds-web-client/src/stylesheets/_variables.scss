@@ -18,7 +18,7 @@ $footercolor: #54514A !default;
 $highlightcolor: $darkblue !default;
 
 // link colors
-$linkcolor: $blue !default;
+$linkcolor: $darkblue !default;
 $linkvisitedcolor: darken($linkcolor, 20%) !default;
 $linkhovercolor: lighten($linkcolor, 10%) !default;
 $invertedlinkcolor: $light !default;
