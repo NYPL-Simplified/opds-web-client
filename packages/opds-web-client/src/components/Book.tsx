@@ -1,4 +1,4 @@
-import * as React from "react";
+ import * as React from "react";
 import CatalogLink from "./CatalogLink";
 import BookCover from "./BookCover";
 import BorrowButton from "./BorrowButton";
@@ -76,22 +76,23 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
             </div>
           </div>
           <div className="details">
+          <div className="summary" lang={this.props.book.language}>
+            <span
+              dangerouslySetInnerHTML={{__html: summary}}>
+            </span>
+            <CatalogLink
+              collectionUrl={this.props.collectionUrl}
+              bookUrl={this.props.book.url || this.props.book.id}
+              title={this.props.book.title}
+              >&hellip; More
+            </CatalogLink>
+          </div>
             <div className="fields" lang="en">
               { this.fields().map(field =>
                 field.value ? <div className={field.name.toLowerCase().replace(" ", "-")} key={field.name}>{field.name}: {field.value}</div> : null
               ) }
             </div>
-            <div className="summary" lang={this.props.book.language}>
-              <span
-                dangerouslySetInnerHTML={{__html: summary}}>
-              </span>
-              <CatalogLink
-                collectionUrl={this.props.collectionUrl}
-                bookUrl={this.props.book.url || this.props.book.id}
-                title={this.props.book.title}
-                >&hellip; More
-              </CatalogLink>
-            </div>
+
           </div>
         </div>
       </div>

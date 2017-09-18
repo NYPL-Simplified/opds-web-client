@@ -3,7 +3,7 @@
 .book {
   white-space: normal;
   margin-right: $padding;
-  height: $bookHeight;
+  min-height: ($bookHeight * 1.25);
   overflow: hidden;
   position: relative;
 
@@ -72,6 +72,10 @@
   }
 }
 
+.list-view li {
+  margin-bottom: 2.25rem;
+}
+
 .list-view .book {
   display: flex;
   flex-direction: row;
@@ -105,13 +109,14 @@
     .details {
       display: flex;
       flex-direction: row;
-      font-size: 0.9em;
-      margin-top: 2em;
+      font-size: 1rem;
+      margin-top: 1.125rem;
     }
 
     .fields {
-      margin-right: 2em;
-      flex: 1;
+      //margin-right: 2em;
+      //flex: 1;
+      width: 25%;
 
       @media only screen and (max-width: 1200px) {
         display: none;
@@ -120,11 +125,13 @@
 
     .summary {
       /* Truncation based on http://dev.mobify.com/blog/multiline-ellipsis-in-pure-css/ */
-
-      max-width: 550px;
+      flex: 1;
       line-height: 1.3em;
       height: 6.3em;
+      // max-width: 550px;
+      width: 60%;
       overflow: hidden;
+      padding-right: 6rem;
       position: relative;
 
       &::before {
@@ -154,6 +161,7 @@
     .circulation-links {
       flex: 1;
       text-align: right;
+      margin-right: 1rem;
 
       * {
         display: none;
@@ -164,7 +172,7 @@
       }
     }
   }
-}
+} // /.list-view
 
 .list-view li:nth-child(odd) .book .expanded-info .summary a {
   background: linear-gradient(to right, transparent, $pagecolorlight 40%, $pagecolorlight);

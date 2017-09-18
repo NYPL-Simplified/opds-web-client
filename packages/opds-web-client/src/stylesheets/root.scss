@@ -99,7 +99,7 @@ a {
         width: auto;
         float: left;
       }
-    }    
+    }
   }
 
   .main {
@@ -139,11 +139,15 @@ a {
 }
 
 // override bootstrap
-.navbar-default, .navbar-collapse {
+.navbar-default,
+.navbar-collapse {
   background-color: $dark;
   border: none;
+  border-radius: 0;
   color: white;
+  height: 4.25rem;
   margin-bottom: 0;
+  padding-top: 0.5rem;
 
   .navbar-nav {
     margin: 0;
