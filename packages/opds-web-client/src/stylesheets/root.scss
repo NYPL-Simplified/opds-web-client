@@ -153,13 +153,14 @@ a {
     margin: 0;
   }
 
-  .navbar-nav>li>a {
+  .navbar-nav > li > a {
     color: white;
     text-decoration: underline;
     padding-top: 15px;
     padding-bottom: 15px;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       color: white;
       text-decoration: none;
     }
@@ -173,7 +174,7 @@ a {
   max-width: 100%;
   overflow-x: scroll;
 
-  >li+li:before {
+  > li + li:before {
     color: $pagetextcolor;
   }
 }

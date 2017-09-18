@@ -8,7 +8,8 @@
   position: relative;
 
   .title {
-    font-size: 1.1em;
+    color: $darkblue;
+    font-size: 1.2em;
     font-weight: bold;
   }
 
@@ -23,7 +24,9 @@
 }
 
 .circulation-links {
-  a, button, .btn-default {
+  a,
+  button,
+  .btn-default {
     border-radius: 5px;
     border: 1px solid $linkcolor;
     background-color: transparent;
@@ -115,10 +118,12 @@
     }
 
     .fields {
-      border: 0;
+      border-left: 0.35rem solid rgba($darkblue, 0.2);
+      color: $darkblue;
+      font-size: 0.85rem;
       list-style-type: none;
       margin: 0;
-      padding: 0;
+      padding: 0.5rem 0 0 0.5rem;
       //margin-right: 2em;
       //flex: 1;
       width: 25%;
@@ -134,6 +139,8 @@
       }
     }
 
+//
+// Summary ~ Book description
 // Truncation based on http://dev.mobify.com/blog/multiline-ellipsis-in-pure-css/
     .summary {
       flex: 1;
@@ -152,7 +159,7 @@
         float: left;
       }
 
-      span,
+      // span,
       p {
         float: right;
         line-height: 1.5;
@@ -173,8 +180,10 @@
 
     .circulation-links {
       flex: 1;
-      text-align: right;
-      margin-right: 1rem;
+      margin-left: 1rem;
+      position: relative;
+      text-align: left;
+      top: -0.6rem;
 
       * {
         display: none;

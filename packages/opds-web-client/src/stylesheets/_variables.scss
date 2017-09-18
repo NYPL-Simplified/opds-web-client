@@ -34,7 +34,7 @@ $footerHeight: 50px !default;
 // book stuff
 $bookHeight: 200px !default;
 $bookWidth: 150px !default;
-$stripeWidth: 200px !default;
+$stripeWidth: 50px !default;
 
 @-webkit-keyframes barberpole {
   from { background-position: 0 0; }
@@ -45,4 +45,3 @@ $stripeWidth: 200px !default;
   from { background-position: 0 0; }
   to   { background-position: -($stripeWidth * 2) $stripeWidth; }
 }
-

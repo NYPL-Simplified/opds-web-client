@@ -1,7 +1,10 @@
 @import "popup";
 
 .loading {
-  @include popup(300px);
+  @include popup(
+    $width: 100%,
+    $height: 100px
+    );
 
   > h1 {
     background-size: $stripeWidth $stripeWidth;
@@ -17,5 +20,6 @@
     );
     -webkit-animation: barberpole 2s linear infinite;
     animation: barberpole 2s linear infinite;
+    font-size: 2rem;
   }
 }
