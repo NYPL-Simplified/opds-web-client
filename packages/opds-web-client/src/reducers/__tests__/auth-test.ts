@@ -33,6 +33,7 @@ describe("auth reducer", () => {
       name: "library",
       plugin: BasicAuthPlugin,
       method: {
+        type: BasicAuthPlugin.type,
         labels: {
           login: "barcode",
           password: "pin"
@@ -58,6 +59,7 @@ describe("auth reducer", () => {
       name: "library",
       plugin: BasicAuthPlugin,
       method: {
+        type: BasicAuthPlugin.type,
         labels: {
           login: "barcode",
           password: "pin"

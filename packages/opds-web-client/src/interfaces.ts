@@ -156,7 +156,9 @@ export interface AuthProvider<T extends AuthMethod> {
   method: T;
 }
 
-export interface AuthMethod {}
+export interface AuthMethod {
+  type: string;
+};
 
 export interface AuthData {
   showForm: boolean;

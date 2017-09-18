@@ -49,13 +49,11 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                 // find providers with supported auth method
                 let authProviders: AuthProvider<AuthMethod>[] = [];
                 authPlugins.forEach(plugin => {
-                  let providerKey = data.providers && Object.keys(data.providers).find(key => {
-                    return Object.keys(data.providers[key].methods).indexOf(plugin.type) !== -1;
-                  });
-                  if (providerKey) {
-                    let provider = data.providers[providerKey];
-                    let method = provider.methods[plugin.type];
-                    authProviders.push({ name: provider.name, plugin, method });
+                  for (const method of data.authentication || []) {
+                    if (method.type === plugin.type) {
+                      let name = method.description;
+                      authProviders.push({ name, plugin, method });
+                    }
                   }
                 });
 
@@ -99,7 +97,7 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                     title = state.auth.title;
                     authProviders = state.auth.providers;
                   } else {
-                    title = data.name;
+                    title = data.title;
                   }
 
                   // if previous auth failed and we didn't have any providers
