@@ -35,7 +35,7 @@ export default class AuthProviderSelectionForm extends React.Component<AuthProvi
     let selectedProvider = null;
     if (this.props.error && this.props.attemptedProvider) {
         for (let provider of this.props.providers) {
-            if (this.props.attemptedProvider === provider.name) {
+            if (this.props.attemptedProvider === provider.id) {
                 selectedProvider = provider;
                 break;
             }
@@ -66,7 +66,7 @@ export default class AuthProviderSelectionForm extends React.Component<AuthProvi
             <div>
               <ul className="subtle-list" aria-label="authentication options">
                 { this.props.providers.map(provider =>
-                  <li onClick={() => this.selectProvider(provider)} key={provider.name}>
+                  <li onClick={() => this.selectProvider(provider)} key={provider.id}>
                     <provider.plugin.buttonComponent provider={provider}/>
                   </li>
                 ) }

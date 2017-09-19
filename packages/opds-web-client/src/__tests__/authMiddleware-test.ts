@@ -132,25 +132,18 @@ describe("authMiddleware", () => {
 
   it("shows auth form with provider info from failed request if there were no existing credentials", (done) => {
     store.getState.returns({ auth: {}, collection: {}, book: {} });
-    let providers = {
-      provider: {
-        name: "a provider",
-        methods: {
-          test: "test method"
-        }
-      }
-    };
+    let authentication = [{ type: "test", id: "a provider" }];
     let error = {
       status: 401,
-      response: JSON.stringify({ name: "Library", providers: providers })
+      response: JSON.stringify({ title: "Library", authentication })
     };
     next.onCall(1).returns(new Promise((resolve, reject) => { reject(error); }));
     authMiddleware(store)(next)(() => {}).then(() => {
       expect(showAuthFormStub.callCount).to.equal(1);
       expect(showAuthFormStub.args[0][2]).to.deep.equal([{
-        name: "a provider",
+        id: "a provider",
         plugin: plugin,
-        method: "test method"
+        method: authentication[0]
       }]);
       expect(showAuthFormStub.args[0][3]).to.equal("Library");
       done();
@@ -160,7 +153,7 @@ describe("authMiddleware", () => {
   it("shows auth form with provider info from store if existing credentials failed", (done) => {
     dataFetcher.setAuthCredentials({ provider: "test", credentials: "credentials" });
     let providers = [{
-      name: "a provider",
+      id: "a provider",
       plugin: plugin,
       method: "test method"
     }];
@@ -180,7 +173,7 @@ describe("authMiddleware", () => {
     authMiddleware(store)(next)(() => {}).then(() => {
       expect(showAuthFormStub.callCount).to.equal(1);
       expect(showAuthFormStub.args[0][2]).to.deep.equal([{
-        name: "a provider",
+        id: "a provider",
         plugin: plugin,
         method: "test method"
       }]);
@@ -209,19 +202,12 @@ describe("authMiddleware", () => {
     }).catch(err => { console.log(err); throw(err); });
   });
 
-  it("does not call showAuthForm if there's no supported auth method in the provider info", (done) => {
+  it("does not call showAuthForm if there's no supported auth method in the auth document", (done) => {
     store.getState.returns({ auth: {}, collection: {}, book: {} });
-    let providers = {
-      provider: {
-        name: "a provider",
-        methods: {
-          unknownMethod: "unknown method"
-        }
-      }
-    };
+    let authentication = [{ type: "unknown method", id: "a provider" }];
     let error = {
       status: 401,
-      response: JSON.stringify({ name: "Library", providers: providers })
+      response: JSON.stringify({ title: "Library", authentication })
     };
     next.onCall(1).returns(new Promise((resolve, reject) => { reject(error); }));
     authMiddleware(store)(next)(() => {}).then(() => {
@@ -234,17 +220,10 @@ describe("authMiddleware", () => {
   it("makes cancel go to previous page if url has changed", (done) => {
     store.getState.returns({ auth: {}, collection: {url: "old"}, book: {} });
     pathFor.returns("new");
-    let providers = {
-      provider: {
-        name: "a provider",
-        methods: {
-          test: "test method"
-        }
-      }
-    };
+    let authentication = [{ type: "test", id: "a provider" }];
     let error = {
       status: 401,
-      response: JSON.stringify({ name: "Library", providers: providers })
+      response: JSON.stringify({ title: "Library", authentication })
     };
     next.onCall(1).returns(new Promise((resolve, reject) => { reject(error); }));
     authMiddleware(store)(next)(() => {}).then(() => {
@@ -262,17 +241,10 @@ describe("authMiddleware", () => {
     store.getState.returns({ auth: {}, collection: {}, book: {} });
     // blank is the value of window.location.pathname when running tests
     pathFor.returns("blank");
-    let providers = {
-      provider: {
-        name: "a provider",
-        methods: {
-          test: "test method"
-        }
-      }
-    };
+    let authentication = [{ type: "test", id: "a provider" }];
     let error = {
       status: 401,
-      response: JSON.stringify({ name: "Library", providers: providers })
+      response: JSON.stringify({ name: "Library", authentication })
     };
     next.onCall(1).returns(new Promise((resolve, reject) => { reject(error); }));
     authMiddleware(store)(next)(() => {}).then(() => {

@@ -81,7 +81,7 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, B
       let credentials = this.generateCredentials(login, password);
 
       this.props.saveCredentials({
-        provider: this.props.provider.name,
+        provider: this.props.provider.id,
         credentials: credentials
       });
       this.props.hide();

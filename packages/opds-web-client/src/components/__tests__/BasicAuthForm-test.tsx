@@ -13,9 +13,10 @@ describe("BasicAuthForm", () => {
 
     beforeEach(() => {
       provider = {
-        name: "Test Basic Auth",
+        id: "id",
         plugin: BasicAuthPlugin,
         method: {
+          description: "Test Basic Auth",
           labels: {
             login: "code name",
             password: "secret password"
@@ -75,9 +76,10 @@ describe("BasicAuthForm", () => {
       cancel = stub();
 
       provider = {
-        name: "Test Basic Auth",
+        id: "id",
         plugin: BasicAuthPlugin,
         method: {
+          description: "Test Basic Auth",
           labels: {
             login: "code name",
             password: "secret password"
@@ -145,7 +147,7 @@ describe("BasicAuthForm", () => {
       it("saves credentials", () => {
         expect(saveCredentials.callCount).to.equal(1);
         expect(saveCredentials.args[0][0]).to.deep.equal({
-          provider: "Test Basic Auth",
+          provider: "id",
           credentials: credentials
         });
       });
