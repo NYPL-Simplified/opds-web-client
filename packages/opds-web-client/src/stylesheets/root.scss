@@ -74,33 +74,58 @@ a {
   height: 100%;
 
   .navbar-brand {
+    color: $light;
     font-size: 1.8em;
-    color: white;
 
     &:hover {
-      color: white;
+      color: $light;
     }
   }
 
+  //
+  // Search and Breadcrumb container
+  //
   .breadcrumbs-or-search-wrapper {
     display: flex;
+    background-color: $pagecolorlight;
     flex-direction: row;
     flex-wrap: wrap;
+    height: 4.25rem;
     justify-content: space-between;
-    background-color: $pagecolorlight;
+    padding-top: 1rem;
     z-index: 100;
 
     .search {
       display: inline-flex;
       flex-direction: row;
       flex-wrap: nowrap;
-      padding-top: 2px;
-      input, .btn {
-        width: auto;
+      margin-right: 1rem;
+
+      input,
+      .btn {
         float: left;
+        width: auto;
+      }
+
+      // Override Bootstrap
+      .form-control {
+        border-right: 0;
+        border-style: solid;
+        box-sizing: border-box;
+        height: 2.3125rem;
+      }
+
+      .btn {
+        border: 0.0625rem solid $linkcolor;
+      }
+
+      .btn:hover {
+        background-color: $invertedlinkcolor;
+        border: 0.0625rem solid $linkcolor;
+        color: $linkcolor;
       }
     }
-  }
+  } // /.breadcrumbs-or-search-wrapper
 
   .main {
     flex: 1;
@@ -144,7 +169,7 @@ a {
   background-color: $dark;
   border: none;
   border-radius: 0;
-  color: white;
+  color: $light;
   height: 4.25rem;
   margin-bottom: 0;
   padding-top: 0.5rem;
@@ -154,14 +179,14 @@ a {
   }
 
   .navbar-nav > li > a {
-    color: white;
+    color: $light;
     text-decoration: underline;
     padding-top: 15px;
     padding-bottom: 15px;
 
     &:hover,
     &:focus {
-      color: white;
+      color: $light;
       text-decoration: none;
     }
   }

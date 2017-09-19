@@ -1,14 +1,14 @@
 @import "variables";
 
 .book {
-  white-space: normal;
   margin-right: $padding;
-  min-height: ($bookHeight * 1.25);
+  min-height: ($bookHeight * 0.25);
   overflow: hidden;
   position: relative;
+  white-space: normal;
 
   .title {
-    color: $darkblue;
+    color: $dark-gray;
     font-size: 1.2em;
     font-weight: bold;
   }
@@ -18,7 +18,8 @@
   }
 
   a {
-    color: black;
+    color: $pagetextcolor;
+    margin-right: 1rem;
     text-decoration: none;
   }
 } // /.book
@@ -28,8 +29,13 @@
 // Grid View
 // a small fix to the layout in grid view
 .grid-view {
+
   .book {
     min-height: $bookHeight;
+
+    > a {
+      margin: 0;
+    }
   }
 }
 // /.grid-view
@@ -85,9 +91,10 @@
     display: none;
   }
 
-  a:focus .compact-info, a:hover .compact-info {
-    height: calc(70%);
+  a:focus .compact-info,
+  a:hover .compact-info {
     background-color: rgba($pagecolor, 1);
+    height: calc(70%);
     padding: $padding 0;
   }
 
@@ -97,13 +104,14 @@
 }
 
 .list-view li {
-  border-bottom: 0.125rem solid $darkblue;
+  border-bottom: 0.125rem solid $dark-gray;
   margin-bottom: 2.25rem;
 }
 
 .list-view .book {
   display: flex;
   flex-direction: row;
+  margin-bottom: 2rem;
   height: $bookHeight;
   width: 100%;
 
@@ -113,13 +121,12 @@
 
   .expanded-info {
     display: flex;
-    flex-direction: column;
-
     flex: 1;
+    flex-direction: column;
     height: $bookHeight;
     margin: 10px;
-    text-align: left;
     max-width: 1200px;
+    text-align: left;
 
     .header {
       display: flex;
@@ -139,8 +146,8 @@
     }
 
     .fields {
-      border-left: 0.35rem solid rgba($darkblue, 0.2);
-      color: $darkblue;
+      border-left: 0.35rem solid rgba($dark-gray, 0.2);
+      color: $dark-gray;
       font-size: 0.85rem;
       list-style-type: none;
       margin: 0;
