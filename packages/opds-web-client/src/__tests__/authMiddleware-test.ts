@@ -132,7 +132,7 @@ describe("authMiddleware", () => {
 
   it("shows auth form with provider info from failed request if there were no existing credentials", (done) => {
     store.getState.returns({ auth: {}, collection: {}, book: {} });
-    let authentication = [{ type: "test", description: "a provider" }];
+    let authentication = [{ type: "test", id: "a provider" }];
     let error = {
       status: 401,
       response: JSON.stringify({ title: "Library", authentication })
@@ -141,7 +141,7 @@ describe("authMiddleware", () => {
     authMiddleware(store)(next)(() => {}).then(() => {
       expect(showAuthFormStub.callCount).to.equal(1);
       expect(showAuthFormStub.args[0][2]).to.deep.equal([{
-        name: "a provider",
+        id: "a provider",
         plugin: plugin,
         method: authentication[0]
       }]);
@@ -153,7 +153,7 @@ describe("authMiddleware", () => {
   it("shows auth form with provider info from store if existing credentials failed", (done) => {
     dataFetcher.setAuthCredentials({ provider: "test", credentials: "credentials" });
     let providers = [{
-      name: "a provider",
+      id: "a provider",
       plugin: plugin,
       method: "test method"
     }];
@@ -173,7 +173,7 @@ describe("authMiddleware", () => {
     authMiddleware(store)(next)(() => {}).then(() => {
       expect(showAuthFormStub.callCount).to.equal(1);
       expect(showAuthFormStub.args[0][2]).to.deep.equal([{
-        name: "a provider",
+        id: "a provider",
         plugin: plugin,
         method: "test method"
       }]);
@@ -204,7 +204,7 @@ describe("authMiddleware", () => {
 
   it("does not call showAuthForm if there's no supported auth method in the auth document", (done) => {
     store.getState.returns({ auth: {}, collection: {}, book: {} });
-    let authentication = [{ type: "unknown method", description: "a provider" }];
+    let authentication = [{ type: "unknown method", id: "a provider" }];
     let error = {
       status: 401,
       response: JSON.stringify({ title: "Library", authentication })
@@ -220,7 +220,7 @@ describe("authMiddleware", () => {
   it("makes cancel go to previous page if url has changed", (done) => {
     store.getState.returns({ auth: {}, collection: {url: "old"}, book: {} });
     pathFor.returns("new");
-    let authentication = [{ type: "test", description: "a provider" }];
+    let authentication = [{ type: "test", id: "a provider" }];
     let error = {
       status: 401,
       response: JSON.stringify({ title: "Library", authentication })
@@ -241,7 +241,7 @@ describe("authMiddleware", () => {
     store.getState.returns({ auth: {}, collection: {}, book: {} });
     // blank is the value of window.location.pathname when running tests
     pathFor.returns("blank");
-    let authentication = [{ type: "test", description: "a provider" }];
+    let authentication = [{ type: "test", id: "a provider" }];
     let error = {
       status: 401,
       response: JSON.stringify({ name: "Library", authentication })

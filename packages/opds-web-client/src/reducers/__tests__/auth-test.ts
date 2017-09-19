@@ -30,7 +30,7 @@ describe("auth reducer", () => {
     let callback = stub();
     let cancel = stub();
     let provider = {
-      name: "library",
+      id: "library",
       plugin: BasicAuthPlugin,
       method: {
         type: BasicAuthPlugin.type,
@@ -56,7 +56,7 @@ describe("auth reducer", () => {
     let callback = stub();
     let cancel = stub();
     let provider = {
-      name: "library",
+      id: "library",
       plugin: BasicAuthPlugin,
       method: {
         type: BasicAuthPlugin.type,

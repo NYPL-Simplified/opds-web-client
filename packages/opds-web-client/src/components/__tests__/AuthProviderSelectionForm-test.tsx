@@ -14,7 +14,7 @@ describe("AuthProviderSelectionForm", () => {
 
   beforeEach(() => {
     provider1 = {
-      name: "Provider 1",
+      id: "Provider 1",
       plugin: BasicAuthPlugin,
       method: {
         labels: {
@@ -25,7 +25,7 @@ describe("AuthProviderSelectionForm", () => {
     };
 
     provider2 = {
-      name: "Provider 2",
+      id: "Provider 2",
       plugin: BasicAuthPlugin,
       method: {
         labels: {

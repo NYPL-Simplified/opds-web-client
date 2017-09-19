@@ -151,13 +151,14 @@ export interface AuthCallback {
 }
 
 export interface AuthProvider<T extends AuthMethod> {
-  name: string;
+  id: string;
   plugin: AuthPlugin;
   method: T;
 }
 
 export interface AuthMethod {
   type: string;
+  description?: string;
 };
 
 export interface AuthData {

@@ -51,8 +51,11 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                 authPlugins.forEach(plugin => {
                   for (const method of data.authentication || []) {
                     if (method.type === plugin.type) {
-                      let name = method.description;
-                      authProviders.push({ name, plugin, method });
+                      // If the authentication provider doesn't have a unique
+                      // identifier, use the method type. This won't work if the
+                      // auth document has two providers with the same method type.
+                      let id = method.id || method.type;
+                      authProviders.push({ id, plugin, method });
                     }
                   }
                 });

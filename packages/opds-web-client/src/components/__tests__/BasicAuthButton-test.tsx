@@ -13,9 +13,10 @@ describe("BasicAuthButton", () => {
 
     beforeEach(() => {
       provider = {
-        name: "Test Basic Auth",
+        id: "id",
         plugin: BasicAuthPlugin,
         method: {
+          description: "Test Basic Auth",
           labels: {
             login: "code name",
             password: "secret password"
@@ -32,7 +33,7 @@ describe("BasicAuthButton", () => {
 
     it("shows input with provider name", () => {
       let input = wrapper.find("input");
-      expect(input.prop("value")).to.contain(provider.name);
+      expect(input.prop("value")).to.contain(provider.method.description);
     });
   });
 });
