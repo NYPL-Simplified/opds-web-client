@@ -48,7 +48,12 @@ $stripeWidth: 50px !default;
   to   { background-position: -($stripeWidth * 2) $stripeWidth; }
 }
 
-
-// Import theme colors
 //
-@import 'theme-demo';
+// Import individual theme colors
+//
+// @import 'custom-themes/theme-demo';
+// @import 'theme-green';
+// @import 'theme-red';
+// @import 'theme-blue';
+// @import 'theme-yellow';
+//@import 'theme-';
