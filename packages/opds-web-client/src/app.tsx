@@ -1,5 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { PropTypes } from "prop-types";
+const createReactClass = require("create-react-class");
 import { Router, Route, browserHistory } from "react-router";
 import OPDSCatalog from "./components/OPDSCatalog";
 import { RootProps } from "./components/Root";
@@ -23,12 +25,12 @@ class OPDSWebClient {
   }, elementId: string) {
     this.elementId = elementId;
     this.pathPattern = config.pathPattern || "/(collection/:collectionUrl/)(book/:bookUrl/)";
-    this.RouteHandler = React.createClass({
+    this.RouteHandler = createReactClass({
       contextTypes: {
-        router: React.PropTypes.object.isRequired
+        router: PropTypes.object.isRequired
       },
       childContextTypes: {
-        pathFor: React.PropTypes.func.isRequired
+        pathFor: PropTypes.func.isRequired
       },
       getChildContext: function() {
         return {

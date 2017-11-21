@@ -1,4 +1,5 @@
 import * as React from "react";
+import { PropTypes } from "prop-types";
 import { Store } from "redux";
 import { connect } from "react-redux";
 import { State } from "../state";
@@ -85,8 +86,8 @@ export class Root extends React.Component<RootProps, RootState> {
   context: NavigateContext;
 
   static contextTypes: React.ValidationMap<RootProps> = {
-    router: React.PropTypes.object,
-    pathFor: React.PropTypes.func
+    router: PropTypes.object,
+    pathFor: PropTypes.func
   };
 
   constructor(props) {
