@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { stub } from "sinon";
 
 import * as React from "react";
+import { PropTypes } from "prop-types";
 import { shallow } from "enzyme";
 
 import OPDSCatalog from "../OPDSCatalog";
@@ -10,6 +11,7 @@ import buildStore from "../../store";
 import { State } from "../../state";
 import { groupedCollectionData } from "./collectionData";
 import { jsdom } from "jsdom";
+import { mockRouterContext } from "./routing";
 
 describe("OPDSCatalog", () => {
   let props = {
@@ -26,10 +28,17 @@ describe("OPDSCatalog", () => {
     pageTitleTemplate: (c, b) => "test title",
     epubReaderUrlTemplate: (a) => "test reader url"
   };
+  let context = mockRouterContext();
 
   it("creates a store for Root if not given one", () => {
     let wrapper = shallow(
-      <OPDSCatalog {...props} />
+      <OPDSCatalog {...props} />,
+      { context,
+        childContextTypes: {
+          router: PropTypes.object,
+          pathFor: PropTypes.func
+        }
+      }
     );
     let root = wrapper.find<RootProps>(Root);
     expect(root.props().store).to.be.ok;
@@ -39,7 +48,13 @@ describe("OPDSCatalog", () => {
     let store = buildStore();
     let state = store.getState();
     let wrapper = shallow(
-      <OPDSCatalog {...props} initialState={state} />
+      <OPDSCatalog {...props} initialState={state} />,
+      { context,
+        childContextTypes: {
+          router: PropTypes.object,
+          pathFor: PropTypes.func
+        }
+      }
     );
     let root = wrapper.find<RootProps>(Root);
     expect(root.props().store.getState()).to.deep.equal(state);
@@ -47,7 +62,13 @@ describe("OPDSCatalog", () => {
 
   it("passes props to Root", () => {
     let wrapper = shallow(
-      <OPDSCatalog {...props} />
+      <OPDSCatalog {...props} />,
+      { context,
+        childContextTypes: {
+          router: PropTypes.object,
+          pathFor: PropTypes.func
+        }
+      }
     );
     let root = wrapper.find<RootProps>(Root);
 

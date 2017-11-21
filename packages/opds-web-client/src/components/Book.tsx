@@ -130,7 +130,7 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
         for (const link of this.props.book.openAccessLinks) {
           if (link.type === "application/epub+zip") {
             links.push(
-              <span>
+              <span key={link.url}>
                 <a
                   className="btn btn-default read-button"
                   href={this.props.epubReaderUrlTemplate(link.url)}
