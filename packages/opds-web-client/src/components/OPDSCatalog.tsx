@@ -13,7 +13,6 @@ import { NavigateContext } from "../interfaces";
 export interface OPDSCatalogProps {
   collectionUrl?: string;
   bookUrl?: string;
-  headerTitle?: string;
   authPlugins?: AuthPlugin[];
   pageTitleTemplate: (collectionTitle: string, bookTitle: string) => string;
   proxyUrl?: string;

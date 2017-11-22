@@ -60,7 +60,6 @@ export interface RootProps extends StateProps {
   refreshCollectionAndBook?: () => Promise<any>;
   retryCollectionAndBook?: () => Promise<any>;
   pageTitleTemplate?: (collectionTitle: string, bookTitle: string) => string;
-  headerTitle?: string;
   epubReaderUrlTemplate?: (epubUrl: string) => string;
   fetchPage?: (url: string) => Promise<CollectionData>;
   Header?: new() => __React.Component<HeaderProps, any>;
@@ -104,8 +103,6 @@ export class Root extends React.Component<RootProps, RootState> {
 
     let computeBreadcrumbs = this.props.computeBreadcrumbs || defaultComputeBreadcrumbs;
     let breadcrumbsLinks = computeBreadcrumbs(this.props.collectionData, this.props.history);
-
-    let headerTitle = this.props.headerTitle || (this.props.collectionData ? this.props.collectionData.title : null);
 
     let showCollection = this.props.collectionData && !this.props.bookData;
     let showBook = this.props.bookData;
