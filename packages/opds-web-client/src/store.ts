@@ -28,15 +28,3 @@ export default function buildStore(initialState?: State, authPlugins?: AuthPlugi
     compose.apply(this, composeArgs)
   );
 }
-
-export function buildCollectionStore(initialState?): Store<any> {
-  const composeArgs = [applyMiddleware(thunk)];
-  if (persistState) {
-    composeArgs.push(persistState("preferences"));
-  }
-  return createStore<any>(
-    combineReducers({ collection }),
-    initialState,
-    compose.apply(this, composeArgs)
-  );
-}
