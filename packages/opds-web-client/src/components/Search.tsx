@@ -1,4 +1,5 @@
 import * as React from "react";
+import { PropTypes } from "prop-types";
 import { SearchData, NavigateContext } from "../interfaces";
 
 export interface SearchProps extends SearchData, React.HTMLProps<Search> {
@@ -14,8 +15,8 @@ export default class Search extends React.Component<SearchProps, void> {
   }
 
   static contextTypes: React.ValidationMap<NavigateContext> = {
-    router: React.PropTypes.object.isRequired,
-    pathFor: React.PropTypes.func.isRequired
+    router: PropTypes.object.isRequired,
+    pathFor: PropTypes.func.isRequired
   };
 
   render(): JSX.Element {

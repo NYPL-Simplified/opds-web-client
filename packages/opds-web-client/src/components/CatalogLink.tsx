@@ -1,4 +1,5 @@
 import * as React from "react";
+import { PropTypes } from "prop-types";
 import { Link } from "react-router";
 import { NavigateContext } from "../interfaces";
 
@@ -11,12 +12,12 @@ export default class CatalogLink extends React.Component<CatalogLinkProps, void>
   context: NavigateContext;
 
   static contextTypes: React.ValidationMap<NavigateContext> = {
-    router: React.PropTypes.object.isRequired,
-    pathFor: React.PropTypes.func.isRequired
+    router: PropTypes.object.isRequired,
+    pathFor: PropTypes.func.isRequired
   };
 
   static childContextTypes: React.ValidationMap<NavigateContext> = {
-    router: React.PropTypes.object.isRequired
+    router: PropTypes.object.isRequired
   };
 
   // provides full router context expected by but not actually used by Link

@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { stub, spy } from "sinon";
 
 import * as React from "react";
+import { PropTypes } from "prop-types";
 import { Store } from "redux";
 import { shallow, mount } from "enzyme";
 
@@ -703,8 +704,8 @@ describe("Root", () => {
       push = stub();
       context = mockRouterContext(push);
       childContextTypes = {
-        router: React.PropTypes.object.isRequired,
-        pathFor: React.PropTypes.func.isRequired
+        router: PropTypes.object.isRequired,
+        pathFor: PropTypes.func.isRequired
       };
       history = [{
         text: "root title",

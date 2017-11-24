@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { stub } from "sinon";
 
 import * as React from "react";
+import { PropTypes } from "prop-types";
 import { shallow, mount } from "enzyme";
 
 import Collection from "../Collection";
@@ -115,8 +116,8 @@ describe("Collection", () => {
           />,
         { context,
           childContextTypes: {
-            router: React.PropTypes.object,
-            pathFor: React.PropTypes.func
+            router: PropTypes.object,
+            pathFor: PropTypes.func
           }
         }
       );
@@ -161,8 +162,8 @@ describe("Collection", () => {
           />,
         { context,
           childContextTypes: {
-            router: React.PropTypes.object,
-            pathFor: React.PropTypes.func
+            router: PropTypes.object,
+            pathFor: PropTypes.func
           }
         }
       );
