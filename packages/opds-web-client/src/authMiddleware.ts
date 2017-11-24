@@ -3,8 +3,11 @@ import AuthPlugin from "./AuthPlugin";
 import ActionCreator from "./actions";
 import { AuthCallback, AuthProvider, AuthMethod, PathFor } from "./interfaces";
 
-// see Redux Middleware docs:
-// http://redux.js.org/docs/advanced/Middleware.html
+/** Redux middleware for handling requests that require authentication.
+    Intercepts 401 errors and shows an authentication form, then retries the
+    original request after the user authenticates.
+    See Redux Middleware docs:
+    http://redux.js.org/docs/advanced/Middleware.html */
 
 export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
   return store => next => action => {

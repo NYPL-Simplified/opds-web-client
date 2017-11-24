@@ -20,6 +20,7 @@ export interface OPDSCatalogProps {
   epubReaderUrlTemplate?: (epubUrl: string) => string;
 }
 
+/** The main application component. */
 export default class OPDSCatalog extends React.Component<OPDSCatalogProps, void> {
   store: Redux.Store<State>;
   context: NavigateContext;

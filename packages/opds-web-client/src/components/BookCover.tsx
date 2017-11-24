@@ -11,6 +11,8 @@ export interface BookCoverState {
   error: boolean;
 }
 
+/** Shows a cover image from the OPDS feed or an automatically generated cover for
+    a single book. */
 export default class BookCover extends React.Component<BookCoverProps, BookCoverState> {
   constructor(props) {
     super(props);

@@ -7,6 +7,7 @@ export interface BasicAuthFormState {
   error: string;
 }
 
+/** Form for logging in with basic auth. */
 export default class BasicAuthForm extends React.Component<BasicAuthFormProps, BasicAuthFormState> {
   constructor(props) {
     super(props);

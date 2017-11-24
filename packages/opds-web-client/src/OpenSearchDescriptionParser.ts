@@ -4,6 +4,8 @@ import * as url from "url";
 
 let xmlParser = new xml2js.Parser({xmlns: true});
 
+/** Converts an open search description document into the application's internal
+    representation. */
 export default class OpenSearchDescriptionParser {
   parse(xml: string, descriptionUrl: string): Promise<SearchData> {
     return new Promise((resolve, reject) => {
