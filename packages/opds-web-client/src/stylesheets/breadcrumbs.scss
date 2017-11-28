@@ -8,9 +8,6 @@
 
   > li + li:before {
     color: $pagetextcolor;
-    font-family: 'Glyphicons Halflings';
-    content: "\E258";
-    top: 3px;
-    position: relative;
+    content: " > ";
   }
 }
