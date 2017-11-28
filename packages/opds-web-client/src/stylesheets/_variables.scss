@@ -3,22 +3,24 @@ $basefont: $basefontraw * 1px !default;
 $fontfamily: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
 $focus-width: 3px !default;
 
-$blue: #3a7dfd;
-$darkblue: #234c99;
+// Default gray scales
+// from Lightest to Darkest
+$light: #fff;
 $gray: #f5f5f4;
-$light: #ffffff;
-$dark: #403d37;
+$medium-gray: #9c9c9c;
+$dark-gray: #5e5e5e;
+$dark: #141414;
 
 // colors
-$focuscolor: orange !default;
+$focuscolor: #ffb81d !default;
 $pagecolor: $light !default;
 $pagecolorlight: $gray !default;
 $pagetextcolor: $dark !default;
-$footercolor: #54514A !default;
-$highlightcolor: $darkblue !default;
+$footercolor: $dark-gray !default;
+$highlightcolor: $gray !default;
 
 // link colors
-$linkcolor: $blue !default;
+$linkcolor: $dark-gray !default;
 $linkvisitedcolor: darken($linkcolor, 20%) !default;
 $linkhovercolor: lighten($linkcolor, 10%) !default;
 $invertedlinkcolor: $light !default;
@@ -34,7 +36,7 @@ $footerHeight: 50px !default;
 // book stuff
 $bookHeight: 200px !default;
 $bookWidth: 150px !default;
-$stripeWidth: 200px !default;
+$stripeWidth: 50px !default;
 
 @-webkit-keyframes barberpole {
   from { background-position: 0 0; }
@@ -46,3 +48,12 @@ $stripeWidth: 200px !default;
   to   { background-position: -($stripeWidth * 2) $stripeWidth; }
 }
 
+//
+// Import individual theme colors
+//
+// @import 'custom-themes/theme-demo';
+// @import 'theme-green';
+// @import 'theme-red';
+// @import 'theme-blue';
+// @import 'theme-yellow';
+//@import 'theme-';

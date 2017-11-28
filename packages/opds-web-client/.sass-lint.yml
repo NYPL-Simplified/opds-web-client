@@ -7,6 +7,9 @@ files:
   include: 'src/stylesheets/**/*.scss'
 # Rule Configuration
 rules:
+  leading-zero:
+    - 1
+    - include: true
   extends-before-mixins: 2
   extends-before-declarations: 2
   placeholder-in-extend: 2

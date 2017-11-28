@@ -64,9 +64,9 @@
     max-width: 1200px;
   }
 
-  .books.list-view li:nth-child(odd) {
-    background-color: $pagecolorlight;
-  }
+  // .books.list-view li:nth-child(odd) {
+  //   background-color: $pagecolorlight;
+  // }
 
   .books {
     padding-bottom: $padding * 3;

@@ -74,33 +74,58 @@ a {
   height: 100%;
 
   .navbar-brand {
+    color: $light;
     font-size: 1.8em;
-    color: white;
 
     &:hover {
-      color: white;
+      color: $light;
     }
   }
 
+  //
+  // Search and Breadcrumb container
+  //
   .breadcrumbs-or-search-wrapper {
     display: flex;
+    background-color: $pagecolorlight;
     flex-direction: row;
     flex-wrap: wrap;
+    height: 4.25rem;
     justify-content: space-between;
-    background-color: $pagecolorlight;
+    padding-top: 1rem;
     z-index: 100;
 
     .search {
       display: inline-flex;
       flex-direction: row;
       flex-wrap: nowrap;
-      padding-top: 2px;
-      input, .btn {
-        width: auto;
+      margin-right: 1rem;
+
+      input,
+      .btn {
         float: left;
+        width: auto;
       }
-    }    
-  }
+
+      // Override Bootstrap
+      .form-control {
+        border-right: 0;
+        border-style: solid;
+        box-sizing: border-box;
+        height: 2.3125rem;
+      }
+
+      .btn {
+        border: 0.0625rem solid $linkcolor;
+      }
+
+      .btn:hover {
+        background-color: $invertedlinkcolor;
+        border: 0.0625rem solid $linkcolor;
+        color: $linkcolor;
+      }
+    }
+  } // /.breadcrumbs-or-search-wrapper
 
   .main {
     flex: 1;
@@ -139,24 +164,29 @@ a {
 }
 
 // override bootstrap
-.navbar-default, .navbar-collapse {
+.navbar-default,
+.navbar-collapse {
   background-color: $dark;
   border: none;
-  color: white;
+  border-radius: 0;
+  color: $light;
+  height: 4.25rem;
   margin-bottom: 0;
+  padding-top: 0.5rem;
 
   .navbar-nav {
     margin: 0;
   }
 
-  .navbar-nav>li>a {
-    color: white;
+  .navbar-nav > li > a {
+    color: $light;
     text-decoration: underline;
     padding-top: 15px;
     padding-bottom: 15px;
 
-    &:hover, &:focus {
-      color: white;
+    &:hover,
+    &:focus {
+      color: $light;
       text-decoration: none;
     }
   }
@@ -169,7 +199,7 @@ a {
   max-width: 100%;
   overflow-x: scroll;
 
-  >li+li:before {
+  > li + li:before {
     color: $pagetextcolor;
   }
 }

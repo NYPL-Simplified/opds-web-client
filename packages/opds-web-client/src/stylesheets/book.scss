@@ -1,14 +1,15 @@
 @import "variables";
 
 .book {
-  white-space: normal;
   margin-right: $padding;
-  height: $bookHeight;
+  min-height: ($bookHeight * 0.25);
   overflow: hidden;
   position: relative;
+  white-space: normal;
 
   .title {
-    font-size: 1.1em;
+    color: $dark-gray;
+    font-size: 1.2em;
     font-weight: bold;
   }
 
@@ -17,24 +18,53 @@
   }
 
   a {
-    color: black;
+    color: $pagetextcolor;
+    margin-right: 1rem;
     text-decoration: none;
   }
+} // /.book
+
+
+//
+// Grid View
+// a small fix to the layout in grid view
+.grid-view {
+
+  .book {
+    min-height: $bookHeight;
+
+    > a {
+      margin: 0;
+    }
+  }
 }
+// /.grid-view
+
+
 
 .circulation-links {
-  a, button, .btn-default {
+  a,
+  button,
+  .btn-default {
     border-radius: 5px;
     border: 1px solid $linkcolor;
     background-color: transparent;
     color: $linkcolor;
-    padding: 5px;
+    padding: 0.3125rem 0.625rem;
     margin: 5px;
     transition: all 0.2s;
 
     &:hover {
+      background: $linkhovercolor;
       border-color: $linkhovercolor;
-      color: $linkhovercolor;
+      color: $invertedlinkcolor;
+    }
+
+    &::after {
+      content: " ";
+      width: 10px;
+      height: 10px;
+      background: red;
     }
   }
 }
@@ -61,9 +91,10 @@
     display: none;
   }
 
-  a:focus .compact-info, a:hover .compact-info {
-    height: calc(70%);
+  a:focus .compact-info,
+  a:hover .compact-info {
     background-color: rgba($pagecolor, 1);
+    height: calc(70%);
     padding: $padding 0;
   }
 
@@ -72,9 +103,15 @@
   }
 }
 
+.list-view li {
+  border-bottom: 0.125rem solid $dark-gray;
+  margin-bottom: 2.25rem;
+}
+
 .list-view .book {
   display: flex;
   flex-direction: row;
+  margin-bottom: 2rem;
   height: $bookHeight;
   width: 100%;
 
@@ -84,13 +121,12 @@
 
   .expanded-info {
     display: flex;
-    flex-direction: column;
-
     flex: 1;
+    flex-direction: column;
     height: $bookHeight;
     margin: 10px;
-    text-align: left;
     max-width: 1200px;
+    text-align: left;
 
     .header {
       display: flex;
@@ -105,27 +141,44 @@
     .details {
       display: flex;
       flex-direction: row;
-      font-size: 0.9em;
-      margin-top: 2em;
+      font-size: 1rem;
+      margin-top: 1.125rem;
     }
 
     .fields {
-      margin-right: 2em;
-      flex: 1;
+      border-left: 0.35rem solid rgba($dark-gray, 0.2);
+      color: $dark-gray;
+      font-size: 0.85rem;
+      list-style-type: none;
+      margin: 0;
+      padding: 0.5rem 0 0 0.5rem;
+      //margin-right: 2em;
+      //flex: 1;
+      width: 25%;
 
       @media only screen and (max-width: 1200px) {
         display: none;
       }
+
+      li {
+        border: 0;
+        margin: 0;
+        padding: 0;
+      }
     }
 
+    //
+    // Summary ~ Book description
+    // Truncation based on http://dev.mobify.com/blog/multiline-ellipsis-in-pure-css/
     .summary {
-      /* Truncation based on http://dev.mobify.com/blog/multiline-ellipsis-in-pure-css/ */
-
-      max-width: 550px;
+      flex: 1;
+      height: 7.5em;
       line-height: 1.3em;
-      height: 6.3em;
+      max-width: 45rem;
       overflow: hidden;
+      padding-right: 6rem;
       position: relative;
+      width: 60%;
 
       &::before {
         content: " ";
@@ -134,17 +187,19 @@
         float: left;
       }
 
-      span {
+      // span,
+      p {
         float: right;
-        width: 100%;
+        line-height: 1.5;
         margin-left: -6em;
+        width: 100%;
       }
 
       a {
         float: right;
         width: 6em;
         position: relative;
-        top: -1.3em;
+        //top: -1.3em;
         left: calc(100% - 6em);
         text-align: right;
         background: linear-gradient(to right, transparent, $pagecolor 40%, $pagecolor);
@@ -153,7 +208,10 @@
 
     .circulation-links {
       flex: 1;
-      text-align: right;
+      margin-left: 1rem;
+      position: relative;
+      text-align: left;
+      top: -0.6rem;
 
       * {
         display: none;
@@ -164,8 +222,8 @@
       }
     }
   }
-}
+} // /.list-view
 
-.list-view li:nth-child(odd) .book .expanded-info .summary a {
-  background: linear-gradient(to right, transparent, $pagecolorlight 40%, $pagecolorlight);
-}
+// .list-view li:nth-child(odd) .book .expanded-info .summary a {
+//   background: linear-gradient(to right, transparent, $pagecolorlight 40%, $pagecolorlight);
+// }
