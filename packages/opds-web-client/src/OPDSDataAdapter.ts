@@ -39,6 +39,7 @@ if (typeof window === "undefined") {
   sanitizeHtml = createDOMPurify(window).sanitize;
 }
 
+/** Converts OPDS data into the internal representation used by components. */
 export function adapter(data: OPDSFeed|OPDSEntry, url: string): CollectionData|BookData {
   if (data instanceof OPDSFeed) {
     let collectionData = feedToCollection(data, url);

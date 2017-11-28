@@ -16,6 +16,7 @@ export interface BookProps {
   epubReaderUrlTemplate?: (epubUrl: string) => string;
 }
 
+/** Displays a single book for use in a lane, list, or grid view. */
 export default class Book<P extends BookProps> extends React.Component<P, void> {
   constructor(props) {
     super(props);

@@ -10,6 +10,7 @@ import { State } from "./state";
 import AuthPlugin from "./AuthPlugin";
 import "./stylesheets/app.scss";
 
+/** Standalone app to be mounted in an existing DOM element. */
 class OPDSWebClient {
   elementId: string;
   pathPattern: string;

@@ -6,6 +6,7 @@ export interface SearchProps extends SearchData, React.HTMLProps<Search> {
   fetchSearchDescription?: (url: string) => void;
 }
 
+/** Search box. */
 export default class Search extends React.Component<SearchProps, void> {
   context: NavigateContext;
 

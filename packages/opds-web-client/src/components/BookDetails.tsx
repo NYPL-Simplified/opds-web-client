@@ -6,6 +6,7 @@ import { BookData } from "../interfaces";
 
 export interface BookDetailsProps extends BookProps {};
 
+/** Detail page for a single book. */
 export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
   render(): JSX.Element {
     let fields = this.fields();

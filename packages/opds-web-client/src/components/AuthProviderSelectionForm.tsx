@@ -29,6 +29,8 @@ export interface AuthProviderSelectionFormState {
   selectedProvider: AuthProvider<AuthMethod>;
 }
 
+/** Shows buttons for each available authentication provider, or the form for
+    the selected authentication provider. */
 export default class AuthProviderSelectionForm extends React.Component<AuthProviderSelectionFormProps, AuthProviderSelectionFormState> {
   constructor(props) {
     super(props);

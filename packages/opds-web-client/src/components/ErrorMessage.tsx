@@ -6,6 +6,7 @@ export interface ErrorMessageProps {
   close?: () => void;
 }
 
+/** Shows an error message dialog when a request fails. */
 export default class ErrorMessage extends React.Component<ErrorMessageProps, void> {
   render(): JSX.Element {
     return (

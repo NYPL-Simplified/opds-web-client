@@ -81,6 +81,8 @@ export interface RootState {
   authError?: string;
 }
 
+/** The root component of the application that connects to the Redux store and
+    passes props to other components. */
 export class Root extends React.Component<RootProps, RootState> {
   context: NavigateContext;
 

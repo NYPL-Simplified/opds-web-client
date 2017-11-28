@@ -21,6 +21,7 @@ export interface LaneState {
   atRight: boolean;
 }
 
+/** Shows one scrollable lane in a collection. */
 export default class Lane extends React.Component<LaneProps, LaneState> {
   constructor(props) {
     super(props);

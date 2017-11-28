@@ -11,6 +11,8 @@ export interface LoadAction<T> {
   url?: string;
 }
 
+/** Create redux actions to be dispatched by connected components, mostly
+    to make requests to the server. */
 export default class ActionCreator {
   private fetcher: DataFetcher;
 

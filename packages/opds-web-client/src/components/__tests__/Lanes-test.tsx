@@ -8,7 +8,6 @@ import ConnectedLanes, { Lanes } from "../Lanes";
 import Lane from "../Lane";
 import { groupedCollectionData } from "./collectionData";
 import spinner from "../../images/spinner";
-import { buildCollectionStore } from "../../store";
 
 describe("Lanes", () => {
   let wrapper;

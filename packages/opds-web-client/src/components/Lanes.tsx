@@ -26,6 +26,7 @@ export interface LanesProps {
   epubReaderUrlTemplate?: (epubUrl: string) => string;
 }
 
+/** All the lanes for a collection. */
 export class Lanes extends React.Component<LanesProps, void> {
   render() {
     return (

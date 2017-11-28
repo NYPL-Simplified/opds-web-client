@@ -16,15 +16,24 @@ export interface RequestRejector {
   (err: RequestError): any;
 }
 
+export interface DataFetcherConfig {
+  /** If `proxyUrl` is provided, requests will be posted to the proxy url instead
+      of the original url, to get around CORS restrictions. The proxy server should
+      get the original url out of the form data, make the request, and return
+      the response. */
+  proxyUrl?: string;
+
+  /** Function to convert OPDS data to an internal format needed by the application. */
+  adapter?: (data: OPDSFeed | OPDSEntry, url: string) => any;
+}
+
+/** Handles requests to OPDS servers. */
 export default class DataFetcher {
   public authKey: string;
   private proxyUrl: string;
-  private adapter: any;
+  private adapter: (data: OPDSFeed | OPDSEntry, url: string) => any;
 
-  constructor(config: {
-    proxyUrl?: string;
-    adapter?: any;
-  } = {}) {
+  constructor(config: DataFetcherConfig = {}) {
     this.proxyUrl = config.proxyUrl;
     this.adapter = config.adapter;
     this.authKey = "authCredentials";

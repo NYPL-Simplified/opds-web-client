@@ -25,6 +25,7 @@ export interface CollectionProps extends React.HTMLProps<Collection> {
   setPreference: (key: string, value: string) => void;
 }
 
+/** Displays books in an OPDS collection as either lanes, a grid or a list. */
 export default class Collection extends React.Component<CollectionProps, void> {
   static VIEW_KEY = "collection-view";
   static GRID_VIEW = "grid-view";

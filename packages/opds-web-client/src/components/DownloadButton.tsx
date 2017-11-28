@@ -11,6 +11,7 @@ export interface DownloadButtonProps extends React.HTMLProps<any> {
   indirectType?: string;
 }
 
+/** Shows a button to fulfill and download a book or download it directly. */
 export default class DownloadButton extends React.Component<DownloadButtonProps, void> {
   constructor(props) {
     super(props);
