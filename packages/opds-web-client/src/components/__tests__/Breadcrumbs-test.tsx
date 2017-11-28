@@ -30,13 +30,14 @@ describe("Breadcrumbs", () => {
 
     let list = wrapper.find("ol");
     let links = wrapper.find(CatalogLink);
+    let currentLink = wrapper.find("ol li").last();
     expect(list.hasClass("breadcrumb")).to.equal(true);
-    expect(links.length).to.equal(2);
+    // The current page is no longer a link:
+    expect(links.length).to.equal(1);
     expect(links.at(0).props().children).to.contain("2nd title");
     expect(links.at(0).props().collectionUrl).to.equal("2nd url");
     // last link is wrapped in <strong>
-    expect((links.at(1).props().children as any).props.children).to.contain("last title");
-    expect(links.at(1).props().collectionUrl).to.equal("last url");
+    expect(currentLink.text()).to.equal("last title");
   });
 });
 
