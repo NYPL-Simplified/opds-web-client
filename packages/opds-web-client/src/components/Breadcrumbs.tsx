@@ -16,11 +16,15 @@ export default class Breadcrumbs extends React.Component<BreadcrumbsProps, void>
         <ol className="breadcrumb" aria-label="breadcrumbs" role="navigation">
           { this.props.links && this.props.links.map((link, i) =>
             <li key={link.url}>
-              <CatalogLink
-                collectionUrl={link.url}
-                bookUrl={null}>
-                { i === this.props.links.length - 1 ? <strong>{link.text}</strong> : link.text }
-              </CatalogLink>
+              {
+                i === this.props.links.length - 1 ?
+                  <strong>{link.text}</strong> :
+                  <CatalogLink
+                    collectionUrl={link.url}
+                    bookUrl={null}>
+                    {link.text}
+                  </CatalogLink>
+              }
             </li>
           ) }
         </ol>
