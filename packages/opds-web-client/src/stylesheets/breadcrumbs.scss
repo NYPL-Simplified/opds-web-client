@@ -1,3 +1,16 @@
 .breadcrumb {
   font-size: 1.2em;
+  background-color: $pagecolorlight;
+  border-radius: 0;
+  margin-bottom: 0;
+  max-width: 100%;
+  overflow-x: scroll;
+
+  > li + li:before {
+    color: $pagetextcolor;
+    font-family: 'Glyphicons Halflings';
+    content: "\E258";
+    top: 3px;
+    position: relative;
+  }
 }
