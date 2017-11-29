@@ -4,6 +4,7 @@ import { CollectionData, BookData, LinkData } from "../interfaces";
 
 export interface BreadcrumbsProps extends React.Props<any> {
   links: LinkData[];
+  currentLink?: boolean;
 }
 
 export interface ComputeBreadcrumbs {
@@ -12,19 +13,26 @@ export interface ComputeBreadcrumbs {
 
 /** Shows a list of breadcrumbs links above a collection. */
 export default class Breadcrumbs extends React.Component<BreadcrumbsProps, void> {
+  public static defaultProps: Partial<BreadcrumbsProps> = {
+    currentLink: false,
+  };
   render(): JSX.Element {
     return (
-        <ol className="breadcrumb" aria-label="breadcrumbs" role="navigation">
-          { this.props.links && this.props.links.map((link, i) =>
-            <li key={link.url}>
-              <CatalogLink
-                collectionUrl={link.url}
-                bookUrl={null}>
-                { i === this.props.links.length - 1 ? <strong>{link.text}</strong> : link.text }
-              </CatalogLink>
-            </li>
-          ) }
-        </ol>
+      <ol className="breadcrumb" aria-label="breadcrumbs" role="navigation">
+        { this.props.links && this.props.links.map((link, i) =>
+          <li key={link.url}>
+            {
+              (i === this.props.links.length - 1) && (!this.props.currentLink) ?
+                <span>{link.text}</span> :
+                <CatalogLink
+                  collectionUrl={link.url}
+                  bookUrl={null}>
+                  {link.text}
+                </CatalogLink>
+            }
+          </li>
+        ) }
+      </ol>
     );
   }
 }

@@ -1,3 +1,25 @@
 .breadcrumb {
   font-size: 1.2em;
+  background-color: $pagecolorlight;
+  border-radius: 0;
+  margin-bottom: 0;
+  max-width: 100%;
+  overflow-x: scroll;
+
+  > li + li:before {
+    color: $pagetextcolor;
+    content: " > ";
+  }
+
+  li {
+    span {
+      font-weight: 600;
+    }
+
+    &:last-child {
+      a {
+        font-weight: 600;
+      }
+    }
+  }
 }

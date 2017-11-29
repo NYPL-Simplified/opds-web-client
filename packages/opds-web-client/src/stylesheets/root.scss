@@ -99,7 +99,7 @@ a {
         width: auto;
         float: left;
       }
-    }    
+    }
   }
 
   .main {
@@ -159,18 +159,6 @@ a {
       color: white;
       text-decoration: none;
     }
-  }
-}
-
-.breadcrumb {
-  background-color: $pagecolorlight;
-  border-radius: 0;
-  margin-bottom: 0;
-  max-width: 100%;
-  overflow-x: scroll;
-
-  >li+li:before {
-    color: $pagetextcolor;
   }
 }
 
