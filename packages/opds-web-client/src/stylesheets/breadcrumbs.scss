@@ -10,4 +10,16 @@
     color: $pagetextcolor;
     content: " > ";
   }
+
+  li {
+    span {
+      font-weight: 600;
+    }
+
+    &:last-child {
+      a {
+        font-weight: 600;
+      }
+    }
+  }
 }

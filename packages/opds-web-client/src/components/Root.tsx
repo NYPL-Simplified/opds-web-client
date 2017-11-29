@@ -161,7 +161,7 @@ export class Root extends React.Component<RootProps, RootState> {
         { (showBreadcrumbs || showSearch) &&
           <div className="breadcrumbs-or-search-wrapper">
             { showBreadcrumbs &&
-              <Breadcrumbs links={breadcrumbsLinks} />
+              <Breadcrumbs links={breadcrumbsLinks} currentLink={!!showBook} />
             }
             { showSearch &&
               <Search

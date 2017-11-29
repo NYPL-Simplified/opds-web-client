@@ -32,12 +32,28 @@ describe("Breadcrumbs", () => {
     let links = wrapper.find(CatalogLink);
     let currentLink = wrapper.find("ol li").last();
     expect(list.hasClass("breadcrumb")).to.equal(true);
-    // The current page is no longer a link:
+    // The current page is no longer a link unless `currentLink` is true:
     expect(links.length).to.equal(1);
     expect(links.at(0).props().children).to.contain("2nd title");
     expect(links.at(0).props().collectionUrl).to.equal("2nd url");
     // last link is wrapped in <strong>
     expect(currentLink.text()).to.equal("last title");
+  });
+
+  it("shows links with bootstrap classes", () => {
+    let wrapper = shallow(
+      <Breadcrumbs links={data} currentLink />
+    );
+
+    let list = wrapper.find("ol");
+    let links = wrapper.find(CatalogLink);
+    let currentLink = wrapper.find("ol li").last();
+    expect(list.hasClass("breadcrumb")).to.equal(true);
+    expect(links.length).to.equal(2);
+    expect(links.at(0).props().children).to.contain("2nd title");
+    expect(links.at(0).props().collectionUrl).to.equal("2nd url");
+    expect(links.at(1).props().children).to.contain("last title");
+    expect(links.at(1).props().collectionUrl).to.equal("last url");
   });
 });
 
