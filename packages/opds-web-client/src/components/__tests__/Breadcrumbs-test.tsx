@@ -40,7 +40,7 @@ describe("Breadcrumbs", () => {
     expect(currentLink.text()).to.equal("last title");
   });
 
-  it("shows links with bootstrap classes", () => {
+  it("should render all the data as links since the currentLink prop is true", () => {
     let wrapper = shallow(
       <Breadcrumbs links={data} currentLink />
     );
