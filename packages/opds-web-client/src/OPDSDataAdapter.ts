@@ -146,7 +146,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
     holds: holds,
     copies: copies,
     publisher: entry.publisher,
-    published: entry.published && formatDate(entry.published),
+    published: entry.issued && formatDate(entry.issued),
     categories: categories,
     language: entry.language,
     url: detailUrl,

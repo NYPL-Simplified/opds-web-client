@@ -1,6 +1,6 @@
 {
   "name": "opds-web-client",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "description": "OPDS web client",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -26,7 +26,7 @@
     "js-cookie": "^2.1.2",
     "jsdom": "9.9.1",
     "moment": "^2.14.1",
-    "opds-feed-parser": "^0.0.13",
+    "opds-feed-parser": "^0.0.14",
     "prop-types": "^15.6.0",
     "react": "^15.6.2",
     "react-dom": "^15.6.2",
