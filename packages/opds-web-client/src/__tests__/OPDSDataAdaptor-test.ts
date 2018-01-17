@@ -56,7 +56,7 @@ describe("OPDSDataAdapter", () => {
       summary: factory.summary({content: "&lt;b&gt;Sam and Remi Fargo race for treasure&#8212;and survival&#8212;in this lightning-paced new adventure from #1&lt;i&gt; New York Times&lt;/i&gt; bestselling author Clive Cussler.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;Husband-and-wife team Sam and Remi Fargo are in Mexico when they come upon a remarkable discovery&#8212;the mummified remainsof a man clutching an ancient sealed pot. Within the pot is a Mayan book larger than any known before.&lt;br /&gt;&lt;br /&gt;The book contains astonishing information about the Mayans, their cities, and about mankind itself. The secrets are so powerful that some people would do anything to possess them&#8212;as the Fargos are about to find out. Many men and women are going to die for that book.<script>alert('danger!');</script>"}),
       categories: [factory.category({label: "label"}), factory.category({term: "no label"}), factory.category({label: "label 2"})],
       links: [largeImageLink, thumbImageLink, openAccessLink, borrowLink, fulfillmentLink, collectionLink],
-      published: "2014-06-08T22:45:58Z",
+      issued: "2014-06-08T22:45:58Z",
       publisher: "Fake Publisher",
       series: {
         name: "Fake Series",
