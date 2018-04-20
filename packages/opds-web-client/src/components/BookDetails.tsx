@@ -10,6 +10,7 @@ export interface BookDetailsProps extends BookProps {};
 export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
   render(): JSX.Element {
     let fields = this.fields();
+    const medium = this.getMedium(this.props.book);
 
     return (
       <div className="book-details">
@@ -39,6 +40,11 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
                 field.value ? <div className={field.name.toLowerCase().replace(" ", "-")} key={field.name}>{field.name}: {field.value}</div> : null
               ) }
             </div>
+            {
+              medium && (
+                <div className="item-icon-container">Media: {this.getMediumSVG(medium)}</div>
+              )
+            }
           </div>
         </div>
         <div className="divider"></div>

@@ -37,6 +37,15 @@
       color: #333;
       font-size: 1em;
     }
+
+    .item-icon-container {
+      .item-icon {
+        display: inline-block;
+        margin: 0 0 -10px;
+        height: 30px;
+        width: 30px;
+      }
+    }
   }
 
   .divider {

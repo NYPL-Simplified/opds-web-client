@@ -4,6 +4,7 @@ import { stub } from "sinon";
 import * as React from "react";
 import * as moment from "moment";
 import { shallow } from "enzyme";
+import { AudioHeadphoneIcon } from "@nypl/dgx-svg-icons";
 
 import BookDetails from "../BookDetails";
 import BookCover from "../BookCover";
@@ -26,7 +27,8 @@ let book = {
   series: {
     name: "Fake Series"
   },
-  language: "de"
+  language: "de",
+  raw: { "$": { "schema:additionalType": { value: "http://bib.schema.org/Audiobook" } } },
 };
 
 describe("BookDetails", () => {
@@ -72,6 +74,14 @@ describe("BookDetails", () => {
   it("shows publisher", () => {
     let publisher = wrapper.find(".publisher");
     expect(publisher.text()).to.equal("Publisher: " + book.publisher);
+  });
+
+  it("shows media type", () => {
+    let itemIcon = wrapper.find(".item-icon-container");
+    let svg = itemIcon.find(AudioHeadphoneIcon);
+
+    expect(svg.length).to.equal(1);
+    expect(itemIcon.render().text()).to.equal("Media: NYPL Audio/Headphone SVG Icon Audio");
   });
 
   it("doesn't show publisher when there isn't one", () => {
