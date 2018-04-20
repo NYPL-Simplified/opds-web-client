@@ -4,6 +4,10 @@ import BookCover from "./BookCover";
 import BorrowButton from "./BorrowButton";
 import DownloadButton from "./DownloadButton";
 import { BookData } from "../interfaces";
+import {
+  AudioHeadphoneIcon,
+  BookIcon,
+} from "@nypl/dgx-svg-icons";
 const download = require("downloadjs");
 
 export interface BookProps {
@@ -36,6 +40,7 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
           >
           <BookCover book={this.props.book} />
           <div className="compact-info">
+            {this.getMediumSVG(this.getMedium(this.props.book))}
             <div className="title">{this.props.book.title}</div>
             { this.props.book.series && this.props.book.series.name &&
               <div className="series">{this.props.book.series.name}</div>
@@ -235,6 +240,38 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
     }
 
     return links;
+  }
+
+  getMedium(book) {
+    if (!book.raw) {
+      return "";
+    }
+
+    return book.raw["$"]["schema:additionalType"].value;
+  }
+
+  getMediumSVG(medium) {
+    if (!medium) {
+      return null;
+    }
+
+    const svgMediumTypes = {
+      "http://bib.schema.org/Audiobook": {
+        element: <AudioHeadphoneIcon ariaHidden />,
+        label: "Audio",
+      },
+      "http://schema.org/EBook": {
+        element: <BookIcon ariaHidden />,
+        label: "EBook",
+      },
+      "http://schema.org/Book": {
+        element: <BookIcon ariaHidden />,
+        label: "EBook",
+      },
+    };
+    const svgElm = svgMediumTypes[medium];
+
+    return svgElm ? <div className="item-icon">{svgElm.element} {svgElm.label}</div> : null;
   }
 
   borrow(): Promise<BookData> {

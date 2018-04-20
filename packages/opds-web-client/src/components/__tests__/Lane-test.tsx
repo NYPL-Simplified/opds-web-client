@@ -19,7 +19,7 @@ let books: BookData[] = [1, 2, 3].map((i) => {
     authors: [`test author ${i}`],
     summary: `test summary ${i}`,
     imageUrl: `https://example.com/testimage${i}`,
-    publisher: `test publisher ${i}`
+    publisher: `test publisher ${i}`,
   };
 });
 let laneData: LaneData = {

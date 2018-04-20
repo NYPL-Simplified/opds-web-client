@@ -18,6 +18,7 @@
     "prepublish": "typings install && rm -rf lib && tsc && cp -r src/stylesheets lib && npm run prod"
   },
   "dependencies": {
+    "@nypl/dgx-svg-icons": "^0.3.4",
     "create-react-class": "^15.6.2",
     "dompurify": "^0.8.1",
     "downloadjs": "^1.4.4",

@@ -4,6 +4,7 @@ import { stub } from "sinon";
 import * as React from "react";
 import { PropTypes } from "prop-types";
 import { shallow, mount } from "enzyme";
+import { AudioHeadphoneIcon } from "@nypl/dgx-svg-icons";
 
 import Book from "../Book";
 import { BookData } from "../../interfaces";
@@ -27,7 +28,8 @@ let book: BookData = {
   series: {
     name: "Fake Series"
   },
-  language: "de"
+  language: "de",
+  raw: { "$": { "schema:additionalType": { value: "http://bib.schema.org/Audiobook" } } },
 };
 
 describe("Book", () => {
@@ -107,6 +109,23 @@ describe("Book", () => {
       let bookInfo = links.at(0).children().at(1);
       let authors = bookInfo.find(".authors");
       expect(authors.text()).to.equal(bookCopy.contributors[0]);
+    });
+
+    it("renders an icon and label", () => {
+      let wrapper = shallow(
+        <Book
+          book={book}
+          updateBook={updateBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+        />
+      );
+
+      let itemIcon = wrapper.find(".item-icon");
+      let svg = itemIcon.find(AudioHeadphoneIcon);
+
+      expect(svg.length).to.equal(1);
+      expect(itemIcon.render().text()).to.equal("NYPL Audio/Headphone SVG Icon Audio");
     });
   });
 
