@@ -111,7 +111,7 @@ describe("Book", () => {
       expect(authors.text()).to.equal(bookCopy.contributors[0]);
     });
 
-    it("renders an icon and label", () => {
+    it("renders two icons and labels in the compact and expanded views", () => {
       let wrapper = shallow(
         <Book
           book={book}
@@ -124,8 +124,8 @@ describe("Book", () => {
       let itemIcon = wrapper.find(".item-icon");
       let svg = itemIcon.find(AudioHeadphoneIcon);
 
-      expect(svg.length).to.equal(1);
-      expect(itemIcon.render().text()).to.equal("NYPL Audio/Headphone SVG Icon Audio");
+      expect(svg.length).to.equal(2);
+      expect(itemIcon.first().render().text()).to.equal("NYPL Audio/Headphone SVG Icon Audio");
     });
   });
 

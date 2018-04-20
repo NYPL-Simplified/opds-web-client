@@ -31,6 +31,8 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
     // Remove HTML tags from the summary to fit more information into a truncated view.
     // The summary may still contain HTML character entities and needs to be rendered as HTML.
     let summary = (this.props.book && this.props.book.summary && this.props.book.summary.replace(/<\/?[^>]+(>|$)/g, " ")) || "";
+    const showMediaIconClass = this.getMedium(this.props.book) ? "show-media" : "";
+
     return (
       <div className="book" lang={this.props.book.language}>
         <CatalogLink
@@ -39,7 +41,7 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
           title={this.props.book.title}
           >
           <BookCover book={this.props.book} />
-          <div className="compact-info">
+          <div className={`compact-info ${showMediaIconClass}`}>
             {this.getMediumSVG(this.getMedium(this.props.book))}
             <div className="title">{this.props.book.title}</div>
             { this.props.book.series && this.props.book.series.name &&
@@ -88,6 +90,11 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
               { this.fields().map(field =>
                 field.value ? <div className={field.name.toLowerCase().replace(" ", "-")} key={field.name}>{field.name}: {field.value}</div> : null
               ) }
+              {
+                this.getMedium(this.props.book) && (
+                  <span>Media: {this.getMediumSVG(this.getMedium(this.props.book))}</span>
+                )
+              }
             </div>
             <div className="summary" lang={this.props.book.language}>
               <span
@@ -243,7 +250,7 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
   }
 
   getMedium(book) {
-    if (!book.raw) {
+    if (!book.raw || !book.raw["$"]) {
       return "";
     }
 
