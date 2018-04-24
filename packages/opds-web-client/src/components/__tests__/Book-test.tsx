@@ -73,6 +73,27 @@ describe("Book", () => {
     expect(bookElement.props().lang).to.equal("de");
   });
 
+  describe("getMedium function", () => {
+    it("returns value with data or an empty string", () => {
+      let wrapper = shallow(
+        <Book book={book}
+          updateBook={updateBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          />
+      );
+
+      let instance = wrapper.instance() as any;
+      let getMedium = instance.getMedium;
+
+      expect(getMedium({})).to.equal("");
+      expect(getMedium({ raw: {} })).to.equal("");
+      expect(getMedium({ raw: { "$":  {}} })).to.equal("");
+      expect(getMedium({ raw: { "$":  { "schema:additionalType": {}}} })).to.equal("");
+      expect(getMedium(book)).to.equal("http://bib.schema.org/Audiobook");
+    });
+  });
+
   describe("compact info", () => {
     it("shows book info", () => {
       let wrapper = shallow(
@@ -125,7 +146,7 @@ describe("Book", () => {
       let svg = itemIcon.find(AudioHeadphoneIcon);
 
       expect(svg.length).to.equal(2);
-      expect(itemIcon.first().render().text()).to.equal("NYPL Audio/Headphone SVG Icon Audio");
+      expect(itemIcon.first().render().text()).to.equal("Audio/Headphone SVG Icon Audio");
     });
   });
 

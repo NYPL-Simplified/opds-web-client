@@ -52,8 +52,8 @@
 
   .compact-info {
     background-color: rgba($pagecolor, 0.75);
-    border-top: 2px solid #000;
-    color: #000;
+    border-top: 2px solid $linkcolor;
+    color: $linkcolor;
     bottom: 0;
     box-shadow: inset 0px -5px 6px -7px black;
     left: 0;
@@ -72,6 +72,10 @@
       position: absolute;
       width: 100%;
       height: 35px;
+    }
+
+    svg {
+      fill: $linkcolor;
     }
 
     .title,
@@ -202,6 +206,7 @@
 
     .item-icon {
       display: inline-block;
+      margin-left: -5px;
     }
   }
 }

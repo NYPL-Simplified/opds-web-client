@@ -92,7 +92,7 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
               ) }
               {
                 this.getMedium(this.props.book) && (
-                  <span>Media: {this.getMediumSVG(this.getMedium(this.props.book))}</span>
+                  <span>{this.getMediumSVG(this.getMedium(this.props.book))}</span>
                 )
               }
             </div>
@@ -250,11 +250,12 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
   }
 
   getMedium(book) {
-    if (!book.raw || !book.raw["$"]) {
+    if (!book.raw || !book.raw["$"] || !book.raw["$"]["schema:additionalType"]) {
       return "";
     }
 
-    return book.raw["$"]["schema:additionalType"].value;
+    return book.raw["$"]["schema:additionalType"].value ?
+      book.raw["$"]["schema:additionalType"].value : "";
   }
 
   getMediumSVG(medium) {
@@ -264,15 +265,15 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
 
     const svgMediumTypes = {
       "http://bib.schema.org/Audiobook": {
-        element: <AudioHeadphoneIcon ariaHidden />,
+        element: <AudioHeadphoneIcon ariaHidden title="Audio/Headphone SVG Icon" />,
         label: "Audio",
       },
       "http://schema.org/EBook": {
-        element: <BookIcon ariaHidden />,
+        element: <BookIcon ariaHidden title="eBook SVG Icon" />,
         label: "eBook",
       },
       "http://schema.org/Book": {
-        element: <BookIcon ariaHidden />,
+        element: <BookIcon ariaHidden title="eBook SVG Icon" />,
         label: "eBook",
       },
     };

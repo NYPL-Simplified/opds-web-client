@@ -42,7 +42,7 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
             </div>
             {
               medium && (
-                <div className="item-icon-container">Media: {this.getMediumSVG(medium)}</div>
+                <div className="item-icon-container">{this.getMediumSVG(medium)}</div>
               )
             }
           </div>
