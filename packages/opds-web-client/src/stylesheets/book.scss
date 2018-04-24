@@ -51,6 +51,8 @@
   margin-bottom: $padding;
 
   .compact-info {
+    display: flex;
+    flex-direction: column;
     background-color: rgba($pagecolor, 0.75);
     border: 1px solid $pagetextcolor;
     border-top: 2px solid;
@@ -62,8 +64,6 @@
     position: absolute;
     text-align: left;
     transition: all 0.2s;
-    display: flex;
-    flex-direction: column;
 
     .item-icon {
       background: rgba($pagecolor, 0.75);
