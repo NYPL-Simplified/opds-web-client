@@ -51,7 +51,7 @@
   margin-bottom: $padding;
 
   .compact-info {
-    background-color: rgba($pagecolor, 0.8);
+    background-color: rgba($pagecolor, 0.75);
     border-top: 2px solid #000;
     color: #000;
     bottom: 0;
@@ -67,7 +67,7 @@
 
     .item-icon {
       display: inline-block;
-      background: rgba($pagecolor, 0.8);
+      background: rgba($pagecolor, 0.75);
       padding: 3px 5px;
       position: absolute;
       width: 100%;
@@ -80,13 +80,14 @@
     }
 
     .title {
-      margin-top: 35px;
+      margin-top: 0;
+      padding-top: 15px;
       background: rgba($pagecolor, 1);
     }
 
     .authors {
-      background: rgba(255,255,255,1);
-      height: 70%;
+      background: rgba($pagecolor, 1);
+      height: 80%;
     }
 
     &.show-media {
@@ -205,9 +206,14 @@
   }
 }
 
-.grid-view .book {
+.grid-view .book, .lane .book {
   .compact-info.show-media {
     height: $bookHeight * 0.18;
+
+    .title {
+      margin-top: 35px;
+      padding-top: 0;
+    }
   }
 }
 
