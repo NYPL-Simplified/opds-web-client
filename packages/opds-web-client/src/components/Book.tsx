@@ -269,11 +269,11 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
       },
       "http://schema.org/EBook": {
         element: <BookIcon ariaHidden />,
-        label: "EBook",
+        label: "eBook",
       },
       "http://schema.org/Book": {
         element: <BookIcon ariaHidden />,
-        label: "EBook",
+        label: "eBook",
       },
     };
     const svgElm = svgMediumTypes[medium];
