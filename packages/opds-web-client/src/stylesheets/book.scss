@@ -52,30 +52,34 @@
 
   .compact-info {
     background-color: rgba($pagecolor, 0.75);
-    border-top: 2px solid $linkcolor;
-    color: $linkcolor;
+    border: 1px solid $pagetextcolor;
+    border-top: 2px solid;
+    color: $pagetextcolor;
     bottom: 0;
     box-shadow: inset 0px -5px 6px -7px black;
-    left: 0;
     height: $bookHeight * 0.0;
     width: 150px;
-    padding: 0;
     position: absolute;
-    right: 0;
     text-align: left;
     transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
 
     .item-icon {
-      display: inline-block;
       background: rgba($pagecolor, 0.75);
-      padding: 3px 5px;
-      position: absolute;
-      width: 100%;
-      height: 35px;
+      padding: 3px 5px 5px;
+      border-bottom: 1px solid $pagetextcolor;
+    }
+
+    .item-details {
+      background: $pagecolor;
+      padding-top: 10px;
+      height: 100%;
+      overflow: hidden;
     }
 
     svg {
-      fill: $linkcolor;
+      fill: $pagetextcolor;
     }
 
     .title,
@@ -83,19 +87,8 @@
       padding: 0px 5px 5px 10px;
     }
 
-    .title {
-      margin-top: 0;
-      padding-top: 15px;
-      background: rgba($pagecolor, 1);
-    }
-
-    .authors {
-      background: rgba($pagecolor, 1);
-      height: 80%;
-    }
-
     &.show-media {
-      height: $bookHeight * 0.2;
+      height: $bookHeight * 0.18;
     }
   }
 
@@ -105,6 +98,10 @@
 
   a:focus .compact-info, a:hover .compact-info {
     height: 100%;
+
+    .item-icon {
+      border-bottom: none;
+    }
   }
 
   .series {
@@ -207,17 +204,6 @@
     .item-icon {
       display: inline-block;
       margin-left: -5px;
-    }
-  }
-}
-
-.grid-view .book, .lane .book {
-  .compact-info.show-media {
-    height: $bookHeight * 0.18;
-
-    .title {
-      margin-top: 35px;
-      padding-top: 0;
     }
   }
 }
