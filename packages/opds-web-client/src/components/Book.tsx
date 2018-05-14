@@ -31,7 +31,8 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
     // Remove HTML tags from the summary to fit more information into a truncated view.
     // The summary may still contain HTML character entities and needs to be rendered as HTML.
     let summary = (this.props.book && this.props.book.summary && this.props.book.summary.replace(/<\/?[^>]+(>|$)/g, " ")) || "";
-    const showMediaIconClass = this.getMedium(this.props.book) ? "show-media" : "";
+    const bookMedium = this.getMedium(this.props.book);
+    const showMediaIconClass = bookMedium ? "show-media" : "";
 
     return (
       <div className="book" lang={this.props.book.language}>
@@ -42,7 +43,7 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
           >
           <BookCover book={this.props.book} />
           <div className={`compact-info ${showMediaIconClass}`}>
-            {this.getMediumSVG(this.getMedium(this.props.book))}
+            {this.getMediumSVG(bookMedium, false)}
             <div className="item-details">
               <div className="title">{this.props.book.title}</div>
               { this.props.book.series && this.props.book.series.name &&
@@ -93,8 +94,8 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
                 field.value ? <div className={field.name.toLowerCase().replace(" ", "-")} key={field.name}>{field.name}: {field.value}</div> : null
               ) }
               {
-                this.getMedium(this.props.book) && (
-                  <span>{this.getMediumSVG(this.getMedium(this.props.book))}</span>
+                bookMedium && (
+                  <span>{this.getMediumSVG(bookMedium, false)}</span>
                 )
               }
             </div>
@@ -260,7 +261,7 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
       book.raw["$"]["schema:additionalType"].value : "";
   }
 
-  getMediumSVG(medium) {
+  getMediumSVG(medium, displayLabel = true) {
     if (!medium) {
       return null;
     }
@@ -281,7 +282,9 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
     };
     const svgElm = svgMediumTypes[medium];
 
-    return svgElm ? <div className="item-icon">{svgElm.element} {svgElm.label}</div> : null;
+    return svgElm ?
+      (<div className="item-icon">{svgElm.element} {displayLabel ? svgElm.label : null}</div>)
+      : null;
   }
 
   borrow(): Promise<BookData> {

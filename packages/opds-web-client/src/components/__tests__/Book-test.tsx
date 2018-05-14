@@ -94,6 +94,43 @@ describe("Book", () => {
     });
   });
 
+  describe("getMediumSVG function", () => {
+    let wrapper;
+    let instance;
+    let getMediumSVG;
+
+    beforeEach(() => {
+      wrapper = shallow(
+        <Book book={book}
+          updateBook={updateBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          />
+      );
+
+      instance = wrapper.instance() as any;
+      getMediumSVG = instance.getMediumSVG;
+    });
+
+    it("returns null with no input", () => {
+      expect(getMediumSVG()).to.equal(null);
+    });
+
+    it("returns null with bad medium input", () => {
+      expect(getMediumSVG("video")).to.equal(null);
+    });
+
+    it("returns a component with the appropriate svg and label for the medium input", () => {
+      expect(mount(getMediumSVG("http://bib.schema.org/Audiobook")).text())
+        .to.equal("Audio/Headphone SVG Icon Audio");
+    });
+
+    it("returns a component with the appropriate svg but no label for the medium input", () => {
+      expect(mount(getMediumSVG("http://bib.schema.org/Audiobook", false)).text())
+        .to.equal("Audio/Headphone SVG Icon ");
+    });
+  });
+
   describe("compact info", () => {
     it("shows book info", () => {
       let wrapper = shallow(
@@ -146,7 +183,7 @@ describe("Book", () => {
       let svg = itemIcon.find(AudioHeadphoneIcon);
 
       expect(svg.length).to.equal(2);
-      expect(itemIcon.first().render().text()).to.equal("Audio/Headphone SVG Icon Audio");
+      expect(itemIcon.first().render().text()).to.equal("Audio/Headphone SVG Icon ");
     });
   });
 
