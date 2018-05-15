@@ -63,7 +63,7 @@
     width: 150px;
     position: absolute;
     text-align: left;
-    transition: all 0.2s;
+    transition: all 0.2s cubic-bezier(0.63, -0.02, 0.55, 1);
 
     .item-icon {
       background: rgba($pagecolor, 0.75);
