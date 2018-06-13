@@ -1,11 +1,13 @@
-@import "variables";
-
 .book {
   white-space: normal;
   margin-right: $padding;
   height: $bookHeight;
   overflow: hidden;
   position: relative;
+
+  &.show-media {
+    height: $bookHeight + 110px;
+  }
 
   .title {
     font-size: 1.1em;
@@ -26,6 +28,12 @@
       margin: 0 0 -10px;
       height: 30px;
       width: 30px;
+    }
+  }
+
+  @include min-screen($xtrasmall-breakpoint) {
+    &.show-media {
+      height: $bookHeight;
     }
   }
 }
@@ -68,7 +76,12 @@
     .item-icon {
       background: rgba($pagecolor, 0.75);
       padding: 3px 5px 5px;
-      border-bottom: 1px solid $pagetextcolor;
+    }
+
+    @include min-screen($xtrasmall-breakpoint) {
+      .item-icon {
+        border-bottom: 1px solid $pagetextcolor;
+      }
     }
 
     .item-details {
@@ -88,7 +101,12 @@
     }
 
     &.show-media {
-      height: $bookHeight * 0.18;
+      height: $bookHeight * 0.73;
+    }
+    @include min-screen($xtrasmall-breakpoint) {
+      &.show-media {
+        height: $bookHeight * 0.18;
+      }
     }
   }
 

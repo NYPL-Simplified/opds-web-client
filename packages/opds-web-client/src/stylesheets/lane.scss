@@ -1,5 +1,3 @@
-@import "variables";
-
 .lane {
   h2 {
     clear: both;
@@ -24,7 +22,7 @@
     z-index: 1;
     height: 100%;
     font-size: 2em;
-    line-height: 7;
+    line-height: 10;
     cursor: pointer;
     transition: all 0.2s;
     font-family: "Hiragino Sans", $fontfamily;
@@ -41,11 +39,15 @@
     &.right {
       right: 0;
     }
+
+    @include min-screen($xtrasmall-breakpoint) {
+      line-height: 7;
+    }
   }
 
   .lane-books {
     display: block;
-    height: $bookHeight + $padding;
+    height: $bookHeight + $padding + 120px;
     white-space: nowrap;
     overflow-y: hidden;
     overflow-x: scroll;
@@ -56,6 +58,10 @@
     li {
       display: inline-block;
       vertical-align: top;
+    }
+
+    @include min-screen($xtrasmall-breakpoint) {
+      height: $bookHeight + $padding;
     }
   }
 }

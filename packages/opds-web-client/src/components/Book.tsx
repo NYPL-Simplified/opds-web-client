@@ -35,7 +35,7 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
     const showMediaIconClass = bookMedium ? "show-media" : "";
 
     return (
-      <div className="book" lang={this.props.book.language}>
+      <div className={`book ${showMediaIconClass}`} lang={this.props.book.language}>
         <CatalogLink
           collectionUrl={this.props.collectionUrl}
           bookUrl={this.props.book.url || this.props.book.id}
