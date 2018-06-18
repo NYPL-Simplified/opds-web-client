@@ -37,6 +37,13 @@ export interface FooterProps extends React.Props<any> {
   collection: CollectionData;
 }
 
+export interface EntryPointsTabsProps extends React.Props<any> {
+  list?: any[];
+  links?: LinkData[];
+  collectionUrl?: string;
+  bookPage?: boolean;
+}
+
 export interface BookDetailsContainerProps extends React.Props<any> {
   bookUrl: string;
   collectionUrl: string;
@@ -64,6 +71,7 @@ export interface RootProps extends StateProps {
   fetchPage?: (url: string) => Promise<CollectionData>;
   Header?: new() => __React.Component<HeaderProps, any>;
   Footer?: new() => __React.Component<FooterProps, any>;
+  EntryPointsTabs?: new() => __React.Component<EntryPointsTabsProps, any>;
   BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
   computeBreadcrumbs?: ComputeBreadcrumbs;
   updateBook?: (url: string) => Promise<BookData>;
@@ -100,6 +108,7 @@ export class Root extends React.Component<RootProps, RootState> {
     let BookDetailsContainer = this.props.BookDetailsContainer;
     let Header = this.props.Header;
     let Footer = this.props.Footer;
+    let EntryPointsTabs = this.props.EntryPointsTabs;
     let collectionTitle = this.props.collectionData ? this.props.collectionData.title : null;
     let bookTitle = this.props.bookData ? this.props.bookData.title : null;
 
@@ -113,6 +122,7 @@ export class Root extends React.Component<RootProps, RootState> {
     let showBreadcrumbs = this.props.collectionData && breadcrumbsLinks.length > 0;
     let showSearch = this.props.collectionData && this.props.collectionData.search;
     let showFooter = this.props.collectionData && Footer;
+    let showEntryPointsTabs = !!EntryPointsTabs;
 
     return (
       <div className="catalog">
@@ -174,6 +184,14 @@ export class Root extends React.Component<RootProps, RootState> {
             }
           </div>
         }
+
+        { showEntryPointsTabs &&
+            <EntryPointsTabs
+              links={breadcrumbsLinks}
+              collectionUrl={this.props.collectionUrl}
+              bookPage={!!showBook}
+            />
+          }
 
         <main id="main" className="main" role="main" tabIndex={-1}>
 
