@@ -6,7 +6,8 @@ import { PropTypes } from "prop-types";
 import { Store } from "redux";
 import { shallow, mount } from "enzyme";
 
-import ConnectedRoot, { Root, BookDetailsContainerProps, HeaderProps, FooterProps } from "../Root";
+import ConnectedRoot,
+{ Root, BookDetailsContainerProps, HeaderProps, FooterProps, EntryPointsTabsProps } from "../Root";
 import Breadcrumbs, { ComputeBreadcrumbs } from "../Breadcrumbs";
 import Collection from "../Collection";
 import UrlForm from "../UrlForm";
@@ -753,6 +754,73 @@ describe("Root", () => {
 
       expect(push.callCount).to.equal(1);
       expect(push.args[0][0]).to.equal(context.pathFor(collectionUrl, null));
+    });
+  });
+
+  describe("provided a EntryPointsTabs", () => {
+    class Tabs extends React.Component<EntryPointsTabsProps, any> {
+      render(): JSX.Element {
+        return (
+          <div className="tabs-container">
+          </div>
+        );
+      }
+    }
+
+    it("should not render EntryPointsTabs if the component is not passed in", () => {
+      let history: LinkData[] = [{
+        id: "2nd id",
+        text: "2nd title",
+        url: "2nd url"
+      }, {
+        id: "last id",
+        text: "last title",
+        url: "last url"
+      }];
+
+      let wrapper = shallow(
+        <Root
+          collectionData={ungroupedCollectionData}
+          history={history}
+          collectionUrl="/test"
+          setCollectionAndBook={mockSetCollectionAndBook}
+        />
+      );
+
+      let container = wrapper.find(Tabs);
+      expect(container.length).to.equal(0);
+    });
+
+    it("renders EntryPointsTabs", () => {
+      let history: LinkData[] = [{
+        id: "2nd id",
+        text: "2nd title",
+        url: "2nd url"
+      }, {
+        id: "last id",
+        text: "last title",
+        url: "last url"
+      }];
+      let links = history.concat([{
+        url: ungroupedCollectionData.url,
+        text: ungroupedCollectionData.title
+      }]);
+
+      let wrapper = shallow(
+        <Root
+          collectionData={ungroupedCollectionData}
+          history={history}
+          collectionUrl="/test"
+          setCollectionAndBook={mockSetCollectionAndBook}
+          EntryPointsTabs={Tabs}
+        />
+      );
+
+      let container = wrapper.find(Tabs);
+      expect(container.length).to.equal(1);
+      expect(container.props().collectionUrl).to.equal("/test");
+      expect(container.props().links).to.deep.equal(links);
+      expect(container.props().bookPage).to.equal(false);
     });
   });
 });
