@@ -7,7 +7,7 @@ import { Store } from "redux";
 import { shallow, mount } from "enzyme";
 
 import ConnectedRoot,
-{ Root, BookDetailsContainerProps, HeaderProps, FooterProps, EntryPointsTabsProps } from "../Root";
+{ Root, BookDetailsContainerProps, HeaderProps, FooterProps, CollectionHeaderProps } from "../Root";
 import Breadcrumbs, { ComputeBreadcrumbs } from "../Breadcrumbs";
 import Collection from "../Collection";
 import UrlForm from "../UrlForm";
@@ -758,7 +758,7 @@ describe("Root", () => {
   });
 
   describe("provided a EntryPointsTabs", () => {
-    class Tabs extends React.Component<EntryPointsTabsProps, any> {
+    class Tabs extends React.Component<CollectionHeaderProps, void> {
       render(): JSX.Element {
         return (
           <div className="tabs-container">
@@ -767,7 +767,7 @@ describe("Root", () => {
       }
     }
 
-    it("should not render EntryPointsTabs if the component is not passed in", () => {
+    describe("No EntryPointsTabs component rendering", () => {
       let history: LinkData[] = [{
         id: "2nd id",
         text: "2nd title",
@@ -778,17 +778,36 @@ describe("Root", () => {
         url: "last url"
       }];
 
-      let wrapper = shallow(
-        <Root
-          collectionData={ungroupedCollectionData}
-          history={history}
-          collectionUrl="/test"
-          setCollectionAndBook={mockSetCollectionAndBook}
-        />
-      );
+      it("should not render EntryPointsTabs if the component is not passed in", () => {
+        let wrapper = shallow(
+          <Root
+            collectionData={ungroupedCollectionData}
+            history={history}
+            collectionUrl="/test"
+            setCollectionAndBook={mockSetCollectionAndBook}
+          />
+        );
 
-      let container = wrapper.find(Tabs);
-      expect(container.length).to.equal(0);
+        let container = wrapper.find(Tabs);
+        expect(container.length).to.equal(0);
+      });
+
+      it("should not render EntryPointsTabs if the component is passed, but a book is being displayed", () => {
+        let bookData = groupedCollectionData.lanes[0].books[0];
+        let wrapper = shallow(
+          <Root
+            bookData={bookData}
+            EntryPointsTabs={Tabs}
+            collectionData={ungroupedCollectionData}
+            history={history}
+            collectionUrl="/test"
+            setCollectionAndBook={mockSetCollectionAndBook}
+          />
+        );
+
+        let container = wrapper.find(Tabs);
+        expect(container.length).to.equal(0);
+      });
     });
 
     it("renders EntryPointsTabs", () => {
@@ -820,7 +839,6 @@ describe("Root", () => {
       expect(container.length).to.equal(1);
       expect(container.props().collectionUrl).to.equal("/test");
       expect(container.props().links).to.deep.equal(links);
-      expect(container.props().bookPage).to.equal(false);
     });
   });
 });

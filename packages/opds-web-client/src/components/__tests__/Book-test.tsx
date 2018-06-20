@@ -122,12 +122,12 @@ describe("Book", () => {
 
     it("returns a component with the appropriate svg and label for the medium input", () => {
       expect(mount(getMediumSVG("http://bib.schema.org/Audiobook")).text())
-        .to.equal("Audio/Headphone SVG Icon Audio");
+        .to.equal("Audio/Headphone Icon Audio");
     });
 
     it("returns a component with the appropriate svg but no label for the medium input", () => {
       expect(mount(getMediumSVG("http://bib.schema.org/Audiobook", false)).text())
-        .to.equal("Audio/Headphone SVG Icon ");
+        .to.equal("Audio/Headphone Icon ");
     });
   });
 
@@ -183,7 +183,7 @@ describe("Book", () => {
       let svg = itemIcon.find(AudioHeadphoneIcon);
 
       expect(svg.length).to.equal(2);
-      expect(itemIcon.first().render().text()).to.equal("Audio/Headphone SVG Icon ");
+      expect(itemIcon.first().render().text()).to.equal("Audio/Headphone Icon ");
     });
   });
 

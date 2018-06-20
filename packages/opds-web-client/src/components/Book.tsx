@@ -268,15 +268,15 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
 
     const svgMediumTypes = {
       "http://bib.schema.org/Audiobook": {
-        element: <AudioHeadphoneIcon ariaHidden title="Audio/Headphone SVG Icon" />,
+        element: <AudioHeadphoneIcon ariaHidden title="Audio/Headphone Icon" />,
         label: "Audio",
       },
       "http://schema.org/EBook": {
-        element: <BookIcon ariaHidden title="eBook SVG Icon" />,
+        element: <BookIcon ariaHidden title="eBook Icon" />,
         label: "eBook",
       },
       "http://schema.org/Book": {
-        element: <BookIcon ariaHidden title="eBook SVG Icon" />,
+        element: <BookIcon ariaHidden title="eBook Icon" />,
         label: "eBook",
       },
     };

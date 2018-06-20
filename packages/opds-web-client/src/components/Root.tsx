@@ -37,11 +37,9 @@ export interface FooterProps extends React.Props<any> {
   collection: CollectionData;
 }
 
-export interface EntryPointsTabsProps extends React.Props<any> {
-  list?: any[];
+export interface CollectionHeaderProps extends React.Props<any> {
   links?: LinkData[];
   collectionUrl?: string;
-  bookPage?: boolean;
 }
 
 export interface BookDetailsContainerProps extends React.Props<any> {
@@ -71,7 +69,7 @@ export interface RootProps extends StateProps {
   fetchPage?: (url: string) => Promise<CollectionData>;
   Header?: new() => __React.Component<HeaderProps, any>;
   Footer?: new() => __React.Component<FooterProps, any>;
-  EntryPointsTabs?: new() => __React.Component<EntryPointsTabsProps, any>;
+  EntryPointsTabs?: new() => __React.Component<CollectionHeaderProps, any>;
   BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
   computeBreadcrumbs?: ComputeBreadcrumbs;
   updateBook?: (url: string) => Promise<BookData>;
@@ -122,7 +120,9 @@ export class Root extends React.Component<RootProps, RootState> {
     let showBreadcrumbs = this.props.collectionData && breadcrumbsLinks.length > 0;
     let showSearch = this.props.collectionData && this.props.collectionData.search;
     let showFooter = this.props.collectionData && Footer;
-    let showEntryPointsTabs = !!EntryPointsTabs;
+    // The tabs should only display if the component is passed and if
+    // the catalog is being displayed and not a book.
+    let showEntryPointsTabs = !!EntryPointsTabs && !showBook;
 
     return (
       <div className="catalog">
@@ -189,7 +189,6 @@ export class Root extends React.Component<RootProps, RootState> {
             <EntryPointsTabs
               links={breadcrumbsLinks}
               collectionUrl={this.props.collectionUrl}
-              bookPage={!!showBook}
             />
           }
 
