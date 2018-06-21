@@ -69,7 +69,7 @@ export interface RootProps extends StateProps {
   fetchPage?: (url: string) => Promise<CollectionData>;
   Header?: new() => __React.Component<HeaderProps, any>;
   Footer?: new() => __React.Component<FooterProps, any>;
-  EntryPointsTabs?: new() => __React.Component<CollectionHeaderProps, any>;
+  CollectionHeader?: new() => __React.Component<CollectionHeaderProps, any>;
   BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
   computeBreadcrumbs?: ComputeBreadcrumbs;
   updateBook?: (url: string) => Promise<BookData>;
@@ -106,7 +106,7 @@ export class Root extends React.Component<RootProps, RootState> {
     let BookDetailsContainer = this.props.BookDetailsContainer;
     let Header = this.props.Header;
     let Footer = this.props.Footer;
-    let EntryPointsTabs = this.props.EntryPointsTabs;
+    let CollectionHeader = this.props.CollectionHeader;
     let collectionTitle = this.props.collectionData ? this.props.collectionData.title : null;
     let bookTitle = this.props.bookData ? this.props.bookData.title : null;
 
@@ -122,7 +122,7 @@ export class Root extends React.Component<RootProps, RootState> {
     let showFooter = this.props.collectionData && Footer;
     // The tabs should only display if the component is passed and if
     // the catalog is being displayed and not a book.
-    let showEntryPointsTabs = !!EntryPointsTabs && !showBook;
+    let showCollectionHeader = !!CollectionHeader && !showBook;
 
     return (
       <div className="catalog">
@@ -185,8 +185,8 @@ export class Root extends React.Component<RootProps, RootState> {
           </div>
         }
 
-        { showEntryPointsTabs &&
-            <EntryPointsTabs
+        { showCollectionHeader &&
+            <CollectionHeader
               links={breadcrumbsLinks}
               collectionUrl={this.props.collectionUrl}
             />

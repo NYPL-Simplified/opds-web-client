@@ -757,7 +757,7 @@ describe("Root", () => {
     });
   });
 
-  describe("provided a EntryPointsTabs", () => {
+  describe("provided a CollectionHeader", () => {
     class Tabs extends React.Component<CollectionHeaderProps, void> {
       render(): JSX.Element {
         return (
@@ -767,7 +767,7 @@ describe("Root", () => {
       }
     }
 
-    describe("No EntryPointsTabs component rendering", () => {
+    describe("No CollectionHeader component rendering", () => {
       let history: LinkData[] = [{
         id: "2nd id",
         text: "2nd title",
@@ -778,7 +778,7 @@ describe("Root", () => {
         url: "last url"
       }];
 
-      it("should not render EntryPointsTabs if the component is not passed in", () => {
+      it("should not render CollectionHeader if the component is not passed in", () => {
         let wrapper = shallow(
           <Root
             collectionData={ungroupedCollectionData}
@@ -792,12 +792,12 @@ describe("Root", () => {
         expect(container.length).to.equal(0);
       });
 
-      it("should not render EntryPointsTabs if the component is passed, but a book is being displayed", () => {
+      it("should not render CollectionHeader if the component is passed, but a book is being displayed", () => {
         let bookData = groupedCollectionData.lanes[0].books[0];
         let wrapper = shallow(
           <Root
             bookData={bookData}
-            EntryPointsTabs={Tabs}
+            CollectionHeader={Tabs}
             collectionData={ungroupedCollectionData}
             history={history}
             collectionUrl="/test"
@@ -810,7 +810,7 @@ describe("Root", () => {
       });
     });
 
-    it("renders EntryPointsTabs", () => {
+    it("renders CollectionHeader", () => {
       let history: LinkData[] = [{
         id: "2nd id",
         text: "2nd title",
@@ -831,7 +831,7 @@ describe("Root", () => {
           history={history}
           collectionUrl="/test"
           setCollectionAndBook={mockSetCollectionAndBook}
-          EntryPointsTabs={Tabs}
+          CollectionHeader={Tabs}
         />
       );
 
