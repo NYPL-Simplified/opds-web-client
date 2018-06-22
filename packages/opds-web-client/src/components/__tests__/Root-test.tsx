@@ -838,7 +838,7 @@ describe("Root", () => {
       let container = wrapper.find(Tabs);
       expect(container.length).to.equal(1);
       expect(container.props().collectionUrl).to.equal("/test");
-      expect(container.props().links).to.deep.equal(links);
+      expect(container.props().breadcrumbsLinks).to.deep.equal(links);
     });
   });
 });

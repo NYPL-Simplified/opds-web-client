@@ -38,7 +38,7 @@ export interface FooterProps extends React.Props<any> {
 }
 
 export interface CollectionHeaderProps extends React.Props<any> {
-  links?: LinkData[];
+  breadcrumbsLinks?: LinkData[];
   collectionUrl?: string;
 }
 
@@ -187,7 +187,7 @@ export class Root extends React.Component<RootProps, RootState> {
 
         { showCollectionHeader &&
             <CollectionHeader
-              links={breadcrumbsLinks}
+              breadcrumbsLinks={breadcrumbsLinks}
               collectionUrl={this.props.collectionUrl}
             />
           }
