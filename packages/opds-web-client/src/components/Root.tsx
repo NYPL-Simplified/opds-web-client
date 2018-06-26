@@ -124,7 +124,6 @@ export class Root extends React.Component<RootProps, RootState> {
     let showCollectionHeader = !!CollectionHeader && !showBook;
     let facetGroups = this.props.collectionData ?
       this.props.collectionData.facetGroups : [];
-    let rootUrl = this.props.collectionData ? this.props.collectionData.url : "";
 
     return (
       <div className="catalog">

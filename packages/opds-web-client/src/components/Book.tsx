@@ -90,14 +90,14 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
           </div>
           <div className="details">
             <div className="fields" lang="en">
+              {
+                bookMedium && (
+                  <span>{this.getMediumSVG(bookMedium)}</span>
+                )
+              }
               { this.fields().map(field =>
                 field.value ? <div className={field.name.toLowerCase().replace(" ", "-")} key={field.name}>{field.name}: {field.value}</div> : null
               ) }
-              {
-                bookMedium && (
-                  <span>{this.getMediumSVG(bookMedium, false)}</span>
-                )
-              }
             </div>
             <div className="summary" lang={this.props.book.language}>
               <span
