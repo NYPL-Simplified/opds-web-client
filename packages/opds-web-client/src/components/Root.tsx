@@ -20,7 +20,7 @@ import SkipNavigationLink from "./SkipNavigationLink";
 import CatalogLink from "./CatalogLink";
 import {
   CollectionData, BookData, LinkData, StateProps, NavigateContext,
-  AuthCallback, AuthProvider, AuthMethod, AuthCredentials
+  AuthCallback, AuthProvider, AuthMethod, AuthCredentials, FacetGroupData
 } from "../interfaces";
 import AuthPlugin from "../AuthPlugin";
 
@@ -40,6 +40,7 @@ export interface FooterProps extends React.Props<any> {
 export interface CollectionHeaderProps extends React.Props<any> {
   breadcrumbsLinks?: LinkData[];
   collectionUrl?: string;
+  facetGroups?: FacetGroupData[];
 }
 
 export interface BookDetailsContainerProps extends React.Props<any> {
@@ -123,6 +124,9 @@ export class Root extends React.Component<RootProps, RootState> {
     // The tabs should only display if the component is passed and if
     // the catalog is being displayed and not a book.
     let showCollectionHeader = !!CollectionHeader && !showBook;
+    let facetGroups = this.props.collectionData ?
+      this.props.collectionData.facetGroups : [];
+    let rootUrl = this.props.collectionData ? this.props.collectionData.url : "";
 
     return (
       <div className="catalog">
@@ -188,7 +192,8 @@ export class Root extends React.Component<RootProps, RootState> {
         { showCollectionHeader &&
             <CollectionHeader
               breadcrumbsLinks={breadcrumbsLinks}
-              collectionUrl={this.props.collectionUrl}
+              collectionUrl={rootUrl}
+              facetGroups={facetGroups}
             />
           }
 
