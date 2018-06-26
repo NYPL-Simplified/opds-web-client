@@ -820,10 +820,16 @@ describe("Root", () => {
         text: "last title",
         url: "last url"
       }];
-      let links = history.concat([{
-        url: ungroupedCollectionData.url,
-        text: ungroupedCollectionData.title
-      }]);
+      let facetGroups = [
+        {
+          facets: [
+            { label: "Books", href: "http://circulation.librarysimplified.org/groups/?entrypoint=Book", active: false },
+            { label: "Audio", href: "http://circulation.librarysimplified.org/groups/?entrypoint=Audio", active: false },
+          ],
+          label: "Formats",
+        }
+      ];
+      ungroupedCollectionData.facetGroups = facetGroups;
 
       let wrapper = shallow(
         <Root
@@ -837,8 +843,7 @@ describe("Root", () => {
 
       let container = wrapper.find(Tabs);
       expect(container.length).to.equal(1);
-      expect(container.props().collectionUrl).to.equal("/test");
-      expect(container.props().breadcrumbsLinks).to.deep.equal(links);
+      expect(container.props().facetGroups).to.deep.equal(facetGroups);
     });
   });
 });

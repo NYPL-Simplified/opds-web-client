@@ -38,8 +38,6 @@ export interface FooterProps extends React.Props<any> {
 }
 
 export interface CollectionHeaderProps extends React.Props<any> {
-  breadcrumbsLinks?: LinkData[];
-  collectionUrl?: string;
   facetGroups?: FacetGroupData[];
 }
 
@@ -190,12 +188,8 @@ export class Root extends React.Component<RootProps, RootState> {
         }
 
         { showCollectionHeader &&
-            <CollectionHeader
-              breadcrumbsLinks={breadcrumbsLinks}
-              collectionUrl={rootUrl}
-              facetGroups={facetGroups}
-            />
-          }
+          <CollectionHeader facetGroups={facetGroups} />
+        }
 
         <main id="main" className="main" role="main" tabIndex={-1}>
 
