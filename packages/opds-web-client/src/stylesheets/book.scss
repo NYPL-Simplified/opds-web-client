@@ -61,21 +61,24 @@
   .compact-info {
     display: flex;
     flex-direction: column;
-    background-color: rgba($pagecolor, 0.75);
     border: 1px solid $pagetextcolor;
-    border-top: 2px solid;
+    border-top: none;
+    border-right: none;
     color: $pagetextcolor;
     bottom: 0;
     box-shadow: inset 0px -5px 6px -7px black;
     height: $bookHeight * 0.0;
-    width: 150px;
+    width: 42px;
     position: absolute;
     text-align: left;
     transition: all 0.2s cubic-bezier(0.63, -0.02, 0.55, 1);
 
     .item-icon {
-      background: rgba($pagecolor, 0.75);
+      background: rgba($pagecolor, 0.9);
       padding: 3px 5px 5px;
+      border-right: 1px solid $pagetextcolor;
+      border-top: 2px solid $pagetextcolor;
+      width: 42px;
     }
 
     @include min-screen($xtrasmall-breakpoint) {
@@ -89,6 +92,8 @@
       padding-top: 10px;
       height: 100%;
       overflow: hidden;
+      border-right: 1px solid $pagetextcolor;
+      border-top: 1px solid $pagetextcolor;
     }
 
     svg {
@@ -116,6 +121,7 @@
 
   a:focus .compact-info, a:hover .compact-info {
     height: 100%;
+    width: 150px;
 
     .item-icon {
       border-bottom: none;
