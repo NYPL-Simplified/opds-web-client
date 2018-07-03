@@ -61,10 +61,7 @@
   .compact-info {
     display: flex;
     flex-direction: column;
-    border: 1px solid $pagetextcolor;
-    border-top: none;
-    border-right: none;
-    color: $pagetextcolor;
+    color: $linkcolor;
     bottom: 0;
     box-shadow: inset 0px -5px 6px -7px black;
     height: $bookHeight * 0.0;
@@ -79,6 +76,7 @@
       background: $pagecolor;
       padding: 3px 5px 5px;
       border-top: 2px solid $pagetextcolor;
+      border-left: 1px solid $pagetextcolor;
       width: 42px;
       flex: 1 0 0;
     }
@@ -90,8 +88,8 @@
     }
 
     .empty {
-      border-left: 1px solid black;
-      border-bottom: 1px solid black;
+      border-left: 1px solid transparent;
+      border-bottom: 1px solid $pagetextcolor;
       height: 42px;
       flex: 4 0 0;
     }
@@ -99,10 +97,11 @@
     .item-details {
       background: $pagecolor;
       padding-top: 10px;
-      height: 72%;
+      height: 79%;
       width: 100%;
       overflow: hidden;
-      border-right: 1px solid $pagetextcolor;
+      border: 1px solid $pagetextcolor;
+      border-top: none;
     }
 
     @include min-screen($xtrasmall-breakpoint) {
@@ -112,7 +111,7 @@
     }
 
     svg {
-      fill: $pagetextcolor;
+      fill: $linkcolor;
     }
 
     .title,
@@ -122,6 +121,14 @@
 
     &.show-media {
       height: $bookHeight * 0.76;
+
+      .empty {
+        border-left: 1px solid $pagetextcolor;
+      }
+
+      .item-details {
+        height: 86%;
+      }
     }
     @include min-screen($xtrasmall-breakpoint) {
       &.show-media {
@@ -142,13 +149,9 @@
       border-bottom: none;
     }
 
-    .item-details {
-      height: 86%;
-    }
-
     @include min-screen($xtrasmall-breakpoint) {
       .item-details {
-        height: 157px;
+        height: 158px;
       }
     }
   }
