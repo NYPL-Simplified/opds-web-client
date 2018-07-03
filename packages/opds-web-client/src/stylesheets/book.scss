@@ -72,13 +72,15 @@
     position: absolute;
     text-align: left;
     transition: all 0.2s cubic-bezier(0.63, -0.02, 0.55, 1);
+    display: flex;
+    flex-flow: row wrap;
 
     .item-icon {
-      background: rgba($pagecolor, 0.9);
+      background: $pagecolor;
       padding: 3px 5px 5px;
-      border-right: 1px solid $pagetextcolor;
       border-top: 2px solid $pagetextcolor;
       width: 42px;
+      flex: 1 0 0;
     }
 
     @include min-screen($xtrasmall-breakpoint) {
@@ -87,13 +89,26 @@
       }
     }
 
+    .empty {
+      border-left: 1px solid black;
+      border-bottom: 1px solid black;
+      height: 42px;
+      flex: 4 0 0;
+    }
+
     .item-details {
       background: $pagecolor;
       padding-top: 10px;
-      height: 100%;
+      height: 72%;
+      width: 100%;
       overflow: hidden;
       border-right: 1px solid $pagetextcolor;
-      border-top: 1px solid $pagetextcolor;
+    }
+
+    @include min-screen($xtrasmall-breakpoint) {
+      .item-details {
+        height: 100%;
+      }
     }
 
     svg {
@@ -106,11 +121,11 @@
     }
 
     &.show-media {
-      height: $bookHeight * 0.73;
+      height: $bookHeight * 0.76;
     }
     @include min-screen($xtrasmall-breakpoint) {
       &.show-media {
-        height: $bookHeight * 0.18;
+        height: $bookHeight * 0.21;
       }
     }
   }
@@ -125,6 +140,16 @@
 
     .item-icon {
       border-bottom: none;
+    }
+
+    .item-details {
+      height: 86%;
+    }
+
+    @include min-screen($xtrasmall-breakpoint) {
+      .item-details {
+        height: 157px;
+      }
     }
   }
 

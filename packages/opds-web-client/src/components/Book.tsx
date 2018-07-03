@@ -44,6 +44,7 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
           <BookCover book={this.props.book} />
           <div className={`compact-info ${showMediaIconClass}`}>
             {this.getMediumSVG(bookMedium, false)}
+            <div className="empty"></div>
             <div className="item-details">
               <div className="title">{this.props.book.title}</div>
               { this.props.book.series && this.props.book.series.name &&
