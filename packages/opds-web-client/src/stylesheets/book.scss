@@ -156,6 +156,18 @@
     }
   }
 
+  a:focus .compact-info {
+    outline-color: $focuscolor;
+    outline-style: solid;
+    outline-width: $focus-width;
+    outline-offset: -$focus-width;
+
+    .empty {
+      border: 1px solid $focuscolor;
+      border-top: none;
+    }
+  }
+
   .series {
     display: none;
   }
