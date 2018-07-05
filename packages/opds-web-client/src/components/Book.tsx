@@ -4,6 +4,10 @@ import BookCover from "./BookCover";
 import BorrowButton from "./BorrowButton";
 import DownloadButton from "./DownloadButton";
 import { BookData } from "../interfaces";
+import {
+  AudioHeadphoneIcon,
+  BookIcon,
+} from "@nypl/dgx-svg-icons";
 const download = require("downloadjs");
 
 export interface BookProps {
@@ -27,27 +31,34 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
     // Remove HTML tags from the summary to fit more information into a truncated view.
     // The summary may still contain HTML character entities and needs to be rendered as HTML.
     let summary = (this.props.book && this.props.book.summary && this.props.book.summary.replace(/<\/?[^>]+(>|$)/g, " ")) || "";
+    const bookMedium = this.getMedium(this.props.book);
+    const showMediaIconClass = bookMedium ? "show-media" : "";
+
     return (
-      <div className="book" lang={this.props.book.language}>
+      <div className={`book ${showMediaIconClass}`} lang={this.props.book.language}>
         <CatalogLink
           collectionUrl={this.props.collectionUrl}
           bookUrl={this.props.book.url || this.props.book.id}
           title={this.props.book.title}
           >
           <BookCover book={this.props.book} />
-          <div className="compact-info">
-            <div className="title">{this.props.book.title}</div>
-            { this.props.book.series && this.props.book.series.name &&
-              <div className="series">{this.props.book.series.name}</div>
-            }
-            <div className="authors">
-              {
-                this.props.book.authors.length ?
-                this.props.book.authors.join(", ") :
-                  this.props.book.contributors && this.props.book.contributors.length ?
-                  this.props.book.contributors.join(", ") :
-                  ""
+          <div className={`compact-info ${showMediaIconClass}`}>
+            {this.getMediumSVG(bookMedium, false)}
+            <div className="empty"></div>
+            <div className="item-details">
+              <div className="title">{this.props.book.title}</div>
+              { this.props.book.series && this.props.book.series.name &&
+                <div className="series">{this.props.book.series.name}</div>
               }
+              <div className="authors">
+                {
+                  this.props.book.authors.length ?
+                  this.props.book.authors.join(", ") :
+                    this.props.book.contributors && this.props.book.contributors.length ?
+                    this.props.book.contributors.join(", ") :
+                    ""
+                }
+              </div>
             </div>
           </div>
         </CatalogLink>
@@ -80,6 +91,11 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
           </div>
           <div className="details">
             <div className="fields" lang="en">
+              {
+                bookMedium && (
+                  <span>{this.getMediumSVG(bookMedium)}</span>
+                )
+              }
               { this.fields().map(field =>
                 field.value ? <div className={field.name.toLowerCase().replace(" ", "-")} key={field.name}>{field.name}: {field.value}</div> : null
               ) }
@@ -235,6 +251,41 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
     }
 
     return links;
+  }
+
+  getMedium(book) {
+    if (!book.raw || !book.raw["$"] || !book.raw["$"]["schema:additionalType"]) {
+      return "";
+    }
+
+    return book.raw["$"]["schema:additionalType"].value ?
+      book.raw["$"]["schema:additionalType"].value : "";
+  }
+
+  getMediumSVG(medium, displayLabel = true) {
+    if (!medium) {
+      return null;
+    }
+
+    const svgMediumTypes = {
+      "http://bib.schema.org/Audiobook": {
+        element: <AudioHeadphoneIcon ariaHidden title="Audio/Headphone Icon" />,
+        label: "Audio",
+      },
+      "http://schema.org/EBook": {
+        element: <BookIcon ariaHidden title="eBook Icon" />,
+        label: "eBook",
+      },
+      "http://schema.org/Book": {
+        element: <BookIcon ariaHidden title="eBook Icon" />,
+        label: "eBook",
+      },
+    };
+    const svgElm = svgMediumTypes[medium];
+
+    return svgElm ?
+      (<div className="item-icon">{svgElm.element} {displayLabel ? svgElm.label : null}</div>)
+      : null;
   }
 
   borrow(): Promise<BookData> {

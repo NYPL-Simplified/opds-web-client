@@ -36,6 +36,11 @@ $bookHeight: 200px !default;
 $bookWidth: 150px !default;
 $stripeWidth: 200px !default;
 
+/// Breakpoints
+$intermediate-breakpoint: 1120px;
+$mobile-breakpoint: 965px;
+$xtrasmall-breakpoint: 483px;
+
 @-webkit-keyframes barberpole {
   from { background-position: 0 0; }
   to   { background-position: -($stripeWidth * 2) $stripeWidth; }
@@ -45,4 +50,3 @@ $stripeWidth: 200px !default;
   from { background-position: 0 0; }
   to   { background-position: -($stripeWidth * 2) $stripeWidth; }
 }
-

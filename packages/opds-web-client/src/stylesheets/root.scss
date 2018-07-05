@@ -86,7 +86,7 @@ a {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     background-color: $pagecolorlight;
     z-index: 100;
 
@@ -99,6 +99,10 @@ a {
         width: auto;
         float: left;
       }
+    }
+
+    @include min-screen($xtrasmall-breakpoint) {
+      justify-content: space-between;
     }
   }
 

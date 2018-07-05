@@ -1,11 +1,13 @@
-@import "variables";
-
 .book {
   white-space: normal;
   margin-right: $padding;
   height: $bookHeight;
   overflow: hidden;
   position: relative;
+
+  &.show-media {
+    height: $bookHeight + 110px;
+  }
 
   .title {
     font-size: 1.1em;
@@ -19,6 +21,20 @@
   a {
     color: black;
     text-decoration: none;
+  }
+
+  .item-icon {
+    svg {
+      margin: 0 0 -10px;
+      height: 30px;
+      width: 30px;
+    }
+  }
+
+  @include min-screen($xtrasmall-breakpoint) {
+    &.show-media {
+      height: $bookHeight;
+    }
   }
 }
 
@@ -43,18 +59,82 @@
   margin-bottom: $padding;
 
   .compact-info {
-    background-color: rgba($pagecolor, 0.8);
-    border-top: 2px solid $linkcolor;
+    display: flex;
+    flex-direction: column;
+    color: $linkcolor;
     bottom: 0;
     box-shadow: inset 0px -5px 6px -7px black;
-    left: 0;
     height: $bookHeight * 0.0;
     width: 150px;
-    padding: 0;
     position: absolute;
-    right: 0;
-    text-align: center;
-    transition: all 0.2s;
+    text-align: left;
+    transition: all 0.2s cubic-bezier(0.63, -0.02, 0.55, 1);
+    display: flex;
+    flex-flow: row wrap;
+
+    .item-icon {
+      background: $pagecolor;
+      padding: 3px 5px 5px;
+      border-top: 2px solid $pagetextcolor;
+      border-left: 1px solid $pagetextcolor;
+      width: 42px;
+      flex: 1 0 0;
+    }
+
+    @include min-screen($xtrasmall-breakpoint) {
+      .item-icon {
+        border-bottom: 1px solid $pagetextcolor;
+      }
+    }
+
+    .empty {
+      border-left: 1px solid transparent;
+      border-bottom: 1px solid $pagetextcolor;
+      height: 42px;
+      flex: 4 0 0;
+    }
+
+    .item-details {
+      background: $pagecolor;
+      padding-top: 10px;
+      height: 79%;
+      width: 100%;
+      overflow: hidden;
+      border: 1px solid $pagetextcolor;
+      border-top: none;
+    }
+
+    @include min-screen($xtrasmall-breakpoint) {
+      .item-details {
+        height: 100%;
+      }
+    }
+
+    svg {
+      fill: $linkcolor;
+    }
+
+    .title,
+    .authors {
+      padding: 0px 5px 5px 10px;
+    }
+
+    &.show-media {
+      height: $bookHeight * 0.76;
+
+      .empty {
+        border-left: 1px solid $pagetextcolor;
+      }
+
+      .item-details {
+        height: 86%;
+      }
+    }
+    @include min-screen($xtrasmall-breakpoint) {
+      &.show-media {
+        height: $bookHeight * 0.21;
+      }
+    }
   }
 
   .expanded-info {
@@ -62,9 +142,30 @@
   }
 
   a:focus .compact-info, a:hover .compact-info {
-    height: calc(70%);
-    background-color: rgba($pagecolor, 1);
-    padding: $padding 0;
+    height: 100%;
+    width: 150px;
+
+    .item-icon {
+      border-bottom: none;
+    }
+
+    @include min-screen($xtrasmall-breakpoint) {
+      .item-details {
+        height: 158px;
+      }
+    }
+  }
+
+  a:focus .compact-info {
+    outline-color: $focuscolor;
+    outline-style: solid;
+    outline-width: $focus-width;
+    outline-offset: -$focus-width;
+
+    .empty {
+      border: 1px solid $focuscolor;
+      border-top: none;
+    }
   }
 
   .series {
@@ -162,6 +263,11 @@
       *:first-child {
         display: inline-block;
       }
+    }
+
+    .item-icon {
+      display: inline-block;
+      margin-left: -5px;
     }
   }
 }

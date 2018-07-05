@@ -6,7 +6,8 @@ import { PropTypes } from "prop-types";
 import { Store } from "redux";
 import { shallow, mount } from "enzyme";
 
-import ConnectedRoot, { Root, BookDetailsContainerProps, HeaderProps, FooterProps } from "../Root";
+import ConnectedRoot,
+{ Root, BookDetailsContainerProps, HeaderProps, FooterProps, CollectionHeaderProps } from "../Root";
 import Breadcrumbs, { ComputeBreadcrumbs } from "../Breadcrumbs";
 import Collection from "../Collection";
 import UrlForm from "../UrlForm";
@@ -753,6 +754,96 @@ describe("Root", () => {
 
       expect(push.callCount).to.equal(1);
       expect(push.args[0][0]).to.equal(context.pathFor(collectionUrl, null));
+    });
+  });
+
+  describe("provided a CollectionHeader", () => {
+    class Tabs extends React.Component<CollectionHeaderProps, void> {
+      render(): JSX.Element {
+        return (
+          <div className="tabs-container">
+          </div>
+        );
+      }
+    }
+
+    describe("No CollectionHeader component rendering", () => {
+      let history: LinkData[] = [{
+        id: "2nd id",
+        text: "2nd title",
+        url: "2nd url"
+      }, {
+        id: "last id",
+        text: "last title",
+        url: "last url"
+      }];
+
+      it("should not render CollectionHeader if the component is not passed in", () => {
+        let wrapper = shallow(
+          <Root
+            collectionData={ungroupedCollectionData}
+            history={history}
+            collectionUrl="/test"
+            setCollectionAndBook={mockSetCollectionAndBook}
+          />
+        );
+
+        let container = wrapper.find(Tabs);
+        expect(container.length).to.equal(0);
+      });
+
+      it("should not render CollectionHeader if the component is passed, but a book is being displayed", () => {
+        let bookData = groupedCollectionData.lanes[0].books[0];
+        let wrapper = shallow(
+          <Root
+            bookData={bookData}
+            CollectionHeader={Tabs}
+            collectionData={ungroupedCollectionData}
+            history={history}
+            collectionUrl="/test"
+            setCollectionAndBook={mockSetCollectionAndBook}
+          />
+        );
+
+        let container = wrapper.find(Tabs);
+        expect(container.length).to.equal(0);
+      });
+    });
+
+    it("renders CollectionHeader", () => {
+      let history: LinkData[] = [{
+        id: "2nd id",
+        text: "2nd title",
+        url: "2nd url"
+      }, {
+        id: "last id",
+        text: "last title",
+        url: "last url"
+      }];
+      let facetGroups = [
+        {
+          facets: [
+            { label: "Books", href: "http://circulation.librarysimplified.org/groups/?entrypoint=Book", active: false },
+            { label: "Audio", href: "http://circulation.librarysimplified.org/groups/?entrypoint=Audio", active: false },
+          ],
+          label: "Formats",
+        }
+      ];
+      ungroupedCollectionData.facetGroups = facetGroups;
+
+      let wrapper = shallow(
+        <Root
+          collectionData={ungroupedCollectionData}
+          history={history}
+          collectionUrl="/test"
+          setCollectionAndBook={mockSetCollectionAndBook}
+          CollectionHeader={Tabs}
+        />
+      );
+
+      let container = wrapper.find(Tabs);
+      expect(container.length).to.equal(1);
+      expect(container.props().facetGroups).to.deep.equal(facetGroups);
     });
   });
 });
