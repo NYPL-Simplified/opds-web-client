@@ -37,7 +37,7 @@ export interface FooterProps extends React.Props<any> {
   collection: CollectionData;
 }
 
-export interface CollectionHeaderProps extends React.Props<any> {
+export interface CollectionContainerProps extends React.Props<any> {
   facetGroups?: FacetGroupData[];
 }
 
@@ -68,7 +68,7 @@ export interface RootProps extends StateProps {
   fetchPage?: (url: string) => Promise<CollectionData>;
   Header?: new() => __React.Component<HeaderProps, any>;
   Footer?: new() => __React.Component<FooterProps, any>;
-  CollectionHeader?: new() => __React.Component<CollectionHeaderProps, any>;
+  CollectionContainer?: new() => __React.Component<CollectionContainerProps, any>;
   BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
   computeBreadcrumbs?: ComputeBreadcrumbs;
   updateBook?: (url: string) => Promise<BookData>;
@@ -105,7 +105,7 @@ export class Root extends React.Component<RootProps, RootState> {
     let BookDetailsContainer = this.props.BookDetailsContainer;
     let Header = this.props.Header;
     let Footer = this.props.Footer;
-    let CollectionHeader = this.props.CollectionHeader;
+    let CollectionContainer = this.props.CollectionContainer;
     let collectionTitle = this.props.collectionData ? this.props.collectionData.title : null;
     let bookTitle = this.props.bookData ? this.props.bookData.title : null;
 
@@ -121,7 +121,7 @@ export class Root extends React.Component<RootProps, RootState> {
     let showFooter = this.props.collectionData && Footer;
     // The tabs should only display if the component is passed and if
     // the catalog is being displayed and not a book.
-    let showCollectionHeader = !!CollectionHeader && !showBook;
+    let showCollectionContainer = !!CollectionContainer && !showBook;
     let facetGroups = this.props.collectionData ?
       this.props.collectionData.facetGroups : [];
 
@@ -184,10 +184,6 @@ export class Root extends React.Component<RootProps, RootState> {
                 />
             }
           </div>
-        }
-
-        { showCollectionHeader &&
-          <CollectionHeader facetGroups={facetGroups} />
         }
 
         <main id="main" className="main" role="main" tabIndex={-1}>
@@ -260,22 +256,40 @@ export class Root extends React.Component<RootProps, RootState> {
               </div>
             }
 
-            { showCollection &&
-              <Collection
-                collection={this.collectionDataWithLoans()}
-                fetchPage={this.props.fetchPage}
-                isFetchingCollection={this.props.isFetchingCollection}
-                isFetchingBook={this.props.isFetchingBook}
-                isFetchingPage={this.props.isFetchingPage}
-                error={this.props.error}
-                updateBook={this.props.updateBook}
-                fulfillBook={this.props.fulfillBook}
-                indirectFulfillBook={this.props.indirectFulfillBook}
-                isSignedIn={this.props.isSignedIn}
-                epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
-                preferences={this.props.preferences}
-                setPreference={this.props.setPreference}
-                />
+            { showCollection ?
+              (showCollectionContainer ?
+                <CollectionContainer>
+                  <Collection
+                    collection={this.collectionDataWithLoans()}
+                    fetchPage={this.props.fetchPage}
+                    isFetchingCollection={this.props.isFetchingCollection}
+                    isFetchingBook={this.props.isFetchingBook}
+                    isFetchingPage={this.props.isFetchingPage}
+                    error={this.props.error}
+                    updateBook={this.props.updateBook}
+                    fulfillBook={this.props.fulfillBook}
+                    indirectFulfillBook={this.props.indirectFulfillBook}
+                    isSignedIn={this.props.isSignedIn}
+                    epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
+                    preferences={this.props.preferences}
+                    setPreference={this.props.setPreference}
+                  />
+                </CollectionContainer> :
+                <Collection
+                  collection={this.collectionDataWithLoans()}
+                  fetchPage={this.props.fetchPage}
+                  isFetchingCollection={this.props.isFetchingCollection}
+                  isFetchingBook={this.props.isFetchingBook}
+                  isFetchingPage={this.props.isFetchingPage}
+                  error={this.props.error}
+                  updateBook={this.props.updateBook}
+                  fulfillBook={this.props.fulfillBook}
+                  indirectFulfillBook={this.props.indirectFulfillBook}
+                  isSignedIn={this.props.isSignedIn}
+                  epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
+                  preferences={this.props.preferences}
+                  setPreference={this.props.setPreference}
+                />) : null
             }
           </div>
         </main>
