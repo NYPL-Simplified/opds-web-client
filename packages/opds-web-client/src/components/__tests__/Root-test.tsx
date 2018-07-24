@@ -7,7 +7,7 @@ import { Store } from "redux";
 import { shallow, mount } from "enzyme";
 
 import ConnectedRoot,
-{ Root, BookDetailsContainerProps, HeaderProps, FooterProps, CollectionHeaderProps } from "../Root";
+{ Root, BookDetailsContainerProps, HeaderProps, FooterProps, CollectionContainerProps } from "../Root";
 import Breadcrumbs, { ComputeBreadcrumbs } from "../Breadcrumbs";
 import Collection from "../Collection";
 import UrlForm from "../UrlForm";
@@ -757,8 +757,8 @@ describe("Root", () => {
     });
   });
 
-  describe("provided a CollectionHeader", () => {
-    class Tabs extends React.Component<CollectionHeaderProps, void> {
+  describe("provided a CollectionContainer", () => {
+    class Tabs extends React.Component<CollectionContainerProps, void> {
       render(): JSX.Element {
         return (
           <div className="tabs-container">
@@ -767,7 +767,7 @@ describe("Root", () => {
       }
     }
 
-    describe("No CollectionHeader component rendering", () => {
+    describe("No CollectionContainer component rendering", () => {
       let history: LinkData[] = [{
         id: "2nd id",
         text: "2nd title",
@@ -778,7 +778,7 @@ describe("Root", () => {
         url: "last url"
       }];
 
-      it("should not render CollectionHeader if the component is not passed in", () => {
+      it("should not render CollectionContainer if the component is not passed in", () => {
         let wrapper = shallow(
           <Root
             collectionData={ungroupedCollectionData}
@@ -792,12 +792,25 @@ describe("Root", () => {
         expect(container.length).to.equal(0);
       });
 
-      it("should not render CollectionHeader if the component is passed, but a book is being displayed", () => {
+      it("should not render CollectionContainer if there is no collection data", () => {
+        let wrapper = shallow(
+          <Root
+            history={history}
+            collectionUrl="/test"
+            setCollectionAndBook={mockSetCollectionAndBook}
+          />
+        );
+
+        let container = wrapper.find(Tabs);
+        expect(container.length).to.equal(0);
+      });
+
+      it("should not render CollectionContainer if the component is passed, but a book is being displayed", () => {
         let bookData = groupedCollectionData.lanes[0].books[0];
         let wrapper = shallow(
           <Root
             bookData={bookData}
-            CollectionHeader={Tabs}
+            CollectionContainer={Tabs}
             collectionData={ungroupedCollectionData}
             history={history}
             collectionUrl="/test"
@@ -810,7 +823,7 @@ describe("Root", () => {
       });
     });
 
-    it("renders CollectionHeader", () => {
+    it("renders CollectionContainer", () => {
       let history: LinkData[] = [{
         id: "2nd id",
         text: "2nd title",
@@ -823,8 +836,8 @@ describe("Root", () => {
       let facetGroups = [
         {
           facets: [
-            { label: "Books", href: "http://circulation.librarysimplified.org/groups/?entrypoint=Book", active: false },
-            { label: "Audio", href: "http://circulation.librarysimplified.org/groups/?entrypoint=Audio", active: false },
+            { label: "eBooks", href: "http://circulation.librarysimplified.org/groups/?entrypoint=Book", active: false },
+            { label: "Audiobooks", href: "http://circulation.librarysimplified.org/groups/?entrypoint=Audio", active: false },
           ],
           label: "Formats",
         }
@@ -837,13 +850,12 @@ describe("Root", () => {
           history={history}
           collectionUrl="/test"
           setCollectionAndBook={mockSetCollectionAndBook}
-          CollectionHeader={Tabs}
+          CollectionContainer={Tabs}
         />
       );
 
       let container = wrapper.find(Tabs);
       expect(container.length).to.equal(1);
-      expect(container.props().facetGroups).to.deep.equal(facetGroups);
     });
   });
 });
