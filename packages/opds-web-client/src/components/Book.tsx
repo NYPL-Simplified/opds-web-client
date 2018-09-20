@@ -51,6 +51,7 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
                 <div className="series">{this.props.book.series.name}</div>
               }
               <div className="authors">
+                <span>By </span>
                 {
                   this.props.book.authors.length ?
                   this.props.book.authors.join(", ") :
@@ -76,6 +77,7 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
                 <div className="series">{this.props.book.series.name}</div>
               }
               <div className="authors">
+                <span>By </span>
                 {
                   this.props.book.authors.length ?
                   this.props.book.authors.join(", ") :

@@ -63,7 +63,7 @@ describe("BookDetails", () => {
 
   it("shows authors", () => {
     let author = wrapper.find(".authors");
-    expect(author.text()).to.equal(book.authors.join(", "));
+    expect(author.text()).to.equal(`By ${book.authors.join(", ")}`);
   });
 
   it("shows contributors", () => {

@@ -27,7 +27,7 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
             }
             {
               this.props.book.authors && this.props.book.authors.length ?
-              <h2 className="authors">{this.props.book.authors.join(", ")}</h2> :
+              <h2 className="authors">By {this.props.book.authors.join(", ")}</h2> :
               ""
             }
             {
