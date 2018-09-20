@@ -173,14 +173,18 @@ export default class Lane extends React.Component<LaneProps, LaneState> {
 
   componentDidMount() {
     let list = this.refs["list"] as any;
-    list.addEventListener("scroll", this.updateScrollButtons.bind(this));
-    window.addEventListener("resize", this.updateScrollButtons.bind(this));
-    this.updateScrollButtons();
+    if (list) {
+      list.addEventListener("scroll", this.updateScrollButtons.bind(this));
+      window.addEventListener("resize", this.updateScrollButtons.bind(this));
+      this.updateScrollButtons();
+    }
   }
 
   componentWillUnmount() {
     let list = this.refs["list"] as any;
-    list.removeEventListener("scroll", this.updateScrollButtons.bind(this));
-    window.removeEventListener("resize", this.updateScrollButtons.bind(this));
+    if (list) {
+      list.removeEventListener("scroll", this.updateScrollButtons.bind(this));
+      window.removeEventListener("resize", this.updateScrollButtons.bind(this));
+    }
   }
 }
