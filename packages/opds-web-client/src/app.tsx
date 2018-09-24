@@ -11,8 +11,12 @@ import AuthPlugin from "./AuthPlugin";
 import "./stylesheets/app.scss";
 
 const OPDSCatalogRouterHandler = (config) => {
+  interface OPDSCatalogParams {
+    collectionUrl: string;
+    bookUrl: string;
+  }
   interface OPDSCatalogProps {
-    params?: any;
+    params?: OPDSCatalogParams;
   }
   class OPDSCatalogRoute extends React.Component<OPDSCatalogProps, void> {
     static contextTypes: {
