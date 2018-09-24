@@ -53,7 +53,9 @@ export default class BookCover extends React.Component<BookCoverProps, BookCover
     return (
       <div className="auto-book-cover" style={{ backgroundColor: bgColor }}>
         <div className="title" style={{ fontSize: titleFontSize }}>{ title }</div>
-        <div className="authors" style={{ fontSize: authorFontSize }}>By { authors.join(", ") }</div>
+        { authors.length &&
+          <div className="authors" style={{ fontSize: authorFontSize }}>By { authors.join(", ") }</div>
+        }
       </div>
     );
   }
