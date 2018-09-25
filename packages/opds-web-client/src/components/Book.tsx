@@ -28,37 +28,41 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
   }
 
   render(): JSX.Element {
+    const book = this.props.book;
     // Remove HTML tags from the summary to fit more information into a truncated view.
     // The summary may still contain HTML character entities and needs to be rendered as HTML.
-    let summary = (this.props.book && this.props.book.summary && this.props.book.summary.replace(/<\/?[^>]+(>|$)/g, " ")) || "";
-    const bookMedium = this.getMedium(this.props.book);
+    let summary = (book && book.summary && book.summary.replace(/<\/?[^>]+(>|$)/g, " ")) || "";
+    const bookMedium = this.getMedium(book);
     const showMediaIconClass = bookMedium ? "show-media" : "";
+    const hasAuthors = !!(book.authors && book.authors.length);
+    const hasContributors = !!(book.contributors && book.contributors.length);
+    const contributors = book.contributors && book.contributors.length ?
+      book.contributors.join(", ") :
+      "";
+    // Display contributors only if there are no authors.
+    const authors = hasAuthors ? book.authors.join(", ") : contributors;
 
     return (
-      <div className={`book ${showMediaIconClass}`} lang={this.props.book.language}>
+      <div className={`book ${showMediaIconClass}`} lang={book.language}>
         <CatalogLink
           collectionUrl={this.props.collectionUrl}
-          bookUrl={this.props.book.url || this.props.book.id}
-          title={this.props.book.title}
+          bookUrl={book.url || book.id}
+          title={book.title}
           >
-          <BookCover book={this.props.book} />
+          <BookCover book={book} />
           <div className={`compact-info ${showMediaIconClass}`}>
             {this.getMediumSVG(bookMedium, false)}
             <div className="empty"></div>
             <div className="item-details">
-              <div className="title">{this.props.book.title}</div>
-              { this.props.book.series && this.props.book.series.name &&
-                <div className="series">{this.props.book.series.name}</div>
+              <div className="title">{book.title}</div>
+              { book.series && book.series.name &&
+                <div className="series">{book.series.name}</div>
               }
-              <div className="authors">
-                {
-                  this.props.book.authors.length ?
-                  this.props.book.authors.join(", ") :
-                    this.props.book.contributors && this.props.book.contributors.length ?
-                    this.props.book.contributors.join(", ") :
-                    ""
-                }
-              </div>
+              { (hasAuthors || hasContributors) &&
+                <div className="authors">
+                  <span>By {authors}</span>
+                </div>
+              }
             </div>
           </div>
         </CatalogLink>
@@ -67,23 +71,19 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
             <div>
               <CatalogLink
                 collectionUrl={this.props.collectionUrl}
-                bookUrl={this.props.book.url || this.props.book.id}
-                title={this.props.book.title}
+                bookUrl={book.url || book.id}
+                title={book.title}
                 >
-                  <div className="title">{this.props.book.title}</div>
+                  <div className="title">{book.title}</div>
               </CatalogLink>
-              { this.props.book.series && this.props.book.series.name &&
-                <div className="series">{this.props.book.series.name}</div>
+              { book.series && book.series.name &&
+                <div className="series">{book.series.name}</div>
               }
-              <div className="authors">
-                {
-                  this.props.book.authors.length ?
-                  this.props.book.authors.join(", ") :
-                    this.props.book.contributors && this.props.book.contributors.length ?
-                    this.props.book.contributors.join(", ") :
-                    ""
-                }
-              </div>
+              { (hasAuthors || hasContributors) &&
+                <div className="authors">
+                  <span>By {authors}</span>
+                </div>
+              }
             </div>
             <div className="circulation-links">
               { this.circulationLinks() }
@@ -100,14 +100,14 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
                 field.value ? <div className={field.name.toLowerCase().replace(" ", "-")} key={field.name}>{field.name}: {field.value}</div> : null
               ) }
             </div>
-            <div className="summary" lang={this.props.book.language}>
+            <div className="summary" lang={book.language}>
               <span
                 dangerouslySetInnerHTML={{__html: summary}}>
               </span>
               <CatalogLink
                 collectionUrl={this.props.collectionUrl}
-                bookUrl={this.props.book.url || this.props.book.id}
-                title={this.props.book.title}
+                bookUrl={book.url || book.id}
+                title={book.title}
                 >&hellip; More
               </CatalogLink>
             </div>

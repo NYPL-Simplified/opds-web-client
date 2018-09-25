@@ -147,7 +147,7 @@ describe("Book", () => {
       let authors = bookInfo.find(".authors");
 
       expect(title.text()).to.equal(book.title);
-      expect(authors.text()).to.equal(book.authors.join(", "));
+      expect(authors.text()).to.equal(`By ${book.authors.join(", ")}`);
     });
 
     it("shows contributors when there's no author", () => {
@@ -166,7 +166,7 @@ describe("Book", () => {
       let links = wrapper.find(CatalogLink);
       let bookInfo = links.at(0).children().at(1);
       let authors = bookInfo.find(".authors");
-      expect(authors.text()).to.equal(bookCopy.contributors[0]);
+      expect(authors.text()).to.equal(`By ${bookCopy.contributors[0]}`);
     });
 
     it("renders two icons and labels in the compact and expanded views", () => {
@@ -206,7 +206,7 @@ describe("Book", () => {
       let authors = bookInfo.find(".authors");
 
       expect(title.text()).to.equal(book.title);
-      expect(authors.text()).to.equal(book.authors.join(", "));
+      expect(authors.text()).to.equal(`By ${book.authors.join(", ")}`);
     });
 
     it("shows contributors when there's no author", () => {
@@ -224,7 +224,7 @@ describe("Book", () => {
 
       let bookInfo = wrapper.find(".expanded-info");
       let authors = bookInfo.find(".authors");
-      expect(authors.text()).to.equal(bookCopy.contributors[0]);
+      expect(authors.text()).to.equal(`By ${bookCopy.contributors[0]}`);
     });
 
     it("shows series", () => {

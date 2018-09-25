@@ -25,7 +25,7 @@ describe("BookCover", () => {
       expect(title.text()).to.equal(bookData.title);
 
       let authors = wrapper.childAt(1);
-      expect(authors.text()).to.equal(bookData.authors.join(", "));
+      expect(authors.text()).to.equal(`By ${bookData.authors.join(", ")}`);
     });
   });
 
@@ -58,7 +58,7 @@ describe("BookCover", () => {
       expect(title.text()).to.equal(bookData.title);
 
       let authors = wrapper.childAt(1);
-      expect(authors.text()).to.equal(bookData.authors.join(", "));
+      expect(authors.text()).to.equal(`By ${bookData.authors.join(", ")}`);
 
       // The placeholder is cleared when there are new props.
       let newBookData = {
