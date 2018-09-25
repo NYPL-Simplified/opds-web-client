@@ -1,6 +1,6 @@
 {
   "name": "opds-web-client",
-  "version": "0.1.22",
+  "version": "0.1.23",
   "description": "OPDS web client",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "@nypl/dgx-svg-icons": "^0.3.4",
-    "create-react-class": "^15.6.2",
     "dompurify": "^0.8.1",
     "downloadjs": "^1.4.4",
     "font-awesome": "^4.7.0",

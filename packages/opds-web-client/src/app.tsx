@@ -10,6 +10,41 @@ import { State } from "./state";
 import AuthPlugin from "./AuthPlugin";
 import "./stylesheets/app.scss";
 
+const OPDSCatalogRouterHandler = (config) => {
+  interface OPDSCatalogParams {
+    collectionUrl: string;
+    bookUrl: string;
+  }
+  interface OPDSCatalogProps {
+    params?: OPDSCatalogParams;
+  }
+  class OPDSCatalogRoute extends React.Component<OPDSCatalogProps, void> {
+    static contextTypes: {
+      router: PropTypes.object.isRequired
+    };
+
+    static childContextTypes: React.ValidationMap<void> = {
+      pathFor: PropTypes.func.isRequired
+    };
+
+    getChildContext() {
+      return {
+        pathFor: config.pathFor,
+      };
+    }
+    render() {
+      let { collectionUrl, bookUrl } = this.props.params;
+      let mergedProps: RootProps = Object.assign(config, {
+        collectionUrl,
+        bookUrl
+      });
+      return <OPDSCatalog {...mergedProps} />;
+    };
+  }
+
+  return OPDSCatalogRoute;
+};
+
 /** Standalone app to be mounted in an existing DOM element. */
 class OPDSWebClient {
   elementId: string;
@@ -26,28 +61,7 @@ class OPDSWebClient {
   }, elementId: string) {
     this.elementId = elementId;
     this.pathPattern = config.pathPattern || "/(collection/:collectionUrl/)(book/:bookUrl/)";
-    this.RouteHandler = createReactClass({
-      contextTypes: {
-        router: PropTypes.object.isRequired
-      },
-      childContextTypes: {
-        pathFor: PropTypes.func.isRequired
-      },
-      getChildContext: function() {
-        return {
-          pathFor: config.pathFor
-        };
-      },
-      render: function() {
-        let { collectionUrl, bookUrl } = this.props.params;
-        let mergedProps: RootProps = Object.assign(config, {
-          collectionUrl,
-          bookUrl
-        });
-        return <OPDSCatalog {...mergedProps} />;
-      }
-    });
-
+    this.RouteHandler = OPDSCatalogRouterHandler(config);
     this.render();
   }
 
