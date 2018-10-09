@@ -7,11 +7,11 @@
     background-size: $stripeWidth $stripeWidth;
     background-image: linear-gradient(
       45deg,
-      darken($pagecolor, 5%)  25%,
+      $pagecolorlight  25%,
       $pagecolor      25%,
       $pagecolor      50%,
-      darken($pagecolor, 5%)  50%,
-      darken($pagecolor, 5%)  75%,
+      $pagecolorlight  50%,
+      $pagecolorlight  75%,
       $pagecolor      75%,
       $pagecolor
     );

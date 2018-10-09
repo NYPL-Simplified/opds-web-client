@@ -34,7 +34,7 @@
 
     .fields {
       margin-top: 2em;
-      color: #333;
+      color: $pagetextcolor;
       font-size: 1em;
     }
 
@@ -48,6 +48,7 @@
         margin: 0 0 -10px;
         height: 30px;
         width: 30px;
+        fill: $pagetextcolor;
       }
     }
   }
