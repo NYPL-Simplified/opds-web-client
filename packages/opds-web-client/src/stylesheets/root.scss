@@ -9,7 +9,6 @@ html {
 }
 
 body {
-  background-color: $pagecolor;
   font-family: $fontfamily;
   font-size: $basefont;
 }
@@ -72,6 +71,8 @@ a {
   display: flex;
   flex-direction: column;
   height: 100%;
+  background-color: $pagecolor;
+  color: $pagetextcolor;
 
   .navbar-brand {
     font-size: 1.8em;

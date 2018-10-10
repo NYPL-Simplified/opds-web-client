@@ -7,7 +7,7 @@
   width: 100%;
   height: calc(100% - #{$headerHeight});
   z-index: 199;
-  background-color: rgba($pagecolor, 0.5);
+  background-color: $transparentpagecolor;
 
   > * {
     position: fixed;
@@ -17,7 +17,7 @@
     margin-top: 0;
     margin-left: 0;
     padding: 100px;
-    background-color: rgba($pagecolor, 0.9);
+    background-color: $semitransparentpagecolor;
     text-align: center;
     z-index: 200;
     border-radius: 0;
