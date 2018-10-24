@@ -12,6 +12,7 @@ export interface AuthFormProps<T extends AuthMethod> {
 
 export interface AuthButtonProps<T extends AuthMethod> {
   provider?: AuthProvider<T>;
+  onClick?: () => void;
 }
 
 export interface AuthProviderSelectionFormProps {
@@ -68,8 +69,8 @@ export default class AuthProviderSelectionForm extends React.Component<AuthProvi
             <div>
               <ul className="subtle-list" aria-label="authentication options">
                 { this.props.providers.map(provider =>
-                  <li onClick={() => this.selectProvider(provider)} key={provider.id}>
-                    <provider.plugin.buttonComponent provider={provider}/>
+                  <li key={provider.id}>
+                    <provider.plugin.buttonComponent provider={provider} onClick={() => this.selectProvider(provider)}/>
                   </li>
                 ) }
               </ul>

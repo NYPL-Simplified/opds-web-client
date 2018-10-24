@@ -9,7 +9,7 @@ import BasicAuthPlugin from "../../BasicAuthPlugin";
 
 describe("BasicAuthButton", () => {
   describe("rendering", () => {
-    let wrapper, provider;
+    let wrapper, provider, onClick;
 
     beforeEach(() => {
       provider = {
@@ -23,10 +23,12 @@ describe("BasicAuthButton", () => {
           }
         }
       };
+      onClick = stub();
 
       wrapper = shallow(
         <BasicAuthButton
           provider={provider}
+          onClick={onClick}
           />
       );
     });
@@ -34,6 +36,12 @@ describe("BasicAuthButton", () => {
     it("shows input with provider name", () => {
       let input = wrapper.find("input");
       expect(input.prop("value")).to.contain(provider.method.description);
+    });
+
+    it("calls onClick", () => {
+      let input = wrapper.find("input");
+      input.simulate("click");
+      expect(onClick.callCount).to.equal(1);
     });
   });
 });
