@@ -1,5 +1,8 @@
 ## Changelog
 
+### v0.1.25
+- Modified the AuthProviderSelectionForm to pass a click handler to auth button components instead of putting it on a parent element.
+
 ### v0.1.24
 - Removed hard-coded colors and moved lightening/darkening to overwritable variables for compatibility with additional color schemes and CSS variables.
 
