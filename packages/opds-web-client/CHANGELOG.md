@@ -1,5 +1,8 @@
 ## Changelog
 
+### v0.1.26
+- Modified search url to include `language=all` to search all languages instead of just using the Accept-Language header from the browser.
+
 ### v0.1.25
 - Modified the AuthProviderSelectionForm to pass a click handler to auth button components instead of putting it on a parent element.
 
