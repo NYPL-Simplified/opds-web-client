@@ -4,7 +4,6 @@ import Book from "./Book";
 import CatalogLink from "./CatalogLink";
 import { Lanes } from "./Lanes";
 import FacetGroup from "./FacetGroup";
-import Search from "./Search";
 import SkipNavigationLink from "./SkipNavigationLink";
 import { CollectionData, LinkData, FetchErrorData, BookData } from "../interfaces";
 

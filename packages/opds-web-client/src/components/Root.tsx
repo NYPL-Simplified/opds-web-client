@@ -80,6 +80,7 @@ export interface RootProps extends StateProps {
   showAuthForm?: (callback: AuthCallback, providers: AuthProvider<AuthMethod>[], title: string) => void;
   closeErrorAndHideAuthForm?: () => void;
   setPreference?: (key: string, value: string) => void;
+  allLanguageSearch?: boolean;
 }
 
 export interface RootState {
@@ -124,6 +125,7 @@ export class Root extends React.Component<RootProps, RootState> {
     let showCollectionContainer = !!CollectionContainer && !showBook;
     let facetGroups = this.props.collectionData ?
       this.props.collectionData.facetGroups : [];
+    let allLanguageSearch = this.props.allLanguageSearch;
 
     return (
       <div className="catalog">
@@ -142,6 +144,7 @@ export class Root extends React.Component<RootProps, RootState> {
                 url={this.props.collectionData.search.url}
                 searchData={this.props.collectionData.search.searchData}
                 fetchSearchDescription={this.props.fetchSearchDescription}
+                allLanguageSearch={allLanguageSearch}
                 />
             }
           </Header> :
@@ -181,6 +184,7 @@ export class Root extends React.Component<RootProps, RootState> {
                 url={this.props.collectionData.search.url}
                 searchData={this.props.collectionData.search.searchData}
                 fetchSearchDescription={this.props.fetchSearchDescription}
+                allLanguageSearch={allLanguageSearch}
                 />
             }
           </div>

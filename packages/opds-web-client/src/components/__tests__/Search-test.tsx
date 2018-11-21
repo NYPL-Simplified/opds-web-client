@@ -116,4 +116,33 @@ describe("Search", () => {
     expect(push.callCount).to.equal(1);
     expect(push.args[0][0]).to.equal(context.pathFor("Ind%C3%A9sirable template", null));
   });
+
+  it("should add 'all' to language query in search term", () => {
+    let navigate = stub();
+    let searchData = {
+      description: "description",
+      shortName: "shortName",
+      template: (s) => s + " template"
+    };
+    let push = stub();
+    let context = mockRouterContext(push);
+    let wrapper = mount(
+      <Search
+        searchData={searchData}
+        navigate={navigate}
+        allLanguageSearch={true}
+      />,
+      { context }
+    );
+
+    let form = wrapper.find("form").first();
+    expect(form).to.be.ok;
+
+    let input = wrapper.find("input").get(0) as any;
+    input.value = "hamlet";
+    form.simulate("submit");
+
+    expect(push.callCount).to.equal(1);
+    expect(push.args[0][0]).to.equal(context.pathFor("hamlet template&language=all", null));
+  });
 });
