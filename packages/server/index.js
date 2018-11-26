@@ -13,7 +13,8 @@ var serverAssets = require("r2-streamer-js/dist/src/server-assets").serverAssets
 var Server = require("r2-streamer-js/dist/src/server").Server
 
 app.use(express.static(__dirname + "/../opds-web-client/dist"));
-app.use(express.static(__dirname + "/node_modules/nypl-simplified-webpub-viewer/dist"));
+// Uncomment to enable the webreader when `nypl-simplified-webpub-viewer` is installed.
+// app.use(express.static(__dirname + "/node_modules/nypl-simplified-webpub-viewer/dist"));
 app.use(express.static(__dirname + "/node_modules/whatwg-fetch"));
 app.use(express.static(__dirname + "/node_modules/promise-polyfill"));
 app.use(express.static(__dirname + "/node_modules/requirejs"));
