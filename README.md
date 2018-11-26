@@ -10,6 +10,12 @@ new OPDSWebClient(config, elementId);
 
 For an example of OPDS Web Client in use as a standalone app, see the [demo server template](packages/server/views/index.html.ejs) included in this repository.
 
+*NOTE*: The web reader has been taken out of the demo server template for now as it is causing build issues. If you want to install it locally and use it for testing, install it in the `/packages/server` directory:
+
+```bash
+ $ npm install --save nypl-simplified-webpub-viewer
+```
+
 ### Standalone Config Options
 
 - `pathFor(collectionUrl: string, bookUrl: string) => string`: required function that accepts a collection URL and book URL and returns a string that will become the web browser's relative URL upon navigating to a new collection or book

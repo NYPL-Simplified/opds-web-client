@@ -1,6 +1,6 @@
 {
   "name": "opds-web-client-demo",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Demo server using the OPDS web client",
   "repository": {
     "type": "git",
@@ -20,6 +20,5 @@
     "r2-streamer-js": "0.0.1-alpha13",
     "request": "^2.69.0",
     "requirejs": "^2.3.2",
-    "nypl-simplified-webpub-viewer": "0.0.4"
   }
 }
