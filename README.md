@@ -10,7 +10,7 @@ new OPDSWebClient(config, elementId);
 
 For an example of OPDS Web Client in use as a standalone app, see the [demo server template](packages/server/views/index.html.ejs) included in this repository.
 
-*NOTE*: The web reader has been taken out of the demo server template for now as it is causing build issues. If you want to install it locally and use it for testing, install it in the `/packages/server` directory:
+*NOTE*: The web reader has been taken out of the demo server template for now as it is causing build issues. If you want to install it locally and use it for testing, uncomment line 17 in `/packages/server/index.js`, and install it in the `/packages/server` directory:
 
 ```bash
  $ npm install --save nypl-simplified-webpub-viewer
@@ -29,6 +29,7 @@ For an example of OPDS Web Client in use as a standalone app, see the [demo serv
   - `collection`: object representing the current collection data (see `CollectionData` in the [interfaces file](packages/opds-web-client/src/interfaces.ts))
   - `history`: an array of link objects (each with `url` and `text` properties) that is appended every time the user navigates to a new collection
 - `epubReaderUrlTemplate(epubUrl: string) => string`: optional function that returns a URL where you can read an EPUB file.
+- `allLanguageSearch`: optional string to specify if searches in the catalog should not use the browser's language header in requests. Default: `false`
 
 ## React Component
 The application is also available as a reusable React component:
