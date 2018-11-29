@@ -1,5 +1,8 @@
 ## Changelog
 
+### v0.1.27
+- Updated the focus color for all elements.
+
 ### v0.1.26
 - Modified search url to include `language=all` to search all languages instead of using the Accept-Language header from the browser. This is an optional prop that needs to be passed down as a prop at the top `OPDSCatalog` component level. The default is `false` which means it's okay to use the browser's Accept-Language header value.
 

@@ -52,6 +52,10 @@
       border-color: $linkhovercolor;
       color: $linkhovercolor;
     }
+
+    &:focus {
+      @include basic-focus;
+    }
   }
 }
 
