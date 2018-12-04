@@ -35,3 +35,12 @@
     @content;
   }
 }
+
+/* basic-focus
+ */
+@mixin basic-focus {
+  box-shadow: 1px 1px 1px 1px darken($focuscolor, 10%);
+  outline-color: $focuscolor;
+  outline-style: solid;
+  outline-width: 3px;
+}
