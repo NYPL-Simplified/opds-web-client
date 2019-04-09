@@ -15,13 +15,15 @@ export default class MockDataFetcher extends DataFetcher {
     return this.fetch(url);
   }
 
-  fetch(url) {
-    return new Promise((resolve, reject) => {
-      if (this.resolve) {
-        resolve(this.testData);
-      } else {
-        reject(this.testError);
-      }
+  fetch(url: string, options = {}): Promise<Response> {
+    return new Promise((r, rj) => {
+      return new Promise((resolve, reject) => {
+        if (this.resolve) {
+          resolve(this.testData);
+        } else {
+          reject(this.testError);
+        }
+      });
     });
   }
 

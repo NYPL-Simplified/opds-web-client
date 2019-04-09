@@ -14,14 +14,14 @@ export interface OPDSCatalogProps {
   collectionUrl?: string;
   bookUrl?: string;
   authPlugins?: AuthPlugin[];
-  pageTitleTemplate: (collectionTitle: string, bookTitle: string) => string;
+  pageTitleTemplate?: (collectionTitle: string, bookTitle: string) => string;
   proxyUrl?: string;
   initialState?: State;
   epubReaderUrlTemplate?: (epubUrl: string) => string;
 }
 
 /** The main application component. */
-export default class OPDSCatalog extends React.Component<OPDSCatalogProps, void> {
+export default class OPDSCatalog extends React.Component<OPDSCatalogProps, {}> {
   store: Redux.Store<State>;
   context: NavigateContext;
 

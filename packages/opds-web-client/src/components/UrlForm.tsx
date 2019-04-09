@@ -8,7 +8,7 @@ export interface UrlFormProps {
 
 /** Page for entering the URL of an OPDS feed that's shown when no feed
     is specified in the URL. Submitting the form adds the feed to the URL. */
-export default class UrlForm extends React.Component<UrlFormProps, void> {
+export default class UrlForm extends React.Component<UrlFormProps, {}> {
   context: NavigateContext;
 
   constructor(props) {

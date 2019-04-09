@@ -27,7 +27,7 @@ export interface LanesProps {
 }
 
 /** All the lanes for a collection. */
-export class Lanes extends React.Component<LanesProps, void> {
+export class Lanes extends React.Component<LanesProps, {}> {
   render() {
     return (
       <div className="lanes">

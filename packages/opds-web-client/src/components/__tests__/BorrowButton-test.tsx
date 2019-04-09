@@ -23,7 +23,6 @@ describe("BorrowButton", () => {
     wrapper = shallow(
       <BorrowButton
         style={style}
-        book={bookData}
         borrow={borrow}>
         Borrow
       </BorrowButton>

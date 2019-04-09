@@ -24,7 +24,7 @@ import {
 } from "../interfaces";
 import AuthPlugin from "../AuthPlugin";
 
-export interface HeaderProps extends React.Props<any> {
+export interface HeaderProps extends React.Props<{}> {
   collectionTitle: string;
   bookTitle: string;
   loansUrl?: string;
@@ -33,15 +33,15 @@ export interface HeaderProps extends React.Props<any> {
   clearAuthCredentials: () => void;
 }
 
-export interface FooterProps extends React.Props<any> {
+export interface FooterProps extends React.Props<{}> {
   collection: CollectionData;
 }
 
-export interface CollectionContainerProps extends React.Props<any> {
+export interface CollectionContainerProps extends React.Props<{}> {
   facetGroups?: FacetGroupData[];
 }
 
-export interface BookDetailsContainerProps extends React.Props<any> {
+export interface BookDetailsContainerProps extends React.Props<{}> {
   bookUrl: string;
   collectionUrl: string;
   refreshCatalog: () => Promise<any>;
@@ -66,10 +66,10 @@ export interface RootProps extends StateProps {
   pageTitleTemplate?: (collectionTitle: string, bookTitle: string) => string;
   epubReaderUrlTemplate?: (epubUrl: string) => string;
   fetchPage?: (url: string) => Promise<CollectionData>;
-  Header?: new() => __React.Component<HeaderProps, any>;
-  Footer?: new() => __React.Component<FooterProps, any>;
-  CollectionContainer?: new() => __React.Component<CollectionContainerProps, any>;
-  BookDetailsContainer?: new() =>  __React.Component<BookDetailsContainerProps, any>;
+  Header?: React.ComponentClass<HeaderProps, {}>;
+  Footer?: React.ComponentClass<FooterProps, {}>;
+  CollectionContainer?: React.ComponentClass<CollectionContainerProps, {}>;
+  BookDetailsContainer?: React.ComponentClass<BookDetailsContainerProps, {}>;
   computeBreadcrumbs?: ComputeBreadcrumbs;
   updateBook?: (url: string) => Promise<BookData>;
   fulfillBook?: (url: string) => Promise<Blob>;
@@ -81,6 +81,8 @@ export interface RootProps extends StateProps {
   closeErrorAndHideAuthForm?: () => void;
   setPreference?: (key: string, value: string) => void;
   allLanguageSearch?: boolean;
+  router?: {};
+  pathFor?: () => {};
 }
 
 export interface RootState {
@@ -267,7 +269,6 @@ export class Root extends React.Component<RootProps, RootState> {
                     collection={this.collectionDataWithLoans()}
                     fetchPage={this.props.fetchPage}
                     isFetchingCollection={this.props.isFetchingCollection}
-                    isFetchingBook={this.props.isFetchingBook}
                     isFetchingPage={this.props.isFetchingPage}
                     error={this.props.error}
                     updateBook={this.props.updateBook}
@@ -283,7 +284,6 @@ export class Root extends React.Component<RootProps, RootState> {
                   collection={this.collectionDataWithLoans()}
                   fetchPage={this.props.fetchPage}
                   isFetchingCollection={this.props.isFetchingCollection}
-                  isFetchingBook={this.props.isFetchingBook}
                   isFetchingPage={this.props.isFetchingPage}
                   error={this.props.error}
                   updateBook={this.props.updateBook}

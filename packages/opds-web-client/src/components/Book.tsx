@@ -21,7 +21,7 @@ export interface BookProps {
 }
 
 /** Displays a single book for use in a lane, list, or grid view. */
-export default class Book<P extends BookProps> extends React.Component<P, void> {
+export default class Book<P extends BookProps> extends React.Component<P, {}> {
   constructor(props) {
     super(props);
     this.borrow = this.borrow.bind(this);

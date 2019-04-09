@@ -25,7 +25,7 @@ export interface CollectionProps extends React.HTMLProps<Collection> {
 }
 
 /** Displays books in an OPDS collection as either lanes, a grid or a list. */
-export default class Collection extends React.Component<CollectionProps, void> {
+export default class Collection extends React.Component<CollectionProps, {}> {
   static VIEW_KEY = "collection-view";
   static GRID_VIEW = "grid-view";
   static LIST_VIEW = "list-view";

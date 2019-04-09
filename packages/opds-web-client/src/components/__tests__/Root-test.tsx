@@ -410,7 +410,7 @@ describe("Root", () => {
   });
 
   describe("provided a BookDetailsContainer", () => {
-    class Container extends React.Component<BookDetailsContainerProps, any> {
+    class Container extends React.Component<BookDetailsContainerProps, {}> {
       render(): JSX.Element {
         return (
           <div className="container">
@@ -517,7 +517,7 @@ describe("Root", () => {
     let fetchLoans;
     let clearAuthCredentials;
 
-    class Header extends React.Component<HeaderProps, any> {
+    class Header extends React.Component<HeaderProps, {}> {
       render(): JSX.Element {
         return (
           <div className="header">
@@ -564,7 +564,7 @@ describe("Root", () => {
     let wrapper;
     let collectionData = ungroupedCollectionData;
     let bookData = ungroupedCollectionData.books[0];
-    class Footer extends React.Component<FooterProps, any> {
+    class Footer extends React.Component<FooterProps, {}> {
       render(): JSX.Element {
         return (
           <div className="footer" />
@@ -758,7 +758,7 @@ describe("Root", () => {
   });
 
   describe("provided a CollectionContainer", () => {
-    class Tabs extends React.Component<CollectionContainerProps, void> {
+    class Tabs extends React.Component<CollectionContainerProps, {}> {
       render(): JSX.Element {
         return (
           <div className="tabs-container">

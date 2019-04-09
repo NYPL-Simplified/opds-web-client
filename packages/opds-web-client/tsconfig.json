@@ -3,15 +3,14 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
+    "lib": ["es2017", "dom"],
     "outDir": "lib",
     "rootDir": "src",
     "jsx": "react",
-    "declaration": true
+    "types": ["mocha", "node"]
   },
   "exclude": [
     "lib",
-    "node_modules",
-    "typings/main.d.ts",
-    "typings/main"
+    "node_modules"
   ]
 }

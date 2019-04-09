@@ -18,12 +18,12 @@ const OPDSCatalogRouterHandler = (config) => {
   interface OPDSCatalogProps {
     params?: OPDSCatalogParams;
   }
-  class OPDSCatalogRoute extends React.Component<OPDSCatalogProps, void> {
+  class OPDSCatalogRoute extends React.Component<OPDSCatalogProps, {}> {
     static contextTypes: {
       router: PropTypes.object.isRequired
     };
 
-    static childContextTypes: React.ValidationMap<void> = {
+    static childContextTypes: React.ValidationMap<{}> = {
       pathFor: PropTypes.func.isRequired
     };
 

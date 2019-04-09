@@ -3,13 +3,13 @@ import { PropTypes } from "prop-types";
 import { Link } from "react-router";
 import { NavigateContext } from "../interfaces";
 
-export interface CatalogLinkProps extends React.HTMLProps<any> {
+export interface CatalogLinkProps extends React.HTMLProps<{}> {
   collectionUrl?: string;
   bookUrl?: string;
 }
 
 /** Shows a link to another collection or book in the same OPDS catalog. */
-export default class CatalogLink extends React.Component<CatalogLinkProps, void> {
+export default class CatalogLink extends React.Component<CatalogLinkProps, {}> {
   context: NavigateContext;
 
   static contextTypes: React.ValidationMap<NavigateContext> = {
@@ -24,18 +24,18 @@ export default class CatalogLink extends React.Component<CatalogLinkProps, void>
   // provides full router context expected by but not actually used by Link
   // see https://github.com/reactjs/react-router/blob/master/docs/API.md#contextrouter
   // and https://github.com/reactjs/react-router/blob/master/modules/PropTypes.js
-  getChildContext() {
-    let noop = () => {};
-    let router = Object.assign({}, this.context.router, {
-      replace: noop,
-      go: noop,
-      goBack: noop,
-      goForward: noop,
-      setRouteLeaveHook: noop,
-    });
+  // getChildContext() {
+  //   let noop = () => {};
+  //   let router = Object.assign({}, this.context.router, {
+  //     replace: noop,
+  //     go: noop,
+  //     goBack: noop,
+  //     goForward: noop,
+  //     setRouteLeaveHook: noop,
+  //   });
 
-    return { router };
-  };
+  //   return { router };
+  // };
 
   render(): JSX.Element {
     let { collectionUrl, bookUrl } = this.props;
@@ -45,7 +45,7 @@ export default class CatalogLink extends React.Component<CatalogLinkProps, void>
     let location = this.context.pathFor(collectionUrl, bookUrl);
 
     // remove props that Link won't recognize
-    let props = Object.assign({}, this.props);
+    let props = JSON.parse(JSON.stringify(this.props));
     delete props["collectionUrl"];
     delete props["bookUrl"];
 
