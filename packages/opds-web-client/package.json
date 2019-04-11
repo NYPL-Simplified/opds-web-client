@@ -3,7 +3,6 @@
   "version": "0.1.27",
   "description": "OPDS web client",
   "main": "lib/index.js",
-  "typings": "lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/NYPL-Simplified/opds-web-client.git"
@@ -15,7 +14,7 @@
     "test": "npm run lint && tsc && cp -r src/stylesheets lib && mocha --require lib/testHelper.js lib/__tests__/*.js lib/**/__tests__/*.js lib/**/**/__tests__/*.js",
     "test-file": "npm run lint && tsc && cp -r src/stylesheets lib && mocha --require lib/testHelper.js",
     "dev": "webpack-dev-server --progress --history-api-fallback --hot --content-base build --port 8090 --config webpack.dev.config",
-    "prod": "webpack -p --progress --display-modules --config webpack.prod.config"
+    "prod": "npm run test && webpack -p --progress --display-modules --config webpack.prod.config"
   },
   "dependencies": {
     "@nypl/dgx-svg-icons": "^0.3.4",
@@ -62,7 +61,6 @@
     "ts-loader": "^4.3.1",
     "tslint": "^3.10.2",
     "typescript": "2.7.2",
-    "typings": "^1.3.1",
     "url-loader": "^0.5.9",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0",
