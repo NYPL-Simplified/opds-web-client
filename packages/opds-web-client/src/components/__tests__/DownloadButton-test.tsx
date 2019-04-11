@@ -8,7 +8,6 @@ import * as React from "react";
 import { shallow } from "enzyme";
 
 import DownloadButton from "../DownloadButton";
-import { ungroupedCollectionData } from "./collectionData";
 
 const stringify = (obj) => JSON.stringify(obj);
 

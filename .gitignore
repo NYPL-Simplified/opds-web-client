@@ -12,7 +12,3 @@ packages/opds-web-client/typings/*
 
 # Temporary files
 *~
-
-# npm package.json lock files
-package-lock.json
-**/package-lock.json

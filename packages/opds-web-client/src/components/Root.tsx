@@ -19,7 +19,7 @@ import UrlForm from "./UrlForm";
 import SkipNavigationLink from "./SkipNavigationLink";
 import CatalogLink from "./CatalogLink";
 import {
-  CollectionData, BookData, LinkData, StateProps, NavigateContext,
+  CollectionData, BookData, StateProps, NavigateContext,
   AuthCallback, AuthProvider, AuthMethod, AuthCredentials, FacetGroupData
 } from "../interfaces";
 import AuthPlugin from "../AuthPlugin";

@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import { BookData } from "../interfaces";
 const seedrandom = require("seedrandom");
 

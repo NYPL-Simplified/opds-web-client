@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { stub, spy, createStubInstance } from "sinon";
+import { stub, spy } from "sinon";
 
 import ActionCreator from "../../actions";
 
@@ -7,9 +7,6 @@ import ActionCreator from "../../actions";
 // of createFetchCollectionAndBook
 let fetchCollectionStub = stub().returns(new Promise((resolve, reject) => { resolve({}); }));
 let fetchBookStub = stub().returns(new Promise((resolve, reject) => { resolve({}); }));
-
-import * as DataFetcher from "../../DataFetcher";
-import MockDataFetcher from "../../__mocks__/DataFetcher";
 
 import { mergeRootProps, findBookInCollection, createFetchCollectionAndBook } from "../mergeRootProps";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";

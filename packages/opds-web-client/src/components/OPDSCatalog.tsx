@@ -1,11 +1,9 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import { PropTypes } from "prop-types";
 import * as Redux from "redux";
 import Root, { RootProps } from "./Root";
 import buildStore from "../store";
 import { State } from "../state";
-import DataFetcher from "../DataFetcher";
 import AuthPlugin from "../AuthPlugin";
 import BasicAuthPlugin from "../BasicAuthPlugin";
 import { NavigateContext } from "../interfaces";

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { AuthProvider, BasicAuthMethod } from "../interfaces";
+import { BasicAuthMethod } from "../interfaces";
 import { AuthButtonProps } from "./AuthProviderSelectionForm";
 
 /** Button for selecting a basic authentication provider. */

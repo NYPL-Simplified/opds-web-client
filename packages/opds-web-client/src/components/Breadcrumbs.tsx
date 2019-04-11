@@ -1,6 +1,6 @@
 import * as React from "react";
 import CatalogLink from "./CatalogLink";
-import { CollectionData, BookData, LinkData } from "../interfaces";
+import { CollectionData, LinkData } from "../interfaces";
 
 export interface BreadcrumbsProps extends React.Props<{}> {
   links: LinkData[];

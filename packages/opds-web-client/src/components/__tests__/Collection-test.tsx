@@ -10,7 +10,6 @@ import { Lanes } from "../Lanes";
 import Book from "../Book";
 import FacetGroup from "../FacetGroup";
 import SkipNavigationLink from "../SkipNavigationLink";
-import LoadingIndicator from "../LoadingIndicator";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
 import { CollectionData } from "../../interfaces";
 import { mockRouterContext } from "./routing";

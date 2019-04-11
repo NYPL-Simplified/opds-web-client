@@ -6,20 +6,19 @@ import { PropTypes } from "prop-types";
 import { Store } from "redux";
 import { shallow, mount } from "enzyme";
 
-import ConnectedRoot,
-{ Root, BookDetailsContainerProps, HeaderProps, FooterProps, CollectionContainerProps } from "../Root";
-import Breadcrumbs, { ComputeBreadcrumbs } from "../Breadcrumbs";
+import
+  { Root, BookDetailsContainerProps, HeaderProps, FooterProps, CollectionContainerProps } from "../Root";
+import Breadcrumbs from "../Breadcrumbs";
 import Collection from "../Collection";
 import UrlForm from "../UrlForm";
 import BookDetails from "../BookDetails";
 import SkipNavigationLink from "../SkipNavigationLink";
-import CatalogLink, { CatalogLinkProps } from "../CatalogLink";
+import CatalogLink from "../CatalogLink";
 import Search from "../Search";
 import LoadingIndicator from "../LoadingIndicator";
 import ErrorMessage from "../ErrorMessage";
 import AuthProviderSelectionForm from "../AuthProviderSelectionForm";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
-import buildStore from "../../store";
 import { State } from "../../state";
 import { CollectionData, BookData, LinkData } from "../../interfaces";
 import { mockRouterContext } from "./routing";

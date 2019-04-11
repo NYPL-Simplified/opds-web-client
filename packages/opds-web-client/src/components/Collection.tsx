@@ -5,7 +5,7 @@ import CatalogLink from "./CatalogLink";
 import { Lanes } from "./Lanes";
 import FacetGroup from "./FacetGroup";
 import SkipNavigationLink from "./SkipNavigationLink";
-import { CollectionData, LinkData, FetchErrorData, BookData } from "../interfaces";
+import { CollectionData, FetchErrorData, BookData } from "../interfaces";
 
 export interface CollectionProps extends React.HTMLProps<Collection> {
   collection: CollectionData;

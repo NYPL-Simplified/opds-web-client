@@ -5,7 +5,6 @@ import { shallow } from "enzyme";
 
 import LaneMoreLink from "../LaneMoreLink";
 import CatalogLink from "../CatalogLink";
-import { BookData, LaneData } from "../../interfaces";
 
 let bookData = {
   id: "test id",
