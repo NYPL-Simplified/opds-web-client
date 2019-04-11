@@ -1,18 +1,28 @@
 import { expect } from "chai";
 import { stub } from "sinon";
+const fetchMock =  require("fetch-mock");
 
 import DataFetcher from "../DataFetcher";
 const Cookie = require("js-cookie");
-require("isomorphic-fetch");
 
-describe.only("DataFetcher", () => {
+describe("DataFetcher", () => {
   let mockFetch;
 
   beforeEach(() => {
     mockFetch = stub().returns(new Promise<any>((resolve, reject) => {
       resolve({ status: 200 });
     }));
-    window.fetch = mockFetch;
+    // mockFetch = new Promise<any>((resolve, reject) => {
+    //   resolve({ status: 200 });
+    // });
+    fetchMock
+      .mock("test-url", mockFetch)
+      .mock("http://example.com", mockFetch);
+    // window.fetch = mockFetch;
+  });
+
+  afterEach(() => {
+    fetchMock.restore();
   });
 
   it("uses fetch()", () => {
@@ -22,10 +32,10 @@ describe.only("DataFetcher", () => {
       credentials: "same-origin"
     };
     let fetcher = new DataFetcher();
-    fetcher.fetch("test url", options);
+    fetcher.fetch("test-url", options);
 
     expect(mockFetch.callCount).to.equal(1);
-    expect(mockFetch.args[0][0]).to.equal("test url");
+    expect(mockFetch.args[0][0]).to.equal("/test-url");
     expect(mockFetch.args[0][1]).to.deep.equal(Object.assign({}, options, {
       headers: { "X-Requested-With": "XMLHttpRequest" }
     }));
@@ -37,10 +47,10 @@ describe.only("DataFetcher", () => {
       data: { test: "test" }
     };
     let fetcher = new DataFetcher();
-    fetcher.fetch("test url", options);
+    fetcher.fetch("test-url", options);
 
     expect(mockFetch.callCount).to.equal(1);
-    expect(mockFetch.args[0][0]).to.equal("test url");
+    expect(mockFetch.args[0][0]).to.equal("/test-url");
     expect(mockFetch.args[0][1]).to.deep.equal(
       Object.assign({ credentials: "same-origin", headers: {
         "X-Requested-With": "XMLHttpRequest"
@@ -63,25 +73,31 @@ describe.only("DataFetcher", () => {
       get(key) {
         return { value: this.data[key] };
       }
+
+      apply() {
+        return;
+      }
     }
 
-    let formDataStub = stub(window, "FormData").callsFake(MockFormData);
+    let formDataStub = stub(window, "FormData").callsFake(() => new MockFormData());
 
     let proxyUrl = "http://example.com";
     let fetcher = new DataFetcher({ proxyUrl });
-    fetcher.fetch("test url");
+    fetcher.fetch("test-url");
 
     expect(mockFetch.callCount).to.equal(1);
-    expect(mockFetch.args[0][0]).to.equal(proxyUrl);
+    expect(mockFetch.args[0][0]).to.equal(`${proxyUrl}/`);
     expect(mockFetch.args[0][1].method).to.equal("POST");
-    expect(mockFetch.args[0][1].body.get("url").value).to.equal("test url");
+    expect(mockFetch.args[0][1].body.get("url").value).to.equal("test-url");
+
+    formDataStub.restore();
   });
 
   it("prepares auth headers", () => {
     let fetcher = new DataFetcher();
     let credentials = { provider: "test", credentials: "credentials" };
     fetcher.getAuthCredentials = () => credentials;
-    fetcher.fetch("test url");
+    fetcher.fetch("test-url");
     expect(mockFetch.args[0][1].headers["Authorization"]).to.equal("credentials");
   });
 
@@ -118,10 +134,10 @@ describe.only("DataFetcher", () => {
       window.fetch = mockFetch;
 
       let fetcher = new DataFetcher();
-      fetcher.fetchOPDSData("test url").catch(err => {
+      fetcher.fetchOPDSData("test-url").catch(err => {
         expect(err.status).to.equal(401);
         expect(err.response).to.equal("unauthorized");
-        expect(err.url).to.equal("test url");
+        expect(err.url).to.equal("/test-url");
       });
     });
   });
