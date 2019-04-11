@@ -7,6 +7,7 @@ import { shallow } from "enzyme";
 import BorrowButton from "../BorrowButton";
 import { ungroupedCollectionData } from "./collectionData";
 
+const stringify = (obj) => JSON.stringify(obj);
 
 describe("BorrowButton", () => {
   let wrapper;
@@ -31,7 +32,7 @@ describe("BorrowButton", () => {
 
   it("shows button", () => {
     let button = wrapper.find("button");
-    expect(button.props().style).to.equal(style);
+    expect(stringify(button.props().style)).to.equal(stringify(style));
     expect(button.text()).to.equal("Borrow");
   });
 

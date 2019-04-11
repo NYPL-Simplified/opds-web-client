@@ -111,6 +111,7 @@ export default class DataFetcher {
 
     options["headers"] = this.prepareAuthHeaders(options["headers"]);
 
+    console.log("about to fetch", fetch, window.fetch);
     return fetch(url, options);
   }
 

@@ -24,30 +24,30 @@ export default class CatalogLink extends React.Component<CatalogLinkProps, {}> {
   // provides full router context expected by but not actually used by Link
   // see https://github.com/reactjs/react-router/blob/master/docs/API.md#contextrouter
   // and https://github.com/reactjs/react-router/blob/master/modules/PropTypes.js
-  // getChildContext() {
-  //   let noop = () => {};
-  //   let router = Object.assign({}, this.context.router, {
-  //     replace: noop,
-  //     go: noop,
-  //     goBack: noop,
-  //     goForward: noop,
-  //     setRouteLeaveHook: noop,
-  //   });
+  getChildContext() {
+    let noop = () => {};
+    let router = Object.assign({}, this.context.router, {
+      replace: noop,
+      go: noop,
+      goBack: noop,
+      goForward: noop,
+      setRouteLeaveHook: noop,
+    });
 
-  //   return { router };
-  // };
+    return { router };
+  };
 
   render(): JSX.Element {
-    let { collectionUrl, bookUrl } = this.props;
+    let { collectionUrl, bookUrl, ...rest } = this.props;
     collectionUrl = collectionUrl || null;
     bookUrl = bookUrl || null;
 
     let location = this.context.pathFor(collectionUrl, bookUrl);
 
     // remove props that Link won't recognize
-    let props = JSON.parse(JSON.stringify(this.props));
-    delete props["collectionUrl"];
-    delete props["bookUrl"];
+    let props = Object.assign({}, rest);
+    // delete props["collectionUrl"];
+    // delete props["bookUrl"];
 
     return (
       <Link to={location} {...props} />

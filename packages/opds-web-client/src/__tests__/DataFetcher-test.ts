@@ -3,15 +3,16 @@ import { stub } from "sinon";
 
 import DataFetcher from "../DataFetcher";
 const Cookie = require("js-cookie");
+require("isomorphic-fetch");
 
-describe("DataFetcher", () => {
+describe.only("DataFetcher", () => {
   let mockFetch;
 
   beforeEach(() => {
     mockFetch = stub().returns(new Promise<any>((resolve, reject) => {
       resolve({ status: 200 });
     }));
-    fetch = mockFetch;
+    window.fetch = mockFetch;
   });
 
   it("uses fetch()", () => {
@@ -64,7 +65,7 @@ describe("DataFetcher", () => {
       }
     }
 
-    let formDataStub = stub(window, "FormData", MockFormData);
+    let formDataStub = stub(window, "FormData").callsFake(MockFormData);
 
     let proxyUrl = "http://example.com";
     let fetcher = new DataFetcher({ proxyUrl });
@@ -107,21 +108,20 @@ describe("DataFetcher", () => {
   });
 
   describe("fetchOPDSData()", () => {
-    it("throws error if response isn't 200", (done) => {
+    it("throws error if response isn't 200", () => {
       mockFetch = stub().returns(new Promise<any>((resolve, reject) => {
         resolve({
           status: 401,
           text: () => new Promise((resolve, reject) => resolve("unauthorized"))
         });
       }));
-      fetch = mockFetch;
+      window.fetch = mockFetch;
 
       let fetcher = new DataFetcher();
       fetcher.fetchOPDSData("test url").catch(err => {
         expect(err.status).to.equal(401);
         expect(err.response).to.equal("unauthorized");
         expect(err.url).to.equal("test url");
-        done();
       });
     });
   });

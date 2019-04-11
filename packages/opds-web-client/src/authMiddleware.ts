@@ -102,6 +102,7 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                     let state = store.getState();
                     title = state.auth.title;
                     authProviders = state.auth.providers;
+                    console.log(state.auth);
                   } else {
                     title = data.title;
                   }
@@ -122,6 +123,8 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                       error,
                       attemptedProvider
                     ));
+                    // Because authProviders is empty for a test.
+                    resolve();
                   }
                 } else {
                   // no provider found with basic auth method

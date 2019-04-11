@@ -2,30 +2,14 @@ import { expect } from "chai";
 import { stub, spy } from "sinon";
 
 import createAuthMiddleware from "../authMiddleware";
-import * as ActionCreator from "../actions";
+import ActionCreator from "../actions";
 import DataFetcher from "../DataFetcher";
 
 let hideAuthFormStub;
 let clearAuthCredentialsStub;
 let showAuthFormStub;
 
-class MockActionCreator extends ActionCreator.default {
-  hideAuthForm() {
-    return hideAuthFormStub();
-  }
-
-  clearAuthCredentials() {
-    return clearAuthCredentialsStub();
-  }
-
-  showAuthForm(callback, cancel, authProviders, title, error, attemptedProvider) {
-    callback();
-    return showAuthFormStub(callback, cancel, authProviders, title, error, attemptedProvider);
-  }
-}
-
 describe("authMiddleware", () => {
-  let actionCreatorStub;
   let next;
   let authMiddleware;
   let plugin;
@@ -36,10 +20,11 @@ describe("authMiddleware", () => {
   beforeEach(() => {
     dataFetcher = new DataFetcher();
     dataFetcher.clearAuthCredentials();
-    hideAuthFormStub = stub();
-    clearAuthCredentialsStub = stub();
-    showAuthFormStub = stub();
-    actionCreatorStub = stub(ActionCreator, "default", MockActionCreator);
+    // clearAuthCredentialsStub = stub();
+    // showAuthFormStub = stub();
+    showAuthFormStub = stub(ActionCreator.prototype, "showAuthForm").callsFake(() => {});
+    hideAuthFormStub = stub(ActionCreator.prototype, "hideAuthForm").callsFake(() => {});
+    clearAuthCredentialsStub = stub(DataFetcher.prototype, "clearAuthCredentials").callsFake(() => {});
     next = stub().returns(new Promise((resolve, reject) => { resolve({}); }));
 
     store = {
@@ -60,7 +45,9 @@ describe("authMiddleware", () => {
   });
 
   afterEach(() => {
-    actionCreatorStub.restore();
+    showAuthFormStub.restore();
+    hideAuthFormStub.restore();
+    clearAuthCredentialsStub.restore();
   });
 
   it("handles a plain action (not a thunk)", () => {
