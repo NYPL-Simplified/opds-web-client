@@ -60,6 +60,9 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
                 { this.circulationInfo() }
               </div>
             </div>
+            <div className="right-column-links col-sm-3">
+              { this.rightColumnLinks() }
+            </div>
           </div>
 
           <div className="summary" lang={this.props.book.language}
@@ -135,5 +138,13 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
     }
 
     return info;
+  }
+
+  /**
+   * rightColumnLinks
+   * Not used in this app but can be overridden to add links on the
+   * right column, such as adding links to report a problem.
+   */
+  rightColumnLinks(): any {
   }
 }

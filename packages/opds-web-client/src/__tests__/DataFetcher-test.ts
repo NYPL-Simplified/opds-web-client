@@ -6,19 +6,10 @@ import DataFetcher from "../DataFetcher";
 const Cookie = require("js-cookie");
 
 describe("DataFetcher", () => {
-  let mockFetch;
-
   beforeEach(() => {
-    mockFetch = stub().returns(new Promise<any>((resolve, reject) => {
-      resolve({ status: 200 });
-    }));
-    // mockFetch = new Promise<any>((resolve, reject) => {
-    //   resolve({ status: 200 });
-    // });
     fetchMock
-      .mock("test-url", mockFetch)
-      .mock("http://example.com", mockFetch);
-    // window.fetch = mockFetch;
+      .mock("test-url", 200)
+      .mock("http://example.com", 200);
   });
 
   afterEach(() => {
@@ -33,10 +24,11 @@ describe("DataFetcher", () => {
     };
     let fetcher = new DataFetcher();
     fetcher.fetch("test-url", options);
+    let fetchArgs = fetchMock.calls();
 
-    expect(mockFetch.callCount).to.equal(1);
-    expect(mockFetch.args[0][0]).to.equal("/test-url");
-    expect(mockFetch.args[0][1]).to.deep.equal(Object.assign({}, options, {
+    expect(fetchMock.called()).to.equal(true);
+    expect(fetchArgs[0][0]).to.equal("/test-url");
+    expect(fetchArgs[0][1]).to.deep.equal(Object.assign({}, options, {
       headers: { "X-Requested-With": "XMLHttpRequest" }
     }));
   });
@@ -48,10 +40,11 @@ describe("DataFetcher", () => {
     };
     let fetcher = new DataFetcher();
     fetcher.fetch("test-url", options);
+    let fetchArgs = fetchMock.calls();
 
-    expect(mockFetch.callCount).to.equal(1);
-    expect(mockFetch.args[0][0]).to.equal("/test-url");
-    expect(mockFetch.args[0][1]).to.deep.equal(
+    expect(fetchMock.called()).to.equal(true);
+    expect(fetchArgs[0][0]).to.equal("/test-url");
+    expect(fetchArgs[0][1]).to.deep.equal(
       Object.assign({ credentials: "same-origin", headers: {
         "X-Requested-With": "XMLHttpRequest"
       } }, options)
@@ -84,11 +77,12 @@ describe("DataFetcher", () => {
     let proxyUrl = "http://example.com";
     let fetcher = new DataFetcher({ proxyUrl });
     fetcher.fetch("test-url");
+    let fetchArgs = fetchMock.calls();
 
-    expect(mockFetch.callCount).to.equal(1);
-    expect(mockFetch.args[0][0]).to.equal(`${proxyUrl}/`);
-    expect(mockFetch.args[0][1].method).to.equal("POST");
-    expect(mockFetch.args[0][1].body.get("url").value).to.equal("test-url");
+    expect(fetchMock.called()).to.equal(true);
+    expect(fetchArgs[0][0]).to.equal(`${proxyUrl}/`);
+    expect(fetchArgs[0][1].method).to.equal("POST");
+    expect(fetchArgs[0][1].body.get("url").value).to.equal("test-url");
 
     formDataStub.restore();
   });
@@ -98,7 +92,8 @@ describe("DataFetcher", () => {
     let credentials = { provider: "test", credentials: "credentials" };
     fetcher.getAuthCredentials = () => credentials;
     fetcher.fetch("test-url");
-    expect(mockFetch.args[0][1].headers["Authorization"]).to.equal("credentials");
+    let fetchArgs = fetchMock.calls();
+    expect(fetchArgs[0][1].headers["Authorization"]).to.equal("credentials");
   });
 
   it("sets auth credentials", () => {
@@ -125,14 +120,6 @@ describe("DataFetcher", () => {
 
   describe("fetchOPDSData()", () => {
     it("throws error if response isn't 200", () => {
-      mockFetch = stub().returns(new Promise<any>((resolve, reject) => {
-        resolve({
-          status: 401,
-          text: () => new Promise((resolve, reject) => resolve("unauthorized"))
-        });
-      }));
-      window.fetch = mockFetch;
-
       let fetcher = new DataFetcher();
       fetcher.fetchOPDSData("test-url").catch(err => {
         expect(err.status).to.equal(401);

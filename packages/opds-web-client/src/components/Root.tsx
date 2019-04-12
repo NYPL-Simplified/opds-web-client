@@ -269,6 +269,7 @@ export class Root extends React.Component<RootProps, RootState> {
                     collection={this.collectionDataWithLoans()}
                     fetchPage={this.props.fetchPage}
                     isFetchingCollection={this.props.isFetchingCollection}
+                    isFetchingBook={this.props.isFetchingBook}
                     isFetchingPage={this.props.isFetchingPage}
                     error={this.props.error}
                     updateBook={this.props.updateBook}
@@ -284,6 +285,7 @@ export class Root extends React.Component<RootProps, RootState> {
                   collection={this.collectionDataWithLoans()}
                   fetchPage={this.props.fetchPage}
                   isFetchingCollection={this.props.isFetchingCollection}
+                  isFetchingBook={this.props.isFetchingBook}
                   isFetchingPage={this.props.isFetchingPage}
                   error={this.props.error}
                   updateBook={this.props.updateBook}

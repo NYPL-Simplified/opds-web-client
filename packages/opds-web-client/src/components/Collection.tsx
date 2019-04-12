@@ -10,6 +10,7 @@ import { CollectionData, FetchErrorData, BookData } from "../interfaces";
 export interface CollectionProps extends React.HTMLProps<Collection> {
   collection: CollectionData;
   isFetchingCollection?: boolean;
+  isFetchingBook?: boolean;
   isFetchingPage?: boolean;
   error?: FetchErrorData;
   fetchPage?: (url: string) => Promise<any>;
