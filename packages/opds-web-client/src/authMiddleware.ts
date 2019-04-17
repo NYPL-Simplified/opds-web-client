@@ -102,7 +102,6 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                     let state = store.getState();
                     title = state.auth.title;
                     authProviders = state.auth.providers;
-                    console.log(state.auth);
                   } else {
                     title = data.title;
                   }
