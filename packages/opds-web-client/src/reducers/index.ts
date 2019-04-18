@@ -6,7 +6,7 @@ import loans from "./loans";
 import preferences from "./preferences";
 import { State } from "../state";
 
-const reducers = combineReducers<State>({
+const reducers: any = combineReducers<State>({
   collection,
   book,
   loans,
