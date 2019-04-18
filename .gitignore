@@ -2,7 +2,7 @@
 packages/**/node_modules
 
 # Compiled JS directory
-# packages/opds-web-client/lib
+packages/opds-web-client/lib
 
 # Bundled JS
 dist

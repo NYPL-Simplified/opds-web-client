@@ -1,9 +1,0 @@
-@each $tag in a, input, select, button, textarea {
-  #{$tag} {
-    border-radius: 0;
-  }
-
-  #{$tag}:focus {
-    @include basic-focus;
-  }
-}
