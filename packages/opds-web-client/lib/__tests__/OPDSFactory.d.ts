@@ -1,0 +1,14 @@
+import { OPDSAcquisitionLink, OPDSCollectionLink, OPDSArtworkLink, OPDSFacetLink, SearchLink, OPDSLink, OPDSShelfLink, Contributor, Summary, Category, OPDSEntry, AcquisitionFeed, NavigationFeed } from "opds-feed-parser";
+export declare function acquisitionLink(props: any): OPDSAcquisitionLink;
+export declare function collectionLink(props: any): OPDSCollectionLink;
+export declare function artworkLink(props: any): OPDSArtworkLink;
+export declare function facetLink(props: any): OPDSFacetLink;
+export declare function shelfLink(props: any): OPDSShelfLink;
+export declare function searchLink(props: any): SearchLink;
+export declare function entry(props: any): OPDSEntry;
+export declare function acquisitionFeed(props: any): AcquisitionFeed;
+export declare function link(props: any): OPDSLink;
+export declare function navigationFeed(props: any): NavigationFeed;
+export declare function contributor(props: any): Contributor;
+export declare function summary(props: any): Summary;
+export declare function category(props: any): Category;

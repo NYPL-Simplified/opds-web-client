@@ -1,0 +1,20 @@
+@import "variables";
+
+.more-link {
+  height: $bookHeight;
+  white-space: normal;
+  text-decoration: none;
+
+  div {
+    display: table-cell;
+    vertical-align: middle;
+    background-color: white;
+    text-align: center;
+    padding: 10px;
+    color: $linkcolor;
+    font-weight: bold;
+    width: $bookWidth;
+    height: $bookHeight;
+    line-height: 1.1em;
+  }
+}

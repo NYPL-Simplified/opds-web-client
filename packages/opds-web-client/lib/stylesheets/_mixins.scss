@@ -1,0 +1,46 @@
+/* --- Media Query Generator ---
+ * Reusable mixin used to generate
+ * variations of media query properties.
+ */
+@mixin generate-mq($args...) {
+  $media-type: 'only screen';
+  $media-type-key: 'media-type';
+  $args: keywords($args);
+  $expr: '';
+
+  @if map-has-key($args, $media-type-key) {
+    $media-type: map-get($args, $media-type-key);
+    $args: map-remove($args, $media-type-key);
+  }
+
+  @each $key, $value in $args {
+    @if $value {
+      $expr: "#{$expr} and (#{$key}: #{$value})";
+    }
+  }
+
+  @media #{$media-type} #{$expr} {
+    @content;
+  }
+}
+
+/* min-screen($min, $orientation)
+ * $min - required
+ * $orientation - optional
+ * Ex #1: @include min-screen(768px, landscape) { ... }
+ * Ex #2: @include min-screen(768px) { ... }
+ */
+@mixin min-screen($min, $orientation: false) {
+  @include generate-mq($min-width: $min, $orientation: $orientation) {
+    @content;
+  }
+}
+
+/* basic-focus
+ */
+@mixin basic-focus {
+  box-shadow: 1px 1px 1px 1px darken($focuscolor, 10%);
+  outline-color: $focuscolor;
+  outline-style: solid;
+  outline-width: 3px;
+}
