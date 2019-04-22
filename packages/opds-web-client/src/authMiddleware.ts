@@ -122,7 +122,6 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                       error,
                       attemptedProvider
                     ));
-                    // Because authProviders is empty for a test.
                     resolve();
                   }
                 } else {
