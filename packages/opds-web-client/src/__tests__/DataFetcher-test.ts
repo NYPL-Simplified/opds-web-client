@@ -6,126 +6,136 @@ import DataFetcher from "../DataFetcher";
 const Cookie = require("js-cookie");
 
 describe("DataFetcher", () => {
-  beforeEach(() => {
-    fetchMock
-      .mock("test-url", 200)
-      .mock("http://example.com", 200);
-  });
+  describe("fetch()", () => {
+    beforeEach(() => {
+      fetchMock
+        .mock("test-url", 200)
+        .mock("http://example.com", 200);
+    });
 
-  afterEach(() => {
-    fetchMock.restore();
-  });
+    afterEach(() => {
+      fetchMock.restore();
+    });
 
-  it("uses fetch()", () => {
-    let options = {
-      method: "POST",
-      data: { test: "test" },
-      credentials: "same-origin"
-    };
-    let fetcher = new DataFetcher();
-    fetcher.fetch("test-url", options);
-    let fetchArgs = fetchMock.calls();
+    it("uses fetch()", () => {
+      let options = {
+        method: "POST",
+        data: { test: "test" },
+        credentials: "same-origin"
+      };
+      let fetcher = new DataFetcher();
+      fetcher.fetch("test-url", options);
+      let fetchArgs = fetchMock.calls();
 
-    expect(fetchMock.called()).to.equal(true);
-    expect(fetchArgs[0][0]).to.equal("/test-url");
-    expect(fetchArgs[0][1]).to.deep.equal(Object.assign({}, options, {
-      headers: { "X-Requested-With": "XMLHttpRequest" }
-    }));
-  });
+      expect(fetchMock.called()).to.equal(true);
+      expect(fetchArgs[0][0]).to.equal("/test-url");
+      expect(fetchArgs[0][1]).to.deep.equal(Object.assign({}, options, {
+        headers: { "X-Requested-With": "XMLHttpRequest" }
+      }));
+    });
 
-  it("sends credentials by default", () => {
-    let options = {
-      method: "POST",
-      data: { test: "test" }
-    };
-    let fetcher = new DataFetcher();
-    fetcher.fetch("test-url", options);
-    let fetchArgs = fetchMock.calls();
+    it("sends credentials by default", () => {
+      let options = {
+        method: "POST",
+        data: { test: "test" }
+      };
+      let fetcher = new DataFetcher();
+      fetcher.fetch("test-url", options);
+      let fetchArgs = fetchMock.calls();
 
-    expect(fetchMock.called()).to.equal(true);
-    expect(fetchArgs[0][0]).to.equal("/test-url");
-    expect(fetchArgs[0][1]).to.deep.equal(
-      Object.assign({ credentials: "same-origin", headers: {
-        "X-Requested-With": "XMLHttpRequest"
-      } }, options)
-    );
-  });
+      expect(fetchMock.called()).to.equal(true);
+      expect(fetchArgs[0][0]).to.equal("/test-url");
+      expect(fetchArgs[0][1]).to.deep.equal(
+        Object.assign({ credentials: "same-origin", headers: {
+          "X-Requested-With": "XMLHttpRequest"
+        } }, options)
+      );
+    });
 
-  it("uses proxy url if provided", () => {
-    class MockFormData {
-      data: any;
+    it("uses proxy url if provided", () => {
+      class MockFormData {
+        data: any;
 
-      constructor() {
-        this.data = {};
+        constructor() {
+          this.data = {};
+        }
+
+        append(key, val) {
+          this.data[key] = val;
+        }
+
+        get(key) {
+          return { value: this.data[key] };
+        }
+
+        apply() {
+          return;
+        }
       }
 
-      append(key, val) {
-        this.data[key] = val;
-      }
+      let formDataStub = stub(window, "FormData").callsFake(() => new MockFormData());
 
-      get(key) {
-        return { value: this.data[key] };
-      }
+      let proxyUrl = "http://example.com";
+      let fetcher = new DataFetcher({ proxyUrl });
+      fetcher.fetch("test-url");
+      let fetchArgs = fetchMock.calls();
 
-      apply() {
-        return;
-      }
-    }
+      expect(fetchMock.called()).to.equal(true);
+      expect(fetchArgs[0][0]).to.equal(`${proxyUrl}/`);
+      expect(fetchArgs[0][1].method).to.equal("POST");
+      expect(fetchArgs[0][1].body.get("url").value).to.equal("test-url");
 
-    let formDataStub = stub(window, "FormData").callsFake(() => new MockFormData());
+      formDataStub.restore();
+    });
 
-    let proxyUrl = "http://example.com";
-    let fetcher = new DataFetcher({ proxyUrl });
-    fetcher.fetch("test-url");
-    let fetchArgs = fetchMock.calls();
-
-    expect(fetchMock.called()).to.equal(true);
-    expect(fetchArgs[0][0]).to.equal(`${proxyUrl}/`);
-    expect(fetchArgs[0][1].method).to.equal("POST");
-    expect(fetchArgs[0][1].body.get("url").value).to.equal("test-url");
-
-    formDataStub.restore();
+    it("prepares auth headers", () => {
+      let fetcher = new DataFetcher();
+      let credentials = { provider: "test", credentials: "credentials" };
+      fetcher.getAuthCredentials = () => credentials;
+      fetcher.fetch("test-url");
+      let fetchArgs = fetchMock.calls();
+      expect(fetchArgs[0][1].headers["Authorization"]).to.equal("credentials");
+    });
   });
 
-  it("prepares auth headers", () => {
-    let fetcher = new DataFetcher();
-    let credentials = { provider: "test", credentials: "credentials" };
-    fetcher.getAuthCredentials = () => credentials;
-    fetcher.fetch("test-url");
-    let fetchArgs = fetchMock.calls();
-    expect(fetchArgs[0][1].headers["Authorization"]).to.equal("credentials");
-  });
+  describe("Auth Credentials", () => {
+    it("sets auth credentials", () => {
+      let fetcher = new DataFetcher();
+      let credentials = { provider: "test", credentials: "credentials" };
+      fetcher.setAuthCredentials(credentials);
+      expect(Cookie.get(fetcher.authKey)).to.deep.equal(JSON.stringify(credentials));
+    });
 
-  it("sets auth credentials", () => {
-    let fetcher = new DataFetcher();
-    let credentials = { provider: "test", credentials: "credentials" };
-    fetcher.setAuthCredentials(credentials);
-    expect(Cookie.get(fetcher.authKey)).to.deep.equal(JSON.stringify(credentials));
-  });
+    it("gets auth credentials", () => {
+      let fetcher = new DataFetcher();
+      let credentials = { provider: "test", credentials: "credentials" };
+      Cookie.set(fetcher.authKey, JSON.stringify(credentials));
+      expect(fetcher.getAuthCredentials()).to.deep.equal(credentials);
+    });
 
-  it("gets auth credentials", () => {
-    let fetcher = new DataFetcher();
-    let credentials = { provider: "test", credentials: "credentials" };
-    Cookie.set(fetcher.authKey, JSON.stringify(credentials));
-    expect(fetcher.getAuthCredentials()).to.deep.equal(credentials);
-  });
-
-  it("clears auth credentials", () => {
-    let fetcher = new DataFetcher();
-    let credentials = { provider: "test", credentials: "credentials" };
-    Cookie.set(fetcher.authKey, JSON.stringify(credentials));
-    fetcher.clearAuthCredentials();
-    expect(Cookie.get(fetcher.authKey)).to.equal(undefined);
+    it("clears auth credentials", () => {
+      let fetcher = new DataFetcher();
+      let credentials = { provider: "test", credentials: "credentials" };
+      Cookie.set(fetcher.authKey, JSON.stringify(credentials));
+      fetcher.clearAuthCredentials();
+      expect(Cookie.get(fetcher.authKey)).to.equal(undefined);
+    });
   });
 
   describe("fetchOPDSData()", () => {
-    it("throws error if response isn't 200", () => {
+    it("throws error if response isn't 200", async () => {
+      fetchMock
+        .mock("test-url", { status: 401, body: "unauthorized" });
+
       let fetcher = new DataFetcher();
-      fetcher.fetchOPDSData("test-url").catch(err => {
-        expect(err.status).to.equal(401);
-        expect(err.response).to.equal("unauthorized");
-        expect(err.url).to.equal("/test-url");
-      });
+      await fetcher.fetchOPDSData("test-url")
+        .catch(err => {
+          expect(err.status).to.equal(401);
+          expect(err.response).to.equal("unauthorized");
+          expect(err.url).to.equal("test-url");
+        });
+
+      fetchMock.restore();
     });
   });
 });

@@ -19,14 +19,9 @@ export default class DownloadButton extends React.Component<DownloadButtonProps,
   }
 
   render() {
-    let props = JSON.parse(JSON.stringify(this.props));
-    delete props["url"];
-    delete props["mimeType"];
-    delete props["isPlainLink"];
-    delete props["fulfill"];
-    delete props["indirectFulfill"];
-    delete props["indirectType"];
-    delete props["title"];
+    const { url, mimeType, isPlainLink, fulfill,
+      indirectFulfill, indirectType, title, ...rest } = this.props;
+    let props = Object.assign<any, any>({}, rest);
 
     return (
       <span>

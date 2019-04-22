@@ -145,6 +145,5 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
    * Not used in this app but can be overridden to add links on the
    * right column, such as adding links to report a problem.
    */
-  rightColumnLinks(): any {
-  }
+  rightColumnLinks(): any {}
 }
