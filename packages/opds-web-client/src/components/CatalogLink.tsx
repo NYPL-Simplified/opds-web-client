@@ -1,6 +1,6 @@
 import * as React from "react";
 import { PropTypes } from "prop-types";
-import { Link } from "react-router";
+import { Link, Router } from "react-router";
 import { NavigateContext } from "../interfaces";
 
 export interface CatalogLinkProps extends React.HTMLProps<{}> {
@@ -26,7 +26,7 @@ export default class CatalogLink extends React.Component<CatalogLinkProps, {}> {
   // and https://github.com/reactjs/react-router/blob/master/modules/PropTypes.js
   getChildContext() {
     let noop = () => {};
-    let router: any = Object.assign({}, this.context.router, {
+    let router: Router = Object.assign({}, this.context.router, {
       replace: noop,
       go: noop,
       goBack: noop,
