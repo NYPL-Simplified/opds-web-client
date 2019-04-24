@@ -1,6 +1,5 @@
-import { compose, createStore, combineReducers, applyMiddleware, Store } from "redux";
+import { compose, createStore, applyMiddleware, Store } from "redux";
 import reducers from "./reducers/index";
-import collection from "./reducers/collection";
 import { State } from "./state";
 const thunk = require("redux-thunk").default;
 import createAuthMiddleware from "./authMiddleware";

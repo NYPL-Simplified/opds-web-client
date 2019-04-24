@@ -81,8 +81,6 @@ export interface RootProps extends StateProps {
   closeErrorAndHideAuthForm?: () => void;
   setPreference?: (key: string, value: string) => void;
   allLanguageSearch?: boolean;
-  router?: {};
-  pathFor?: () => {};
 }
 
 export interface RootState {
@@ -94,7 +92,7 @@ export interface RootState {
 export class Root extends React.Component<RootProps, RootState> {
   context: NavigateContext;
 
-  static contextTypes: React.ValidationMap<RootProps> = {
+  static contextTypes: React.ValidationMap<NavigateContext> = {
     router: PropTypes.object,
     pathFor: PropTypes.func
   };
