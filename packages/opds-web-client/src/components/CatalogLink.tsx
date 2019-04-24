@@ -38,13 +38,11 @@ export default class CatalogLink extends React.Component<CatalogLinkProps, {}> {
   };
 
   render(): JSX.Element {
-    let { collectionUrl, bookUrl, ...rest } = this.props;
+    let { collectionUrl, bookUrl, ...props } = this.props;
     collectionUrl = collectionUrl || null;
     bookUrl = bookUrl || null;
 
     let location = this.context.pathFor(collectionUrl, bookUrl);
-    // `rest` contains only the props that are needed by `Link`
-    let props = Object.assign({}, rest);
 
     return (
       <Link to={location} {...props} />
