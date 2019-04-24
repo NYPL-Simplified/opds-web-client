@@ -15,7 +15,7 @@
     "test": "rm -rf lib npm run lint && tsc && cp -r src/stylesheets lib && mocha --require lib/testHelper.js lib/__tests__/*.js lib/**/__tests__/*.js lib/**/**/__tests__/*.js",
     "test-file": "npm run lint && tsc && cp -r src/stylesheets lib && mocha --require lib/testHelper.js",
     "dev": "webpack-dev-server --progress --history-api-fallback --hot --content-base build --port 8090 --config webpack.dev.config",
-    "prod": "webpack -p --progress --display-modules --config webpack.prod.config",
+    "prod": "webpack -p --progress --display-modules --config webpack.prod.config && rm -rf dist/lib",
     "prepublish": "rm -rf lib && tsc && cp -r src/stylesheets lib && npm run prod"
   },
   "dependencies": {
