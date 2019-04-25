@@ -10,6 +10,7 @@ let clearAuthCredentialsStub;
 let showAuthFormStub;
 
 describe("authMiddleware", () => {
+  const test = true;
   let next;
   let authMiddleware;
   let plugin;
@@ -39,7 +40,7 @@ describe("authMiddleware", () => {
 
     pathFor = stub();
 
-    authMiddleware = createAuthMiddleware([plugin], pathFor);
+    authMiddleware = createAuthMiddleware([plugin], pathFor, test);
   });
 
   afterEach(() => {
