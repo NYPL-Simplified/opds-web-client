@@ -9,7 +9,7 @@ import { AuthCallback, AuthProvider, AuthMethod, PathFor } from "./interfaces";
     See Redux Middleware docs:
     http://redux.js.org/docs/advanced/Middleware.html */
 
-export default (authPlugins: AuthPlugin[], pathFor: PathFor, test: boolean = false) => {
+export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
   return store => next => action => {
     let fetcher = new DataFetcher();
     let actions = new ActionCreator(fetcher);
@@ -122,14 +122,6 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor, test: boolean = fal
                       error,
                       attemptedProvider
                     ));
-
-                    // TODO: Refactor this middleware to not have this test case.
-                    // Having this resolves the function call for tests to run.
-                    // Not having this allows the log in popup form to show until
-                    // the user submits credentials or cancels the log in process.
-                    if (test) {
-                      resolve();
-                    }
                   }
                 } else {
                   // no provider found with basic auth method

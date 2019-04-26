@@ -10,7 +10,6 @@ let clearAuthCredentialsStub;
 let showAuthFormStub;
 
 describe("authMiddleware", () => {
-  const test = true;
   let next;
   let authMiddleware;
   let plugin;
@@ -21,7 +20,7 @@ describe("authMiddleware", () => {
   beforeEach(() => {
     dataFetcher = new DataFetcher();
     dataFetcher.clearAuthCredentials();
-    showAuthFormStub = stub(ActionCreator.prototype, "showAuthForm").callsFake(() => {});
+    showAuthFormStub = stub(ActionCreator.prototype, "showAuthForm").callsArg(0);
     hideAuthFormStub = stub(ActionCreator.prototype, "hideAuthForm").callsFake(() => {});
     clearAuthCredentialsStub = stub(DataFetcher.prototype, "clearAuthCredentials").callsFake(() => {});
     next = stub().returns(new Promise((resolve) => { resolve({}); }));
@@ -40,7 +39,7 @@ describe("authMiddleware", () => {
 
     pathFor = stub();
 
-    authMiddleware = createAuthMiddleware([plugin], pathFor, test);
+    authMiddleware = createAuthMiddleware([plugin], pathFor);
   });
 
   afterEach(() => {
