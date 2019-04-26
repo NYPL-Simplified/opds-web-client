@@ -87,7 +87,7 @@ describe("collection reducer", () => {
   let historyStub;
 
   beforeEach(() => {
-    historyStub = stub(history, "default", (state, action) => state.history);
+    historyStub = stub(history, "default").callsFake((state, action) => state.history);
   });
 
   afterEach(() => {

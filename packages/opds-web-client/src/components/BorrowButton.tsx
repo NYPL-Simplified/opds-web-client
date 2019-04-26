@@ -1,15 +1,12 @@
 import * as React from "react";
 
-export interface BorrowButtonProps extends React.HTMLProps<any> {
+export interface BorrowButtonProps extends React.HTMLProps<{}> {
   borrow: () => Promise<any>;
 }
 
-export default class BorrowButton extends React.Component<BorrowButtonProps, void> {
+export default class BorrowButton extends React.Component<BorrowButtonProps, {}> {
   render() {
-    let props = Object.assign({}, this.props);
-    delete props["book"];
-    delete props["borrow"];
-    delete props["key"];
+    const { ref, borrow, children, ...props } = this.props;
 
     return (
       <button

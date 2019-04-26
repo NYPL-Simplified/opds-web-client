@@ -63,7 +63,14 @@ export default class DataFetcher {
               url: url
             });
           });
-        });
+        }).catch(error => {
+          reject({
+            status: response.status,
+            response: error.message,
+            url: url,
+            headers: response.headers
+          });
+        })
       }).catch(reject);
     });
   }

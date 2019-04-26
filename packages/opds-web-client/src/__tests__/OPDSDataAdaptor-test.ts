@@ -1,8 +1,7 @@
 import { expect } from "chai";
 
 import {
-  OPDSArtworkLink, OPDSCollectionLink, OPDSFacetLink, OPDSAcquisitionLink,
-  OPDSShelfLink, OPDSLink
+  OPDSCollectionLink, OPDSAcquisitionLink, OPDSShelfLink
 } from "opds-feed-parser";
 import * as factory from "./OPDSFactory";
 import { feedToCollection } from "../OPDSDataAdapter";

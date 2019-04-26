@@ -2,7 +2,6 @@ import * as React from "react";
 import * as moment from "moment";
 import BookCover from "./BookCover";
 import Book, { BookProps } from "./Book";
-import { BookData } from "../interfaces";
 
 export interface BookDetailsProps extends BookProps {};
 
@@ -36,7 +35,7 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
               ""
             }
             <div className="fields" lang="en">
-              { this.fields().map(field =>
+              { fields.map(field =>
                 field.value ? <div className={field.name.toLowerCase().replace(" ", "-")} key={field.name}>{field.name}: {field.value}</div> : null
               ) }
             </div>
@@ -141,6 +140,10 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
     return info;
   }
 
-  rightColumnLinks() {
-  }
+  /**
+   * rightColumnLinks
+   * Not used in this app but can be overridden to add links on the
+   * right column, such as adding links to report a problem.
+   */
+  rightColumnLinks(): any {}
 }

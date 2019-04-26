@@ -5,7 +5,6 @@ import { shallow } from "enzyme";
 
 import FacetGroup from "../FacetGroup";
 import CatalogLink from "../CatalogLink";
-import SkipNavigationLink from "../SkipNavigationLink";
 import { FacetGroupData } from "../../interfaces";
 
 describe("FacetGroup", () => {

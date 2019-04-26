@@ -2,30 +2,14 @@ import { expect } from "chai";
 import { stub, spy } from "sinon";
 
 import createAuthMiddleware from "../authMiddleware";
-import * as ActionCreator from "../actions";
+import ActionCreator from "../actions";
 import DataFetcher from "../DataFetcher";
 
 let hideAuthFormStub;
 let clearAuthCredentialsStub;
 let showAuthFormStub;
 
-class MockActionCreator extends ActionCreator.default {
-  hideAuthForm() {
-    return hideAuthFormStub();
-  }
-
-  clearAuthCredentials() {
-    return clearAuthCredentialsStub();
-  }
-
-  showAuthForm(callback, cancel, authProviders, title, error, attemptedProvider) {
-    callback();
-    return showAuthFormStub(callback, cancel, authProviders, title, error, attemptedProvider);
-  }
-}
-
 describe("authMiddleware", () => {
-  let actionCreatorStub;
   let next;
   let authMiddleware;
   let plugin;
@@ -36,14 +20,13 @@ describe("authMiddleware", () => {
   beforeEach(() => {
     dataFetcher = new DataFetcher();
     dataFetcher.clearAuthCredentials();
-    hideAuthFormStub = stub();
-    clearAuthCredentialsStub = stub();
-    showAuthFormStub = stub();
-    actionCreatorStub = stub(ActionCreator, "default", MockActionCreator);
-    next = stub().returns(new Promise((resolve, reject) => { resolve({}); }));
+    showAuthFormStub = stub(ActionCreator.prototype, "showAuthForm").callsArg(0);
+    hideAuthFormStub = stub(ActionCreator.prototype, "hideAuthForm").callsFake(() => {});
+    clearAuthCredentialsStub = stub(DataFetcher.prototype, "clearAuthCredentials").callsFake(() => {});
+    next = stub().returns(new Promise((resolve) => { resolve({}); }));
 
     store = {
-      dispatch: stub().returns(new Promise((resolve, reject) => { resolve({}); })),
+      dispatch: stub().returns(new Promise((resolve) => { resolve({}); })),
       getState: stub()
     };
 
@@ -60,7 +43,9 @@ describe("authMiddleware", () => {
   });
 
   afterEach(() => {
-    actionCreatorStub.restore();
+    showAuthFormStub.restore();
+    hideAuthFormStub.restore();
+    clearAuthCredentialsStub.restore();
   });
 
   it("handles a plain action (not a thunk)", () => {
@@ -70,37 +55,38 @@ describe("authMiddleware", () => {
     expect(next.callCount).to.equal(2);
   });
 
-  it("hides the auth form, calls the action, and does nothing else if it succeeds", (done) => {
-    authMiddleware(store)(next)(() => {}).then(() => {
-      expect(hideAuthFormStub.callCount).to.equal(1);
-      expect(next.callCount).to.equal(2);
-      done();
-    }).catch(err => { console.log(err); throw(err); });
+  it("hides the auth form, calls the action, and does nothing else if it succeeds", async () => {
+    await authMiddleware(store)(next)(() => {})
+      .then(() => {
+        expect(hideAuthFormStub.callCount).to.equal(1);
+        expect(next.callCount).to.equal(2);
+      })
+      .catch(err => { console.log(err); throw(err); });
   });
 
-  it("hides the auth form, calls the action, and hides the auth form again if the action returns a non-401 error", (done) => {
+  it("hides the auth form, calls the action, and hides the auth form again if the action returns a non-401 error", async () => {
     next.onCall(1).returns(new Promise((resolve, reject) => { reject({status: 500}); }));
-    authMiddleware(store)(next)(() => {}).then((arg) => {
-      expect(hideAuthFormStub.callCount).to.equal(2);
-      expect(next.callCount).to.equal(3);
-      done();
-    }).catch(err => { console.log(err); throw(err); });
+    await authMiddleware(store)(next)(() => {})
+      .then(() => {
+        expect(hideAuthFormStub.callCount).to.equal(2);
+        expect(next.callCount).to.equal(3);
+      })
+      .catch(err => { console.log(err); throw(err); });
   });
 
-  it("hides the auth form, calls the action, and does nothing else if the error response wasn't json", (done) => {
+  it("hides the auth form, calls the action, and does nothing else if the error response wasn't json", async () => {
     let error = {
       status: 401,
       response: "not json"
     };
     next.onCall(1).returns(new Promise((resolve, reject) => { reject(error); }));
-    authMiddleware(store)(next)(() => {}).then(() => {
+    await authMiddleware(store)(next)(() => {}).then(() => {
       expect(hideAuthFormStub.callCount).to.equal(1);
       expect(next.callCount).to.equal(2);
-      done();
     }).catch(err => { console.log(err); throw(err); });
   });
 
-  it("hides the auth form, calls the action, and does nothing else if the browser's default basic auth form was shown", (done) => {
+  it("hides the auth form, calls the action, and does nothing else if the browser's default basic auth form was shown", async () => {
     let error = {
       status: 401,
       response: JSON.stringify({ title: "error" }),
@@ -109,14 +95,13 @@ describe("authMiddleware", () => {
       }
     };
     next.onCall(1).returns(new Promise((resolve, reject) => { reject(error); }));
-    authMiddleware(store)(next)(() => {}).then(() => {
+    await authMiddleware(store)(next)(() => {}).then(() => {
       expect(hideAuthFormStub.callCount).to.equal(1);
       expect(next.callCount).to.equal(2);
-      done();
     }).catch(err => { console.log(err); throw(err); });
   });
 
-  it("clears existing credentials", (done) => {
+  it("clears existing credentials", async () => {
     dataFetcher.setAuthCredentials({ provider: "test", credentials: "credentials" });
     store.getState.returns({ auth: {}, collection: {}, book: {} });
     let error = {
@@ -124,13 +109,14 @@ describe("authMiddleware", () => {
       response: JSON.stringify({ title: "error" })
     };
     next.onCall(1).returns(new Promise((resolve, reject) => { reject(error); }));
-    authMiddleware(store)(next)(() => {}).then(() => {
-      expect(clearAuthCredentialsStub.callCount).to.equal(1);
-      done();
-    }).catch(err => { console.log(err); throw(err); });
+    await authMiddleware(store)(next)(() => {})
+      .then(() => {
+        expect(clearAuthCredentialsStub.callCount).to.equal(1);
+      })
+      .catch(err => { console.log(err); throw(err); });
   });
 
-  it("shows auth form with provider info from failed request if there were no existing credentials", (done) => {
+  it("shows auth form with provider info from failed request if there were no existing credentials", async () => {
     store.getState.returns({ auth: {}, collection: {}, book: {} });
     let authentication = [{ type: "test", id: "a provider" }];
     let error = {
@@ -138,19 +124,20 @@ describe("authMiddleware", () => {
       response: JSON.stringify({ title: "Library", authentication })
     };
     next.onCall(1).returns(new Promise((resolve, reject) => { reject(error); }));
-    authMiddleware(store)(next)(() => {}).then(() => {
-      expect(showAuthFormStub.callCount).to.equal(1);
-      expect(showAuthFormStub.args[0][2]).to.deep.equal([{
-        id: "a provider",
-        plugin: plugin,
-        method: authentication[0]
-      }]);
-      expect(showAuthFormStub.args[0][3]).to.equal("Library");
-      done();
-    }).catch(err => { console.log(err); throw(err); });
+    await authMiddleware(store)(next)(() => {})
+      .then(() => {
+        expect(showAuthFormStub.callCount).to.equal(1);
+        expect(showAuthFormStub.args[0][2]).to.deep.equal([{
+          id: "a provider",
+          plugin: plugin,
+          method: authentication[0]
+        }]);
+        expect(showAuthFormStub.args[0][3]).to.equal("Library");
+      })
+      .catch(err => { console.log(err); throw(err); });
   });
 
-  it("shows auth form with provider info from store if existing credentials failed", (done) => {
+  it("shows auth form with provider info from store if existing credentials failed", async () => {
     dataFetcher.setAuthCredentials({ provider: "test", credentials: "credentials" });
     let providers = [{
       id: "a provider",
@@ -169,22 +156,24 @@ describe("authMiddleware", () => {
       status: 401,
       response: JSON.stringify({ title: "error" })
     };
+
     next.onCall(1).returns(new Promise((resolve, reject) => { reject(error); }));
-    authMiddleware(store)(next)(() => {}).then(() => {
-      expect(showAuthFormStub.callCount).to.equal(1);
-      expect(showAuthFormStub.args[0][2]).to.deep.equal([{
-        id: "a provider",
-        plugin: plugin,
-        method: "test method"
-      }]);
-      expect(showAuthFormStub.args[0][3]).to.equal("Library");
-      expect(showAuthFormStub.args[0][4]).to.equal("error");
-      expect(showAuthFormStub.args[0][5]).to.equal("test");
-      done();
-    }).catch(err => { console.log(err); throw(err); });
+    await authMiddleware(store)(next)(() => {})
+      .then(() => {
+        expect(showAuthFormStub.callCount).to.equal(1);
+        expect(showAuthFormStub.args[0][2]).to.deep.equal([{
+          id: "a provider",
+          plugin: plugin,
+          method: "test method"
+        }]);
+        expect(showAuthFormStub.args[0][3]).to.equal("Library");
+        expect(showAuthFormStub.args[0][4]).to.equal("error");
+        expect(showAuthFormStub.args[0][5]).to.equal("test");
+      })
+      .catch(err => { console.log(err); throw(err); });
   });
 
-  it("retries action without credentials if existing credentials failed and there aren't providers in the store", (done) => {
+  it("retries action without credentials if existing credentials failed and there aren't providers in the store", async () => {
     dataFetcher.setAuthCredentials({ provider: "test", credentials: "credentials" });
     store.getState.returns({ auth: { providers: null }, collection: {}, book: {} });
     let error = {
@@ -193,16 +182,17 @@ describe("authMiddleware", () => {
     };
     next.onCall(1).returns(new Promise((resolve, reject) => { reject(error); }));
     let action = stub();
-    authMiddleware(store)(next)(action).then(() => {
-      expect(showAuthFormStub.callCount).to.equal(0);
-      expect(clearAuthCredentialsStub.callCount).to.equal(1);
-      expect(store.dispatch.callCount).to.equal(2);
-      expect(store.dispatch.args[1][0]).to.equal(action);
-      done();
-    }).catch(err => { console.log(err); throw(err); });
+    await authMiddleware(store)(next)(action)
+      .then(() => {
+        expect(showAuthFormStub.callCount).to.equal(0);
+        expect(clearAuthCredentialsStub.callCount).to.equal(1);
+        expect(store.dispatch.callCount).to.equal(2);
+        expect(store.dispatch.args[1][0]).to.equal(action);
+      })
+      .catch(err => { console.log(err); throw(err); });
   });
 
-  it("does not call showAuthForm if there's no supported auth method in the auth document", (done) => {
+  it("does not call showAuthForm if there's no supported auth method in the auth document", async () => {
     store.getState.returns({ auth: {}, collection: {}, book: {} });
     let authentication = [{ type: "unknown method", id: "a provider" }];
     let error = {
@@ -210,14 +200,15 @@ describe("authMiddleware", () => {
       response: JSON.stringify({ title: "Library", authentication })
     };
     next.onCall(1).returns(new Promise((resolve, reject) => { reject(error); }));
-    authMiddleware(store)(next)(() => {}).then(() => {
-      expect(showAuthFormStub.callCount).to.equal(0);
-      expect(hideAuthFormStub.callCount).to.equal(2);
-      done();
-    }).catch(err => { console.log(err); throw(err); });
+    await authMiddleware(store)(next)(() => {})
+      .then(() => {
+        expect(showAuthFormStub.callCount).to.equal(0);
+        expect(hideAuthFormStub.callCount).to.equal(2);
+      })
+      .catch(err => { console.log(err); throw(err); });
   });
 
-  it("makes cancel go to previous page if url has changed", (done) => {
+  it("makes cancel go to previous page if url has changed", async () => {
     store.getState.returns({ auth: {}, collection: {url: "old"}, book: {} });
     pathFor.returns("new");
     let authentication = [{ type: "test", id: "a provider" }];
@@ -226,18 +217,19 @@ describe("authMiddleware", () => {
       response: JSON.stringify({ title: "Library", authentication })
     };
     next.onCall(1).returns(new Promise((resolve, reject) => { reject(error); }));
-    authMiddleware(store)(next)(() => {}).then(() => {
-      expect(showAuthFormStub.callCount).to.equal(1);
-      let cancel = showAuthFormStub.args[0][1];
-      let historySpy = spy(history, "back");
-      cancel();
-      historySpy.restore();
-      expect(historySpy.callCount).to.equal(1);
-      done();
-    }).catch(err => { console.log(err); throw(err); });
+    await authMiddleware(store)(next)(() => {})
+      .then(() => {
+        expect(showAuthFormStub.callCount).to.equal(1);
+        let cancel = showAuthFormStub.args[0][1];
+        let historySpy = spy(history, "back");
+        cancel();
+        historySpy.restore();
+        expect(historySpy.callCount).to.equal(1);
+      })
+      .catch(err => { console.log(err); throw(err); });
   });
 
-  it("makes cancel hide the form if url hasn't changed", (done) => {
+  it("makes cancel hide the form if url hasn't changed", async () => {
     store.getState.returns({ auth: {}, collection: {}, book: {} });
     // blank is the value of window.location.pathname when running tests
     pathFor.returns("blank");
@@ -247,13 +239,14 @@ describe("authMiddleware", () => {
       response: JSON.stringify({ name: "Library", authentication })
     };
     next.onCall(1).returns(new Promise((resolve, reject) => { reject(error); }));
-    authMiddleware(store)(next)(() => {}).then(() => {
-      expect(showAuthFormStub.callCount).to.equal(1);
-      expect(hideAuthFormStub.callCount).to.equal(1);
-      let cancel = showAuthFormStub.args[0][1];
-      cancel();
-      expect(hideAuthFormStub.callCount).to.equal(2);
-      done();
-    }).catch(err => { console.log(err); throw(err); });
+    await authMiddleware(store)(next)(() => {})
+      .then(() => {
+        expect(showAuthFormStub.callCount).to.equal(1);
+        expect(hideAuthFormStub.callCount).to.equal(1);
+        let cancel = showAuthFormStub.args[0][1];
+        cancel();
+        expect(hideAuthFormStub.callCount).to.equal(2);
+      })
+      .catch(err => { console.log(err); throw(err); });
   });
 });

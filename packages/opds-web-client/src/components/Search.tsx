@@ -8,7 +8,7 @@ export interface SearchProps extends SearchData, React.HTMLProps<Search> {
 }
 
 /** Search box. */
-export default class Search extends React.Component<SearchProps, void> {
+export default class Search extends React.Component<SearchProps, {}> {
   context: NavigateContext;
 
   constructor(props) {

@@ -1,7 +1,7 @@
 import * as React from "react";
 import download from "./download";
 
-export interface DownloadButtonProps extends React.HTMLProps<any> {
+export interface DownloadButtonProps extends React.HTMLProps<{}> {
   url: string;
   mimeType: string;
   isPlainLink?: boolean;
@@ -12,21 +12,16 @@ export interface DownloadButtonProps extends React.HTMLProps<any> {
 }
 
 /** Shows a button to fulfill and download a book or download it directly. */
-export default class DownloadButton extends React.Component<DownloadButtonProps, void> {
+export default class DownloadButton extends React.Component<DownloadButtonProps, {}> {
   constructor(props) {
     super(props);
     this.fulfill = this.fulfill.bind(this);
   }
 
   render() {
-    let props = Object.assign({}, this.props);
-    delete props["url"];
-    delete props["mimeType"];
-    delete props["isPlainLink"];
-    delete props["fulfill"];
-    delete props["indirectFulfill"];
-    delete props["indirectType"];
-    delete props["title"];
+    // Only get the props needed for the anchor or button element.
+    const { ref, url, mimeType, isPlainLink, fulfill,
+      indirectFulfill, indirectType, title, ...props } = this.props;
 
     return (
       <span>

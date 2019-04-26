@@ -7,7 +7,7 @@ export interface ErrorMessageProps {
 }
 
 /** Shows an error message dialog when a request fails. */
-export default class ErrorMessage extends React.Component<ErrorMessageProps, void> {
+export default class ErrorMessage extends React.Component<ErrorMessageProps, {}> {
   render(): JSX.Element {
     return (
       <div className="error" role="dialog" aria-labelledby="error">

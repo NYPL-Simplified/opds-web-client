@@ -1,8 +1,8 @@
 import * as React from "react";
 import CatalogLink from "./CatalogLink";
-import { CollectionData, BookData, LinkData } from "../interfaces";
+import { CollectionData, LinkData } from "../interfaces";
 
-export interface BreadcrumbsProps extends React.Props<any> {
+export interface BreadcrumbsProps extends React.Props<{}> {
   links: LinkData[];
   currentLink?: boolean;
 }
@@ -12,7 +12,7 @@ export interface ComputeBreadcrumbs {
 }
 
 /** Shows a list of breadcrumbs links above a collection. */
-export default class Breadcrumbs extends React.Component<BreadcrumbsProps, void> {
+export default class Breadcrumbs extends React.Component<BreadcrumbsProps, {}> {
   public static defaultProps: Partial<BreadcrumbsProps> = {
     currentLink: false,
   };

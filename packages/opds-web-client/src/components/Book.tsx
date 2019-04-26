@@ -21,7 +21,7 @@ export interface BookProps {
 }
 
 /** Displays a single book for use in a lane, list, or grid view. */
-export default class Book<P extends BookProps> extends React.Component<P, void> {
+export default class Book<P extends BookProps> extends React.Component<P, {}> {
   constructor(props) {
     super(props);
     this.borrow = this.borrow.bind(this);
@@ -96,8 +96,8 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
                   <span>{this.getMediumSVG(bookMedium)}</span>
                 )
               }
-              { this.fields().map(field =>
-                field.value ? <div className={field.name.toLowerCase().replace(" ", "-")} key={field.name}>{field.name}: {field.value}</div> : null
+              { this.fields().map((field, key) =>
+                field.value ? <div className={field.name.toLowerCase().replace(" ", "-")} key={`${field.name}`}>{field.name}: {field.value}</div> : null
               ) }
             </div>
             <div className="summary" lang={book.language}>
@@ -144,10 +144,11 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
 
     if (this.isOpenAccess()) {
       if (this.props.epubReaderUrlTemplate) {
+        let index = 0;
         for (const link of this.props.book.openAccessLinks) {
           if (link.type === "application/epub+zip") {
             links.push(
-              <span key={link.url}>
+              <span key={`${link.url}-${index}`}>
                 <a
                   className="btn btn-default read-button"
                   href={this.props.epubReaderUrlTemplate(link.url)}
@@ -156,15 +157,16 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
                 </a>
               </span>
             );
+            index++;
           }
         }
       }
 
       links.push(
-        this.props.book.openAccessLinks.map(link => {
+        this.props.book.openAccessLinks.map((link, index) => {
           return (
             <DownloadButton
-              key={link.url}
+              key={`${link.url}-${index}`}
               url={link.url}
               mimeType={link.type}
               isPlainLink={true}
@@ -188,11 +190,11 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
       }
 
       links.push(
-        streamingLinks.map(link => {
+        streamingLinks.map((link, index) => {
           let isDirectStreaming = link.type === streamingMediaType;
           return (
             <DownloadButton
-              key={link.url}
+              key={`${link.url}-${index}`}
               fulfill={this.props.fulfillBook}
               indirectFulfill={this.props.indirectFulfillBook}
               url={link.url}
@@ -214,10 +216,10 @@ export default class Book<P extends BookProps> extends React.Component<P, void> 
         </BorrowButton>
       );
       links.push(
-        downloadLinks.map(link => {
+        downloadLinks.map((link, index) => {
           return (
             <DownloadButton
-              key={link.url}
+              key={`${link.url}-${index}`}
               fulfill={this.props.fulfillBook}
               indirectFulfill={this.props.indirectFulfillBook}
               url={link.url}

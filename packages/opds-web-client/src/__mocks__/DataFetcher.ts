@@ -15,7 +15,7 @@ export default class MockDataFetcher extends DataFetcher {
     return this.fetch(url);
   }
 
-  fetch(url) {
+  fetch(url: string, options = {}): Promise<Response> {
     return new Promise((resolve, reject) => {
       if (this.resolve) {
         resolve(this.testData);

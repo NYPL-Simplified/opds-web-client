@@ -5,11 +5,12 @@ import CatalogLink from "./CatalogLink";
 import { Lanes } from "./Lanes";
 import FacetGroup from "./FacetGroup";
 import SkipNavigationLink from "./SkipNavigationLink";
-import { CollectionData, LinkData, FetchErrorData, BookData } from "../interfaces";
+import { CollectionData, FetchErrorData, BookData } from "../interfaces";
 
 export interface CollectionProps extends React.HTMLProps<Collection> {
   collection: CollectionData;
   isFetchingCollection?: boolean;
+  isFetchingBook?: boolean;
   isFetchingPage?: boolean;
   error?: FetchErrorData;
   fetchPage?: (url: string) => Promise<any>;
@@ -25,7 +26,7 @@ export interface CollectionProps extends React.HTMLProps<Collection> {
 }
 
 /** Displays books in an OPDS collection as either lanes, a grid or a list. */
-export default class Collection extends React.Component<CollectionProps, void> {
+export default class Collection extends React.Component<CollectionProps, {}> {
   static VIEW_KEY = "collection-view";
   static GRID_VIEW = "grid-view";
   static LIST_VIEW = "list-view";

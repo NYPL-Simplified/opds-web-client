@@ -7,7 +7,6 @@ import { shallow } from "enzyme";
 import BorrowButton from "../BorrowButton";
 import { ungroupedCollectionData } from "./collectionData";
 
-
 describe("BorrowButton", () => {
   let wrapper;
   let borrow;
@@ -23,7 +22,6 @@ describe("BorrowButton", () => {
     wrapper = shallow(
       <BorrowButton
         style={style}
-        book={bookData}
         borrow={borrow}>
         Borrow
       </BorrowButton>
@@ -32,7 +30,7 @@ describe("BorrowButton", () => {
 
   it("shows button", () => {
     let button = wrapper.find("button");
-    expect(button.props().style).to.equal(style);
+    expect(button.props().style).to.deep.equal(style);
     expect(button.text()).to.equal("Borrow");
   });
 

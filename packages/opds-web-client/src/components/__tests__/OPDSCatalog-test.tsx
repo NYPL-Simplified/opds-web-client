@@ -8,9 +8,6 @@ import { shallow } from "enzyme";
 import OPDSCatalog from "../OPDSCatalog";
 import Root, { RootProps } from "../Root";
 import buildStore from "../../store";
-import { State } from "../../state";
-import { groupedCollectionData } from "./collectionData";
-import { jsdom } from "jsdom";
 import { mockRouterContext } from "./routing";
 
 describe("OPDSCatalog", () => {

@@ -6,20 +6,19 @@ import { PropTypes } from "prop-types";
 import { Store } from "redux";
 import { shallow, mount } from "enzyme";
 
-import ConnectedRoot,
-{ Root, BookDetailsContainerProps, HeaderProps, FooterProps, CollectionContainerProps } from "../Root";
-import Breadcrumbs, { ComputeBreadcrumbs } from "../Breadcrumbs";
+import
+  { Root, BookDetailsContainerProps, HeaderProps, FooterProps, CollectionContainerProps } from "../Root";
+import Breadcrumbs from "../Breadcrumbs";
 import Collection from "../Collection";
 import UrlForm from "../UrlForm";
 import BookDetails from "../BookDetails";
 import SkipNavigationLink from "../SkipNavigationLink";
-import CatalogLink, { CatalogLinkProps } from "../CatalogLink";
+import CatalogLink from "../CatalogLink";
 import Search from "../Search";
 import LoadingIndicator from "../LoadingIndicator";
 import ErrorMessage from "../ErrorMessage";
 import AuthProviderSelectionForm from "../AuthProviderSelectionForm";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
-import buildStore from "../../store";
 import { State } from "../../state";
 import { CollectionData, BookData, LinkData } from "../../interfaces";
 import { mockRouterContext } from "./routing";
@@ -410,7 +409,7 @@ describe("Root", () => {
   });
 
   describe("provided a BookDetailsContainer", () => {
-    class Container extends React.Component<BookDetailsContainerProps, any> {
+    class Container extends React.Component<BookDetailsContainerProps, {}> {
       render(): JSX.Element {
         return (
           <div className="container">
@@ -517,7 +516,7 @@ describe("Root", () => {
     let fetchLoans;
     let clearAuthCredentials;
 
-    class Header extends React.Component<HeaderProps, any> {
+    class Header extends React.Component<HeaderProps, {}> {
       render(): JSX.Element {
         return (
           <div className="header">
@@ -564,7 +563,7 @@ describe("Root", () => {
     let wrapper;
     let collectionData = ungroupedCollectionData;
     let bookData = ungroupedCollectionData.books[0];
-    class Footer extends React.Component<FooterProps, any> {
+    class Footer extends React.Component<FooterProps, {}> {
       render(): JSX.Element {
         return (
           <div className="footer" />
@@ -758,7 +757,7 @@ describe("Root", () => {
   });
 
   describe("provided a CollectionContainer", () => {
-    class Tabs extends React.Component<CollectionContainerProps, void> {
+    class Tabs extends React.Component<CollectionContainerProps, {}> {
       render(): JSX.Element {
         return (
           <div className="tabs-container">

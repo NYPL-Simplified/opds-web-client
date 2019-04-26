@@ -51,7 +51,7 @@ describe("Search", () => {
     };
     let context = mockRouterContext();
     let wrapper = shallow(
-      <Search searchData={searchData} navigate={stub()} />,
+      <Search searchData={searchData} />,
       { context }
     );
 
@@ -68,7 +68,6 @@ describe("Search", () => {
   });
 
   it("fetches the search feed", () => {
-    let navigate = stub();
     let searchData = {
       description: "description",
       shortName: "shortName",
@@ -77,7 +76,7 @@ describe("Search", () => {
     let push = stub();
     let context = mockRouterContext(push);
     let wrapper = mount(
-      <Search searchData={searchData} navigate={navigate} />,
+      <Search searchData={searchData} />,
       { context }
     );
 
@@ -93,7 +92,6 @@ describe("Search", () => {
   });
 
   it("escapes search terms", () => {
-    let navigate = stub();
     let searchData = {
       description: "description",
       shortName: "shortName",
@@ -102,7 +100,7 @@ describe("Search", () => {
     let push = stub();
     let context = mockRouterContext(push);
     let wrapper = mount(
-      <Search searchData={searchData} navigate={navigate} />,
+      <Search searchData={searchData} />,
       { context }
     );
 
@@ -118,7 +116,6 @@ describe("Search", () => {
   });
 
   it("should add 'all' to language query in search term", () => {
-    let navigate = stub();
     let searchData = {
       description: "description",
       shortName: "shortName",
@@ -129,7 +126,6 @@ describe("Search", () => {
     let wrapper = mount(
       <Search
         searchData={searchData}
-        navigate={navigate}
         allLanguageSearch={true}
       />,
       { context }

@@ -4,8 +4,7 @@ import * as React from "react";
 import { shallow } from "enzyme";
 
 import Breadcrumbs, { hierarchyComputeBreadcrumbs } from "../Breadcrumbs";
-import CatalogLink, { CatalogLinkProps } from "../CatalogLink";
-import { ungroupedCollectionData } from "./collectionData";
+import CatalogLink from "../CatalogLink";
 import { LinkData } from "../../interfaces";
 
 describe("Breadcrumbs", () => {

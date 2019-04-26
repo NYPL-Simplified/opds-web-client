@@ -1,12 +1,10 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { PropTypes } from "prop-types";
-const createReactClass = require("create-react-class");
 import { Router, Route, browserHistory } from "react-router";
 import OPDSCatalog from "./components/OPDSCatalog";
 import { RootProps } from "./components/Root";
 import { PathFor } from "./interfaces";
-import { State } from "./state";
 import AuthPlugin from "./AuthPlugin";
 import "./stylesheets/app.scss";
 
@@ -18,12 +16,12 @@ const OPDSCatalogRouterHandler = (config) => {
   interface OPDSCatalogProps {
     params?: OPDSCatalogParams;
   }
-  class OPDSCatalogRoute extends React.Component<OPDSCatalogProps, void> {
+  class OPDSCatalogRoute extends React.Component<OPDSCatalogProps, {}> {
     static contextTypes: {
       router: PropTypes.object.isRequired
     };
 
-    static childContextTypes: React.ValidationMap<void> = {
+    static childContextTypes: React.ValidationMap<{}> = {
       pathFor: PropTypes.func.isRequired
     };
 

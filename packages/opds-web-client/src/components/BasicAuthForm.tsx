@@ -1,5 +1,5 @@
 import * as React from "react";
-import { AuthCallback, AuthProvider, BasicAuthMethod } from "../interfaces";
+import { BasicAuthMethod } from "../interfaces";
 import { AuthFormProps } from "./AuthProviderSelectionForm";
 
 export interface BasicAuthFormProps extends AuthFormProps<BasicAuthMethod> {}

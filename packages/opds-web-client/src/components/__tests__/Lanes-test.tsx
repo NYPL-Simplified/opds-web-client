@@ -2,9 +2,9 @@ import { expect } from "chai";
 import { stub } from "sinon";
 
 import * as React from "react";
-import { shallow, mount } from "enzyme";
+import { shallow } from "enzyme";
 
-import ConnectedLanes, { Lanes } from "../Lanes";
+import { Lanes } from "../Lanes";
 import Lane from "../Lane";
 import { groupedCollectionData } from "./collectionData";
 import spinner from "../../images/spinner";

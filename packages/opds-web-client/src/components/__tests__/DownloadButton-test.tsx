@@ -8,7 +8,6 @@ import * as React from "react";
 import { shallow } from "enzyme";
 
 import DownloadButton from "../DownloadButton";
-import { ungroupedCollectionData } from "./collectionData";
 
 describe("DownloadButton", () => {
   let wrapper;
@@ -18,7 +17,7 @@ describe("DownloadButton", () => {
   let downloadStub;
 
   beforeEach(() => {
-    downloadStub = stub(download, "default", downloadMock);
+    downloadStub = stub(download, "default").callsFake(downloadMock);
 
     fulfill = stub().returns(
       new Promise((resolve, reject) => resolve("blob"))
@@ -45,14 +44,14 @@ describe("DownloadButton", () => {
 
   it("shows button", () => {
     let button = wrapper.find("button");
-    expect(button.props().style).to.equal(style);
+    expect(button.props().style).to.deep.equal(style);
     expect(button.text()).to.equal("Download EPUB");
   });
 
   it("shows plain link if specified", () => {
     wrapper.setProps({ isPlainLink: true });
     let link = wrapper.find("a");
-    expect(link.props().style).to.equal(style);
+    expect(link.props().style).to.deep.equal(style);
     expect(link.props().href).to.equal("download url");
     expect(link.text()).to.equal("Download EPUB");
   });

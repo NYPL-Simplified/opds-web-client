@@ -1,6 +1,9 @@
-var webpack = require('webpack');
+const merge = require('webpack-merge');
+const common = require('./webpack.common.js');
 
-var config = {
+var config = merge(common, {
+  mode: "development",
+  devtool: "inline-source-map",
   entry: {
     app: [
       'webpack/hot/dev-server',
@@ -13,40 +16,22 @@ var config = {
     library: 'OPDSWebClient',
     libraryTarget: 'umd'
   },
-  devtool: 'eval',
-  plugins: [
-    new webpack.DefinePlugin({ "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV) }),
-    // jsdom is needed for server rendering, but causes errors
-    // in the browser even if it is never used, so we ignore it:
-    new webpack.IgnorePlugin(/jsdom$/)
-  ],
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.scss$/,
-        loaders: ["style", "css?sourceMap", "sass?sourceMap"]
+        loaders: ["style-loader", "css-loader", "sass-loader"]
       },
       {
         test: /\.tsx?$/,
         exclude: [/node_modules/],
         loaders: [
-          'react-hot',
+          'react-hot-loader',
           'ts-loader'
         ]
-      },
-      {
-        test: /\.json$/,
-        loaders: ['json-loader']
-      },
-      {
-        test: /\.(png|woff|woff2|eot|ttf|svg).*$/,
-        loader: 'url-loader?limit=100000'
       }
     ],
-  },
-  resolve: {
-    extensions: ["", ".webpack.js", ".web.js", ".js", ".ts", ".tsx", ".scss"]
   }
-};
+});
 
 module.exports = config;

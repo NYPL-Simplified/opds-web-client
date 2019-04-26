@@ -1,25 +1,12 @@
 import { expect } from "chai";
 import { stub, spy } from "sinon";
 
-import * as ActionCreator from "../../actions";
+import ActionCreator from "../../actions";
 
 // synchronous actions for simple testing
 // of createFetchCollectionAndBook
 let fetchCollectionStub = stub().returns(new Promise((resolve, reject) => { resolve({}); }));
 let fetchBookStub = stub().returns(new Promise((resolve, reject) => { resolve({}); }));
-
-class MockActionCreator extends ActionCreator.default {
-  fetchCollection(url: string) {
-    return fetchCollectionStub;
-  }
-
-  fetchBook(url) {
-    return fetchBookStub;
-  }
-}
-
-import * as DataFetcher from "../../DataFetcher";
-import MockDataFetcher from "../../__mocks__/DataFetcher";
 
 import { mergeRootProps, findBookInCollection, createFetchCollectionAndBook } from "../mergeRootProps";
 import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
@@ -55,31 +42,33 @@ describe("createFetchCollectionAndBook", () => {
   let collectionUrl = "collection url";
   let bookUrl = "book url";
   let dispatch = stub().returns(new Promise((resolve, reject) => resolve()));
-  let dataFetcherStub;
-  let actionCreatorStub;
+  let actionFetchCollectionStub;
+  let actionBookCollectionStub;
 
   beforeEach(() => {
-    dataFetcherStub = stub(DataFetcher, "default", MockDataFetcher);
-    actionCreatorStub = stub(ActionCreator, "default", MockActionCreator);
+    actionFetchCollectionStub =
+      stub(ActionCreator.prototype, "fetchCollection").callsFake(() => fetchCollectionStub);
+    actionBookCollectionStub =
+      stub(ActionCreator.prototype, "fetchBook").callsFake(() => fetchBookStub);
   });
 
   afterEach(() => {
-    dataFetcherStub.restore();
-    actionCreatorStub.restore();
+    actionFetchCollectionStub.restore();
+    actionBookCollectionStub.restore();
   });
 
   it("returns fetch function that uses the provided dispatch", (done) => {
-    let fetcher = new MockDataFetcher();
-    let actions = new MockActionCreator(fetcher);
     let fetchCollectionAndBook = createFetchCollectionAndBook(dispatch);
-    fetchCollectionAndBook(collectionUrl, bookUrl).then(({ collectionData, bookData }) => {
-      // we are only testing that the provided dispatch is called twice,
-      // once for fetchCollection and once for fetchBook
-      expect(dispatch.callCount).to.equal(2);
-      expect(dispatch.args[0][0]).to.equal(fetchCollectionStub);
-      expect(dispatch.args[1][0]).to.equal(fetchBookStub);
-      done();
-    }).catch(err => { console.log(err); throw(err); });
+    fetchCollectionAndBook(collectionUrl, bookUrl)
+      .then(({ collectionData, bookData }) => {
+        // we are only testing that the provided dispatch is called twice,
+        // once for fetchCollection and once for fetchBook
+        expect(dispatch.callCount).to.equal(2);
+        expect(dispatch.args[0][0]).to.equal(fetchCollectionStub);
+        expect(dispatch.args[1][0]).to.equal(fetchBookStub);
+        done();
+      })
+      .catch(err => { console.log(err); throw(err); });
   });
 });
 
