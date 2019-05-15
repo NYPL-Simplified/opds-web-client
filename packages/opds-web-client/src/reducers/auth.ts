@@ -17,7 +17,8 @@ const initialState: AuthState = {
 export default (state: AuthState = initialState, action): AuthState => {
   switch (action.type) {
     case ActionCreator.SHOW_AUTH_FORM:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         showForm: true,
         callback: action.callback,
         cancel: action.cancel,
@@ -25,7 +26,7 @@ export default (state: AuthState = initialState, action): AuthState => {
         error: action.error || null,
         attemptedProvider: action.attemptedProvider || null,
         providers: action.providers
-      });
+      };
 
     case ActionCreator.HIDE_AUTH_FORM:
       return Object.assign({}, state, {
