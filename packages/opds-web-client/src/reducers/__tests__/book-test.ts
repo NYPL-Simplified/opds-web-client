@@ -9,7 +9,7 @@ import { BookData } from "../../interfaces";
 let fetcher = new DataFetcher({ adapter });
 let actions = new ActionCreator(fetcher);
 
-describe("book reducer", () => {
+describe.only("book reducer", () => {
   let book = {
     id: "test id",
     url: "test url",
@@ -59,10 +59,11 @@ describe("book reducer", () => {
 
   it("should handle BOOK_REQUEST", () => {
     let action = actions.request(ActionCreator.BOOK, "some other url");
-    let newState = Object.assign({}, errorState, {
+    let newState = {
+      ...errorState,
       isFetching: true,
       error: null
-    });
+    };
 
     expect(reducer(errorState, action)).to.deep.equal(newState);
   });
@@ -73,14 +74,15 @@ describe("book reducer", () => {
       response: "test error",
       url: "error url"
     });
-    let newState = Object.assign({}, fetchingState, {
+    let newState = {
+      ...fetchingState,
       isFetching: false,
       error: {
         status: 500,
         response: "test error",
         url: "error url"
       }
-    });
+    };
 
     expect(reducer(fetchingState, action)).to.deep.equal(newState);
   });
@@ -91,21 +93,23 @@ describe("book reducer", () => {
       title: "some title"
     };
     let action = actions.load<BookData>(ActionCreator.BOOK, data, "some other url");
-    let newState = Object.assign({}, bookState, {
+    let newState = {
+      ...bookState,
       url: "some other url",
       data: data,
       isFetching: false
-    });
+    };
 
     expect(reducer(bookState, action)).to.deep.equal(newState);
   });
 
   it("should handle BOOK_CLEAR", () => {
     let action = actions.clear(ActionCreator.BOOK);
-    let newState = Object.assign({}, bookState, {
+    let newState = {
+      ...bookState,
       url: null,
       data: null
-    });
+    };
 
     expect(reducer(bookState, action)).to.deep.equal(newState);
   });
@@ -116,9 +120,9 @@ describe("book reducer", () => {
   });
 
   it("should update book in state on UPDATE_BOOK_LOAD", () => {
-    let newBook = Object.assign({}, book, { title: "new title" });
+    let newBook = { ...book, title: "new title" };
     let action = actions.load<BookData>(ActionCreator.UPDATE_BOOK, newBook, "url");
-    let newState = Object.assign({}, bookState, { data: newBook });
+    let newState = { ...bookState, data: newBook };
     expect(reducer(bookState, action)).to.deep.equal(newState);
   });
 });

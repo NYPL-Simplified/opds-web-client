@@ -33,7 +33,7 @@
     "react-dom": "^15.6.2",
     "react-redux": "^4.4.5",
     "react-router": "^3.2.0",
-    "redux": "^3.5.2",
+    "redux": "3.7.2",
     "redux-localstorage": "^0.4.1",
     "redux-thunk": "^2.1.0",
     "seedrandom": "^2.4.2",
