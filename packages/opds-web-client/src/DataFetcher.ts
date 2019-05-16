@@ -71,7 +71,14 @@ export default class DataFetcher {
             headers: response.headers
           });
         });
-      }).catch(reject);
+      }).catch(error => {
+        reject({
+          status: error.status,
+          response: error.message,
+          url: url,
+          headers: error.headers
+        });
+      });
     });
   }
 

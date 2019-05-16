@@ -9,7 +9,7 @@ import { BookData } from "../../interfaces";
 let fetcher = new DataFetcher({ adapter });
 let actions = new ActionCreator(fetcher);
 
-describe.only("book reducer", () => {
+describe("book reducer", () => {
   let book = {
     id: "test id",
     url: "test url",

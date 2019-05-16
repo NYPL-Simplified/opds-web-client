@@ -35,7 +35,7 @@ export function shouldClear(newCollection: CollectionData, oldCollection: Collec
 }
 
 export function addLink(history: LinkData[], link: LinkData): LinkData[] {
-  return history.concat([Object.assign({ id: null }, link)]);
+  return history.concat([{ id: null, ...link }]);
 }
 
 export function addCollection(history: LinkData[], collection: CollectionData): LinkData[] {

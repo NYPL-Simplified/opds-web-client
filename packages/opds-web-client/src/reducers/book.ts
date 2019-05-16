@@ -48,24 +48,15 @@ const book = (state: BookState = initialState, action): BookState => {
       };
 
     case ActionCreator.CLOSE_ERROR:
-      return {
-        ...state,
-        error: null
-      };
+      return { ...state, error: null };
 
     case ActionCreator.FULFILL_BOOK_REQUEST:
     case ActionCreator.UPDATE_BOOK_REQUEST:
-      return {
-        ...state,
-        isFetching: true
-      };
+      return { ...state, isFetching: true };
 
     case ActionCreator.FULFILL_BOOK_SUCCESS:
     case ActionCreator.UPDATE_BOOK_SUCCESS:
-      return {
-        ...state,
-        isFetching: false
-      };
+      return { ...state, isFetching: false };
 
     case ActionCreator.FULFILL_BOOK_FAILURE:
     case ActionCreator.UPDATE_BOOK_FAILURE:
@@ -84,10 +75,7 @@ const book = (state: BookState = initialState, action): BookState => {
       }
 
       // If a book was in the state already, we should replace it on update.
-      return {
-        ...state,
-        data: { ...state.data, ...action.data }
-      };
+      return { ...state, data: { ...state.data, ...action.data } };
 
     default:
       return state;

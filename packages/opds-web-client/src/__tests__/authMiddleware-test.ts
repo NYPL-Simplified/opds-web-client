@@ -31,10 +31,10 @@ describe("authMiddleware", () => {
     };
 
     plugin = {
-       type: "test",
-       lookForCredentials: stub(),
-       formComponent: null,
-       buttonComponent: null
+      type: "test",
+      lookForCredentials: stub(),
+      formComponent: null,
+      buttonComponent: null
     };
 
     pathFor = stub();
