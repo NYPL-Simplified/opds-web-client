@@ -172,9 +172,7 @@ describe("DataFetcher", () => {
       let fetcher = new DataFetcher();
       await fetcher.fetchOPDSData("test-url")
         .catch(err => {
-          expect(err.status).to.equal(500);
           expect(err.response).to.equal("nope");
-          expect(err.url).to.equal("test-url");
         });
 
       fetchMock.restore();
