@@ -33,9 +33,9 @@ describe("UrlForm", () => {
     );
 
     let form = wrapper.find("form");
-    let input = wrapper.find("input").get(0) as any;
-
-    input.value = "some url";
+    
+    // set the value for the input
+    wrapper.setProps({ collectionUrl: "some url" });
     form.simulate("submit");
 
     expect(push.callCount).to.equal(1);

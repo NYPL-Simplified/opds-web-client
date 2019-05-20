@@ -29,8 +29,8 @@ describe("Collection", () => {
 
   describe("empty collection", () => {
     it("says the collection is empty", () => {
-      let collectionData: CollectionData = Object.assign({}, groupedCollectionData, { lanes: [] });
-      let wrapper = shallow(
+      let collectionData: CollectionData = { ...groupedCollectionData, lanes: [] };
+      let wrapper = mount(
         <Collection collection={collectionData}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
@@ -47,13 +47,21 @@ describe("Collection", () => {
     let wrapper;
 
     beforeEach(() => {
-      wrapper = shallow(
+      let context = mockRouterContext();
+      wrapper = mount(
         <Collection collection={collectionData}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
           setPreference={setPreference}
-          />
+        />,
+        {
+          context,
+          childContextTypes: {
+            router: PropTypes.object,
+            pathFor: PropTypes.func
+          }
+        }
       );
     });
 
@@ -79,13 +87,21 @@ describe("Collection", () => {
     let wrapper;
 
     beforeEach(() => {
-      wrapper = shallow(
+      let context = mockRouterContext();
+      wrapper = mount(
         <Collection collection={collectionData}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
           setPreference={setPreference}
-          />
+        />,
+        {
+          context,
+          childContextTypes: {
+            router: PropTypes.object,
+            pathFor: PropTypes.func
+          }
+        }
       );
     });
 
@@ -112,7 +128,7 @@ describe("Collection", () => {
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
           setPreference={setPreference}
-          />,
+        />,
         { context,
           childContextTypes: {
             router: PropTypes.object,
@@ -120,15 +136,21 @@ describe("Collection", () => {
           }
         }
       );
-      let viewToggleButtons = wrapper.find(".view-toggle button");
-      expect(viewToggleButtons.length).to.equal(2);
+      const getElements = () => {
+        let viewToggleButtons = wrapper.find(".view-toggle button");
 
-      let gridButton = viewToggleButtons.at(0);
-      let listButton = viewToggleButtons.at(1);
+        return [
+          viewToggleButtons,
+          viewToggleButtons.at(0), // gridButton
+          viewToggleButtons.at(1), // listButton
+          wrapper.find(".books")
+        ]
+      }
+      let [viewToggleButtons, gridButton, listButton, books] = getElements();
+
+      expect(viewToggleButtons.length).to.equal(2);
       expect(gridButton.props().disabled).to.equal(true);
       expect(listButton.props().disabled).to.equal(false);
-
-      let books = wrapper.find(".books");
       expect(books.props().className).to.contain(Collection.GRID_VIEW);
       expect(books.props().className).not.to.contain(Collection.LIST_VIEW);
 
@@ -136,6 +158,7 @@ describe("Collection", () => {
       preferences[Collection.VIEW_KEY] = Collection.LIST_VIEW;
       wrapper.setProps({ preferences });
 
+      [viewToggleButtons, gridButton, listButton, books] = getElements();
       expect(gridButton.props().disabled).to.equal(false);
       expect(listButton.props().disabled).to.equal(true);
       expect(books.props().className).to.contain(Collection.LIST_VIEW);
@@ -144,6 +167,7 @@ describe("Collection", () => {
       preferences[Collection.VIEW_KEY] = Collection.GRID_VIEW;
       wrapper.setProps({ preferences });
 
+      [viewToggleButtons, gridButton, listButton, books] = getElements();
       expect(gridButton.props().disabled).to.equal(true);
       expect(listButton.props().disabled).to.equal(false);
       expect(books.props().className).to.contain(Collection.GRID_VIEW);
@@ -192,6 +216,7 @@ describe("Collection", () => {
     let collectionData, wrapper;
 
     beforeEach(() => {
+      let context = mockRouterContext();
       collectionData = {
         id: "test collection",
         url: "test url",
@@ -205,13 +230,20 @@ describe("Collection", () => {
         }]
       };
 
-      wrapper = shallow(
+      wrapper = mount(
         <Collection collection={collectionData}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
           setPreference={setPreference}
-          />
+        />,
+        {
+          context,
+          childContextTypes: {
+            router: PropTypes.object,
+            pathFor: PropTypes.func
+          }
+        }
       );
     });
 
@@ -231,7 +263,7 @@ describe("Collection", () => {
 
   describe("collection with next page", () => {
     const pause = (ms = 0): Promise<void> => {
-        return new Promise<void>(resolve => setTimeout(resolve, ms));
+      return new Promise<void>(resolve => setTimeout(resolve, ms));
     };
 
     it("fetches next page on scroll to bottom", async () => {
@@ -253,8 +285,14 @@ describe("Collection", () => {
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
           setPreference={setPreference}
-          />,
-        { context }
+        />,
+        {
+          context,
+          childContextTypes: {
+            router: PropTypes.object,
+            pathFor: PropTypes.func
+          }
+        }
       );
 
       let main = wrapper.instance().refs["collection-main"] as any;
@@ -356,7 +394,7 @@ describe("Collection", () => {
         navigationLinks: [],
       };
 
-      let wrapper = shallow(
+      let wrapper = mount(
         <Collection collection={collectionData}
           isFetchingPage={true}
           updateBook={updateBook}
@@ -375,7 +413,8 @@ describe("Collection", () => {
       let collectionData = Object.assign({}, ungroupedCollectionData, {
         nextPageUrl: "next page url"
       });
-      let wrapper = shallow(
+      let context = mockRouterContext();
+      let wrapper = mount(
         <Collection collection={collectionData}
           isFetchingPage={false}
           fetchPage={fetchPage}
@@ -383,7 +422,14 @@ describe("Collection", () => {
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
           setPreference={setPreference}
-          />
+        />,
+        {
+          context,
+          childContextTypes: {
+            router: PropTypes.object,
+            pathFor: PropTypes.func
+          }
+        }
       );
 
       let link = wrapper.find(".next-page-link");
