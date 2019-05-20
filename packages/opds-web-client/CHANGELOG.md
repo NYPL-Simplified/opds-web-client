@@ -1,5 +1,8 @@
 ## Changelog
 
+### v0.2.1
+- Minor update to redux and syntax in actions and reducers. Added more tests.
+
 ### v0.2.0
 - Updated many packages include Typescript to 2.7.2 and Webpack to version 4. The update to Webpack 4 includes updates to loaders and plugins.
 - Removed `typings` in favor of `@types` that goes along with the updated Typescript version.

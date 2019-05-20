@@ -23,67 +23,73 @@ const initialState: CollectionState = {
 const collection = (state = initialState, action) => {
   switch (action.type) {
     case ActionCreator.COLLECTION_REQUEST:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         isFetching: true,
         error: null
-      });
+      };
 
     case ActionCreator.COLLECTION_FAILURE:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         isFetching: false,
         error: action.error
-      });
+      };
 
     case ActionCreator.COLLECTION_LOAD:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         data: action.data,
         url: action.url ? action.url : state.url,
         isFetching: false,
         error: null,
         history: history(state, action)
-      });
+      };
 
     case ActionCreator.COLLECTION_CLEAR:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         data: null,
         url: null,
         error: null,
         history: state.history.slice(0, -1)
-      });
+      };
 
     case ActionCreator.PAGE_REQUEST:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         pageUrl: action.url,
         isFetchingPage: true,
         error: null
-      });
+      };
 
     case ActionCreator.PAGE_FAILURE:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         isFetchingPage: false,
         error: action.error
-      });
+      };
 
     case ActionCreator.PAGE_LOAD:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         data: Object.assign({}, state.data, {
-          books: Object.assign([], state.data.books).concat(action.data.books),
+          books: [...state.data.books].concat(action.data.books),
           nextPageUrl: action.data.nextPageUrl
         }),
         isFetchingPage: false
-      });
+      };
 
     case ActionCreator.SEARCH_DESCRIPTION_LOAD:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         data: Object.assign({}, state.data, {
           search: action.data
         })
-      });
+      };
 
     case ActionCreator.CLOSE_ERROR:
-      return Object.assign({}, state, {
-        error: null
-      });
+      return { ...state, error: null };
 
     default:
       return state;

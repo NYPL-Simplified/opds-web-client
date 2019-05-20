@@ -1,6 +1,6 @@
 {
   "name": "opds-web-client",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "OPDS web client",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -33,7 +33,7 @@
     "react-dom": "^16.8.6",
     "react-redux": "^4.4.5",
     "react-router": "^3.2.0",
-    "redux": "^3.5.2",
+    "redux": "3.7.2",
     "redux-localstorage": "^0.4.1",
     "redux-thunk": "^2.1.0",
     "seedrandom": "^2.4.2",

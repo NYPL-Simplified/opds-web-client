@@ -29,9 +29,10 @@ describe("DataFetcher", () => {
 
       expect(fetchMock.called()).to.equal(true);
       expect(fetchArgs[0][0]).to.equal("/test-url");
-      expect(fetchArgs[0][1]).to.deep.equal(Object.assign({}, options, {
+      expect(fetchArgs[0][1]).to.deep.equal({
+        ...options,
         headers: { "X-Requested-With": "XMLHttpRequest" }
-      }));
+      });
     });
 
     it("sends credentials by default", () => {
@@ -45,11 +46,13 @@ describe("DataFetcher", () => {
 
       expect(fetchMock.called()).to.equal(true);
       expect(fetchArgs[0][0]).to.equal("/test-url");
-      expect(fetchArgs[0][1]).to.deep.equal(
-        Object.assign({ credentials: "same-origin", headers: {
+      expect(fetchArgs[0][1]).to.deep.equal({
+        credentials: "same-origin",
+        headers: {
           "X-Requested-With": "XMLHttpRequest"
-        } }, options)
-      );
+        },
+        ...options
+      });
     });
 
     it("uses proxy url if provided", () => {
@@ -99,6 +102,12 @@ describe("DataFetcher", () => {
   });
 
   describe("Auth Credentials", () => {
+    it("doesn't set auth credentials if there are none", () => {
+      let fetcher = new DataFetcher();
+      fetcher.setAuthCredentials(undefined);
+      expect(Cookie.get(fetcher.authKey)).to.deep.equal(undefined);
+    });
+
     it("sets auth credentials", () => {
       let fetcher = new DataFetcher();
       let credentials = { provider: "test", credentials: "credentials" };
@@ -137,5 +146,36 @@ describe("DataFetcher", () => {
 
       fetchMock.restore();
     });
+
+    it("throws an error if the response is not OPDS", async () => {
+      fetchMock
+        .mock("test-url", { status: 200, body: "not OPDS" });
+
+      let fetcher = new DataFetcher();
+      await fetcher.fetchOPDSData("test-url")
+        .catch(err => {
+          expect(err.status).to.equal(null);
+          expect(err.response).to.equal("Failed to parse OPDS data");
+          expect(err.url).to.equal("test-url");
+        });
+
+      fetchMock.restore();
+    });
+
+    it("throws an error on a bad call", async () => {
+      fetchMock
+        .mock(
+          "test-url",
+          { status: 500, body: "nope" }
+        );
+
+      let fetcher = new DataFetcher();
+      await fetcher.fetchOPDSData("test-url")
+        .catch(err => {
+          expect(err.response).to.equal("nope");
+        });
+
+      fetchMock.restore();
+    })
   });
 });
