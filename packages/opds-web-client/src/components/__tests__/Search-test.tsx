@@ -83,7 +83,7 @@ describe("Search", () => {
     let form = wrapper.find("form").first();
     expect(form).to.be.ok;
 
-    let input = wrapper.find("input").get(0) as any;
+    let input = wrapper.find("input").getDOMNode();
     input.value = "test";
     form.simulate("submit");
 
@@ -107,7 +107,7 @@ describe("Search", () => {
     let form = wrapper.find("form").first();
     expect(form).to.be.ok;
 
-    let input = wrapper.find("input").get(0) as any;
+    let input = wrapper.find("input").getDOMNode();
     input.value = "Indésirable";
     form.simulate("submit");
 
@@ -134,7 +134,7 @@ describe("Search", () => {
     let form = wrapper.find("form").first();
     expect(form).to.be.ok;
 
-    let input = wrapper.find("input").get(0) as any;
+    let input = wrapper.find("input").getDOMNode();
     input.value = "hamlet";
     form.simulate("submit");
 

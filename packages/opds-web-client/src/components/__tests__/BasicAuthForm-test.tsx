@@ -106,9 +106,9 @@ describe("BasicAuthForm", () => {
       expect(wrapper.state("error")).to.equal("code name is required");
 
       // username blank
-      let username = wrapper.find("input[type='text']").get(0);
+      let username = wrapper.find("input[type='text']").getDOMNode();
       username.value = "";
-      let password = wrapper.find("input[type='password']").get(0);
+      let password = wrapper.find("input[type='password']").getDOMNode();
       password.value = "thenameisbond";
       isValid = wrapper.instance().validate();
       expect(isValid).to.equal(false);
@@ -129,9 +129,9 @@ describe("BasicAuthForm", () => {
       let password;
 
       beforeEach(() => {
-        username = wrapper.find("input[type='text']").get(0);
+        username = wrapper.find("input[type='text']").getDOMNode();
         username.value = "doubleohseven";
-        password = wrapper.find("input[type='password']").get(0);
+        password = wrapper.find("input[type='password']").getDOMNode();
         password.value = "thenameisbond";
         credentials = wrapper.instance().generateCredentials("doubleohseven", "thenameisbond");
         validate = stub().returns(true);
