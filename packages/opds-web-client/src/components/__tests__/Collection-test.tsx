@@ -139,14 +139,14 @@ describe("Collection", () => {
       const getElements = () => {
         let viewToggleButtons = wrapper.find(".view-toggle button");
 
-        return [
+        return {
           viewToggleButtons,
-          viewToggleButtons.at(0), // gridButton
-          viewToggleButtons.at(1), // listButton
-          wrapper.find(".books")
-        ]
+          gridButton: viewToggleButtons.at(0),
+          listButton: viewToggleButtons.at(1),
+          books: wrapper.find(".books")
+        };
       }
-      let [viewToggleButtons, gridButton, listButton, books] = getElements();
+      let { viewToggleButtons, gridButton, listButton, books } = getElements();
 
       expect(viewToggleButtons.length).to.equal(2);
       expect(gridButton.props().disabled).to.equal(true);
@@ -158,7 +158,7 @@ describe("Collection", () => {
       preferences[Collection.VIEW_KEY] = Collection.LIST_VIEW;
       wrapper.setProps({ preferences });
 
-      [viewToggleButtons, gridButton, listButton, books] = getElements();
+      ({ viewToggleButtons, gridButton, listButton, books } = getElements());
       expect(gridButton.props().disabled).to.equal(false);
       expect(listButton.props().disabled).to.equal(true);
       expect(books.props().className).to.contain(Collection.LIST_VIEW);
@@ -167,7 +167,7 @@ describe("Collection", () => {
       preferences[Collection.VIEW_KEY] = Collection.GRID_VIEW;
       wrapper.setProps({ preferences });
 
-      [viewToggleButtons, gridButton, listButton, books] = getElements();
+      ({ viewToggleButtons, gridButton, listButton, books } = getElements());
       expect(gridButton.props().disabled).to.equal(true);
       expect(listButton.props().disabled).to.equal(false);
       expect(books.props().className).to.contain(Collection.GRID_VIEW);
