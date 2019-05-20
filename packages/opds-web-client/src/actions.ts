@@ -76,7 +76,7 @@ export default class ActionCreator {
   }
 
 
-  fetchBlob(type: string, url?: string) {
+  fetchBlob(type: string, url: string) {
     return (dispatch): Promise<Blob> => {
       dispatch(this.request(type, url));
       return new Promise<Blob>((resolve, reject) => {
@@ -112,8 +112,13 @@ export default class ActionCreator {
               dispatch(this.success(type));
               dispatch(this.load<T>(type, data));
               resolve(data);
-            }).catch(err => {
-              dispatch(this.failure(type));
+            }).catch(parseError => {
+              err = {
+                status: response.status,
+                response: "Non-json response",
+                url: url
+              };
+              dispatch(this.failure(type, err));
               reject(err);
             });
           } else {

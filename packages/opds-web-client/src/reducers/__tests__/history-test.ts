@@ -51,23 +51,26 @@ let basicCollection = {
 
 describe("shouldClear()", () => {
   it("should return true if new collection is old root", () => {
-    let newCollection = Object.assign({}, basicCollection, {
+    let newCollection = {
+      ...basicCollection,
       id: "root id",
       url: "root url",
       title: "root text"
-    });
-    let oldCollection = Object.assign({}, basicCollection, {
+    };
+    let oldCollection = {
+      ...basicCollection,
       id: "test id",
       url: "test url",
       title: "test title",
       catalogRootLink: rootLink
-    });
+    };
     let clear = shouldClear(newCollection, oldCollection);
     expect(clear).to.equal(true);
   });
 
   it("should return true if new collection is new root", () => {
-    let newCollection = Object.assign({}, basicCollection, {
+    let newCollection = {
+      ...basicCollection,
       id: "test id",
       url: "test url",
       title: "test title",
@@ -75,13 +78,14 @@ describe("shouldClear()", () => {
         url: "test url",
         text: "some title"
       }
-    });
+    };
     let clear = shouldClear(newCollection, basicCollection);
     expect(clear).to.equal(true);
   });
 
   it("should return true if new root is not old root", () => {
-    let newCollection = Object.assign({}, basicCollection, {
+    let newCollection = {
+      ...basicCollection,
       id: "some id",
       url: "some url",
       title: "some title",
@@ -89,31 +93,34 @@ describe("shouldClear()", () => {
         url: "other url",
         text: "other text"
       }
-    });
-    let oldCollection = Object.assign({}, basicCollection, {
+    };
+    let oldCollection = {
+      ...basicCollection,
       id: "test id",
       url: "test url",
       title: "test title",
       catalogRootLink: rootLink
-    });
+    };
     let clear = shouldClear(newCollection, oldCollection);
     expect(clear).to.equal(true);
   });
 
   it("should return false otherwise", () => {
-    let newCollection = Object.assign({}, basicCollection, {
+    let newCollection = {
+      ...basicCollection,
       id: "other id",
       url: "other url",
       title: "other title",
       catalogRootLink: rootLink,
       parentLink: thirdLink
-    });
-    let oldCollection = Object.assign({}, basicCollection, {
+    };
+    let oldCollection = {
+      ...basicCollection,
       id: "third id",
       url: "third url",
       title: "third title",
       catalogRootLink: rootLink
-    });
+    };
     let clear = shouldClear(newCollection, oldCollection);
     expect(clear).to.equal(false);
   });
@@ -230,13 +237,14 @@ describe("history reducer", () => {
   });
 
   it("should clear history on COLLECTION_LOAD with the old catalog root", () => {
-    let stateWithHistory = Object.assign({}, currentState, {
+    let stateWithHistory = {
+      ...currentState,
       history: [{
         id: "test id",
         url: "test url",
         text: "test title"
       }]
-    });
+    };
     let data = {
       id: "some id",
       url: "root url",
@@ -250,13 +258,14 @@ describe("history reducer", () => {
   });
 
   it("should clear history on COLLECTION_LOAD with a new catalog", () => {
-    let stateWithHistory = Object.assign({}, currentState, {
+    let stateWithHistory = {
+      ...currentState,
       history: [{
         id: "test id",
         url: "test url",
-        title: "test title"
+        text: "test title"
       }]
-    });
+    };
     let data = {
       id: "some id",
       url: "some url",
@@ -280,7 +289,8 @@ describe("history reducer", () => {
   });
 
   it("should remove history up to loaded url on COLLECTION_LOAD with url in history", () => {
-    let stateWithHistory = Object.assign({}, currentState, {
+    let stateWithHistory = {
+      ...currentState,
       history: [{
         id: "first id",
         url: "first url",
@@ -294,7 +304,7 @@ describe("history reducer", () => {
         url: "other url",
         text: "other title"
       }]
-    });
+    };
     let data = {
       id: "test id",
       url: "test url",

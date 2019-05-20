@@ -17,22 +17,19 @@ export default (state: LoansState = initialState, action): LoansState => {
       let loansUrl = action.data.shelfUrl || state.url;
       let isLoans = action.url === loansUrl;
 
-      return Object.assign({}, state, {
+      return {
+        ...state,
         url: action.data.shelfUrl || state.url,
         books: isLoans ? action.data.books : state.books
-      });
+      };
 
     case ActionCreator.LOANS_LOAD:
-      return Object.assign({}, state, {
-        books: action.data.books
-      });
+      return { ...state, books: action.data.books };
 
     case ActionCreator.CLEAR_AUTH_CREDENTIALS:
       // Clear auth credentials should remove the authenticated
       // user's loans as well.
-      return Object.assign({}, state, {
-        books: []
-      });
+      return {...state, books: [] };
 
     case ActionCreator.UPDATE_BOOK_LOAD:
       // A book has been updated, so the loans feed is now outdated.
@@ -52,9 +49,7 @@ export default (state: LoansState = initialState, action): LoansState => {
         newLoans.push(updatedBook);
       }
 
-      return Object.assign({}, state, {
-        books: newLoans
-      });
+      return { ...state, books: newLoans };
 
     default:
       return state;

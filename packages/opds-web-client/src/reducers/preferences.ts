@@ -11,7 +11,7 @@ export default (state: PreferencesState = initialState, action): PreferencesStat
     case ActionCreator.SET_PREFERENCE:
       const change = {};
       change[action.key] = action.value;
-      return Object.assign({}, state, change);
+      return { ...state, ...change };
 
     default:
       return state;

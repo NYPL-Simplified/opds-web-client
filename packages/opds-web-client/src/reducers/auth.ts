@@ -1,4 +1,4 @@
-import { AuthCallback, AuthData } from "../interfaces";
+import { AuthData } from "../interfaces";
 import ActionCreator from "../actions";
 
 export interface AuthState extends AuthData {};
@@ -17,7 +17,8 @@ const initialState: AuthState = {
 export default (state: AuthState = initialState, action): AuthState => {
   switch (action.type) {
     case ActionCreator.SHOW_AUTH_FORM:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         showForm: true,
         callback: action.callback,
         cancel: action.cancel,
@@ -25,23 +26,20 @@ export default (state: AuthState = initialState, action): AuthState => {
         error: action.error || null,
         attemptedProvider: action.attemptedProvider || null,
         providers: action.providers
-      });
+      };
 
     case ActionCreator.HIDE_AUTH_FORM:
-      return Object.assign({}, state, {
+      return {
+        ...state,
         showForm: false,
         error: null
-      });
+      };
 
     case ActionCreator.SAVE_AUTH_CREDENTIALS:
-      return Object.assign({}, state, {
-        credentials: action.credentials
-      });
+      return { ...state, credentials: action.credentials };
 
     case ActionCreator.CLEAR_AUTH_CREDENTIALS:
-      return Object.assign({}, state, {
-        credentials: null
-      });
+      return { ...state, credentials: null };
 
     default:
       return state;

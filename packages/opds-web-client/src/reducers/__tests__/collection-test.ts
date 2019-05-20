@@ -100,10 +100,11 @@ describe("collection reducer", () => {
 
   it("should handle COLLECTION_REQUEST", () => {
     let action = actions.request(ActionCreator.COLLECTION, "some other url");
-    let newState = Object.assign({}, errorState, {
+    let newState = {
+      ...errorState,
       isFetching: true,
       error: null
-    });
+    };
 
     expect(reducer(errorState, action)).to.deep.equal(newState);
   });
@@ -114,14 +115,15 @@ describe("collection reducer", () => {
       response: "test error",
       url: "error url"
     });
-    let newState = Object.assign({}, fetchingState, {
+    let newState = {
+      ...fetchingState,
       isFetching: false,
       error: {
         status: 500,
         response: "test error",
         url: "error url"
       }
-    });
+    };
 
     expect(reducer(fetchingState, action)).to.deep.equal(newState);
   });
@@ -136,11 +138,12 @@ describe("collection reducer", () => {
       navigationLinks: []
     };
     let action = actions.load<CollectionData>(ActionCreator.COLLECTION, data, "some other url");
-    let newState = Object.assign({}, currentState, {
+    let newState = {
+      ...currentState,
       url: "some other url",
       data: data,
       isFetching: false
-    });
+    };
 
     expect(reducer(currentState, action)).to.deep.equal(newState);
   });
@@ -155,32 +158,35 @@ describe("collection reducer", () => {
       navigationLinks: []
     };
     let action = actions.load<CollectionData>(ActionCreator.COLLECTION, data, "some url");
-    let newState = Object.assign({}, errorState, {
+    let newState = {
+      ...errorState,
       url: "some url",
       data: data,
       isFetching: false,
       error: null
-    });
+    };
 
     expect(reducer(errorState, action)).to.deep.equal(newState);
   });
 
   it("should handle COLLECTION_CLEAR", () => {
     let action = actions.clear(ActionCreator.COLLECTION);
-    let newState = Object.assign({}, currentState, {
+    let newState = {
+      ...currentState,
       url: null,
       data: null
-    });
+    };
 
     expect(reducer(currentState, action)).to.deep.equal(newState);
   });
 
   it("should handle PAGE_REQUEST", () => {
     let action = actions.request(ActionCreator.PAGE, "some other url");
-    let newState = Object.assign({}, currentState, {
+    let newState = {
+      ...currentState,
       pageUrl: "some other url",
       isFetchingPage: true
-    });
+    };
 
     expect(reducer(currentState, action)).to.deep.equal(newState);
   });
@@ -191,14 +197,15 @@ describe("collection reducer", () => {
       response: "test error",
       url: "error url"
     });
-    let newState = Object.assign({}, fetchingPageState, {
+    let newState = {
+      ...fetchingPageState,
       isFetchingPage: false,
       error: {
         status: 500,
         response: "test error",
         url: "error url"
       }
-    });
+    };
 
     expect(reducer(fetchingPageState, action)).to.deep.equal(newState);
   });
@@ -221,13 +228,15 @@ describe("collection reducer", () => {
       nextPageUrl: "next"
     };
     let action = actions.load<CollectionData>(ActionCreator.PAGE, data);
-    let newState = Object.assign({}, fetchingPageState, {
-      data: Object.assign({}, fetchingPageState.data, {
+    let newState = {
+      ...fetchingPageState,
+      data: {
+        ...fetchingPageState.data,
         books: data.books,
         nextPageUrl: "next"
-      }),
+      },
       isFetchingPage: false
-    });
+    };
 
     expect(reducer(fetchingPageState, action)).to.deep.equal(newState);
   });
@@ -249,9 +258,7 @@ describe("collection reducer", () => {
 
   it("should handle CLOSE_ERROR", () => {
     let action = actions.closeError();
-    let newState = Object.assign({}, errorState, {
-      error: null
-    });
+    let newState = { ...errorState, error: null };
 
     expect(reducer(errorState, action)).to.deep.equal(newState);
   });

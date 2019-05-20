@@ -41,13 +41,14 @@ describe("auth reducer", () => {
       }
     };
     let action = actions.showAuthForm(callback, cancel, [provider], "library");
-    let newState = Object.assign({}, initState, {
+    let newState = {
+      ...initState,
       showForm: true,
       callback: callback,
       cancel: cancel,
       title: "library",
       providers: [provider]
-    });
+    };
 
     expect(reducer(initState, action)).to.deep.equal(newState);
   });
@@ -69,8 +70,9 @@ describe("auth reducer", () => {
     let error = "Invalid Credentials";
     let attemptedProvider = "library";
     let action = actions.showAuthForm(callback, cancel, [provider], "library", error, attemptedProvider);
-    let previousAttemptState = Object.assign({}, initState, { title: "library" });
-    let newState = Object.assign({}, previousAttemptState, {
+    let previousAttemptState = { ...initState, title: "library" };
+    let newState = {
+      ...previousAttemptState,
       showForm: true,
       callback: callback,
       cancel: cancel,
@@ -78,21 +80,23 @@ describe("auth reducer", () => {
       providers: [provider],
       error: error,
       attemptedProvider: attemptedProvider
-    });
+    };
 
     expect(reducer(previousAttemptState, action)).to.deep.equal(newState);
   });
 
   it("handles HIDE_AUTH_FORM", () => {
-    let oldState = Object.assign({}, initState, {
+    let oldState = {
+      ...initState,
       showForm: true,
       error: "test error"
-    });
+    };
     let action = actions.hideAuthForm();
-    let newState = Object.assign({}, oldState, {
+    let newState = {
+      ...oldState,
       showForm: false,
       error: null
-    });
+    };
 
     expect(reducer(oldState, action)).to.deep.equal(newState);
   });
@@ -100,22 +104,16 @@ describe("auth reducer", () => {
   it("handles SAVE_AUTH_CREDENTIALS", () => {
     let credentials = { provider: "test", credentials: "credentials" };
     let action = actions.saveAuthCredentials(credentials);
-    let newState = Object.assign({}, initState, {
-      credentials: credentials
-    });
+    let newState = { ...initState, credentials: credentials };
 
     expect(reducer(initState, action)).to.deep.equal(newState);
   });
 
   it("handles CLEAR_AUTH_CREDENTIALS", () => {
     let credentials = { provider: "test", credentials: "credentials" };
-    let oldState = Object.assign({}, initState, {
-      credentials: credentials
-    });
+    let oldState = { ...initState, credentials: credentials };
     let action = actions.clearAuthCredentials();
-    let newState = Object.assign({}, initState, {
-      credentials: null
-    });
+    let newState = { ...initState, credentials: null };
 
     expect(reducer(oldState, action)).to.deep.equal(newState);
   });
