@@ -26,7 +26,7 @@ var config = merge(common, {
         test: /\.tsx?$/,
         exclude: [/node_modules/],
         loaders: [
-          'react-hot-loader',
+          'react-hot-loader/webpack',
           'ts-loader'
         ]
       }

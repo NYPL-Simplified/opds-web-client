@@ -33,7 +33,7 @@ describe("UrlForm", () => {
     );
 
     let form = wrapper.find("form");
-    let input = wrapper.find("input").get(0) as any;
+    let input = wrapper.find("input").getDOMNode();
 
     input.value = "some url";
     form.simulate("submit");

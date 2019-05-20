@@ -58,6 +58,10 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, B
     return this.props.provider.method.labels.password || "password";
   }
 
+  /**
+   * validate()
+   * Not all libraries require a password to log in so that value is not checked.
+   */
   validate() {
     let login = (this.refs["login"] as any).value;
 
@@ -67,7 +71,7 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, B
       });
       return false;
     } else {
-      this.setState({ error: null});
+      this.setState({ error: null });
     }
 
     return true;

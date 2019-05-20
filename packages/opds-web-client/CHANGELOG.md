@@ -1,5 +1,8 @@
 ## Changelog
 
+### v0.2.2
+- Updating the app to work with React 16.
+
 ### v0.2.1
 - Minor update to redux and syntax in actions and reducers. Added more tests.
 
