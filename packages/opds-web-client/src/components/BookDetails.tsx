@@ -20,6 +20,11 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
           <div className="header">
             <h1 className="title">{this.props.book.title}</h1>
             {
+              this.props.book.subtitle ?
+              <h3 className="subtitle">{ this.props.book.subtitle }</h3> :
+              ""
+            }
+            {
               this.props.book.series && this.props.book.series.name ?
               <h3 className="series">{ this.props.book.series.name }</h3> :
               ""

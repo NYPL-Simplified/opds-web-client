@@ -1,5 +1,8 @@
 ## Changelog
 
+### v0.2.3
+- Added subtitle to the book details page and changed publication date to use UTC so it displays correctly when only date is specified.
+
 ### v0.2.2
 - Updating the app to work with React 16.
 
