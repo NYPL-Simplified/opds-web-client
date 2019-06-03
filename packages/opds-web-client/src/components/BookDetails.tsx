@@ -20,24 +20,20 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
           <div className="header">
             <h1 className="title">{this.props.book.title}</h1>
             {
-              this.props.book.subtitle ?
-              <h3 className="subtitle">{ this.props.book.subtitle }</h3> :
-              ""
+              this.props.book.subtitle &&
+              <h3 className="subtitle">{ this.props.book.subtitle }</h3>
             }
             {
-              this.props.book.series && this.props.book.series.name ?
-              <h3 className="series">{ this.props.book.series.name }</h3> :
-              ""
+              this.props.book.series && this.props.book.series.name &&
+              <h3 className="series">{ this.props.book.series.name }</h3>
             }
             {
-              this.props.book.authors && this.props.book.authors.length ?
-              <h2 className="authors">By {this.props.book.authors.join(", ")}</h2> :
-              ""
+              this.props.book.authors && this.props.book.authors.length &&
+              <h2 className="authors">By {this.props.book.authors.join(", ")}</h2>
             }
             {
-              this.props.book.contributors && this.props.book.contributors.length ?
-              <h2 className="contributors">Contributors: {this.props.book.contributors.join(", ")}</h2> :
-              ""
+              this.props.book.contributors && this.props.book.contributors.length &&
+              <h2 className="contributors">Contributors: {this.props.book.contributors.join(", ")}</h2>
             }
             <div className="fields" lang="en">
               { fields.map(field =>
