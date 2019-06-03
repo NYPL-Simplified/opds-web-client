@@ -9,6 +9,7 @@ export interface BookData {
   };
   authors?: string[];
   contributors?: string[];
+  subtitle?: string;
   summary?: string;
   imageUrl?: string;
   openAccessLinks?: {

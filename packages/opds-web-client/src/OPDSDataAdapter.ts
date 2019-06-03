@@ -137,6 +137,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
     series: entry.series,
     authors: authors,
     contributors: contributors,
+    subtitle: entry.subtitle,
     summary: entry.summary.content && sanitizeHtml(entry.summary.content),
     imageUrl: imageUrl,
     openAccessLinks: openAccessLinks,
@@ -186,10 +187,10 @@ function formatDate(inputDate: string): string {
   ];
 
   let date = new Date(inputDate);
-  let day = date.getDate();
-  let monthIndex = date.getMonth();
+  let day = date.getUTCDate();
+  let monthIndex = date.getUTCMonth();
   let month = monthNames[monthIndex];
-  let year = date.getFullYear();
+  let year = date.getUTCFullYear();
 
   return `${month} ${day}, ${year}`;
 }
