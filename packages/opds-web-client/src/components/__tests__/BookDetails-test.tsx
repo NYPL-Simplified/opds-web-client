@@ -87,7 +87,7 @@ describe("BookDetails", () => {
     let svg = itemIcon.find(AudioHeadphoneIcon);
 
     expect(svg.length).to.equal(1);
-    expect(itemIcon.render().text()).to.equal("Audio/Headphone Icon Audio");
+    expect(itemIcon.render().text()).to.equal("Format: Audio/Headphone Icon Audio");
   });
 
   it("doesn't show publisher when there isn't one", () => {
