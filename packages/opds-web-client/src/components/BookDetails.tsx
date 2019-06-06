@@ -17,43 +17,43 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
           <div className="cover">
             <BookCover book={this.props.book} />
           </div>
-          <div className="header">
+          <div className="details">
             <h1 className="title">{this.props.book.title}</h1>
             {
               this.props.book.subtitle &&
-              <h3 className="subtitle">{ this.props.book.subtitle }</h3>
+              <p className="subtitle">{ this.props.book.subtitle }</p>
             }
             {
               this.props.book.series && this.props.book.series.name &&
-              <h3 className="series">{ this.props.book.series.name }</h3>
+              <p className="series">{ this.props.book.series.name }</p>
             }
             {
-              this.props.book.authors && this.props.book.authors.length &&
-              <h2 className="authors">By {this.props.book.authors.join(", ")}</h2>
+              this.props.book.authors && this.props.book.authors.length > 0 &&
+              <p className="authors">By {this.props.book.authors.join(", ")}</p>
             }
             {
-              this.props.book.contributors && this.props.book.contributors.length &&
-              <h2 className="contributors">Contributors: {this.props.book.contributors.join(", ")}</h2>
+              this.props.book.contributors && this.props.book.contributors.length > 0 &&
+              <p className="contributors">Contributors: {this.props.book.contributors.join(", ")}</p>
             }
-            <div className="fields" lang="en">
+            <ul className="fields" lang="en">
               { fields.map(field =>
-                field.value ? <div className={field.name.toLowerCase().replace(" ", "-")} key={field.name}>{field.name}: {field.value}</div> : null
+                field.value &&
+                  <li className={field.name.toLowerCase().replace(" ", "-")} key={field.name}>
+                    {field.name}: {field.value}
+                  </li>
               ) }
-            </div>
-            {
-              medium && (
-                <div className="item-icon-container">{this.getMediumSVG(medium)}</div>
-              )
-            }
+              {
+                medium && (
+                  <li className="item-icon-container">{this.getMediumSVG(medium)}</li>
+                )
+              }
+            </ul>
           </div>
         </div>
         <div className="divider"></div>
-        <div
-          className="main">
+        <div className="main">
           <div className="row">
-            <div className="col-sm-3">
-            </div>
-            <div className="top col-sm-6">
+            <div className="top col-sm-6 col-sm-offset-3">
               <div className="circulation-links">
                 { this.circulationLinks() }
               </div>
@@ -66,6 +66,7 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
             </div>
           </div>
 
+          <h2>Summary</h2> 
           <div className="summary" lang={this.props.book.language}
                dangerouslySetInnerHTML={{ __html: this.props.book.summary }}></div>
         </div>

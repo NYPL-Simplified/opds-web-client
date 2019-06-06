@@ -1,5 +1,3 @@
-@import "variables";
-
 .book-details {
   .top {
     display: table-row;
@@ -12,7 +10,7 @@
     vertical-align: top;
   }
 
-  .header {
+  .details {
     display: table-cell;
     vertical-align: top;
     text-align: left;
@@ -22,20 +20,24 @@
       margin: 0px;
     }
 
-    h3 {
+    .subtitle,
+    .series {
       margin-top: 0.5em;
       font-size: 1.5em;
     }
 
-    h2 {
+    .authors,
+    .contributors {
       margin-top: 0.5em;
-      font-size: 1.5em;
+      font-size: 1.2em;
     }
 
     .fields {
-      margin-top: 2em;
+      margin-top: 1em;
       color: $pagetextcolor;
       font-size: 1em;
+      list-style: none;
+      padding-left: 0;
     }
 
     .item-icon-container {
