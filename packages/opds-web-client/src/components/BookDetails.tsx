@@ -44,7 +44,7 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
               ) }
               {
                 medium && (
-                  <li className="item-icon-container">Format: {this.getMediumSVG(medium)}</li>
+                  <li className="item-icon-container">{this.getMediumSVG(medium)}</li>
                 )
               }
             </ul>
