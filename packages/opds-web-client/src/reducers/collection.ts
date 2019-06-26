@@ -9,6 +9,7 @@ export interface CollectionState {
   isFetchingPage: boolean;
   error: FetchErrorData;
   history: LinkData[];
+  pageUrl?: string;
 }
 
 const initialState: CollectionState = {
@@ -20,7 +21,7 @@ const initialState: CollectionState = {
   history: []
 };
 
-const collection = (state = initialState, action) => {
+const collection = (state = initialState, action): CollectionState => {
   switch (action.type) {
     case ActionCreator.COLLECTION_REQUEST:
       return {

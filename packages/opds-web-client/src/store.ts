@@ -23,7 +23,7 @@ export default function buildStore(initialState?: State, authPlugins?: AuthPlugi
   if (persistState) {
     composeArgs.push(persistState("preferences"));
   }
-  return createStore<State>(
+  return createStore(
     reducers,
     initialState,
     compose.apply(this, composeArgs)
