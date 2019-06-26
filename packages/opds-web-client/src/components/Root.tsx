@@ -409,7 +409,7 @@ export class Root extends React.Component<RootProps, RootState> {
   }
 }
 
-let connectOptions = { withRef: true, pure: false };
+let connectOptions = { pure: false };
 const ConnectedRoot = connect(
   mapStateToProps,
   mapDispatchToProps,
