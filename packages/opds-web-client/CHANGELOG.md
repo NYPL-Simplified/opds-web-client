@@ -1,5 +1,8 @@
 ## Changelog
 
+### v0.2.5
+- Updated the app to use Redux 4.
+
 ### v0.2.4
 - Updating the headings on the Book Details page.
 
