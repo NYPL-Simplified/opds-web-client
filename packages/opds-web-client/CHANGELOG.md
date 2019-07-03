@@ -1,5 +1,8 @@
 ## Changelog
 
+### v0.2.6
+- Update the opds-feed-parser to version 0.0.17.
+
 ### v0.2.5
 - Updated the app to use Redux 4.
 
