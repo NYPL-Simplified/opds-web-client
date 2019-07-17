@@ -145,7 +145,7 @@ describe("Collection", () => {
           listButton: viewToggleButtons.at(1),
           books: wrapper.find(".books")
         };
-      }
+      };
       let { viewToggleButtons, gridButton, listButton, books } = getElements();
 
       expect(viewToggleButtons.length).to.equal(2);

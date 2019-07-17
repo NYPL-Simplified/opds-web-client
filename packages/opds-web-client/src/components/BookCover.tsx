@@ -30,18 +30,18 @@ export default class BookCover extends React.Component<BookCoverProps, BookCover
   }
 
   render() {
-    if (this.props.book.imageUrl && !this.state.error) {
+    let { title, authors, imageUrl } = this.props.book;
+    if (imageUrl && !this.state.error) {
       return (
         <img
-          src={this.props.book.imageUrl}
+          src={imageUrl}
           onError={this.handleError}
           className="book-cover"
+          role="presentation"
           alt=""
           />
       );
     }
-
-    let { title, authors } = this.props.book;
 
     let titleFontSize = this.computeFontSize(title, 40);
     let authorFontSize = this.computeFontSize(authors.join(", "), 25);

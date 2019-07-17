@@ -1,5 +1,8 @@
 ## Changelog
 
+### v0.2.7
+- Added `tslint-react-a11y` to check for accessibility issues in the React components.
+
 ### v0.2.6
 - Update the opds-feed-parser to version 0.0.17.
 
