@@ -165,7 +165,7 @@ export class Root extends React.Component<RootProps, RootState> {
                   </li>
                   <li>
                   { this.props.isSignedIn &&
-                    <a onClick={this.props.clearAuthCredentials}>Sign Out</a>
+                    <button onClick={this.props.clearAuthCredentials}>Sign Out</button>
                   }
                   </li>
                 </ul>

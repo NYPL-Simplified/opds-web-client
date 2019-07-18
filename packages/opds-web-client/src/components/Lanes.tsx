@@ -33,9 +33,7 @@ export class Lanes extends React.Component<LanesProps, {}> {
       <div className="lanes">
         { this.props.isFetching &&
           <div className="spinner">
-            <img
-              src={spinner}
-              />
+            <img src={spinner} role="presentation" alt="" />
           </div>
         }
 

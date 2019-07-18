@@ -154,15 +154,24 @@ a {
     margin: 0;
   }
 
-  .navbar-nav>li>a {
-    color: white;
-    text-decoration: underline;
-    padding-top: 15px;
-    padding-bottom: 15px;
-
-    &:hover, &:focus {
+  .navbar-nav > li {
+    & > a,
+    & > button {
       color: white;
-      text-decoration: none;
+      text-decoration: underline;
+      padding-top: 15px;
+      padding-bottom: 15px;
+
+      &:hover, &:focus {
+        color: white;
+        text-decoration: none;
+      }
+    }
+
+    & > button {
+      background: transparent;
+      border: none;
+      padding-top: 14px;
     }
   }
 }

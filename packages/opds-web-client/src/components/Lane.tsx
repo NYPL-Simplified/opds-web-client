@@ -49,9 +49,13 @@ export default class Lane extends React.Component<LaneProps, LaneState> {
 
         <div ref="container" className="lane-books-container">
           { !this.state.atLeft &&
-            <div className="scroll-button left" aria-label={"Scroll back in " + this.props.lane.title} onClick={this.scrollBack}>
+            <button
+              className="scroll-button left"
+              aria-label={"Scroll back in " + this.props.lane.title}
+              onClick={this.scrollBack}
+            >
               &#9665;
-            </div>
+            </button>
           }
           <ul
             ref="list"
@@ -78,9 +82,13 @@ export default class Lane extends React.Component<LaneProps, LaneState> {
             }
           </ul>
           { !this.state.atRight &&
-            <div className="scroll-button right" aria-label={"Scroll forward in " + this.props.lane.title} onClick={this.scrollForward}>
+            <button
+              className="scroll-button right"
+              aria-label={"Scroll forward in " + this.props.lane.title}
+              onClick={this.scrollForward}
+            >
               &#9655;
-            </div>
+            </button>
           }
         </div>
       </div>

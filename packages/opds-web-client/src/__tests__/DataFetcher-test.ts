@@ -176,6 +176,6 @@ describe("DataFetcher", () => {
         });
 
       fetchMock.restore();
-    })
+    });
   });
 });

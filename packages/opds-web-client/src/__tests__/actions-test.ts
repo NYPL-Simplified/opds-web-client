@@ -22,7 +22,7 @@ let mockActions = new ActionCreator(mockFetcher);
 let fetcher = new DataFetcher();
 let actions = new ActionCreator(fetcher);
 
-interface mockNumber {
+interface MockNumber {
   test: number;
 }
 
@@ -99,11 +99,11 @@ describe("actions", () => {
 
     it("dispatches request, load, and success", async () => {
       const dispatch = stub();
-      const testData: mockNumber = { test: 1 };
+      const testData: MockNumber = { test: 1 };
       fetchMock.mock(url, { status: 200, body: testData });
 
-      const data = await actions.fetchJSON<mockNumber>(type, url)(dispatch);
-      
+      const data = await actions.fetchJSON<MockNumber>(type, url)(dispatch);
+
       // fetch tests
       expect(fetchMock.calls().length).to.equal(1);
       const fetchargs = fetchMock.calls();
@@ -124,9 +124,9 @@ describe("actions", () => {
         url,
         { status: 200, body: () => Promise.reject("nope") }
       );
-      
+
       try {
-        await actions.fetchJSON<mockNumber>(type, url)(dispatch);
+        await actions.fetchJSON<MockNumber>(type, url)(dispatch);
         // shouldn't get here
         expect(false).to.equal(true);
       } catch (err) {
@@ -151,7 +151,7 @@ describe("actions", () => {
       );
 
       try {
-        await actions.fetchJSON<mockNumber>(type, url)(dispatch);
+        await actions.fetchJSON<MockNumber>(type, url)(dispatch);
         // shouldn't get here
         expect(false).to.equal(true);
       } catch (err) {
@@ -175,7 +175,7 @@ describe("actions", () => {
       );
 
       try {
-        await actions.fetchJSON<mockNumber>(type, url)(dispatch);
+        await actions.fetchJSON<MockNumber>(type, url)(dispatch);
         // shouldn't get here
         expect(false).to.equal(true);
       } catch (err) {

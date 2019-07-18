@@ -1,4 +1,5 @@
 {
+    "extends": ["tslint-react-a11y"],
     "rules": {
         "class-name": true,
         "comment-format": [

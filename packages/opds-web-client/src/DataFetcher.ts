@@ -53,7 +53,7 @@ export default class DataFetcher {
               headers: response.headers
             });
           }
-          
+
           parser.parse(text).then((parsedData: OPDSFeed | OPDSEntry) => {
             resolve(this.adapter(parsedData, url));
           }).catch(err => {
