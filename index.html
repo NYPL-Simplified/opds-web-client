@@ -1,0 +1,784 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>opds-web-client</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">opds-web-client</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1> opds-web-client</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#opds-web-client" id="opds-web-client" style="color: inherit; text-decoration: none;">
+					<h1>opds-web-client</h1>
+				</a>
+				<p>JavaScript OPDS web client</p>
+				<a href="#standalone-app" id="standalone-app" style="color: inherit; text-decoration: none;">
+					<h2>Standalone App</h2>
+				</a>
+				<p>OPDS Web Client can be run as a standalone app mounted in a DOM element:</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">new</span> OPDSWebClient(config, elementId);</code></pre>
+				<p>For an example of OPDS Web Client in use as a standalone app, see the <a href="packages/server/views/index.html.ejs">demo server template</a> included in this repository.</p>
+				<p><em>NOTE</em>: The web reader has been taken out of the demo server template for now as it is causing build issues. If you want to install it locally and use it for testing, uncomment line 17 in <code>/packages/server/index.js</code>, and install it in the <code>/packages/server</code> directory:</p>
+				<pre><code class="language-bash"> $ npm install --save nypl-simplified-webpub-viewer</code></pre>
+				<a href="#standalone-config-options" id="standalone-config-options" style="color: inherit; text-decoration: none;">
+					<h3>Standalone Config Options</h3>
+				</a>
+				<ul>
+					<li><code>pathFor(collectionUrl: string, bookUrl: string) =&gt; string</code>: required function that accepts a collection URL and book URL and returns a string that will become the web browser&#39;s relative URL upon navigating to a new collection or book</li>
+					<li><code>pathPattern</code>: a react-router <a href="reactjs/react-router/blob/master/docs/Glossary.md#routepattern">RoutePattern</a> representing how to map a web browser URL to a collectionUrl and bookUrl. Default: <code>/(collection/:collectionUrl/)(book/:bookUrl/)</code></li>
+					<li><code>collectionUrl</code>: optional initial URL of an OPDS feed to load. Default: <code>null</code> (allow user to enter URL)</li>
+					<li><code>bookUrl</code>: optional initial URL of an OPDS Entry to load. Default: <code>null</code></li>
+					<li><code>proxyUrl</code>: optional local proxy path to which all remote URLs will be posted. Default: <code>undefined</code></li>
+					<li><code>pageTitleTemplate(collectionTitle: string, bookTitle: string) =&gt; string</code>: optional function that accepts a collection and book title and returns an HTML page title. Default: <code>undefined</code></li>
+					<li><code>authPlugins</code>: optional list of objects that implement the <a href="packages/opds-web-client/src/AuthPlugin.ts"><code>AuthPlugin</code> interface</a>. Default: <a href="packages/opds-web-client/src/BasicAuthPlugin.ts"><code>[BasicAuthPlugin]</code></a></li>
+					<li><code>computeBreadcrumbs</code>: optional function for customizing breadcrumbs. It defaults to <code>defaultComputeBreadcrumbs</code> in the <a href="packages/opds-web-client/src/components/Breadcrumbs.tsx">Breadcrumbs</a> module, and <code>hierarchyComputeBreacrumbs</code> is also available. It should return an array of link objects, each with <code>url</code> and <code>text</code> properties. Its accepts two arguments:<ul>
+							<li><code>collection</code>: object representing the current collection data (see <code>CollectionData</code> in the <a href="packages/opds-web-client/src/interfaces.ts">interfaces file</a>)</li>
+							<li><code>history</code>: an array of link objects (each with <code>url</code> and <code>text</code> properties) that is appended every time the user navigates to a new collection</li>
+						</ul>
+					</li>
+					<li><code>epubReaderUrlTemplate(epubUrl: string) =&gt; string</code>: optional function that returns a URL where you can read an EPUB file.</li>
+					<li><code>allLanguageSearch</code>: optional string to specify if searches in the catalog should not use the browser&#39;s language header in requests. Default: <code>false</code></li>
+				</ul>
+				<a href="#react-component" id="react-component" style="color: inherit; text-decoration: none;">
+					<h2>React Component</h2>
+				</a>
+				<p>The application is also available as a reusable React component:</p>
+				<pre><code class="language-jsx"><span class="hljs-keyword">import</span> OPDSCatalog <span class="hljs-keyword">from</span> <span class="hljs-string">"opds-web-client"</span>;
+
+ReactDOM.render(
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">OPDSCatalog</span>
+    <span class="hljs-attr">collectionUrl</span>=<span class="hljs-string">{this.props.collectionUrl}</span>
+    <span class="hljs-attr">bookUrl</span>=<span class="hljs-string">{this.props.bookUrl}</span>
+    <span class="hljs-attr">pageTitleTemplate</span>=<span class="hljs-string">{this.pageTitleTemplate}</span>
+    <span class="hljs-attr">BookDetailsContainer</span>=<span class="hljs-string">{BookDetailsContainer}</span>
+    <span class="hljs-attr">Header</span>=<span class="hljs-string">{Header}</span>
+    /&gt;</span>
+);</span></code></pre>
+				<p>For an example of the application in use as a React component, see [NYPL-Simplified/circulation-web].</p>
+				<a href="#react-component-props" id="react-component-props" style="color: inherit; text-decoration: none;">
+					<h3>React Component Props</h3>
+				</a>
+				<ul>
+					<li><code>collectionUrl</code>: optional URL of an OPDS Acquisition or Navigation feed to load. Default: <code>null</code></li>
+					<li><code>bookUrl</code>: optional URL of an OPDS Entry to load. Default: <code>null</code></li>
+					<li><code>pageTitleTemplate(collectionTitle: string, bookTitle: string) =&gt; string</code>: optional function that accepts a collection and book title and returns an HTML page title. Default: <code>undefined</code></li>
+					<li><code>Header</code>: optional custom React component class to render in place of the client&#39;s default header. This <code>Header</code> will receive three props, <code>collectionTitle</code>, <code>bookTitle</code>, and a <code>CatalogLink</code> which should be used for links to collections or books that the client should load, and one child, a <code>Search</code> component that will only be present when the loaded collection links to an Open Search Description document. Default: <code>undefined</code></li>
+					<li><code>BookDetailsContainer</code>: optional custom React component class to render in place of the client&#39;s default <code>BookDetails</code> component. This <code>BookDetailsContainer</code> will receive three props: the current <code>collectionUrl</code> and <code>bookUrl</code>, and <code>refreshCatalog</code>, a function that can be called to refresh the collection and/or book. <code>BookDetailsContainer</code> will also receive the default rendered <code>BookDetails</code> component as a child. Default: <code>undefined</code></li>
+					<li><code>authPlugins</code>: same as in &quot;Standalone Config Options&quot; above</li>
+					<li><code>computeBreadcrumbs</code>: same as in &quot;Standalone Config Options&quot; above</li>
+					<li><code>epubReaderUrlTemplate</code>: same as in &quot;Standalone Config Options&quot; above</li>
+				</ul>
+				<a href="#react-component-context" id="react-component-context" style="color: inherit; text-decoration: none;">
+					<h3>React Component Context</h3>
+				</a>
+				<p>The OPDSCatalog React component should be rendered within a <a href="https://facebook.github.io/react/docs/context.html">React context</a> that includes two items:</p>
+				<ul>
+					<li><code>router</code>: any object that implements the <code>push</code>, <code>createHref</code>, and <code>isActive</code> methods of react-router&#39;s <a href="https://github.com/reactjs/react-router/blob/master/docs/API.md#contextrouter">context.router</a></li>
+					<li><code>pathFor(collectionUrl: string, bookUrl: string) =&gt; string</code>: a function that accepts a collection URL and book URL and returns a string that will become the web browser&#39;s relative URL upon navigating to a new collection or book</li>
+				</ul>
+				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
+					<h2>License</h2>
+				</a>
+				<pre><code>Copyright © 2015 The New York Public Library, Astor, Lenox, and Tilden Foundations
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not <span class="hljs-keyword">use</span> this <span class="hljs-keyword">file</span> <span class="hljs-keyword">except</span> <span class="hljs-keyword">in</span> compliance <span class="hljs-keyword">with</span> the License.
+You may obtain a copy <span class="hljs-keyword">of</span> the License <span class="hljs-keyword">at</span>
+
+   <span class="hljs-keyword">http</span>://www.apache.org/licenses/LICENSE<span class="hljs-number">-2.0</span>
+
+Unless <span class="hljs-keyword">required</span> <span class="hljs-keyword">by</span> applicable law <span class="hljs-keyword">or</span> agreed <span class="hljs-keyword">to</span> <span class="hljs-keyword">in</span> writing, software
+<span class="hljs-keyword">distributed</span> <span class="hljs-keyword">under</span> the License <span class="hljs-keyword">is</span> <span class="hljs-keyword">distributed</span> <span class="hljs-keyword">on</span> an <span class="hljs-string">"AS IS"</span> BASIS,
+<span class="hljs-keyword">WITHOUT</span> WARRANTIES <span class="hljs-keyword">OR</span> CONDITIONS <span class="hljs-keyword">OF</span> <span class="hljs-keyword">ANY</span> KIND, either express <span class="hljs-keyword">or</span> implied.
+See the License <span class="hljs-keyword">for</span> the specific <span class="hljs-keyword">language</span> governing permissions <span class="hljs-keyword">and</span>
+limitations <span class="hljs-keyword">under</span> the License.</code></pre>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-class">
+						<a href="classes/actioncreator.html" class="tsd-kind-icon">Action<wbr>Creator</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/authproviderselectionform.html" class="tsd-kind-icon">Auth<wbr>Provider<wbr>Selection<wbr>Form</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/basicauthbutton.html" class="tsd-kind-icon">Basic<wbr>Auth<wbr>Button</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/basicauthform.html" class="tsd-kind-icon">Basic<wbr>Auth<wbr>Form</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/book.html" class="tsd-kind-icon">Book</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/bookcover.html" class="tsd-kind-icon">Book<wbr>Cover</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/bookdetails.html" class="tsd-kind-icon">Book<wbr>Details</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/borrowbutton.html" class="tsd-kind-icon">Borrow<wbr>Button</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/breadcrumbs.html" class="tsd-kind-icon">Breadcrumbs</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/cataloglink.html" class="tsd-kind-icon">Catalog<wbr>Link</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/collection.html" class="tsd-kind-icon">Collection</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/datafetcher.html" class="tsd-kind-icon">Data<wbr>Fetcher</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/downloadbutton.html" class="tsd-kind-icon">Download<wbr>Button</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/errormessage.html" class="tsd-kind-icon">Error<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/facetgroup.html" class="tsd-kind-icon">Facet<wbr>Group</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/lane.html" class="tsd-kind-icon">Lane</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/lanemorelink.html" class="tsd-kind-icon">Lane<wbr>More<wbr>Link</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/lanes.html" class="tsd-kind-icon">Lanes</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/loadingindicator.html" class="tsd-kind-icon">Loading<wbr>Indicator</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/mockdatafetcher.html" class="tsd-kind-icon">Mock<wbr>Data<wbr>Fetcher</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/opdscatalog.html" class="tsd-kind-icon">OPDSCatalog</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/opdswebclient.html" class="tsd-kind-icon">OPDSWeb<wbr>Client</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/opensearchdescriptionparser.html" class="tsd-kind-icon">Open<wbr>Search<wbr>Description<wbr>Parser</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/root.html" class="tsd-kind-icon">Root</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/search.html" class="tsd-kind-icon">Search</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/skipnavigationlink.html" class="tsd-kind-icon">Skip<wbr>Navigation<wbr>Link</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/urlform.html" class="tsd-kind-icon">Url<wbr>Form</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/authbuttonprops.html" class="tsd-kind-icon">Auth<wbr>Button<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/authcallback.html" class="tsd-kind-icon">Auth<wbr>Callback</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/authcredentials.html" class="tsd-kind-icon">Auth<wbr>Credentials</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/authdata.html" class="tsd-kind-icon">Auth<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/authformprops.html" class="tsd-kind-icon">Auth<wbr>Form<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/authmethod.html" class="tsd-kind-icon">Auth<wbr>Method</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/authplugin.html" class="tsd-kind-icon">Auth<wbr>Plugin</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/authprovider.html" class="tsd-kind-icon">Auth<wbr>Provider</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/authproviderselectionformprops.html" class="tsd-kind-icon">Auth<wbr>Provider<wbr>Selection<wbr>Form<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/authproviderselectionformstate.html" class="tsd-kind-icon">Auth<wbr>Provider<wbr>Selection<wbr>Form<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/authstate.html" class="tsd-kind-icon">Auth<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/basicauthformprops.html" class="tsd-kind-icon">Basic<wbr>Auth<wbr>Form<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/basicauthformstate.html" class="tsd-kind-icon">Basic<wbr>Auth<wbr>Form<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/basicauthmethod.html" class="tsd-kind-icon">Basic<wbr>Auth<wbr>Method</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/bookcoverprops.html" class="tsd-kind-icon">Book<wbr>Cover<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/bookcoverstate.html" class="tsd-kind-icon">Book<wbr>Cover<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/bookdata.html" class="tsd-kind-icon">Book<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/bookdetailscontainerprops.html" class="tsd-kind-icon">Book<wbr>Details<wbr>Container<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/bookdetailsprops.html" class="tsd-kind-icon">Book<wbr>Details<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/bookprops.html" class="tsd-kind-icon">Book<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/bookstate.html" class="tsd-kind-icon">Book<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/borrowbuttonprops.html" class="tsd-kind-icon">Borrow<wbr>Button<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/breadcrumbsprops.html" class="tsd-kind-icon">Breadcrumbs<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/cataloglinkprops.html" class="tsd-kind-icon">Catalog<wbr>Link<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/collectioncontainerprops.html" class="tsd-kind-icon">Collection<wbr>Container<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/collectiondata.html" class="tsd-kind-icon">Collection<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/collectionprops.html" class="tsd-kind-icon">Collection<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/collectionstate.html" class="tsd-kind-icon">Collection<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/computebreadcrumbs.html" class="tsd-kind-icon">Compute<wbr>Breadcrumbs</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/datafetcherconfig.html" class="tsd-kind-icon">Data<wbr>Fetcher<wbr>Config</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/downloadbuttonprops.html" class="tsd-kind-icon">Download<wbr>Button<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/errormessageprops.html" class="tsd-kind-icon">Error<wbr>Message<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/facetdata.html" class="tsd-kind-icon">Facet<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/facetgroupdata.html" class="tsd-kind-icon">Facet<wbr>Group<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/facetgroupprops.html" class="tsd-kind-icon">Facet<wbr>Group<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/fetcherrordata.html" class="tsd-kind-icon">Fetch<wbr>Error<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/footerprops.html" class="tsd-kind-icon">Footer<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/headerprops.html" class="tsd-kind-icon">Header<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/lanedata.html" class="tsd-kind-icon">Lane<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/lanemorelinkprops.html" class="tsd-kind-icon">Lane<wbr>More<wbr>Link<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/laneprops.html" class="tsd-kind-icon">Lane<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/lanestate.html" class="tsd-kind-icon">Lane<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/lanesprops.html" class="tsd-kind-icon">Lanes<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/linkdata.html" class="tsd-kind-icon">Link<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter">
+						<a href="interfaces/loadaction.html" class="tsd-kind-icon">Load<wbr>Action</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/loansstate.html" class="tsd-kind-icon">Loans<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/location.html" class="tsd-kind-icon">Location</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-not-exported">
+						<a href="interfaces/mocknumber.html" class="tsd-kind-icon">Mock<wbr>Number</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/navigatecontext.html" class="tsd-kind-icon">Navigate<wbr>Context</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/opdscatalogprops.html" class="tsd-kind-icon">OPDSCatalog<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/pathfor.html" class="tsd-kind-icon">Path<wbr>For</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/preferencesstate.html" class="tsd-kind-icon">Preferences<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/requesterror.html" class="tsd-kind-icon">Request<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/requestrejector.html" class="tsd-kind-icon">Request<wbr>Rejector</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/rootprops.html" class="tsd-kind-icon">Root<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/rootstate.html" class="tsd-kind-icon">Root<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/router.html" class="tsd-kind-icon">Router</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/searchdata.html" class="tsd-kind-icon">Search<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/searchprops.html" class="tsd-kind-icon">Search<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/skipnavigationlinkprops.html" class="tsd-kind-icon">Skip<wbr>Navigation<wbr>Link<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/state.html" class="tsd-kind-icon">State</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/stateprops.html" class="tsd-kind-icon">State<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/urlformprops.html" class="tsd-kind-icon">Url<wbr>Form<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#connectedlanes" class="tsd-kind-icon">Connected<wbr>Lanes</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#connectedroot" class="tsd-kind-icon">Connected<wbr>Root</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#cookie" class="tsd-kind-icon">Cookie</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#actions" class="tsd-kind-icon">actions</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#alteredstate" class="tsd-kind-icon">altered<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#books" class="tsd-kind-icon">books</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#clearauthcredentialsstub" class="tsd-kind-icon">clear<wbr>Auth<wbr>Credentials<wbr>Stub</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#createdompurify" class="tsd-kind-icon">createDOMPurify</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#doc" class="tsd-kind-icon">doc</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#downloadmock" class="tsd-kind-icon">download<wbr>Mock</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#fetchbookstub" class="tsd-kind-icon">fetch<wbr>Book<wbr>Stub</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#fetchcollectionstub" class="tsd-kind-icon">fetch<wbr>Collection<wbr>Stub</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#fetchmock" class="tsd-kind-icon">fetch<wbr>Mock</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#fetcher" class="tsd-kind-icon">fetcher</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#hideauthformstub" class="tsd-kind-icon">hide<wbr>Auth<wbr>Form<wbr>Stub</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#longhistory" class="tsd-kind-icon">long<wbr>History</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#mockactions" class="tsd-kind-icon">mock<wbr>Actions</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#mockfetcher" class="tsd-kind-icon">mock<wbr>Fetcher</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#mocksetcollectionandbook" class="tsd-kind-icon">mock<wbr>Set<wbr>Collection<wbr>And<wbr>Book</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#persiststate" class="tsd-kind-icon">persist<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#reducers" class="tsd-kind-icon">reducers</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#sanitizehtml" class="tsd-kind-icon">sanitize<wbr>Html</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#seedrandom" class="tsd-kind-icon">seedrandom</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#setcollectionandbookpromise" class="tsd-kind-icon">set<wbr>Collection<wbr>And<wbr>Book<wbr>Promise</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#showauthformstub" class="tsd-kind-icon">show<wbr>Auth<wbr>Form<wbr>Stub</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#teststate" class="tsd-kind-icon">test<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#thunk" class="tsd-kind-icon">thunk</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#ungroupedcollectiondata" class="tsd-kind-icon">ungrouped<wbr>Collection<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#win" class="tsd-kind-icon">win</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#xmlparser" class="tsd-kind-icon">xml<wbr>Parser</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#opdscatalogrouterhandler" class="tsd-kind-icon">OPDSCatalog<wbr>Router<wbr>Handler</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#opdslinktolinkdata" class="tsd-kind-icon">OPDSLink<wbr>ToLink<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#acquisitionfeed" class="tsd-kind-icon">acquisition<wbr>Feed</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#acquisitionlink" class="tsd-kind-icon">acquisition<wbr>Link</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#adapter" class="tsd-kind-icon">adapter</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#addcollection" class="tsd-kind-icon">add<wbr>Collection</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#addlink" class="tsd-kind-icon">add<wbr>Link</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#artworklink" class="tsd-kind-icon">artwork<wbr>Link</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#buildinitialstate" class="tsd-kind-icon">build<wbr>Initial<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#buildstore" class="tsd-kind-icon">build<wbr>Store</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#category" class="tsd-kind-icon">category</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#collection" class="tsd-kind-icon">collection</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#collectionlink" class="tsd-kind-icon">collection<wbr>Link</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#contributor" class="tsd-kind-icon">contributor</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#createfetchcollectionandbook" class="tsd-kind-icon">create<wbr>Fetch<wbr>Collection<wbr>And<wbr>Book</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#dedupebooks" class="tsd-kind-icon">dedupe<wbr>Books</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#defaultcomputebreadcrumbs" class="tsd-kind-icon">default<wbr>Compute<wbr>Breadcrumbs</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#dispatch" class="tsd-kind-icon">dispatch</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#download" class="tsd-kind-icon">download</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#entry" class="tsd-kind-icon">entry</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#entrytobook" class="tsd-kind-icon">entry<wbr>ToBook</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#entrytolink" class="tsd-kind-icon">entry<wbr>ToLink</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#facetlink" class="tsd-kind-icon">facet<wbr>Link</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#feedtocollection" class="tsd-kind-icon">feed<wbr>ToCollection</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#fetchcollectionandbook" class="tsd-kind-icon">fetch<wbr>Collection<wbr>And<wbr>Book</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#findbookincollection" class="tsd-kind-icon">find<wbr>Book<wbr>InCollection</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#formatdate" class="tsd-kind-icon">format<wbr>Date</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#hierarchycomputebreadcrumbs" class="tsd-kind-icon">hierarchy<wbr>Compute<wbr>Breadcrumbs</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#link" class="tsd-kind-icon">link</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#mapdispatchtoprops" class="tsd-kind-icon">map<wbr>Dispatch<wbr>ToProps</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#mapstatetoprops" class="tsd-kind-icon">map<wbr>State<wbr>ToProps</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#mergelanesprops" class="tsd-kind-icon">merge<wbr>Lanes<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#mergerootprops" class="tsd-kind-icon">merge<wbr>Root<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#mockrouter" class="tsd-kind-icon">mock<wbr>Router</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#mockroutercontext" class="tsd-kind-icon">mock<wbr>Router<wbr>Context</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#navigationfeed" class="tsd-kind-icon">navigation<wbr>Feed</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#newcollectionisnewroot" class="tsd-kind-icon">new<wbr>Collection<wbr>IsNew<wbr>Root</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#newcollectionisoldcollection" class="tsd-kind-icon">new<wbr>Collection<wbr>IsOld<wbr>Collection</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#newcollectionisoldroot" class="tsd-kind-icon">new<wbr>Collection<wbr>IsOld<wbr>Root</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#newrootisnotoldroot" class="tsd-kind-icon">new<wbr>Root<wbr>IsNot<wbr>Old<wbr>Root</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#noop" class="tsd-kind-icon">noop</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#onlyroot" class="tsd-kind-icon">only<wbr>Root</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#searchlink" class="tsd-kind-icon">search<wbr>Link</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#shelflink" class="tsd-kind-icon">shelf<wbr>Link</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#shorten" class="tsd-kind-icon">shorten</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#shouldaddroot" class="tsd-kind-icon">should<wbr>Add<wbr>Root</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#shouldclear" class="tsd-kind-icon">should<wbr>Clear</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#summary" class="tsd-kind-icon">summary</a>
+					</li>
+					<li class=" tsd-kind-object-literal">
+						<a href="globals.html#basicauthplugin" class="tsd-kind-icon">Basic<wbr>Auth<wbr>Plugin</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="globals.html#basiccollection" class="tsd-kind-icon">basic<wbr>Collection</a>
+					</li>
+					<li class=" tsd-kind-object-literal">
+						<a href="globals.html#book" class="tsd-kind-icon">book</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="globals.html#bookdata" class="tsd-kind-icon">book<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="globals.html#collectiondata" class="tsd-kind-icon">collection<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="globals.html#connectoptions" class="tsd-kind-icon">connect<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="globals.html#fourthlink" class="tsd-kind-icon">fourth<wbr>Link</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="globals.html#groupedcollectiondata" class="tsd-kind-icon">grouped<wbr>Collection<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="globals.html#initialstate" class="tsd-kind-icon">initial<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="globals.html#lanedata" class="tsd-kind-icon">lane<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="globals.html#loansdata" class="tsd-kind-icon">loans<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="globals.html#rootlink" class="tsd-kind-icon">root<wbr>Link</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="globals.html#secondlink" class="tsd-kind-icon">second<wbr>Link</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="globals.html#testdata" class="tsd-kind-icon">test<wbr>Data</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="globals.html#thirdlink" class="tsd-kind-icon">third<wbr>Link</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
