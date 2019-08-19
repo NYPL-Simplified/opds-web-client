@@ -11,5 +11,5 @@ deploy:
   keep-history: true
   github_token: $GITHUB_TOKEN
   on:
-    branch: master
+    branch: typedoc
   local_dir: packages/opds-web-client/docs
