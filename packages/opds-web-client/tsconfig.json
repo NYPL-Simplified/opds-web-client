@@ -12,5 +12,9 @@
   },
   "exclude": [
     "node_modules"
-  ]
+  ],
+  "typedocOptions": {
+    "mode": "file",
+    "out": "docs"
+  }
 }

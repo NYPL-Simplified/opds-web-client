@@ -1,3 +1,15 @@
 language: node_js
 node_js:
   - "8"
+
+before_script:
+- npm run build-docs
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  keep-history: true
+  github_token: $GITHUB_TOKEN
+  on:
+    branch: master
+  local_dir: packages/opds-web-client/docs

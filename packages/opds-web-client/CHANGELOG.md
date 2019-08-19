@@ -1,5 +1,8 @@
 ## Changelog
 
+### v0.2.8
+- Added Typedoc for code documentation of React components and related classes and functions.
+
 ### v0.2.7
 - Added `tslint-react-a11y` to check for accessibility issues in the React components.
 

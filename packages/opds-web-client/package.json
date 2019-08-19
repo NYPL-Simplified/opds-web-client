@@ -1,6 +1,6 @@
 {
   "name": "opds-web-client",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "OPDS web client",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -16,7 +16,8 @@
     "test-file": "npm run lint && tsc && cp -r src/stylesheets lib && mocha --require lib/testHelper.js",
     "dev": "webpack-dev-server --progress --history-api-fallback --hot --content-base build --port 8090 --config webpack.dev.config",
     "prod": "webpack -p --progress --display-modules --config webpack.prod.config && rm -rf dist/lib",
-    "prepublish": "rm -rf lib && tsc && cp -r src/stylesheets lib && npm run prod"
+    "prepublish": "rm -rf lib && tsc && cp -r src/stylesheets lib && npm run prod",
+    "build-docs": "typedoc --tsconfig tsconfig.json"
   },
   "dependencies": {
     "@nypl/dgx-svg-icons": "^0.3.4",
@@ -64,6 +65,7 @@
     "ts-loader": "^4.3.1",
     "tslint": "^4.0.0",
     "tslint-react-a11y": "^1.0.0",
+    "typedoc": "^0.15.0",
     "typescript": "2.7.2",
     "url-loader": "^0.5.9",
     "webpack": "^4.29.6",
