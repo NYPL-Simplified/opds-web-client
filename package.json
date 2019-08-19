@@ -16,6 +16,7 @@
     "dev": "npm run dev-build | npm run dev-serve",
     "prod": "cd packages/opds-web-client && npm run prod && cd ../server && npm run start",
     "start": "cd packages/server && npm run start",
-    "release": "cd packages/opds-web-client && npm publish"
+    "release": "cd packages/opds-web-client && npm publish",
+    "build-docs": "cd packages/opds-web-client && npm run build-docs"
   }
 }

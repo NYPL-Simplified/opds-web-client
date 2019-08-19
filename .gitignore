@@ -7,8 +7,8 @@ packages/opds-web-client/lib
 # Bundled JS
 dist
 
-# TypeScript definitions
-packages/opds-web-client/typings/*
+# TypeScript Docs
+packages/opds-web-client/docs
 
 # Temporary files
 *~
