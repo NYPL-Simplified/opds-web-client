@@ -7,12 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="apple-touch-icon" href="cover.jpg" type="image/jpeg">
-    <link rel="stylesheet" href="styles/css/main.css">
-    <script src="require.js"></script>
-    <script src="fetch.js"></script>
-    <script src="url.js"></script>
-    <script src="promise.js"></script>
-    <script src="webpub-viewer.js"></script>
+    <link rel="stylesheet" href="../viewer/main.css">
+    <script src="../viewer/require.js"></script>
+    <script src="../viewer/webpub-viewer.js"></script>
   </head>
   <body>
   <div id="viewer">
@@ -34,8 +31,8 @@
       return params;
     };
 
-    require(["LocalStorageStore", "ServiceWorkerCacher", "IFrameNavigator", "ColumnsPaginatedBookView", "ScrollingBookView", "LocalAnnotator", "BookSettings"],
-            function (LocalStorageStore, ServiceWorkerCacher, IFrameNavigator, ColumnsPaginatedBookView, ScrollingBookView, LocalAnnotator, BookSettings) {
+    require(["LocalStorageStore", "ServiceWorkerCacher", "IFrameNavigator", "PublisherFont", "SerifFont", "SansFont", "DayTheme", "SepiaTheme", "NightTheme", "ColumnsPaginatedBookView", "ScrollingBookView", "LocalAnnotator", "BookSettings"],
+            function (LocalStorageStore, ServiceWorkerCacher, IFrameNavigator, PublisherFont, SerifFont, SansFont, DayTheme, SepiaTheme, NightTheme, ColumnsPaginatedBookView, ScrollingBookView, LocalAnnotator, BookSettings) {
       var element = document.getElementById("viewer");
       var urlParams = getURLQueryParams();
       var webpubManifestUrl = new URL(urlParams['url']);
@@ -50,22 +47,29 @@
           new URL("styles/css/main.css", window.location.href),
           new URL("require.js", window.location.href),
           new URL("fetch.js", window.location.href),
-          new URL("url.js", window.location.href),
-          new URL("promise.js", window.location.href),
           new URL("webpub-viewer.js", window.location.href)
         ]
       });
+      var publisher = new PublisherFont.default();
+      var serif = new SerifFont.default();
+      var sans = new SansFont.default();
+      var day = new DayTheme.default();
+      var sepia = new SepiaTheme.default();
+      var night = new NightTheme.default();
       var paginator = new ColumnsPaginatedBookView.default();
       var scroller = new ScrollingBookView.default();
       var annotator = new LocalAnnotator.default({ store: store });
       var settingsStore = new LocalStorageStore.default({ prefix: "opds-web-client" });
       var fontSizes = [ 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32 ];
       var defaultFontSize = 20;
+      var upLink = {url: new URL("https://github.com/nypl-simplified/opds-web-client"), label: "NYPL", ariaLabel: "Go back to the Github repository"};
       BookSettings.default.create({
         store: settingsStore,
         bookViews: [paginator, scroller],
         fontSizesInPixels: fontSizes,
-        defaultFontSizeInPixels: defaultFontSize
+        defaultFontSizeInPixels: defaultFontSize,
+        bookFonts: [publisher, serif, sans],
+        bookThemes: [day, sepia, night]
       }).then(function (settings) {
         IFrameNavigator.default.create({
           element: element,
@@ -75,7 +79,15 @@
           settings: settings,
           annotator: annotator,
           paginator: paginator,
-          scroller: scroller
+          scroller: scroller,
+          publisher: publisher,
+          serif: serif,
+          sans: sans,
+          day: day,
+          sepia: sepia,
+          night: night,
+          upLink: upLink,
+          allowFullscreen: true
         });
       });
     });
