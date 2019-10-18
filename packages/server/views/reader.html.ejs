@@ -31,25 +31,12 @@
       return params;
     };
 
-    require(["LocalStorageStore", "ServiceWorkerCacher", "IFrameNavigator", "PublisherFont", "SerifFont", "SansFont", "DayTheme", "SepiaTheme", "NightTheme", "ColumnsPaginatedBookView", "ScrollingBookView", "LocalAnnotator", "BookSettings"],
-            function (LocalStorageStore, ServiceWorkerCacher, IFrameNavigator, PublisherFont, SerifFont, SansFont, DayTheme, SepiaTheme, NightTheme, ColumnsPaginatedBookView, ScrollingBookView, LocalAnnotator, BookSettings) {
+    require(["LocalStorageStore", "IFrameNavigator", "PublisherFont", "SerifFont", "SansFont", "DayTheme", "SepiaTheme", "NightTheme", "ColumnsPaginatedBookView", "ScrollingBookView", "LocalAnnotator", "BookSettings"],
+            function (LocalStorageStore, IFrameNavigator, PublisherFont, SerifFont, SansFont, DayTheme, SepiaTheme, NightTheme, ColumnsPaginatedBookView, ScrollingBookView, LocalAnnotator, BookSettings) {
       var element = document.getElementById("viewer");
       var urlParams = getURLQueryParams();
       var webpubManifestUrl = new URL(urlParams['url']);
       var store = new LocalStorageStore.default({ prefix: webpubManifestUrl.href });
-      var cacher = new ServiceWorkerCacher.default({
-        store: store,
-        manifestUrl: webpubManifestUrl,
-        serviceWorkerUrl: new URL("sw.js", window.location.href),
-        staticFileUrls: [
-          new URL(window.location.href),
-          new URL("index.html", window.location.href),
-          new URL("styles/css/main.css", window.location.href),
-          new URL("require.js", window.location.href),
-          new URL("fetch.js", window.location.href),
-          new URL("webpub-viewer.js", window.location.href)
-        ]
-      });
       var publisher = new PublisherFont.default();
       var serif = new SerifFont.default();
       var sans = new SansFont.default();
@@ -75,7 +62,6 @@
           element: element,
           manifestUrl: webpubManifestUrl,
           store: store,
-          cacher: cacher,
           settings: settings,
           annotator: annotator,
           paginator: paginator,
