@@ -29,7 +29,7 @@ export default (state: LoansState = initialState, action): LoansState => {
     case ActionCreator.CLEAR_AUTH_CREDENTIALS:
       // Clear auth credentials should remove the authenticated
       // user's loans as well.
-      return { ...state, books: [] };
+      return {...state, books: [] };
 
     case ActionCreator.UPDATE_BOOK_LOAD:
       // A book has been updated, so the loans feed is now outdated.

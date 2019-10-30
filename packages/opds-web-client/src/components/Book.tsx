@@ -208,7 +208,7 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
       );
       links.push(
         <BorrowButton
-          key="borrowed-button"
+          key={this.props.book.borrowUrl}
           className="btn btn-default borrowed-button"
           disabled={true}
           borrow={this.borrow}>
