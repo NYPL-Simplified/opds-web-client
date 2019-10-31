@@ -123,9 +123,13 @@ export class Root extends React.Component<RootProps, RootState> {
     // The tabs should only display if the component is passed and if
     // the catalog is being displayed and not a book.
     let showCollectionContainer = !!CollectionContainer && !showBook;
-    let facetGroups = this.props.collectionData ?
-      this.props.collectionData.facetGroups : [];
     let allLanguageSearch = this.props.allLanguageSearch;
+    let hasError = this.props.error && (!this.props.auth || !this.props.auth.showForm);
+    let errorMessage = "";
+    if (hasError) {
+      errorMessage = `Could not fetch data: ${this.props.error.url}\n
+        ${this.props.error.response}`;
+    }
 
     return (
       <div className="catalog">
@@ -198,9 +202,9 @@ export class Root extends React.Component<RootProps, RootState> {
               close={() => { this.setState({ authError: null }); }} />
           }
 
-          { this.props.error && (!this.props.auth || !this.props.auth.showForm) &&
+          { hasError &&
             <ErrorMessage
-              message={"Could not fetch data: " + this.props.error.url}
+              message={errorMessage}
               retry={this.props.retryCollectionAndBook} />
           }
 

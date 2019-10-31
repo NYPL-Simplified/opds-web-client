@@ -299,6 +299,7 @@ describe("Root", () => {
 
     let error = wrapper.find(ErrorMessage);
     expect(error.props().message).to.contain(fetchError.url);
+    expect(error.props().message).to.contain(fetchError.response);
     expect(error.props().retry).to.equal(retry);
   });
 

@@ -37,10 +37,22 @@ export default class DataFetcher {
     this.proxyUrl = config.proxyUrl;
     this.adapter = config.adapter;
     this.authKey = "authCredentials";
+
+    if (!this.adapter) {
+      console.error("No adapter has been configured.");
+    }
   }
 
   fetchOPDSData(url: string) {
     let parser = new OPDSParser;
+
+    if (!this.adapter) {
+      return Promise.reject({
+        status: null,
+        response: "No adapter has been configured in DataFetcher.",
+        url
+      });
+    }
 
     return new Promise((resolve, reject: RequestRejector) => {
       this.fetch(url).then(response => {
