@@ -28,6 +28,7 @@ export default class Lane extends React.Component<LaneProps, LaneState> {
     this.state = { atLeft: true, atRight: false };
     this.scrollBack = this.scrollBack.bind(this);
     this.scrollForward = this.scrollForward.bind(this);
+    this.updateScrollButtons = this.updateScrollButtons.bind(this);
   }
 
   render(): JSX.Element {
@@ -182,8 +183,8 @@ export default class Lane extends React.Component<LaneProps, LaneState> {
   componentDidMount() {
     let list = this.refs["list"] as any;
     if (list) {
-      list.addEventListener("scroll", this.updateScrollButtons.bind(this));
-      window.addEventListener("resize", this.updateScrollButtons.bind(this));
+      list.addEventListener("scroll", this.updateScrollButtons);
+      window.addEventListener("resize", this.updateScrollButtons);
       this.updateScrollButtons();
     }
   }
@@ -191,8 +192,8 @@ export default class Lane extends React.Component<LaneProps, LaneState> {
   componentWillUnmount() {
     let list = this.refs["list"] as any;
     if (list) {
-      list.removeEventListener("scroll", this.updateScrollButtons.bind(this));
-      window.removeEventListener("resize", this.updateScrollButtons.bind(this));
+      list.removeEventListener("scroll", this.updateScrollButtons);
+      window.removeEventListener("resize", this.updateScrollButtons);
     }
   }
 }

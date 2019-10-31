@@ -6,6 +6,7 @@ import DataFetcher from "../DataFetcher";
 const Cookie = require("js-cookie");
 
 describe("DataFetcher", () => {
+  const adapter = (data, url) => "adapter";
   describe("fetch()", () => {
     beforeEach(() => {
       fetchMock
@@ -23,7 +24,7 @@ describe("DataFetcher", () => {
         data: { test: "test" },
         credentials: "same-origin"
       };
-      let fetcher = new DataFetcher();
+      let fetcher = new DataFetcher({ adapter });
       fetcher.fetch("test-url", options);
       let fetchArgs = fetchMock.calls();
 
@@ -40,7 +41,7 @@ describe("DataFetcher", () => {
         method: "POST",
         data: { test: "test" }
       };
-      let fetcher = new DataFetcher();
+      let fetcher = new DataFetcher({ adapter });
       fetcher.fetch("test-url", options);
       let fetchArgs = fetchMock.calls();
 
@@ -79,7 +80,7 @@ describe("DataFetcher", () => {
       let formDataStub = stub(window, "FormData").callsFake(() => new MockFormData());
 
       let proxyUrl = "http://example.com";
-      let fetcher = new DataFetcher({ proxyUrl });
+      let fetcher = new DataFetcher({ proxyUrl, adapter });
       fetcher.fetch("test-url");
       let fetchArgs = fetchMock.calls();
 
@@ -92,7 +93,7 @@ describe("DataFetcher", () => {
     });
 
     it("prepares auth headers", () => {
-      let fetcher = new DataFetcher();
+      let fetcher = new DataFetcher({ adapter });
       let credentials = { provider: "test", credentials: "credentials" };
       fetcher.getAuthCredentials = () => credentials;
       fetcher.fetch("test-url");
@@ -103,27 +104,27 @@ describe("DataFetcher", () => {
 
   describe("Auth Credentials", () => {
     it("doesn't set auth credentials if there are none", () => {
-      let fetcher = new DataFetcher();
+      let fetcher = new DataFetcher({ adapter });
       fetcher.setAuthCredentials(undefined);
       expect(Cookie.get(fetcher.authKey)).to.deep.equal(undefined);
     });
 
     it("sets auth credentials", () => {
-      let fetcher = new DataFetcher();
+      let fetcher = new DataFetcher({ adapter });
       let credentials = { provider: "test", credentials: "credentials" };
       fetcher.setAuthCredentials(credentials);
       expect(Cookie.get(fetcher.authKey)).to.deep.equal(JSON.stringify(credentials));
     });
 
     it("gets auth credentials", () => {
-      let fetcher = new DataFetcher();
+      let fetcher = new DataFetcher({ adapter });
       let credentials = { provider: "test", credentials: "credentials" };
       Cookie.set(fetcher.authKey, JSON.stringify(credentials));
       expect(fetcher.getAuthCredentials()).to.deep.equal(credentials);
     });
 
     it("clears auth credentials", () => {
-      let fetcher = new DataFetcher();
+      let fetcher = new DataFetcher({ adapter });
       let credentials = { provider: "test", credentials: "credentials" };
       Cookie.set(fetcher.authKey, JSON.stringify(credentials));
       fetcher.clearAuthCredentials();
@@ -132,11 +133,23 @@ describe("DataFetcher", () => {
   });
 
   describe("fetchOPDSData()", () => {
+    it("rejects and returns an error if the adapter isn't configured", async () => {
+      let fetcher = new DataFetcher();
+
+      // No need to mock a fetch response since it should not reach that point.
+      await fetcher.fetchOPDSData("test-url")
+        .catch(err => {
+          expect(err.status).to.equal(null);
+          expect(err.response).to.equal("No adapter has been configured in DataFetcher.");
+          expect(err.url).to.equal("test-url");
+        });
+    });
+
     it("throws error if response isn't 200", async () => {
       fetchMock
         .mock("test-url", { status: 401, body: "unauthorized" });
 
-      let fetcher = new DataFetcher();
+      let fetcher = new DataFetcher({ adapter });
       await fetcher.fetchOPDSData("test-url")
         .catch(err => {
           expect(err.status).to.equal(401);
@@ -151,7 +164,7 @@ describe("DataFetcher", () => {
       fetchMock
         .mock("test-url", { status: 200, body: "not OPDS" });
 
-      let fetcher = new DataFetcher();
+      let fetcher = new DataFetcher({ adapter });
       await fetcher.fetchOPDSData("test-url")
         .catch(err => {
           expect(err.status).to.equal(null);
@@ -169,7 +182,7 @@ describe("DataFetcher", () => {
           { status: 500, body: "nope" }
         );
 
-      let fetcher = new DataFetcher();
+      let fetcher = new DataFetcher({ adapter });
       await fetcher.fetchOPDSData("test-url")
         .catch(err => {
           expect(err.response).to.equal("nope");
