@@ -66,6 +66,15 @@ class OPDSWebClient {
 
   render() {
     let RouteHandler = this.RouteHandler;
+
+    // `react-axe` should only run in development and testing mode.
+    // Running this is resource intensive and should only be used to test
+    // for accessibility and not while active development.
+    if (process.env.TEST_AXE === "true") {
+      let axe = require("react-axe");
+      axe(React, ReactDOM, 1000);
+    }
+
     ReactDOM.render(
       <Router history={browserHistory}>
         <Route path={this.pathPattern} component={RouteHandler} />

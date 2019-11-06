@@ -7,7 +7,12 @@ module.exports = {
     new CleanWebpackPlugin(),
     // jsdom is needed for server rendering, but causes errors
     // in the browser even if it is never used, so we ignore it:
-    new webpack.IgnorePlugin(/jsdom$/)
+    new webpack.IgnorePlugin(/jsdom$/),
+    // Set a local global variable in the app that will be used only
+    // for testing AXE in development mode.
+    new webpack.DefinePlugin({
+      "process.env.TEST_AXE": JSON.stringify(process.env.TEST_AXE)
+    })
   ],
 
   module: {

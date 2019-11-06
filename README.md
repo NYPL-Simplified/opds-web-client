@@ -68,6 +68,12 @@ The OPDSCatalog React component should be rendered within a [React context](http
 - `router`: any object that implements the `push`, `createHref`, and `isActive` methods of react-router's [context.router](https://reacttraining.com/react-router/core/api/contextrouter)
 - `pathFor(collectionUrl: string, bookUrl: string) => string`: a function that accepts a collection URL and book URL and returns a string that will become the web browser's relative URL upon navigating to a new collection or book
 
+## Accessibility
+
+In order to develop user interfaces that are accessible to everyone, there are tools added to the workflow. Besides the Typescript `tslint-react-a11y` plugin (in `/packages/opds-web-client/tslint.json`), `react-axe` is also installed for local development. Using that module while running the app uses a lot of resources so it should be only when specifically testing for accessibility and not while actively developing new features or fixing bugs.
+
+In order to run the app with `react-axe`, run `npm run dev-test-axe`. This will add a local global variable `process.env.TEST_AXE` (through webpack) that will trigger `react-axe` in `/packages/opds-web-client/src/app.tsx`. The output will be seen in the _browser's_ console terminal.
+
 ## License
 
 ```
