@@ -14,6 +14,7 @@
     "dev-serve": "cd packages/server && npm run dev",
     "dev-build": "cd packages/opds-web-client && npm run dev",
     "dev": "npm run dev-build | npm run dev-serve",
+    "dev-test-axe": "TEST_AXE=true npm run dev",
     "prod": "cd packages/opds-web-client && npm run prod && cd ../server && npm run start",
     "start": "cd packages/server && npm run start",
     "release": "cd packages/opds-web-client && npm publish",

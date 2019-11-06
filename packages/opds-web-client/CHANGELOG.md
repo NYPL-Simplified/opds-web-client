@@ -1,5 +1,8 @@
 ## Changelog
 
+### v0.2.10
+- Added `react-axe` to test for accessibility.
+
 ### v0.2.9
 - Fixed function binding issue that caused a TypeError when resizing the window.
 - Added error handler in DataFetcher if an adapter is not configured.
