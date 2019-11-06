@@ -132,6 +132,11 @@ ReactDOM.render(
 					<li><code>router</code>: any object that implements the <code>push</code>, <code>createHref</code>, and <code>isActive</code> methods of react-router&#39;s <a href="https://reacttraining.com/react-router/core/api/contextrouter">context.router</a></li>
 					<li><code>pathFor(collectionUrl: string, bookUrl: string) =&gt; string</code>: a function that accepts a collection URL and book URL and returns a string that will become the web browser&#39;s relative URL upon navigating to a new collection or book</li>
 				</ul>
+				<a href="#accessibility" id="accessibility" style="color: inherit; text-decoration: none;">
+					<h2>Accessibility</h2>
+				</a>
+				<p>In order to develop user interfaces that are accessible to everyone, there are tools added to the workflow. Besides the Typescript <code>tslint-react-a11y</code> plugin (in <code>/packages/opds-web-client/tslint.json</code>), <code>react-axe</code> is also installed for local development. Using that module while running the app uses a lot of resources so it should be only when specifically testing for accessibility and not while actively developing new features or fixing bugs.</p>
+				<p>In order to run the app with <code>react-axe</code>, run <code>npm run dev-test-axe</code>. This will add a local global variable <code>process.env.TEST_AXE</code> (through webpack) that will trigger <code>react-axe</code> in <code>/packages/opds-web-client/src/app.tsx</code>. The output will be seen in the <em>browser&#39;s</em> console terminal.</p>
 				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
 					<h2>License</h2>
 				</a>
