@@ -9,7 +9,7 @@ import {
 import BookDetails from "./BookDetails";
 import LoadingIndicator from "./LoadingIndicator";
 import ErrorMessage from "./ErrorMessage";
-import AuthProviderSelectionForm  from "./AuthProviderSelectionForm";
+import AuthProviderSelectionForm from "./AuthProviderSelectionForm";
 import Search from "./Search";
 import Breadcrumbs, {
   ComputeBreadcrumbs, defaultComputeBreadcrumbs
@@ -135,7 +135,7 @@ export class Root extends React.Component<RootProps, RootState> {
       <div className="catalog">
         <SkipNavigationLink target="#main" />
 
-        { Header ?
+        {Header ?
           <Header
             collectionTitle={collectionTitle}
             bookTitle={bookTitle}
@@ -143,13 +143,13 @@ export class Root extends React.Component<RootProps, RootState> {
             isSignedIn={this.props.isSignedIn}
             fetchLoans={this.props.fetchLoans}
             clearAuthCredentials={this.props.clearAuthCredentials}>
-            { showSearch &&
+            {showSearch &&
               <Search
                 url={this.props.collectionData.search.url}
                 searchData={this.props.collectionData.search.searchData}
                 fetchSearchDescription={this.props.fetchSearchDescription}
                 allLanguageSearch={allLanguageSearch}
-                />
+              />
             }
           </Header> :
           <nav className="header navbar navbar-default" role="navigation">
@@ -158,7 +158,7 @@ export class Root extends React.Component<RootProps, RootState> {
                 OPDS Web Client
               </span>
 
-              { this.props.loansUrl &&
+              {this.props.loansUrl &&
                 <ul className="nav navbar-nav">
                   <li>
                     <CatalogLink
@@ -168,9 +168,9 @@ export class Root extends React.Component<RootProps, RootState> {
                     </CatalogLink>
                   </li>
                   <li>
-                  { this.props.isSignedIn &&
-                    <button onClick={this.props.clearAuthCredentials}>Sign Out</button>
-                  }
+                    {this.props.isSignedIn &&
+                      <button onClick={this.props.clearAuthCredentials}>Sign Out</button>
+                    }
                   </li>
                 </ul>
               }
@@ -178,41 +178,41 @@ export class Root extends React.Component<RootProps, RootState> {
           </nav>
         }
 
-        { (showBreadcrumbs || showSearch) &&
+        {(showBreadcrumbs || showSearch) &&
           <div className="breadcrumbs-or-search-wrapper">
-            { showBreadcrumbs &&
+            {showBreadcrumbs &&
               <Breadcrumbs links={breadcrumbsLinks} currentLink={!!showBook} />
             }
-            { showSearch &&
+            {showSearch &&
               <Search
                 url={this.props.collectionData.search.url}
                 searchData={this.props.collectionData.search.searchData}
                 fetchSearchDescription={this.props.fetchSearchDescription}
                 allLanguageSearch={allLanguageSearch}
-                />
+              />
             }
           </div>
         }
 
         <main id="main" className="main" role="main" tabIndex={-1}>
 
-          { this.state.authError &&
+          {this.state.authError &&
             <ErrorMessage
               message={this.state.authError}
               close={() => { this.setState({ authError: null }); }} />
           }
 
-          { hasError &&
+          {hasError &&
             <ErrorMessage
               message={errorMessage}
               retry={this.props.retryCollectionAndBook} />
           }
 
-          { (this.props.isFetchingCollection || this.props.isFetchingBook) &&
+          {(this.props.isFetchingCollection || this.props.isFetchingBook) &&
             <LoadingIndicator />
           }
 
-          { this.props.auth && this.props.auth.showForm &&
+          {this.props.auth && this.props.auth.showForm &&
             <AuthProviderSelectionForm
               saveCredentials={this.props.saveAuthCredentials}
               hide={this.props.closeErrorAndHideAuthForm}
@@ -222,67 +222,48 @@ export class Root extends React.Component<RootProps, RootState> {
               error={this.props.auth.error}
               attemptedProvider={this.props.auth.attemptedProvider}
               providers={this.props.auth.providers}
-              />
+            />
           }
 
-          { showUrlForm &&
+          {showUrlForm &&
             <UrlForm collectionUrl={this.props.collectionUrl} />
           }
 
-          <div className="body">
-            { showBookWrapper &&
-              <div className="book-details-wrapper">
-                { showBook &&
-                  ( BookDetailsContainer && (this.props.bookUrl || this.props.bookData.url) ?
-                    <BookDetailsContainer
-                      book={this.loanedBookData(this.props.bookData, this.props.bookUrl)}
-                      bookUrl={this.props.bookUrl || this.props.bookData.url}
-                      collectionUrl={this.props.collectionUrl}
-                      refreshCatalog={this.props.refreshCollectionAndBook}
-                      >
-                      <BookDetails
-                        book={this.loanedBookData(this.props.bookData, this.props.bookUrl)}
-                        updateBook={this.props.updateBook}
-                        fulfillBook={this.props.fulfillBook}
-                        indirectFulfillBook={this.props.indirectFulfillBook}
-                        isSignedIn={this.props.isSignedIn}
-                        epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
-                        />
-                    </BookDetailsContainer> :
-                    <div className="without-container">
-                      <BookDetails
-                        book={this.loanedBookData(this.props.bookData, this.props.bookUrl)}
-                        updateBook={this.props.updateBook}
-                        fulfillBook={this.props.fulfillBook}
-                        indirectFulfillBook={this.props.indirectFulfillBook}
-                        isSignedIn={this.props.isSignedIn}
-                        epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
-                        />
-                    </div>
-                  )
-                }
+          {showBookWrapper &&
+            showBook &&
+            (BookDetailsContainer && (this.props.bookUrl || this.props.bookData.url) ?
+              <BookDetailsContainer
+                book={this.loanedBookData(this.props.bookData, this.props.bookUrl)}
+                bookUrl={this.props.bookUrl || this.props.bookData.url}
+                collectionUrl={this.props.collectionUrl}
+                refreshCatalog={this.props.refreshCollectionAndBook}
+              >
+                <BookDetails
+                  book={this.loanedBookData(this.props.bookData, this.props.bookUrl)}
+                  updateBook={this.props.updateBook}
+                  fulfillBook={this.props.fulfillBook}
+                  indirectFulfillBook={this.props.indirectFulfillBook}
+                  isSignedIn={this.props.isSignedIn}
+                  epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
+                />
+              </BookDetailsContainer> :
+              <div className="without-container">
+                <BookDetails
+                  book={this.loanedBookData(this.props.bookData, this.props.bookUrl)}
+                  updateBook={this.props.updateBook}
+                  fulfillBook={this.props.fulfillBook}
+                  indirectFulfillBook={this.props.indirectFulfillBook}
+                  isSignedIn={this.props.isSignedIn}
+                  epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
+                />
               </div>
-            }
+            )
+          }
 
-            { showCollection ?
-              (showCollectionContainer ?
-                <CollectionContainer>
-                  <Collection
-                    collection={this.collectionDataWithLoans()}
-                    fetchPage={this.props.fetchPage}
-                    isFetchingCollection={this.props.isFetchingCollection}
-                    isFetchingBook={this.props.isFetchingBook}
-                    isFetchingPage={this.props.isFetchingPage}
-                    error={this.props.error}
-                    updateBook={this.props.updateBook}
-                    fulfillBook={this.props.fulfillBook}
-                    indirectFulfillBook={this.props.indirectFulfillBook}
-                    isSignedIn={this.props.isSignedIn}
-                    epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
-                    preferences={this.props.preferences}
-                    setPreference={this.props.setPreference}
-                  />
-                </CollectionContainer> :
+
+          {showCollection ?
+            (showCollectionContainer ?
+              <CollectionContainer>
                 <Collection
                   collection={this.collectionDataWithLoans()}
                   fetchPage={this.props.fetchPage}
@@ -297,11 +278,26 @@ export class Root extends React.Component<RootProps, RootState> {
                   epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
                   preferences={this.props.preferences}
                   setPreference={this.props.setPreference}
-                />) : null
-            }
-          </div>
+                />
+              </CollectionContainer> :
+              <Collection
+                collection={this.collectionDataWithLoans()}
+                fetchPage={this.props.fetchPage}
+                isFetchingCollection={this.props.isFetchingCollection}
+                isFetchingBook={this.props.isFetchingBook}
+                isFetchingPage={this.props.isFetchingPage}
+                error={this.props.error}
+                updateBook={this.props.updateBook}
+                fulfillBook={this.props.fulfillBook}
+                indirectFulfillBook={this.props.indirectFulfillBook}
+                isSignedIn={this.props.isSignedIn}
+                epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
+                preferences={this.props.preferences}
+                setPreference={this.props.setPreference}
+              />) : null
+          }
         </main>
-        { showFooter &&
+        {showFooter &&
           <footer>
             <Footer collection={this.props.collectionData} />
           </footer>
@@ -368,7 +364,7 @@ export class Root extends React.Component<RootProps, RootState> {
     this.showRelativeBook(1);
   }
 
-  showRelativeBook (relativeIndex: number) {
+  showRelativeBook(relativeIndex: number) {
     if (this.context.router && this.props.collectionData && this.props.bookData) {
       let books = this.props.collectionData.lanes.reduce((books, lane) => {
         return books.concat(lane.books);

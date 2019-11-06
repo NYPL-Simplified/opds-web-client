@@ -3,7 +3,7 @@ import * as moment from "moment";
 import BookCover from "./BookCover";
 import Book, { BookProps } from "./Book";
 
-export interface BookDetailsProps extends BookProps {};
+export interface BookDetailsProps extends BookProps { };
 
 /** Detail page for a single book. */
 export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
@@ -21,11 +21,11 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
             <h1 className="title">{this.props.book.title}</h1>
             {
               this.props.book.subtitle &&
-              <p className="subtitle">{ this.props.book.subtitle }</p>
+              <p className="subtitle">{this.props.book.subtitle}</p>
             }
             {
               this.props.book.series && this.props.book.series.name &&
-              <p className="series">{ this.props.book.series.name }</p>
+              <p className="series">{this.props.book.series.name}</p>
             }
             {
               this.props.book.authors && this.props.book.authors.length > 0 &&
@@ -36,12 +36,12 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
               <p className="contributors">Contributors: {this.props.book.contributors.join(", ")}</p>
             }
             <ul className="fields" lang="en">
-              { fields.map(field =>
+              {fields.map(field =>
                 field.value &&
-                  <li className={field.name.toLowerCase().replace(" ", "-")} key={field.name}>
-                    {field.name}: {field.value}
-                  </li>
-              ) }
+                <li className={field.name.toLowerCase().replace(" ", "-")} key={field.name}>
+                  {field.name}: {field.value}
+                </li>
+              )}
               {
                 medium && (
                   <li className="item-icon-container">{this.getMediumSVG(medium)}</li>
@@ -55,25 +55,27 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
           <div className="row">
             <div className="top col-sm-6 col-sm-offset-3">
               <div className="circulation-links">
-                { this.circulationLinks() }
+                {this.circulationLinks()}
               </div>
               <div className="circulation-info">
-                { this.circulationInfo() }
+                {this.circulationInfo()}
               </div>
             </div>
             <div className="right-column-links col-sm-3">
-              { this.rightColumnLinks() }
+              {this.rightColumnLinks()}
             </div>
           </div>
 
-          <h2>Summary</h2> 
+          <h2>Summary</h2>
           <div className="summary" lang={this.props.book.language}
-               dangerouslySetInnerHTML={{ __html: this.props.book.summary }}></div>
+            dangerouslySetInnerHTML={{ __html: this.props.book.summary }}></div>
         </div>
       </div>
     );
   }
 
+  // @todo: remove these manual inline style settings. Makes it difficult
+  // for consuming packages to use this one.
   componentDidMount() {
     this.setBodyOverflow("hidden");
   }
@@ -102,7 +104,7 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
       if (availableUntil) {
         let timeLeft = moment(availableUntil).fromNow(true);
         return [(
-          <div key="loan" className="loan-info">You have this book on loan for { timeLeft }.</div>
+          <div key="loan" className="loan-info">You have this book on loan for {timeLeft}.</div>
         )];
       }
       return [];
@@ -116,10 +118,10 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
     let holdsPosition = (this.props.book.holds && this.props.book.holds.position);
 
     if (availableCopies !== undefined && availableCopies !== null
-          && totalCopies !== undefined && totalCopies !== null) {
+      && totalCopies !== undefined && totalCopies !== null) {
       info.push(
         <div key="copies" className="copies-info">
-          { availableCopies } of { totalCopies } copies available
+          {availableCopies} of {totalCopies} copies available
         </div>
       );
     }
@@ -127,13 +129,13 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
     if (totalHolds && availableCopies === 0) {
       info.push(
         <div key="holds" className="holds-info">
-          { totalHolds } patrons in hold queue
+          {totalHolds} patrons in hold queue
         </div>
       );
       if (this.isReserved() && holdsPosition !== undefined && holdsPosition !== null) {
         info.push(
           <div key="holds-position" className="holds-info">
-            Your holds position: { holdsPosition }
+            Your holds position: {holdsPosition}
           </div>
         );
       }
@@ -147,5 +149,5 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
    * Not used in this app but can be overridden to add links on the
    * right column, such as adding links to report a problem.
    */
-  rightColumnLinks(): any {}
+  rightColumnLinks(): any { }
 }
