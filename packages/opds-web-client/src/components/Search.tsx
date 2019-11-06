@@ -1,5 +1,5 @@
 import * as React from "react";
-import { PropTypes } from "prop-types";
+import * as PropTypes from "prop-types";
 import { SearchData, NavigateContext } from "../interfaces";
 
 export interface SearchProps extends SearchData, React.HTMLProps<Search> {
@@ -16,7 +16,7 @@ export default class Search extends React.Component<SearchProps, {}> {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  static contextTypes: React.ValidationMap<NavigateContext> = {
+  static contextTypes: React.ValidationMap<{}> = {
     router: PropTypes.object.isRequired,
     pathFor: PropTypes.func.isRequired
   };
@@ -24,7 +24,7 @@ export default class Search extends React.Component<SearchProps, {}> {
   render(): JSX.Element {
     return (
       <div className="search" role="search">
-        { this.props.searchData && (
+        {this.props.searchData && (
           <form onSubmit={this.onSubmit} className={this.props.className || "form-inline"}>
             <input
               className="form-control"

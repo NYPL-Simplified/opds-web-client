@@ -21,11 +21,11 @@ export default class DownloadButton extends React.Component<DownloadButtonProps,
   render() {
     // Only get the props needed for the anchor or button element.
     const { ref, url, mimeType, isPlainLink, fulfill,
-      indirectFulfill, indirectType, title, ...props } = this.props;
+      indirectFulfill, indirectType, title, type, ...props } = this.props;
 
     return (
       <span>
-        { this.props.isPlainLink ?
+        {this.props.isPlainLink ?
           <a
             className="btn btn-default download-button"
             {...props}

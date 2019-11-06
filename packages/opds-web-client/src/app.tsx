@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { PropTypes } from "prop-types";
+import * as PropTypes from "prop-types";
 import { Router, Route, browserHistory } from "react-router";
 import OPDSCatalog from "./components/OPDSCatalog";
 import { RootProps } from "./components/Root";
@@ -17,8 +17,8 @@ const OPDSCatalogRouterHandler = (config) => {
     params?: OPDSCatalogParams;
   }
   class OPDSCatalogRoute extends React.Component<OPDSCatalogProps, {}> {
-    static contextTypes: {
-      router: PropTypes.object.isRequired
+    static contextTypes = {
+      router: PropTypes.object.isRequired,
     };
 
     static childContextTypes: React.ValidationMap<{}> = {

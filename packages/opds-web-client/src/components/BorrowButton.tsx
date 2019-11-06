@@ -6,7 +6,10 @@ export interface BorrowButtonProps extends React.HTMLProps<{}> {
 
 export default class BorrowButton extends React.Component<BorrowButtonProps, {}> {
   render() {
-    const { ref, borrow, children, ...props } = this.props;
+    const { ref, borrow, children,
+      // pull this off so we can safely spread the rest
+      type,
+      ...props } = this.props;
 
     return (
       <button

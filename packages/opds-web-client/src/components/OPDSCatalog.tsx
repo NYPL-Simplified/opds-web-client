@@ -1,5 +1,5 @@
 import * as React from "react";
-import { PropTypes } from "prop-types";
+import * as PropTypes from "prop-types";
 import * as Redux from "redux";
 import Root, { RootProps } from "./Root";
 import buildStore from "../store";
@@ -23,7 +23,7 @@ export default class OPDSCatalog extends React.Component<OPDSCatalogProps, {}> {
   store: Redux.Store<State>;
   context: NavigateContext;
 
-  static contextTypes: React.ValidationMap<NavigateContext> = {
+  static contextTypes: React.ValidationMap<{}> = {
     router: PropTypes.object.isRequired,
     pathFor: PropTypes.func.isRequired
   };
