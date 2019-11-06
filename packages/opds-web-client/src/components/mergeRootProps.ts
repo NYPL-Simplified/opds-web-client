@@ -29,6 +29,7 @@ export function mapStateToProps(state, ownProps) {
     collectionUrl: ownProps.collectionUrl,
     bookUrl: ownProps.bookUrl,
     loansUrl: state.loans.url,
+    loansData: state.loans.loansData,
     loans: state.loans.books,
     auth: state.auth,
     isSignedIn: !!state.auth.credentials,
@@ -45,6 +46,7 @@ export function mapDispatchToProps(dispatch) {
         fetchPage: (url: string) => dispatch(actions.fetchPage(url)),
         fetchBook: (url: string) => dispatch(actions.fetchBook(url)),
         loadBook: (book: BookData, url: string) => dispatch(actions.loadBook(book, url)),
+        loadCollection: (data: CollectionData) => dispatch(actions.loadCollection(data)),
         clearCollection: () => dispatch(actions.clearCollection()),
         clearBook: () => dispatch(actions.clearBook()),
         fetchSearchDescription: (url: string) => dispatch(actions.fetchSearchDescription(url)),
@@ -120,6 +122,15 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
         } else {
           resolve(stateProps.collectionData);
         }
+      } else if (url === stateProps.loansUrl && stateProps.loans.length) {
+        const loansData = Object.assign({}, stateProps.loansData);
+        // Need to keep the existing breadcrumb link and in order to do so,
+        // a new object is created for the loan collection.
+        loansData["catalogRootLink"] = stateProps.collectionData.catalogRootLink;
+        // Need to clear the current collection first.
+        dispatchProps.clearCollection();
+        dispatchProps.loadCollection(loansData);
+        resolve(stateProps.loansData);
       } else {
         // if url is changed, either fetch or clear collection
         if (url) {

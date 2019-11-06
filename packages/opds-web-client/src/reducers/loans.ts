@@ -4,11 +4,13 @@ import ActionCreator from "../actions";
 export interface LoansState {
   url: string;
   books: BookData[];
+  loansData: any;
 }
 
 const initialState: LoansState = {
   url: null,
-  books: []
+  books: [],
+  loansData: {},
 };
 
 export default (state: LoansState = initialState, action): LoansState => {
@@ -19,17 +21,18 @@ export default (state: LoansState = initialState, action): LoansState => {
 
       return {
         ...state,
-        url: action.data.shelfUrl || state.url,
-        books: isLoans ? action.data.books : state.books
+        url: loansUrl,
+        books: isLoans ? action.data.books : state.books,
+        loansData: isLoans ? action.data : state.loansData,
       };
 
     case ActionCreator.LOANS_LOAD:
-      return { ...state, books: action.data.books };
+      return { ...state, books: action.data.books, loansData: action.data };
 
     case ActionCreator.CLEAR_AUTH_CREDENTIALS:
       // Clear auth credentials should remove the authenticated
       // user's loans as well.
-      return {...state, books: [] };
+      return { ...state, books: [] };
 
     case ActionCreator.UPDATE_BOOK_LOAD:
       // A book has been updated, so the loans feed is now outdated.

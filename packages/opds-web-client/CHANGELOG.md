@@ -3,6 +3,7 @@
 ### v0.2.9
 - Fixed function binding issue that caused a TypeError when resizing the window.
 - Added error handler in DataFetcher if an adapter is not configured.
+- Improved the speed of the "My Books" page by storing the loans collection data in the store and loading it called.
 
 ### v0.2.8
 - Added Typedoc for code documentation of React components and related classes and functions.

@@ -312,6 +312,24 @@ describe("actions", () => {
     });
   });
 
+  describe("loadCollection", () => {
+    it("dispatches request, load, and success", async () => {
+      const loansData: CollectionData = {
+        id: "loans",
+        url: "loans url",
+        title: "loans title",
+        lanes: [],
+        books: [],
+        navigationLinks: []
+      };
+      const action = await mockActions.loadCollection(loansData);
+
+      expect(action.type).to.equal(`${ActionCreator.COLLECTION}_${ActionCreator.LOAD}`);
+      expect(action.url).to.equal(undefined);
+      expect(action.data).to.equal(loansData);
+    });
+  });
+
   describe("fetchPage", () => {
     it("dispatches request, success, and load", async () => {
       let dispatch = stub();

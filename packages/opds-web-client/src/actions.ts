@@ -189,6 +189,9 @@ export default class ActionCreator {
     return { type: `${type}_${ActionCreator.CLEAR}` };
   }
 
+  loadCollection(data: CollectionData) {
+    return this.load<CollectionData>(ActionCreator.COLLECTION, data);
+  }
 
   fetchCollection(url: string) {
     return this.fetchOPDS<CollectionData>(ActionCreator.COLLECTION, url);

@@ -33,7 +33,8 @@ let loansData = {
 describe("loans reducer", () => {
   let initState = {
     url: null,
-    books: []
+    books: [],
+    loansData: {}
   };
 
   it("returns the initial state", () => {
@@ -50,14 +51,14 @@ describe("loans reducer", () => {
     let oldState = { ...initState, url: "loans url" };
     let loansCollectionData = { ...collectionData, books: loansData.books };
     let action = actions.load<CollectionData>(ActionCreator.COLLECTION, loansCollectionData, "loans url");
-    let newState = { ...oldState, books: loansData.books };
+    let newState = { ...oldState, books: loansData.books, loansData: loansCollectionData };
     expect(reducer(oldState, action)).to.deep.equal(newState);
   });
 
   it("handles LOANS_LOAD", () => {
     let oldState = { ...initState, url: "loans url" };
     let action = actions.load<CollectionData>(ActionCreator.LOANS, loansData);
-    let newState = { ...oldState, books: loansData.books };
+    let newState = { ...oldState, books: loansData.books, loansData: loansData };
 
     expect(reducer(oldState, action)).to.deep.equal(newState);
   });
