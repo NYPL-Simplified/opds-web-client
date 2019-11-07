@@ -37,10 +37,6 @@ export default class DataFetcher {
     this.proxyUrl = config.proxyUrl;
     this.adapter = config.adapter;
     this.authKey = "authCredentials";
-
-    if (!this.adapter) {
-      console.error("No adapter has been configured.");
-    }
   }
 
   fetchOPDSData(url: string) {
