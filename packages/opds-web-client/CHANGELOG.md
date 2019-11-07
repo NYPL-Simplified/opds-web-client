@@ -1,5 +1,8 @@
 ## Changelog
 
+### v0.2.11
+- Fixed accessibility issues that `react-axe` picked up. This update therefore includes an update to the `$blue` scss variable color, `role` attribute fixes, and adding missing `label`s.
+
 ### v0.2.10
 - Added `react-axe` to test for accessibility.
 

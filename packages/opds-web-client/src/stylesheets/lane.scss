@@ -5,6 +5,12 @@
 
     a {
       display: block;
+      &:visited {
+        color: $linkcolor;
+      }
+      &:hover {
+        color: $linkhovercolor;
+      }
     }
   }
 

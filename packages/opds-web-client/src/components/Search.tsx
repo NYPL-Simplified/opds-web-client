@@ -26,7 +26,9 @@ export default class Search extends React.Component<SearchProps, {}> {
       <div className="search" role="search">
         { this.props.searchData && (
           <form onSubmit={this.onSubmit} className={this.props.className || "form-inline"}>
+            <label htmlFor="search-input">Enter search keyword(s)</label>
             <input
+              id="search-input"
               className="form-control"
               ref="input"
               type="text"
