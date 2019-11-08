@@ -43,7 +43,7 @@ describe("Search", () => {
     expect(fetchSearchDescription.callCount).to.equal(1);
   });
 
-  it("should render a label for the input", () => {
+  it("should have an aria-label for the input", () => {
     let fetchSearchDescription = stub();
     let searchData = {
       description: "description",
@@ -59,10 +59,10 @@ describe("Search", () => {
       { context }
     );
 
-    let label = wrapper.find("label");
+    let input = wrapper.find("input");
 
-    expect(label.length).to.equal(1);
-    expect(label.prop("htmlFor")).to.equal("search-input");
+    expect(input.length).to.equal(1);
+    expect(input.prop("aria-label")).to.equal("Enter search keyword(s)");
   });
 
   it("shows the search form with bootstrap classes", () => {
