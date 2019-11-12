@@ -7,7 +7,6 @@ import buildStore from "../../store";
 import {PathForContext} from './pathFor';
 import BasicAuthPlugin from "../../BasicAuthPlugin";
 
-
 // type FunctionChild = (store: Redux.Store<State>) => React.ReactNode;
 type OPDSStoreProps = {
   children: React.ReactElement;
@@ -16,7 +15,8 @@ type OPDSStoreProps = {
 }
 /**
  * Builds the redux store and makes it available in context.
- * takes in the pathFor context
+ * takes in the pathFor context. Will be used by OPDSCatalog
+ * as well as circulation-patron-web.
  */
 export default class OPDSStore extends React.Component<OPDSStoreProps>{
   static contextType = PathForContext;
