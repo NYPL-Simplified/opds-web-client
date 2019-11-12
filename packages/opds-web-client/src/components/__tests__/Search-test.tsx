@@ -62,7 +62,7 @@ describe("Search", () => {
     let input = wrapper.find("input");
 
     expect(input.length).to.equal(1);
-    expect(input.prop("aria-label")).to.equal("Enter search keyword(s)");
+    expect(input.prop("aria-label")).to.equal("Enter search keyword or keywords");
   });
 
   it("shows the search form with bootstrap classes", () => {

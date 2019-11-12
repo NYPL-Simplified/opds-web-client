@@ -19,9 +19,9 @@ export default class Breadcrumbs extends React.Component<BreadcrumbsProps, {}> {
   render(): JSX.Element {
     return (
       <nav aria-label="breadcrumbs" role="navigation">
-        <ol className="breadcrumb">
+        <ol className="breadcrumbs">
           { this.props.links && this.props.links.map((link, i) =>
-              <li key={link.url}>
+              <li key={link.url} className="breadcrumb">
                 {
                   (i === this.props.links.length - 1) && (!this.props.currentLink) ?
                     <span>{link.text}</span> :
