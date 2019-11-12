@@ -6,7 +6,7 @@ import buildStore from "../store";
 import { State } from "../state";
 import AuthPlugin from "../AuthPlugin";
 import BasicAuthPlugin from "../BasicAuthPlugin";
-import { NavigateContext } from "../interfaces";
+import { NavigateContext, Router as RouterType } from "../interfaces";
 
 export interface OPDSCatalogProps {
   collectionUrl?: string;
@@ -23,8 +23,8 @@ export default class OPDSCatalog extends React.Component<OPDSCatalogProps, {}> {
   store: Redux.Store<State>;
   context: NavigateContext;
 
-  static contextTypes: React.ValidationMap<{}> = {
-    router: PropTypes.object.isRequired,
+  static contextTypes: React.ValidationMap<NavigateContext> = {
+    router: PropTypes.object.isRequired as React.Validator<RouterType>,
     pathFor: PropTypes.func.isRequired
   };
 

@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import { SearchData, NavigateContext } from "../interfaces";
+import { SearchData, NavigateContext, Router as RouterType } from "../interfaces";
 
 export interface SearchProps extends SearchData, React.HTMLProps<Search> {
   fetchSearchDescription?: (url: string) => void;
@@ -16,8 +16,8 @@ export default class Search extends React.Component<SearchProps, {}> {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  static contextTypes: React.ValidationMap<{}> = {
-    router: PropTypes.object.isRequired,
+  static contextTypes: React.ValidationMap<NavigateContext> = {
+    router: PropTypes.object.isRequired as React.Validator<RouterType>,
     pathFor: PropTypes.func.isRequired
   };
 

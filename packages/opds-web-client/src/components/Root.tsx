@@ -20,7 +20,8 @@ import SkipNavigationLink from "./SkipNavigationLink";
 import CatalogLink from "./CatalogLink";
 import {
   CollectionData, BookData, StateProps, NavigateContext,
-  AuthCallback, AuthProvider, AuthMethod, AuthCredentials, FacetGroupData
+  AuthCallback, AuthProvider, AuthMethod, AuthCredentials, FacetGroupData,
+  Router as RouterType
 } from "../interfaces";
 import AuthPlugin from "../AuthPlugin";
 
@@ -92,8 +93,8 @@ export interface RootState {
 export class Root extends React.Component<RootProps, RootState> {
   context: NavigateContext;
 
-  static contextTypes: React.ValidationMap<{}> = {
-    router: PropTypes.object,
+  static contextTypes: React.ValidationMap<NavigateContext> = {
+    router: PropTypes.object as React.Validator<RouterType>,
     pathFor: PropTypes.func
   };
 
