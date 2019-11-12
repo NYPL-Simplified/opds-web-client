@@ -7,7 +7,7 @@
     "outDir": "lib",
     "rootDir": "src",
     "jsx": "react",
-    "types": ["mocha","node"],
+    "types": ["mocha", "node"],
     "declaration": true
   },
   "exclude": [
