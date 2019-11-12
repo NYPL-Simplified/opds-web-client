@@ -2,7 +2,7 @@ import * as React from "react";
 import Book from "./Book";
 import CatalogLink from "./CatalogLink";
 import LaneMoreLink from "./LaneMoreLink";
-import { LaneData, BookData } from "../interfaces";
+import {LaneData, BookData} from "../interfaces";
 
 export interface LaneProps {
   lane: LaneData;
@@ -25,7 +25,7 @@ export interface LaneState {
 export default class Lane extends React.Component<LaneProps, LaneState> {
   constructor(props) {
     super(props);
-    this.state = { atLeft: true, atRight: false };
+    this.state = {atLeft: true, atRight: false};
     this.scrollBack = this.scrollBack.bind(this);
     this.scrollForward = this.scrollForward.bind(this);
     this.updateScrollButtons = this.updateScrollButtons.bind(this);
@@ -41,15 +41,13 @@ export default class Lane extends React.Component<LaneProps, LaneState> {
     return (
       <div className="lane">
         <h2>
-          <CatalogLink
-            className="title"
-            collectionUrl={this.props.lane.url}>
+          <CatalogLink className="title" collectionUrl={this.props.lane.url}>
             {this.props.lane.title}
           </CatalogLink>
         </h2>
 
         <div ref="container" className="lane-books-container">
-          { !this.state.atLeft &&
+          {!this.state.atLeft && (
             <button
               className="scroll-button left"
               aria-label={"Scroll back in " + this.props.lane.title}
@@ -57,13 +55,13 @@ export default class Lane extends React.Component<LaneProps, LaneState> {
             >
               &#9665;
             </button>
-          }
+          )}
           <ul
             ref="list"
             className="lane-books"
             aria-label={"books in " + this.props.lane.title}
-            >
-            { visibleBooks.map((book, index) =>
+          >
+            {visibleBooks.map((book, index) => (
               <li key={index}>
                 <Book
                   book={book}
@@ -73,16 +71,16 @@ export default class Lane extends React.Component<LaneProps, LaneState> {
                   indirectFulfillBook={this.props.indirectFulfillBook}
                   isSignedIn={this.props.isSignedIn}
                   epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
-                  />
+                />
               </li>
-            ) }
-            { !this.props.hideMoreLink &&
+            ))}
+            {!this.props.hideMoreLink && (
               <li key="more">
                 <LaneMoreLink lane={this.props.lane} />
               </li>
-            }
+            )}
           </ul>
-          { !this.state.atRight &&
+          {!this.state.atRight && (
             <button
               className="scroll-button right"
               aria-label={"Scroll forward in " + this.props.lane.title}
@@ -90,7 +88,7 @@ export default class Lane extends React.Component<LaneProps, LaneState> {
             >
               &#9655;
             </button>
-          }
+          )}
         </div>
       </div>
     );
@@ -101,8 +99,8 @@ export default class Lane extends React.Component<LaneProps, LaneState> {
       return this.props.lane.books;
     }
 
-    return this.props.lane.books.filter(book =>
-      this.props.hiddenBookIds.indexOf(book.id) === -1
+    return this.props.lane.books.filter(
+      book => this.props.hiddenBookIds.indexOf(book.id) === -1
     );
   }
 
@@ -124,7 +122,7 @@ export default class Lane extends React.Component<LaneProps, LaneState> {
 
     let scrollWidth = this.getScrollWidth();
     let containerWidth = this.getContainerWidth();
-    if (newScroll > (scrollWidth - containerWidth)) {
+    if (newScroll > scrollWidth - containerWidth) {
       newScroll = scrollWidth - containerWidth;
     }
     if (newScroll < 0) {
@@ -154,7 +152,7 @@ export default class Lane extends React.Component<LaneProps, LaneState> {
 
   scrollBack() {
     let containerWidth = this.getContainerWidth();
-    let delta = - containerWidth + 50;
+    let delta = -containerWidth + 50;
     this.changeScroll(delta);
   }
 
@@ -174,10 +172,10 @@ export default class Lane extends React.Component<LaneProps, LaneState> {
     if (scroll <= 0) {
       atLeft = true;
     }
-    if (scroll >= (scrollWidth - containerWidth)) {
+    if (scroll >= scrollWidth - containerWidth) {
       atRight = true;
     }
-    this.setState({ atLeft, atRight });
+    this.setState({atLeft, atRight});
   }
 
   componentDidMount() {

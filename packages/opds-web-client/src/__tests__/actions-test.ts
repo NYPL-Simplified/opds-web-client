@@ -1,19 +1,21 @@
-import { expect } from "chai";
-import { stub } from "sinon";
+import {expect} from "chai";
+import {stub} from "sinon";
 
-import { CollectionData } from "../interfaces";
-const fetchMock =  require("fetch-mock");
+import {CollectionData} from "../interfaces";
+const fetchMock = require("fetch-mock");
 import ActionCreator from "../actions";
 import MockDataFetcher from "../__mocks__/DataFetcher";
 import DataFetcher from "../DataFetcher";
 
 let testData = {
   lanes: [],
-  books: [{
-    id: "test id",
-    url: "http://example.com/book",
-    title: "test title"
-  }]
+  books: [
+    {
+      id: "test id",
+      url: "http://example.com/book",
+      title: "test title"
+    }
+  ]
 };
 
 let mockFetcher = new MockDataFetcher();
@@ -38,21 +40,25 @@ describe("actions", () => {
     it("dispatches request and success", async () => {
       const dispatch = stub();
       mockFetcher.resolve = true;
-      mockFetcher.testData = { blob: () => "blob", ok: true };
+      mockFetcher.testData = {blob: () => "blob", ok: true};
 
       const data = await mockActions.fetchBlob(type, url)(dispatch);
       expect(dispatch.callCount).to.equal(2);
       // Only the request dispatch has the url
-      expect(dispatch.args[0][0].type).to.equal(`${type}_${ActionCreator.REQUEST}`);
+      expect(dispatch.args[0][0].type).to.equal(
+        `${type}_${ActionCreator.REQUEST}`
+      );
       expect(dispatch.args[0][0].url).to.equal(url);
-      expect(dispatch.args[1][0].type).to.equal(`${type}_${ActionCreator.SUCCESS}`);
+      expect(dispatch.args[1][0].type).to.equal(
+        `${type}_${ActionCreator.SUCCESS}`
+      );
       expect(data).to.equal("blob");
     });
 
     it("dispatches failure on bad response", async () => {
       const dispatch = stub();
       mockFetcher.resolve = true;
-      mockFetcher.testData = { ok: false, status: 500 };
+      mockFetcher.testData = {ok: false, status: 500};
 
       try {
         await mockActions.fetchBlob(type, url)(dispatch);
@@ -60,9 +66,13 @@ describe("actions", () => {
         expect(false).to.equal(true);
       } catch (err) {
         expect(dispatch.callCount).to.equal(2);
-        expect(dispatch.args[0][0].type).to.equal(`${type}_${ActionCreator.REQUEST}`);
+        expect(dispatch.args[0][0].type).to.equal(
+          `${type}_${ActionCreator.REQUEST}`
+        );
         expect(dispatch.args[0][0].url).to.equal(url);
-        expect(dispatch.args[1][0].type).to.equal(`${type}_${ActionCreator.FAILURE}`);
+        expect(dispatch.args[1][0].type).to.equal(
+          `${type}_${ActionCreator.FAILURE}`
+        );
         const expectedError = {
           status: 500,
           response: "Request failed",
@@ -83,9 +93,13 @@ describe("actions", () => {
         expect(false).to.equal(true);
       } catch (err) {
         expect(dispatch.callCount).to.equal(2);
-        expect(dispatch.args[0][0].type).to.equal(`${type}_${ActionCreator.REQUEST}`);
+        expect(dispatch.args[0][0].type).to.equal(
+          `${type}_${ActionCreator.REQUEST}`
+        );
         expect(dispatch.args[0][0].url).to.equal(url);
-        expect(dispatch.args[1][0].type).to.equal(`${type}_${ActionCreator.FAILURE}`);
+        expect(dispatch.args[1][0].type).to.equal(
+          `${type}_${ActionCreator.FAILURE}`
+        );
         const expectedError = "test error";
         expect(dispatch.args[1][0].error).to.equal(expectedError);
         expect(err).to.equal(expectedError);
@@ -99,8 +113,8 @@ describe("actions", () => {
 
     it("dispatches request, load, and success", async () => {
       const dispatch = stub();
-      const testData: MockNumber = { test: 1 };
-      fetchMock.mock(url, { status: 200, body: testData });
+      const testData: MockNumber = {test: 1};
+      fetchMock.mock(url, {status: 200, body: testData});
 
       const data = await actions.fetchJSON<MockNumber>(type, url)(dispatch);
 
@@ -110,20 +124,23 @@ describe("actions", () => {
       expect(fetchargs[0][0]).to.equal("/test-url");
       // dispatch tests
       expect(dispatch.callCount).to.equal(3);
-      expect(dispatch.args[0][0].type).to.equal(`${type}_${ActionCreator.REQUEST}`);
+      expect(dispatch.args[0][0].type).to.equal(
+        `${type}_${ActionCreator.REQUEST}`
+      );
       expect(dispatch.args[0][0].url).to.equal(url);
-      expect(dispatch.args[1][0].type).to.equal(`${type}_${ActionCreator.SUCCESS}`);
-      expect(dispatch.args[2][0].type).to.equal(`${type}_${ActionCreator.LOAD}`);
+      expect(dispatch.args[1][0].type).to.equal(
+        `${type}_${ActionCreator.SUCCESS}`
+      );
+      expect(dispatch.args[2][0].type).to.equal(
+        `${type}_${ActionCreator.LOAD}`
+      );
       expect(dispatch.args[2][0].data).to.deep.equal(testData);
       expect(data).to.deep.equal(testData);
     });
 
     it("dispatches failure on non-json response", async () => {
       const dispatch = stub();
-      fetchMock.mock(
-        url,
-        { status: 200, body: () => Promise.reject("nope") }
-      );
+      fetchMock.mock(url, {status: 200, body: () => Promise.reject("nope")});
 
       try {
         await actions.fetchJSON<MockNumber>(type, url)(dispatch);
@@ -131,9 +148,13 @@ describe("actions", () => {
         expect(false).to.equal(true);
       } catch (err) {
         expect(dispatch.callCount).to.equal(2);
-        expect(dispatch.args[0][0].type).to.equal(`${type}_${ActionCreator.REQUEST}`);
+        expect(dispatch.args[0][0].type).to.equal(
+          `${type}_${ActionCreator.REQUEST}`
+        );
         expect(dispatch.args[0][0].url).to.equal(url);
-        expect(dispatch.args[1][0].type).to.equal(`${type}_${ActionCreator.FAILURE}`);
+        expect(dispatch.args[1][0].type).to.equal(
+          `${type}_${ActionCreator.FAILURE}`
+        );
         const expectedError = {
           status: 200,
           response: "Non-json response",
@@ -146,9 +167,10 @@ describe("actions", () => {
 
     it("dispatches failure on bad response with problem detail", async () => {
       const dispatch = stub();
-      fetchMock.mock(url,
-        { status: 500, body: () => Promise.reject({ detail: "detail" }) }
-      );
+      fetchMock.mock(url, {
+        status: 500,
+        body: () => Promise.reject({detail: "detail"})
+      });
 
       try {
         await actions.fetchJSON<MockNumber>(type, url)(dispatch);
@@ -156,8 +178,12 @@ describe("actions", () => {
         expect(false).to.equal(true);
       } catch (err) {
         expect(dispatch.callCount).to.equal(2);
-        expect(dispatch.args[0][0].type).to.equal(`${type}_${ActionCreator.REQUEST}`);
-        expect(dispatch.args[1][0].type).to.equal(`${type}_${ActionCreator.FAILURE}`);
+        expect(dispatch.args[0][0].type).to.equal(
+          `${type}_${ActionCreator.REQUEST}`
+        );
+        expect(dispatch.args[1][0].type).to.equal(
+          `${type}_${ActionCreator.FAILURE}`
+        );
         const expectedError = {
           status: 500,
           response: "Request failed",
@@ -170,9 +196,7 @@ describe("actions", () => {
 
     it("dispatches failure on bad response without problem detail", async () => {
       const dispatch = stub();
-      fetchMock.mock(url,
-        { status: 500, body: () => Promise.reject("") }
-      );
+      fetchMock.mock(url, {status: 500, body: () => Promise.reject("")});
 
       try {
         await actions.fetchJSON<MockNumber>(type, url)(dispatch);
@@ -180,8 +204,12 @@ describe("actions", () => {
         expect(false).to.equal(true);
       } catch (err) {
         expect(dispatch.callCount).to.equal(2);
-        expect(dispatch.args[0][0].type).to.equal(`${type}_${ActionCreator.REQUEST}`);
-        expect(dispatch.args[1][0].type).to.equal(`${type}_${ActionCreator.FAILURE}`);
+        expect(dispatch.args[0][0].type).to.equal(
+          `${type}_${ActionCreator.REQUEST}`
+        );
+        expect(dispatch.args[1][0].type).to.equal(
+          `${type}_${ActionCreator.FAILURE}`
+        );
         const expectedError = {
           status: 500,
           response: "Request failed",
@@ -194,18 +222,20 @@ describe("actions", () => {
 
     it("dispatches failure on no response", async () => {
       let dispatch = stub();
-      fetchMock.mock(url,
-        () => Promise.reject({ message: "test error" })
-      );
+      fetchMock.mock(url, () => Promise.reject({message: "test error"}));
 
       try {
-        await actions.fetchJSON<{ test: number }>(type, url)(dispatch);
+        await actions.fetchJSON<{test: number}>(type, url)(dispatch);
         // shouldn't get here
         expect(false).to.equal(true);
       } catch (err) {
         expect(dispatch.callCount).to.equal(2);
-        expect(dispatch.args[0][0].type).to.equal(`${type}_${ActionCreator.REQUEST}`);
-        expect(dispatch.args[1][0].type).to.equal(`${type}_${ActionCreator.FAILURE}`);
+        expect(dispatch.args[0][0].type).to.equal(
+          `${type}_${ActionCreator.REQUEST}`
+        );
+        expect(dispatch.args[1][0].type).to.equal(
+          `${type}_${ActionCreator.FAILURE}`
+        );
         const expectedError = {
           status: null,
           response: "test error",
@@ -226,11 +256,20 @@ describe("actions", () => {
       mockFetcher.resolve = true;
       mockFetcher.testData = testData;
 
-      const data = await mockActions.fetchOPDS<CollectionData>(type, url)(dispatch);
+      const data = await mockActions.fetchOPDS<CollectionData>(
+        type,
+        url
+      )(dispatch);
       expect(dispatch.callCount).to.equal(3);
-      expect(dispatch.args[0][0].type).to.equal(`${type}_${ActionCreator.REQUEST}`);
-      expect(dispatch.args[1][0].type).to.equal(`${type}_${ActionCreator.SUCCESS}`);
-      expect(dispatch.args[2][0].type).to.equal(`${type}_${ActionCreator.LOAD}`);
+      expect(dispatch.args[0][0].type).to.equal(
+        `${type}_${ActionCreator.REQUEST}`
+      );
+      expect(dispatch.args[1][0].type).to.equal(
+        `${type}_${ActionCreator.SUCCESS}`
+      );
+      expect(dispatch.args[2][0].type).to.equal(
+        `${type}_${ActionCreator.LOAD}`
+      );
       expect(data).to.deep.equal(testData);
     });
 
@@ -245,8 +284,12 @@ describe("actions", () => {
         expect(false).to.equal(true);
       } catch (err) {
         expect(dispatch.callCount).to.equal(2);
-        expect(dispatch.args[0][0].type).to.equal(`${type}_${ActionCreator.REQUEST}`);
-        expect(dispatch.args[1][0].type).to.equal(`${type}_${ActionCreator.FAILURE}`);
+        expect(dispatch.args[0][0].type).to.equal(
+          `${type}_${ActionCreator.REQUEST}`
+        );
+        expect(dispatch.args[1][0].type).to.equal(
+          `${type}_${ActionCreator.FAILURE}`
+        );
         expect(dispatch.args[1][0].error).to.equal("test error");
         expect(err).to.equal("test error");
       }
@@ -273,7 +316,7 @@ describe("actions", () => {
   describe("failure", () => {
     it("creates an action", () => {
       let type = "data type";
-      let err = { url: "url", response: "response", status: 400 };
+      let err = {url: "url", response: "response", status: 400};
       let action = actions.failure(type, err);
       expect(action.type).to.equal(`${type}_${ActionCreator.FAILURE}`);
       expect(action.error).to.eq(err);
@@ -303,10 +346,16 @@ describe("actions", () => {
       mockFetcher.resolve = true;
       mockFetcher.testData = testData;
 
-      const data = await mockActions.fetchCollection("http://example.com/feed")(dispatch);
+      const data = await mockActions.fetchCollection("http://example.com/feed")(
+        dispatch
+      );
       expect(dispatch.callCount).to.equal(3);
-      expect(dispatch.args[0][0].type).to.equal(ActionCreator.COLLECTION_REQUEST);
-      expect(dispatch.args[1][0].type).to.equal(ActionCreator.COLLECTION_SUCCESS);
+      expect(dispatch.args[0][0].type).to.equal(
+        ActionCreator.COLLECTION_REQUEST
+      );
+      expect(dispatch.args[1][0].type).to.equal(
+        ActionCreator.COLLECTION_SUCCESS
+      );
       expect(dispatch.args[2][0].type).to.equal(ActionCreator.COLLECTION_LOAD);
       expect(data).to.equal(testData);
     });
@@ -318,7 +367,9 @@ describe("actions", () => {
       mockFetcher.resolve = true;
       mockFetcher.testData = testData;
 
-      const data = await mockActions.fetchPage("http://example.com/feed")(dispatch);
+      const data = await mockActions.fetchPage("http://example.com/feed")(
+        dispatch
+      );
       expect(dispatch.callCount).to.equal(3);
       expect(dispatch.args[0][0].type).to.equal(ActionCreator.PAGE_REQUEST);
       expect(dispatch.args[1][0].type).to.equal(ActionCreator.PAGE_SUCCESS);
@@ -333,7 +384,9 @@ describe("actions", () => {
       mockFetcher.resolve = true;
       mockFetcher.testData = testData;
 
-      const data = await mockActions.fetchBook("http://example.com/book")(dispatch);
+      const data = await mockActions.fetchBook("http://example.com/book")(
+        dispatch
+      );
       expect(dispatch.callCount).to.equal(3);
       expect(dispatch.args[0][0].type).to.equal(ActionCreator.BOOK_REQUEST);
       expect(dispatch.args[1][0].type).to.equal(ActionCreator.BOOK_SUCCESS);
@@ -348,9 +401,13 @@ describe("actions", () => {
       mockFetcher.resolve = true;
       mockFetcher.testData = testData;
 
-      const data = await mockActions.fetchSearchDescription("http://example.com/search")(dispatch);
+      const data = await mockActions.fetchSearchDescription(
+        "http://example.com/search"
+      )(dispatch);
       expect(dispatch.callCount).to.equal(1);
-      expect(dispatch.args[0][0].type).to.equal(ActionCreator.SEARCH_DESCRIPTION_LOAD);
+      expect(dispatch.args[0][0].type).to.equal(
+        ActionCreator.SEARCH_DESCRIPTION_LOAD
+      );
       expect(data).to.equal(testData);
     });
   });
@@ -358,7 +415,9 @@ describe("actions", () => {
   describe("clearCollection", () => {
     it("creates an action", () => {
       let action = actions.clearCollection();
-      expect(action.type).to.equal(`${ActionCreator.COLLECTION}_${ActionCreator.CLEAR}`);
+      expect(action.type).to.equal(
+        `${ActionCreator.COLLECTION}_${ActionCreator.CLEAR}`
+      );
     });
   });
 
@@ -371,9 +430,11 @@ describe("actions", () => {
 
   describe("loadBook", () => {
     it("creates an action", () => {
-      let data = { id: "1", title: "title" };
+      let data = {id: "1", title: "title"};
       let action = actions.loadBook(data, "url");
-      expect(action.type).to.equal(`${ActionCreator.BOOK}_${ActionCreator.LOAD}`);
+      expect(action.type).to.equal(
+        `${ActionCreator.BOOK}_${ActionCreator.LOAD}`
+      );
       expect(action.data).to.eq(data);
       expect(action.url).to.equal("url");
     });
@@ -382,7 +443,9 @@ describe("actions", () => {
   describe("clearBook", () => {
     it("creates an action", () => {
       let action = actions.clearBook();
-      expect(action.type).to.equal(`${ActionCreator.BOOK}_${ActionCreator.CLEAR}`);
+      expect(action.type).to.equal(
+        `${ActionCreator.BOOK}_${ActionCreator.CLEAR}`
+      );
     });
   });
 
@@ -394,12 +457,16 @@ describe("actions", () => {
     it("dispatches request, load, and success", async () => {
       let dispatch = stub();
       mockFetcher.resolve = true;
-      mockFetcher.testData = { fulfillmentUrl, mimeType };
+      mockFetcher.testData = {fulfillmentUrl, mimeType};
 
       const data = await mockActions.updateBook(borrowUrl)(dispatch);
       expect(dispatch.callCount).to.equal(3);
-      expect(dispatch.args[0][0].type).to.equal(ActionCreator.UPDATE_BOOK_REQUEST);
-      expect(dispatch.args[1][0].type).to.equal(ActionCreator.UPDATE_BOOK_SUCCESS);
+      expect(dispatch.args[0][0].type).to.equal(
+        ActionCreator.UPDATE_BOOK_REQUEST
+      );
+      expect(dispatch.args[1][0].type).to.equal(
+        ActionCreator.UPDATE_BOOK_SUCCESS
+      );
       expect(dispatch.args[2][0].type).to.equal(ActionCreator.UPDATE_BOOK_LOAD);
       expect(data).to.equal(mockFetcher.testData);
     });
@@ -411,34 +478,44 @@ describe("actions", () => {
     it("dispatches request, load, and success", async () => {
       let dispatch = stub();
       mockFetcher.resolve = true;
-      mockFetcher.testData = { blob: () => "blob", ok: true };
+      mockFetcher.testData = {blob: () => "blob", ok: true};
 
       const data = await mockActions.fulfillBook(fulfillmentUrl)(dispatch);
       expect(dispatch.callCount).to.equal(2);
-      expect(dispatch.args[0][0].type).to.equal(ActionCreator.FULFILL_BOOK_REQUEST);
-      expect(dispatch.args[1][0].type).to.equal(ActionCreator.FULFILL_BOOK_SUCCESS);
+      expect(dispatch.args[0][0].type).to.equal(
+        ActionCreator.FULFILL_BOOK_REQUEST
+      );
+      expect(dispatch.args[1][0].type).to.equal(
+        ActionCreator.FULFILL_BOOK_SUCCESS
+      );
       expect(data).to.equal("blob");
     });
   });
 
   describe("indirectFulfillBook", () => {
     let fulfillmentUrl = "http://example.com/book/fulfill";
-    let fulfillmentType = "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media";
+    let fulfillmentType =
+      "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media";
     let indirectUrl = "http://example.com/reader";
 
     it("dispatches request, load, and success", async () => {
       let dispatch = stub();
       mockFetcher.resolve = true;
       mockFetcher.testData = {
-        fulfillmentLinks: [
-          { url: indirectUrl, type: fulfillmentType }
-        ]
+        fulfillmentLinks: [{url: indirectUrl, type: fulfillmentType}]
       };
 
-      const url = await mockActions.indirectFulfillBook(fulfillmentUrl, fulfillmentType)(dispatch);
+      const url = await mockActions.indirectFulfillBook(
+        fulfillmentUrl,
+        fulfillmentType
+      )(dispatch);
       expect(dispatch.callCount).to.equal(2);
-      expect(dispatch.args[0][0].type).to.equal(ActionCreator.FULFILL_BOOK_REQUEST);
-      expect(dispatch.args[1][0].type).to.equal(ActionCreator.FULFILL_BOOK_SUCCESS);
+      expect(dispatch.args[0][0].type).to.equal(
+        ActionCreator.FULFILL_BOOK_REQUEST
+      );
+      expect(dispatch.args[1][0].type).to.equal(
+        ActionCreator.FULFILL_BOOK_SUCCESS
+      );
       expect(url).to.equal(indirectUrl);
     });
   });
@@ -492,11 +569,13 @@ describe("actions", () => {
 
   describe("saveAuthCredentials", () => {
     it("sets fetcher credentials", () => {
-      let credentials = { provider: "test", credentials: "credentials" };
+      let credentials = {provider: "test", credentials: "credentials"};
       fetcher.setAuthCredentials = stub();
       actions.saveAuthCredentials(credentials);
       expect((fetcher.setAuthCredentials as any).callCount).to.equal(1);
-      expect((fetcher.setAuthCredentials as any).args[0][0]).to.deep.equal(credentials);
+      expect((fetcher.setAuthCredentials as any).args[0][0]).to.deep.equal(
+        credentials
+      );
     });
   });
 

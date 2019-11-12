@@ -1,19 +1,16 @@
-import { expect } from "chai";
-import { stub } from "sinon";
+import {expect} from "chai";
+import {stub} from "sinon";
 
 import * as React from "react";
-import { shallow, mount } from "enzyme";
+import {shallow, mount} from "enzyme";
 
 import UrlForm from "../UrlForm";
-import { mockRouterContext } from "./routing";
+import {mockRouterContext} from "./routing";
 
 describe("UrlForm", () => {
   it("shows the form with bootstrap classes", () => {
     let context = mockRouterContext();
-    let wrapper = shallow(
-      <UrlForm />,
-      { context }
-    );
+    let wrapper = shallow(<UrlForm />, {context});
 
     let form = wrapper.find("form");
     let input = wrapper.find("input");
@@ -27,10 +24,7 @@ describe("UrlForm", () => {
   it("fetches the url", () => {
     let push = stub();
     let context = mockRouterContext(push);
-    let wrapper = mount(
-      <UrlForm />,
-      { context }
-    );
+    let wrapper = mount(<UrlForm />, {context});
 
     let form = wrapper.find("form");
     let input = wrapper.find("input").getDOMNode();

@@ -1,11 +1,11 @@
-import { expect } from "chai";
-import { stub } from "sinon";
+import {expect} from "chai";
+import {stub} from "sinon";
 
 import * as React from "react";
-import { shallow } from "enzyme";
+import {shallow} from "enzyme";
 
 import BorrowButton from "../BorrowButton";
-import { ungroupedCollectionData } from "./collectionData";
+import {ungroupedCollectionData} from "./collectionData";
 
 describe("BorrowButton", () => {
   let wrapper;
@@ -16,13 +16,13 @@ describe("BorrowButton", () => {
 
   beforeEach(() => {
     borrow = stub().returns(
-      new Promise((resolve, reject) => resolve({ blob: "blob", mimeType: "mime/type" }))
+      new Promise((resolve, reject) =>
+        resolve({blob: "blob", mimeType: "mime/type"})
+      )
     );
-    style = { border: "100px solid black" };
+    style = {border: "100px solid black"};
     wrapper = shallow(
-      <BorrowButton
-        style={style}
-        borrow={borrow}>
+      <BorrowButton style={style} borrow={borrow}>
         Borrow
       </BorrowButton>
     );

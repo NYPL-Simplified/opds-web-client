@@ -1,11 +1,11 @@
-import { expect } from "chai";
-import { stub } from "sinon";
+import {expect} from "chai";
+import {stub} from "sinon";
 
 import * as React from "react";
-import { shallow, mount } from "enzyme";
+import {shallow, mount} from "enzyme";
 
 import Search from "../Search";
-import { mockRouterContext } from "./routing";
+import {mockRouterContext} from "./routing";
 
 describe("Search", () => {
   it("fetches the search description", () => {
@@ -13,11 +13,8 @@ describe("Search", () => {
     let url = "test url";
     let context = mockRouterContext();
     let search = shallow(
-      <Search
-        url={url}
-        fetchSearchDescription={fetchSearchDescription}
-        />,
-      { context }
+      <Search url={url} fetchSearchDescription={fetchSearchDescription} />,
+      {context}
     );
     expect(fetchSearchDescription.callCount).to.equal(1);
     expect(fetchSearchDescription.args[0][0]).to.equal("test url");
@@ -29,17 +26,14 @@ describe("Search", () => {
     let searchData = {
       description: "description",
       shortName: "shortName",
-      template: (s) => s
+      template: s => s
     };
     let context = mockRouterContext();
     let wrapper = shallow(
-      <Search
-        url={url}
-        fetchSearchDescription={fetchSearchDescription}
-        />,
-      { context }
+      <Search url={url} fetchSearchDescription={fetchSearchDescription} />,
+      {context}
     );
-    wrapper.setProps({ url, searchData });
+    wrapper.setProps({url, searchData});
     expect(fetchSearchDescription.callCount).to.equal(1);
   });
 
@@ -47,13 +41,10 @@ describe("Search", () => {
     let searchData = {
       description: "description",
       shortName: "shortName",
-      template: (s) => s
+      template: s => s
     };
     let context = mockRouterContext();
-    let wrapper = shallow(
-      <Search searchData={searchData} />,
-      { context }
-    );
+    let wrapper = shallow(<Search searchData={searchData} />, {context});
 
     let form = wrapper.find("form");
     let input = wrapper.find("input");
@@ -71,14 +62,11 @@ describe("Search", () => {
     let searchData = {
       description: "description",
       shortName: "shortName",
-      template: (s) => s + " template"
+      template: s => s + " template"
     };
     let push = stub();
     let context = mockRouterContext(push);
-    let wrapper = mount(
-      <Search searchData={searchData} />,
-      { context }
-    );
+    let wrapper = mount(<Search searchData={searchData} />, {context});
 
     let form = wrapper.find("form").first();
     expect(form).to.be.ok;
@@ -95,14 +83,11 @@ describe("Search", () => {
     let searchData = {
       description: "description",
       shortName: "shortName",
-      template: (s) => s + " template"
+      template: s => s + " template"
     };
     let push = stub();
     let context = mockRouterContext(push);
-    let wrapper = mount(
-      <Search searchData={searchData} />,
-      { context }
-    );
+    let wrapper = mount(<Search searchData={searchData} />, {context});
 
     let form = wrapper.find("form").first();
     expect(form).to.be.ok;
@@ -112,23 +97,22 @@ describe("Search", () => {
     form.simulate("submit");
 
     expect(push.callCount).to.equal(1);
-    expect(push.args[0][0]).to.equal(context.pathFor("Ind%C3%A9sirable template", null));
+    expect(push.args[0][0]).to.equal(
+      context.pathFor("Ind%C3%A9sirable template", null)
+    );
   });
 
   it("should add 'all' to language query in search term", () => {
     let searchData = {
       description: "description",
       shortName: "shortName",
-      template: (s) => s + " template"
+      template: s => s + " template"
     };
     let push = stub();
     let context = mockRouterContext(push);
     let wrapper = mount(
-      <Search
-        searchData={searchData}
-        allLanguageSearch={true}
-      />,
-      { context }
+      <Search searchData={searchData} allLanguageSearch={true} />,
+      {context}
     );
 
     let form = wrapper.find("form").first();
@@ -139,6 +123,8 @@ describe("Search", () => {
     form.simulate("submit");
 
     expect(push.callCount).to.equal(1);
-    expect(push.args[0][0]).to.equal(context.pathFor("hamlet template&language=all", null));
+    expect(push.args[0][0]).to.equal(
+      context.pathFor("hamlet template&language=all", null)
+    );
   });
 });

@@ -1,8 +1,8 @@
-import { expect } from "chai";
-import { stub } from "sinon";
+import {expect} from "chai";
+import {stub} from "sinon";
 
 import * as React from "react";
-import { shallow, mount } from "enzyme";
+import {shallow, mount} from "enzyme";
 
 import AuthProviderSelectionForm from "../AuthProviderSelectionForm";
 import BasicAuthPlugin from "../../BasicAuthPlugin";
@@ -55,7 +55,7 @@ describe("AuthProviderSelectionForm", () => {
           title="Intergalactic Spy Network"
           error="you forgot the secret password! what kind of spy arre you?"
           providers={[provider1]}
-          />
+        />
       );
     });
 
@@ -72,7 +72,9 @@ describe("AuthProviderSelectionForm", () => {
         expect(form.props().hide).to.equal(hide);
         expect(form.props().cancel).to.equal(cancel);
         expect(form.props().saveCredentials).to.equal(saveCredentials);
-        expect(form.props().error).to.equal("you forgot the secret password! what kind of spy arre you?");
+        expect(form.props().error).to.equal(
+          "you forgot the secret password! what kind of spy arre you?"
+        );
       });
 
       it("does not show provider selection button", () => {
@@ -106,7 +108,7 @@ describe("AuthProviderSelectionForm", () => {
           title="Intergalactic Spy Network"
           error="you forgot the secret password! what kind of spy arre you?"
           providers={[provider1, provider2]}
-          />
+        />
       );
     });
 
@@ -138,7 +140,7 @@ describe("AuthProviderSelectionForm", () => {
       });
 
       it("shows auth form for selected provider", () => {
-        wrapper.setState({ selectedProvider: provider1 });
+        wrapper.setState({selectedProvider: provider1});
         wrapper.update();
         let form = wrapper.find(BasicAuthForm);
         expect(form.length).to.equal(1);
@@ -146,22 +148,24 @@ describe("AuthProviderSelectionForm", () => {
         expect(form.props().hide).to.equal(hide);
         expect(form.props().cancel).to.equal(cancel);
         expect(form.props().saveCredentials).to.equal(saveCredentials);
-        expect(form.props().error).to.equal("you forgot the secret password! what kind of spy arre you?");
+        expect(form.props().error).to.equal(
+          "you forgot the secret password! what kind of spy arre you?"
+        );
       });
 
       it("selects previously attempted provider if there was an error", () => {
-          wrapper = mount(
-            <AuthProviderSelectionForm
-              hide={hide}
-              saveCredentials={saveCredentials}
-              cancel={cancel}
-              title="Intergalactic Spy Network"
-              error="you forgot the secret password! what kind of spy arre you?"
-              attemptedProvider="Provider 2"
-              providers={[provider1, provider2]}
-              />
-          );
-          expect(wrapper.state().selectedProvider).to.equal(provider2);
+        wrapper = mount(
+          <AuthProviderSelectionForm
+            hide={hide}
+            saveCredentials={saveCredentials}
+            cancel={cancel}
+            title="Intergalactic Spy Network"
+            error="you forgot the secret password! what kind of spy arre you?"
+            attemptedProvider="Provider 2"
+            providers={[provider1, provider2]}
+          />
+        );
+        expect(wrapper.state().selectedProvider).to.equal(provider2);
       });
     });
   });

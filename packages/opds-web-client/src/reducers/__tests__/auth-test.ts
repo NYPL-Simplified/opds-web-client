@@ -1,13 +1,13 @@
-import { expect } from "chai";
-import { stub } from "sinon";
+import {expect} from "chai";
+import {stub} from "sinon";
 
 import reducer from "../auth";
 import DataFetcher from "../../DataFetcher";
 import ActionCreator from "../../actions";
-import { adapter } from "../../OPDSDataAdapter";
+import {adapter} from "../../OPDSDataAdapter";
 import BasicAuthPlugin from "../../BasicAuthPlugin";
 
-let fetcher = new DataFetcher({ adapter });
+let fetcher = new DataFetcher({adapter});
 let actions = new ActionCreator(fetcher);
 
 describe("auth reducer", () => {
@@ -69,8 +69,15 @@ describe("auth reducer", () => {
     };
     let error = "Invalid Credentials";
     let attemptedProvider = "library";
-    let action = actions.showAuthForm(callback, cancel, [provider], "library", error, attemptedProvider);
-    let previousAttemptState = { ...initState, title: "library" };
+    let action = actions.showAuthForm(
+      callback,
+      cancel,
+      [provider],
+      "library",
+      error,
+      attemptedProvider
+    );
+    let previousAttemptState = {...initState, title: "library"};
     let newState = {
       ...previousAttemptState,
       showForm: true,
@@ -102,18 +109,18 @@ describe("auth reducer", () => {
   });
 
   it("handles SAVE_AUTH_CREDENTIALS", () => {
-    let credentials = { provider: "test", credentials: "credentials" };
+    let credentials = {provider: "test", credentials: "credentials"};
     let action = actions.saveAuthCredentials(credentials);
-    let newState = { ...initState, credentials: credentials };
+    let newState = {...initState, credentials: credentials};
 
     expect(reducer(initState, action)).to.deep.equal(newState);
   });
 
   it("handles CLEAR_AUTH_CREDENTIALS", () => {
-    let credentials = { provider: "test", credentials: "credentials" };
-    let oldState = { ...initState, credentials: credentials };
+    let credentials = {provider: "test", credentials: "credentials"};
+    let oldState = {...initState, credentials: credentials};
     let action = actions.clearAuthCredentials();
-    let newState = { ...initState, credentials: null };
+    let newState = {...initState, credentials: null};
 
     expect(reducer(oldState, action)).to.deep.equal(newState);
   });

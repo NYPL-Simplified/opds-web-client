@@ -1,10 +1,10 @@
-import { expect } from "chai";
-import { stub } from "sinon";
+import {expect} from "chai";
+import {stub} from "sinon";
 
 import * as React from "react";
 import * as moment from "moment";
-import { shallow } from "enzyme";
-import { AudioHeadphoneIcon } from "@nypl/dgx-svg-icons";
+import {shallow} from "enzyme";
+import {AudioHeadphoneIcon} from "@nypl/dgx-svg-icons";
 
 import BookDetails from "../BookDetails";
 import BookCover from "../BookCover";
@@ -18,9 +18,13 @@ let book = {
   authors: ["Clive Cussler", "Thomas Perry"],
   contributors: ["contributor 1"],
   subtitle: "A Sam and Remi Fargo Adventure",
-  summary: "&lt;b&gt;Sam and Remi Fargo race for treasure&#8212;and survival&#8212;in this lightning-paced new adventure from #1&lt;i&gt; New York Times&lt;/i&gt; bestselling author Clive Cussler.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;Husband-and-wife team Sam and Remi Fargo are in Mexico when they come upon a remarkable discovery&#8212;the mummified remainsof a man clutching an ancient sealed pot. Within the pot is a Mayan book larger than any known before.&lt;br /&gt;&lt;br /&gt;The book contains astonishing information about the Mayans, their cities, and about mankind itself. The secrets are so powerful that some people would do anything to possess them&#8212;as the Fargos are about to find out. Many men and women are going to die for that book.",
+  summary:
+    "&lt;b&gt;Sam and Remi Fargo race for treasure&#8212;and survival&#8212;in this lightning-paced new adventure from #1&lt;i&gt; New York Times&lt;/i&gt; bestselling author Clive Cussler.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;Husband-and-wife team Sam and Remi Fargo are in Mexico when they come upon a remarkable discovery&#8212;the mummified remainsof a man clutching an ancient sealed pot. Within the pot is a Mayan book larger than any known before.&lt;br /&gt;&lt;br /&gt;The book contains astonishing information about the Mayans, their cities, and about mankind itself. The secrets are so powerful that some people would do anything to possess them&#8212;as the Fargos are about to find out. Many men and women are going to die for that book.",
   imageUrl: "https://dlotdqc6pnwqb.cloudfront.net/3M/crrmnr9/cover.jpg",
-  openAccessLinks: [{ url: "secrets.epub", type: "application/epub+zip" }, { url: "secrets.mobi", type: "application/x-mobipocket-ebook" }],
+  openAccessLinks: [
+    {url: "secrets.epub", type: "application/epub+zip"},
+    {url: "secrets.mobi", type: "application/x-mobipocket-ebook"}
+  ],
   borrowUrl: "borrow url",
   publisher: "Penguin Publishing Group",
   published: "February 29, 2016",
@@ -29,7 +33,9 @@ let book = {
     name: "Fake Series"
   },
   language: "de",
-  raw: { "$": { "schema:additionalType": { value: "http://bib.schema.org/Audiobook" } } },
+  raw: {
+    $: {"schema:additionalType": {value: "http://bib.schema.org/Audiobook"}}
+  }
 };
 
 describe("BookDetails", () => {
@@ -43,7 +49,7 @@ describe("BookDetails", () => {
         fulfillBook={stub()}
         indirectFulfillBook={stub()}
         epubReaderUrlTemplate={stub().returns("test reader url")}
-        />
+      />
     );
   });
 
@@ -74,7 +80,9 @@ describe("BookDetails", () => {
 
   it("shows contributors", () => {
     let contributor = wrapper.find(".contributors");
-    expect(contributor.text()).to.equal("Contributors: " + book.contributors.join(", "));
+    expect(contributor.text()).to.equal(
+      "Contributors: " + book.contributors.join(", ")
+    );
   });
 
   it("shows publisher", () => {
@@ -100,7 +108,7 @@ describe("BookDetails", () => {
         updateBook={stub()}
         fulfillBook={stub()}
         indirectFulfillBook={stub()}
-        />
+      />
     );
 
     let publisher = wrapper.find(".publisher");
@@ -118,14 +126,14 @@ describe("BookDetails", () => {
   });
 
   it("doesn't show categories when there aren't any", () => {
-    let bookCopy = Object.assign({}, book, { categories: [] });
+    let bookCopy = Object.assign({}, book, {categories: []});
     wrapper = shallow(
       <BookDetails
         book={bookCopy}
         updateBook={stub()}
         fulfillBook={stub()}
         indirectFulfillBook={stub()}
-        />
+      />
     );
 
     let categories = wrapper.find(".categories");
@@ -159,7 +167,9 @@ describe("BookDetails", () => {
     expect(epubButton.props().isPlainLink).to.equal(true);
 
     expect(mobiButton.props().url).to.equal("secrets.mobi");
-    expect(mobiButton.props().mimeType).to.equal("application/x-mobipocket-ebook");
+    expect(mobiButton.props().mimeType).to.equal(
+      "application/x-mobipocket-ebook"
+    );
     expect(mobiButton.props().isPlainLink).to.equal(true);
   });
 
@@ -180,7 +190,7 @@ describe("BookDetails", () => {
         updateBook={updateBook}
         fulfillBook={stub()}
         indirectFulfillBook={stub()}
-        />
+      />
     );
 
     let button = wrapper.find(BorrowButton);
@@ -190,7 +200,7 @@ describe("BookDetails", () => {
     expect(updateBook.args[0][0]).to.equal(bookCopy.borrowUrl);
     wrapper.setProps({
       book: Object.assign({}, bookCopy, {
-        copies: { total: 2, available: 0 }
+        copies: {total: 2, available: 0}
       })
     });
     button = wrapper.find(BorrowButton);
@@ -198,7 +208,10 @@ describe("BookDetails", () => {
   });
 
   it("shows fulfill button if there's no download button", () => {
-    let link = { url: "fulfillment url", type: "application/vnd.adobe.adept+xml" };
+    let link = {
+      url: "fulfillment url",
+      type: "application/vnd.adobe.adept+xml"
+    };
     let bookCopy = Object.assign({}, book, {
       openAccessLinks: [],
       fulfillmentLinks: [link]
@@ -212,7 +225,7 @@ describe("BookDetails", () => {
         fulfillBook={fulfillBook}
         indirectFulfillBook={indirectFulfillBook}
         isSignedIn={false}
-        />
+      />
     );
     let button = wrapper.find(DownloadButton);
     expect(button.props().fulfill).to.equal(fulfillBook);
@@ -226,7 +239,7 @@ describe("BookDetails", () => {
   it("shows 'reserved'", () => {
     let bookCopy = Object.assign({}, book, {
       openAccessLinks: [],
-      availability: { status: "reserved" }
+      availability: {status: "reserved"}
     });
     wrapper = shallow(
       <BookDetails
@@ -234,7 +247,7 @@ describe("BookDetails", () => {
         updateBook={stub()}
         fulfillBook={stub()}
         indirectFulfillBook={stub()}
-        />
+      />
     );
     let button = wrapper.find("button");
     expect(button.text()).to.equal("Reserved");
@@ -258,7 +271,7 @@ describe("BookDetails", () => {
         updateBook={stub()}
         fulfillBook={stub()}
         indirectFulfillBook={stub()}
-        />
+      />
     );
     let circulationInfo = wrapper.find(".circulation-info");
     expect(circulationInfo.text()).to.contain("0 of 12 copies available");
@@ -282,7 +295,7 @@ describe("BookDetails", () => {
         updateBook={stub()}
         fulfillBook={stub()}
         indirectFulfillBook={stub()}
-        />
+      />
     );
     let circulationInfo = wrapper.find(".circulation-info");
     expect(circulationInfo.text()).to.contain("5 of 12 copies available");
@@ -295,11 +308,13 @@ describe("BookDetails", () => {
   });
 
   it("shows circulation info for borrowed book", () => {
-    let tomorrow = moment().add(1, "day").format();
+    let tomorrow = moment()
+      .add(1, "day")
+      .format();
     let bookCopy = Object.assign({}, book, {
       openAccessLinks: [],
       fulfillmentLinks: ["http://fulfill"],
-      availability: { status: "available", until: tomorrow }
+      availability: {status: "available", until: tomorrow}
     });
     wrapper = shallow(
       <BookDetails
@@ -307,7 +322,7 @@ describe("BookDetails", () => {
         updateBook={stub()}
         fulfillBook={stub()}
         indirectFulfillBook={stub()}
-        />
+      />
     );
     let circulationInfo = wrapper.find(".circulation-info");
     expect(circulationInfo.text()).to.contain("on loan for a day");
@@ -316,7 +331,7 @@ describe("BookDetails", () => {
   it("shows circulation info for reserved book", () => {
     let bookCopy = Object.assign({}, book, {
       openAccessLinks: [],
-      availability: { status: "reserved" },
+      availability: {status: "reserved"},
       copies: {
         available: 0,
         total: 12
@@ -332,7 +347,7 @@ describe("BookDetails", () => {
         updateBook={stub()}
         fulfillBook={stub()}
         indirectFulfillBook={stub()}
-        />
+      />
     );
     let circulationInfo = wrapper.find(".circulation-info");
     expect(circulationInfo.text()).to.contain("0 of 12 copies available");

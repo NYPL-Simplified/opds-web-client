@@ -1,25 +1,25 @@
-import { expect } from "chai";
-import { stub } from "sinon";
+import {expect} from "chai";
+import {stub} from "sinon";
 
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import { shallow, mount } from "enzyme";
+import {shallow, mount} from "enzyme";
 
 import Lane from "../Lane";
 import Book from "../Book";
 import CatalogLink from "../CatalogLink";
 import LaneMoreLink from "../LaneMoreLink";
-import { LaneData, BookData } from "../../interfaces";
-import { mockRouterContext } from "./routing";
+import {LaneData, BookData} from "../../interfaces";
+import {mockRouterContext} from "./routing";
 
-let books: BookData[] = [1, 2, 3].map((i) => {
+let books: BookData[] = [1, 2, 3].map(i => {
   return {
     id: `test book id ${i}`,
     title: `test book title ${i}`,
     authors: [`test author ${i}`],
     summary: `test summary ${i}`,
     imageUrl: `https://example.com/testimage${i}`,
-    publisher: `test publisher ${i}`,
+    publisher: `test publisher ${i}`
   };
 });
 let laneData: LaneData = {
@@ -49,19 +49,26 @@ describe("Lane", () => {
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
-          />
+        />
       );
     });
 
     it("shows the lane title in a CatalogLink", () => {
       let titleLink = wrapper.find(CatalogLink);
-      expect(titleLink.first().children().text()).to.equal(laneData.title);
+      expect(
+        titleLink
+          .first()
+          .children()
+          .text()
+      ).to.equal(laneData.title);
     });
 
     it("shows Books", () => {
       let bookComponents = wrapper.find(Book);
       let bookDatas = bookComponents.map(book => book.props().book);
-      let uniqueCollectionUrls = Array.from(new Set(bookComponents.map(book => book.props().collectionUrl)));
+      let uniqueCollectionUrls = Array.from(
+        new Set(bookComponents.map(book => book.props().collectionUrl))
+      );
 
       expect(bookComponents.length).to.equal(books.length);
       expect(bookDatas).to.deep.equal(books);
@@ -74,38 +81,38 @@ describe("Lane", () => {
     });
 
     it("hides more link", () => {
-      wrapper.setProps({ hideMoreLink: true });
+      wrapper.setProps({hideMoreLink: true});
       let moreLink = wrapper.find(LaneMoreLink);
       expect(moreLink.length).to.equal(0);
     });
 
     it("hides books by id", () => {
-      wrapper.setProps({ hiddenBookIds: ["test book id 1"] });
+      wrapper.setProps({hiddenBookIds: ["test book id 1"]});
       let bookComponents = wrapper.find(Book);
       expect(bookComponents.length).to.equal(books.length - 1);
       expect(bookComponents.at(0).props().book).to.equal(books[1]);
     });
 
     it("shows left scroll button when it's not all the way left", () => {
-      wrapper.setState({ atLeft: false });
+      wrapper.setState({atLeft: false});
       let button = wrapper.find(".scroll-button.left");
       expect(button.length).to.equal(1);
     });
 
     it("hides left scroll button when it is all the way left", () => {
-      wrapper.setState({ atLeft: true });
+      wrapper.setState({atLeft: true});
       let button = wrapper.find(".scroll-button.left");
       expect(button.length).to.equal(0);
     });
 
     it("shows right scroll button when it's not all the way right", () => {
-      wrapper.setState({ atRight: false });
+      wrapper.setState({atRight: false});
       let button = wrapper.find(".scroll-button.right");
       expect(button.length).to.equal(1);
     });
 
     it("hides right scroll button when it is all the way right", () => {
-      wrapper.setState({ atRight: true });
+      wrapper.setState({atRight: true});
       let button = wrapper.find(".scroll-button.right");
       expect(button.length).to.equal(0);
     });
@@ -113,7 +120,7 @@ describe("Lane", () => {
 
   describe("behavior", () => {
     beforeEach(() => {
-      window.requestAnimationFrame = (f) => {
+      window.requestAnimationFrame = f => {
         f(0);
         return 1;
       };
@@ -128,7 +135,7 @@ describe("Lane", () => {
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
-          />,
+        />,
         {
           context,
           childContextTypes: {
@@ -140,7 +147,7 @@ describe("Lane", () => {
     });
 
     it("scrolls back", () => {
-      wrapper.setState({ atLeft: false, atRight: true });
+      wrapper.setState({atLeft: false, atRight: true});
       wrapper.instance().getContainerWidth = () => 200;
       wrapper.instance().getScrollWidth = () => 1000;
       let list = wrapper.instance().refs["list"] as any;
@@ -154,7 +161,7 @@ describe("Lane", () => {
     });
 
     it("stops at left edge when scrolling back", () => {
-      wrapper.setState({ atLeft: false, atRight: true });
+      wrapper.setState({atLeft: false, atRight: true});
       wrapper.instance().getContainerWidth = () => 200;
       wrapper.instance().getScrollWidth = () => 1000;
       let list = wrapper.instance().refs["list"] as any;
@@ -168,7 +175,7 @@ describe("Lane", () => {
     });
 
     it("scrolls forward", () => {
-      wrapper.setState({ atLeft: true, atRight: false });
+      wrapper.setState({atLeft: true, atRight: false});
       wrapper.instance().getContainerWidth = () => 200;
       wrapper.instance().getScrollWidth = () => 1000;
       let list = wrapper.instance().refs["list"] as any;
@@ -182,7 +189,7 @@ describe("Lane", () => {
     });
 
     it("stops at right edge when scrolling forward", () => {
-      wrapper.setState({ atLeft: true, atRight: false });
+      wrapper.setState({atLeft: true, atRight: false});
       wrapper.instance().getContainerWidth = () => 200;
       wrapper.instance().getScrollWidth = () => 1000;
       let list = wrapper.instance().refs["list"] as any;

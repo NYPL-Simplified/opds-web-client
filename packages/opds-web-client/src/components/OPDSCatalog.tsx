@@ -1,12 +1,12 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import * as Redux from "redux";
-import Root, { RootProps } from "./Root";
+import Root, {RootProps} from "./Root";
 import buildStore from "../store";
-import { State } from "../state";
+import {State} from "../state";
 import AuthPlugin from "../AuthPlugin";
 import BasicAuthPlugin from "../BasicAuthPlugin";
-import { NavigateContext, Router as RouterType } from "../interfaces";
+import {NavigateContext, Router as RouterType} from "../interfaces";
 
 export interface OPDSCatalogProps {
   collectionUrl?: string;
@@ -30,7 +30,11 @@ export default class OPDSCatalog extends React.Component<OPDSCatalogProps, {}> {
 
   constructor(props, context) {
     super(props);
-    this.store = buildStore(this.props.initialState || undefined, this.props.authPlugins || [BasicAuthPlugin], context.pathFor);
+    this.store = buildStore(
+      this.props.initialState || undefined,
+      this.props.authPlugins || [BasicAuthPlugin],
+      context.pathFor
+    );
   }
 
   render(): JSX.Element {
@@ -38,8 +42,6 @@ export default class OPDSCatalog extends React.Component<OPDSCatalogProps, {}> {
       store: this.store
     });
 
-    return (
-      <Root {...props} />
-    );
+    return <Root {...props} />;
   }
 }

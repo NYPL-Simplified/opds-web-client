@@ -1,8 +1,8 @@
-import { expect } from "chai";
-import { stub } from "sinon";
+import {expect} from "chai";
+import {stub} from "sinon";
 
 import * as React from "react";
-import { shallow } from "enzyme";
+import {shallow} from "enzyme";
 
 import BasicAuthButton from "../BasicAuthButton";
 import BasicAuthPlugin from "../../BasicAuthPlugin";
@@ -26,10 +26,7 @@ describe("BasicAuthButton", () => {
       onClick = stub();
 
       wrapper = shallow(
-        <BasicAuthButton
-          provider={provider}
-          onClick={onClick}
-          />
+        <BasicAuthButton provider={provider} onClick={onClick} />
       );
     });
 

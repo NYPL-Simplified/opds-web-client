@@ -1,7 +1,7 @@
 import DataFetcher from "./DataFetcher";
 import AuthPlugin from "./AuthPlugin";
 import ActionCreator from "./actions";
-import { AuthCallback, AuthProvider, AuthMethod, PathFor } from "./interfaces";
+import {AuthCallback, AuthProvider, AuthMethod, PathFor} from "./interfaces";
 
 /** Redux middleware for handling requests that require authentication.
     Intercepts 401 errors and shows an authentication form, then retries the
@@ -58,22 +58,22 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                       // identifier, use the method type. This won't work if the
                       // auth document has two providers with the same method type.
                       let id = method.id || method.type;
-                      authProviders.push({ id, plugin, method });
+                      authProviders.push({id, plugin, method});
                     }
                   }
                 });
 
-                if (
-                  existingAuth ||
-                  authProviders.length
-                ) {
+                if (existingAuth || authProviders.length) {
                   let callback: AuthCallback = () => {
                     // use dispatch() instead of next() to start from the top
-                    store.dispatch(action).then(() => {;
-                      resolve();
-                    }).catch((err) => {
-                      reject(err);
-                    });
+                    store
+                      .dispatch(action)
+                      .then(() => {
+                        resolve();
+                      })
+                      .catch(err => {
+                        reject(err);
+                      });
                   };
 
                   // if the collection and book urls in the state don't match
@@ -114,14 +114,16 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                     resolve();
                   } else {
                     next(actions.closeError());
-                    next(actions.showAuthForm(
-                      callback,
-                      cancel,
-                      authProviders,
-                      title,
-                      error,
-                      attemptedProvider
-                    ));
+                    next(
+                      actions.showAuthForm(
+                        callback,
+                        cancel,
+                        authProviders,
+                        title,
+                        error,
+                        attemptedProvider
+                      )
+                    );
                   }
                 } else {
                   // no provider found with basic auth method
@@ -131,7 +133,8 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                   next(actions.hideAuthForm());
                   reject({
                     status: 401,
-                    response: "Authentication is required but no compatible authentication method was found.",
+                    response:
+                      "Authentication is required but no compatible authentication method was found.",
                     url: err.url
                   });
                 }

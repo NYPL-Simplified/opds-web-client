@@ -1,4 +1,4 @@
-import { stub } from "sinon";
+import {stub} from "sinon";
 
 import DataFetcher from "../DataFetcher";
 
@@ -26,9 +26,9 @@ export default class MockDataFetcher extends DataFetcher {
   }
 
   getAuthCredentials() {
-    return { provider: "test", credentials: "credentials" };
+    return {provider: "test", credentials: "credentials"};
   }
-};
+}
 
 MockDataFetcher.prototype.setAuthCredentials = stub();
 MockDataFetcher.prototype.clearAuthCredentials = stub();
