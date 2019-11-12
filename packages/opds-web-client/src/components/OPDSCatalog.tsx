@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import { ReactReduxContext } from 'react-redux';
+import { useStore } from 'react-redux';
 import Root from "./Root";
 import { State } from "../state";
 import AuthPlugin from "../AuthPlugin";
@@ -35,7 +35,7 @@ const OPDSCatalog: React.FunctionComponent<OPDSCatalogProps> = (props) => {
  * Simple wrapper to allow context to become available before we get it.
  */
 const RootWrapper: React.FunctionComponent<OPDSCatalogProps> = (props) => {
-  const {store} = React.useContext(ReactReduxContext);
+  const {store} = useStore();
   return (
     <Root store={store} {...props} />
   );
