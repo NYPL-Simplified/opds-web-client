@@ -4,11 +4,10 @@ import * as PropTypes from 'prop-types';
 
 /**
  * This is a component that will pass the pathFor prop down the tree
- * via both old and new context apis. This will allow circulation-patron-web
- * to make it available without resorting to the old api
+ * via both old and new context apis.
  */
 
-export const PathForContext = React.createContext(null);
+export const PathForContext = React.createContext<PathFor>(null);
 
 type PathForProps = {
   pathFor: PathFor;
