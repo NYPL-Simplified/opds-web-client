@@ -12,13 +12,13 @@ export interface CatalogLinkProps extends React.HTMLProps<{}> {
 export default class CatalogLink extends React.Component<CatalogLinkProps, {}> {
   context: NavigateContext;
 
-  static contextTypes: React.ValidationMap<{}> = {
-    router: PropTypes.object.isRequired,
+  static contextTypes: React.ValidationMap<NavigateContext> = {
+    router: PropTypes.object.isRequired as React.Validator<RouterType>,
     pathFor: PropTypes.func.isRequired
   };
 
-  static childContextTypes: React.ValidationMap<{}> = {
-    router: PropTypes.object.isRequired
+  static childContextTypes: React.ValidationMap<NavigateContext> = {
+    router: PropTypes.object.isRequired as React.Validator<RouterType>
   };
 
   // provides full router context expected by but not actually used by Link
@@ -35,7 +35,7 @@ export default class CatalogLink extends React.Component<CatalogLinkProps, {}> {
     });
 
     return { router };
-  };
+  }
 
   render(): JSX.Element {
     let { collectionUrl, bookUrl, ...props } = this.props;
