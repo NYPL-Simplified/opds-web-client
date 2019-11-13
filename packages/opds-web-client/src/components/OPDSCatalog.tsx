@@ -1,10 +1,11 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import { useStore } from 'react-redux';
+import * as Redux from "redux";
+import { ReactReduxContext } from "react-redux";
 import Root from "./Root";
 import { State } from "../state";
 import AuthPlugin from "../AuthPlugin";
-import OPDSStore from './context/StoreContext'
+import OPDSStore from "./context/StoreContext";
 
 export interface OPDSCatalogProps {
   collectionUrl?: string;
@@ -36,10 +37,12 @@ const OPDSCatalog: React.FunctionComponent<OPDSCatalogProps> = (props) => {
  * before we try to access it.
  */
 const RootWrapper: React.FunctionComponent<OPDSCatalogProps> = (props) => {
-  const {store} = useStore();
+
   return (
-    <Root store={store} {...props} />
+    <ReactReduxContext.Consumer >
+      {(store: Redux.Store<State>) => <Root store={store} {...props} />}
+    </ReactReduxContext.Consumer>
   );
 };
 
-export default OPDSCatalog
+export default OPDSCatalog;

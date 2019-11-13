@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { PathFor } from '../../interfaces';
-import * as PropTypes from 'prop-types';
+import * as React from "react";
+import { PathFor } from "../../interfaces";
+import * as PropTypes from "prop-types";
 
 /**
  * This is a component that will pass the pathFor prop down the tree
@@ -31,6 +31,6 @@ export default class PathForProvider extends React.Component<PathForProps> {
       <PathForContext.Provider value={this.props.pathFor}>
         {this.props.children}
       </PathForContext.Provider>
-    )
+    );
   }
 }

@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { Router as RouterType } from '../../interfaces';
-import * as PropTypes from 'prop-types';
+import * as React from "react";
+import { Router as RouterType } from "../../interfaces";
+import * as PropTypes from "prop-types";
 
 /**
  * This component that will pass the router down the tree
@@ -35,6 +35,6 @@ export default class RouterProvider extends React.Component<RouterContextProps> 
       <RouterContext.Provider value={this.props.router}>
         {this.props.children}
       </RouterContext.Provider>
-    )
+    );
   }
 }
