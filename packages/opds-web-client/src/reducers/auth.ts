@@ -1,7 +1,7 @@
 import { AuthData } from "../interfaces";
 import ActionCreator from "../actions";
 
-export interface AuthState extends AuthData {};
+export interface AuthState extends AuthData {}
 
 const initialState: AuthState = {
   showForm: false,

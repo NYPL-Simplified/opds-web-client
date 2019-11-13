@@ -385,7 +385,7 @@ export class Root extends React.Component<RootProps, RootState> {
         this.context.router.push(this.context.pathFor(this.props.collectionData.url, nextBookUrl));
       }
     }
-  };
+  }
 
   loanedBookData(book: BookData | null, bookUrl?: string): BookData {
     if (!this.props.loans || this.props.loans.length === 0) {

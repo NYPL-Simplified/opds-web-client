@@ -34,7 +34,7 @@ export function mapStateToProps(state, ownProps) {
     isSignedIn: !!state.auth.credentials,
     preferences: state.preferences
   };
-};
+}
 
 export function mapDispatchToProps(dispatch) {
   return {
@@ -61,7 +61,7 @@ export function mapDispatchToProps(dispatch) {
       };
     }
   };
-};
+}
 
 // only used by a server when it needs to fetch collection and/or book data
 // for a particular route into a store before it renders to HTML
@@ -101,7 +101,7 @@ export function fetchCollectionAndBook({
       resolve({ collectionData: null, bookData: null });
     }
   });
-};
+}
 
 export function mergeRootProps(stateProps, createDispatchProps, componentProps) {
   let fetcher = new DataFetcher({
@@ -209,4 +209,4 @@ export function mergeRootProps(stateProps, createDispatchProps, componentProps) 
     },
     updateBook: updateBook
   });
-};
+}

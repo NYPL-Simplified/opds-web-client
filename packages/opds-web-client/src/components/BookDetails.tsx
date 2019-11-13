@@ -3,7 +3,7 @@ import * as moment from "moment";
 import BookCover from "./BookCover";
 import Book, { BookProps } from "./Book";
 
-export interface BookDetailsProps extends BookProps {};
+export interface BookDetailsProps extends BookProps {}
 
 /** Detail page for a single book. */
 export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
@@ -66,7 +66,7 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
             </div>
           </div>
 
-          <h2>Summary</h2> 
+          <h2>Summary</h2>
           <div className="summary" lang={this.props.book.language}
                dangerouslySetInnerHTML={{ __html: this.props.book.summary }}></div>
         </div>

@@ -28,7 +28,7 @@ export default class MockDataFetcher extends DataFetcher {
   getAuthCredentials() {
     return { provider: "test", credentials: "credentials" };
   }
-};
+}
 
 MockDataFetcher.prototype.setAuthCredentials = stub();
 MockDataFetcher.prototype.clearAuthCredentials = stub();

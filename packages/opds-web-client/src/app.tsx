@@ -38,7 +38,7 @@ const OPDSCatalogRouterHandler = (config) => {
         bookUrl
       };
       return <OPDSCatalog {...mergedProps} />;
-    };
+    }
   }
 
   return OPDSCatalogRoute;
