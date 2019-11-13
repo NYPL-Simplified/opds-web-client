@@ -33,7 +33,7 @@ const OPDSCatalogRouterHandler = (config) => {
       <PathForProvider pathFor={config.pathFor}>
         <OPDSCatalog {...mergedProps} />
       </PathForProvider>);
-    };
+    }
   }
 
   return OPDSCatalogRoute;
