@@ -7,7 +7,6 @@ import buildStore from "../../store";
 import {PathForContext} from './PathForContext';
 import BasicAuthPlugin from "../../BasicAuthPlugin";
 
-// type FunctionChild = (store: Redux.Store<State>) => React.ReactNode;
 type OPDSStoreProps = {
   children: React.ReactElement;
   initialState?: State;
