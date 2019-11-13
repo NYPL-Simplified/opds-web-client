@@ -7,7 +7,7 @@ import { RootProps } from "./components/Root";
 import { PathFor } from "./interfaces";
 import AuthPlugin from "./AuthPlugin";
 import "./stylesheets/app.scss";
-import PathForProvider from './components/context/pathFor';
+import PathForProvider from './components/context/PathForContext';
 
 const OPDSCatalogRouterHandler = (config) => {
   interface OPDSCatalogParams {

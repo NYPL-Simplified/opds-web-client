@@ -4,7 +4,7 @@ import { useStore } from 'react-redux';
 import Root from "./Root";
 import { State } from "../state";
 import AuthPlugin from "../AuthPlugin";
-import OPDSStore from './context/OPDSStore'
+import OPDSStore from './context/StoreContext'
 
 export interface OPDSCatalogProps {
   collectionUrl?: string;

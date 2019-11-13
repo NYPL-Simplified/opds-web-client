@@ -4,7 +4,7 @@ import * as Redux from 'redux'
 import { State } from "../../state";
 import AuthPlugin from "../../AuthPlugin";
 import buildStore from "../../store";
-import {PathForContext} from './pathFor';
+import {PathForContext} from './PathForContext';
 import BasicAuthPlugin from "../../BasicAuthPlugin";
 
 // type FunctionChild = (store: Redux.Store<State>) => React.ReactNode;
