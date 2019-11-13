@@ -32,7 +32,7 @@ const OPDSCatalog: React.FunctionComponent<OPDSCatalogProps> = (props) => {
 };
 
 /**
- * Simple wrapper to allow context to become available in context
+ * Simple wrapper to allow store to become available in context
  * before we try to access it.
  */
 const RootWrapper: React.FunctionComponent<OPDSCatalogProps> = (props) => {
