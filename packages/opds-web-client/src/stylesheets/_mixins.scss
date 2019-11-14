@@ -3,10 +3,10 @@
  * variations of media query properties.
  */
 @mixin generate-mq($args...) {
-  $media-type: "only screen";
-  $media-type-key: "media-type";
+  $media-type: 'only screen';
+  $media-type-key: 'media-type';
   $args: keywords($args);
-  $expr: "";
+  $expr: '';
 
   @if map-has-key($args, $media-type-key) {
     $media-type: map-get($args, $media-type-key);
