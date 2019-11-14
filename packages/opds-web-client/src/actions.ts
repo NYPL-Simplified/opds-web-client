@@ -1,14 +1,8 @@
 import DataFetcher from "./DataFetcher";
-import {RequestError} from "./DataFetcher";
+import { RequestError } from "./DataFetcher";
 import {
-  CollectionData,
-  BookData,
-  SearchData,
-  FetchErrorData,
-  AuthCallback,
-  AuthCredentials,
-  AuthProvider,
-  AuthMethod
+  CollectionData, BookData, SearchData, FetchErrorData,
+  AuthCallback, AuthCredentials, AuthProvider, AuthMethod
 } from "./interfaces";
 
 export interface LoadAction<T> {
@@ -81,31 +75,28 @@ export default class ActionCreator {
     this.fetcher = fetcher;
   }
 
+
   fetchBlob(type: string, url: string) {
     return (dispatch): Promise<Blob> => {
       dispatch(this.request(type, url));
       return new Promise<Blob>((resolve, reject) => {
-        this.fetcher
-          .fetch(url)
-          .then(response => {
-            if (response.ok) {
-              return response.blob();
-            } else {
-              throw {
-                status: response.status,
-                response: "Request failed",
-                url: url
-              };
-            }
-          })
-          .then(blob => {
-            dispatch(this.success(type));
-            resolve(blob);
-          })
-          .catch(err => {
-            dispatch(this.failure(type, err));
-            reject(err);
-          });
+        this.fetcher.fetch(url).then(response => {
+          if (response.ok) {
+            return response.blob();
+          } else {
+            throw({
+              status: response.status,
+              response: "Request failed",
+              url: url
+            });
+          }
+        }).then(blob => {
+          dispatch(this.success(type));
+          resolve(blob);
+        }).catch(err => {
+          dispatch(this.failure(type, err));
+          reject(err);
+        });
       });
     };
   }
@@ -115,58 +106,49 @@ export default class ActionCreator {
     return (dispatch): Promise<T> => {
       return new Promise<T>((resolve, reject) => {
         dispatch(this.request(type, url));
-        this.fetcher
-          .fetch(url)
-          .then(response => {
-            if (response.ok) {
-              response
-                .json()
-                .then((data: T) => {
-                  dispatch(this.success(type));
-                  dispatch(this.load<T>(type, data));
-                  resolve(data);
-                })
-                .catch(parseError => {
-                  err = {
-                    status: response.status,
-                    response: "Non-json response",
-                    url: url
-                  };
-                  dispatch(this.failure(type, err));
-                  reject(err);
-                });
-            } else {
-              response
-                .json()
-                .then(data => {
-                  err = {
-                    status: response.status,
-                    response: data.detail,
-                    url: url
-                  };
-                  dispatch(this.failure(type, err));
-                  reject(err);
-                })
-                .catch(parseError => {
-                  err = {
-                    status: response.status,
-                    response: "Request failed",
-                    url: url
-                  };
-                  dispatch(this.failure(type, err));
-                  reject(err);
-                });
-            }
-          })
-          .catch(err => {
-            err = {
-              status: null,
-              response: err.message,
-              url: url
-            };
-            dispatch(this.failure(type, err));
-            reject(err);
-          });
+        this.fetcher.fetch(url).then(response => {
+          if (response.ok) {
+            response.json().then((data: T) => {
+              dispatch(this.success(type));
+              dispatch(this.load<T>(type, data));
+              resolve(data);
+            }).catch(parseError => {
+              err = {
+                status: response.status,
+                response: "Non-json response",
+                url: url
+              };
+              dispatch(this.failure(type, err));
+              reject(err);
+            });
+          } else {
+            response.json().then(data => {
+              err = {
+                status: response.status,
+                response: data.detail,
+                url: url
+              };
+              dispatch(this.failure(type, err));
+              reject(err);
+            }).catch(parseError => {
+              err = {
+                status: response.status,
+                response: "Request failed",
+                url: url
+              };
+              dispatch(this.failure(type, err));
+              reject(err);
+            });
+          }
+        }).catch(err => {
+          err = {
+            status: null,
+            response: err.message,
+            url: url
+          };
+          dispatch(this.failure(type, err));
+          reject(err);
+        });
       });
     };
   }
@@ -175,40 +157,38 @@ export default class ActionCreator {
     return (dispatch): Promise<T> => {
       dispatch(this.request(type, url));
       return new Promise<T>((resolve, reject) => {
-        this.fetcher
-          .fetchOPDSData(url)
-          .then((data: T) => {
-            dispatch(this.success(type));
-            dispatch(this.load<T>(type, data, url));
-            resolve(data);
-          })
-          .catch(err => {
-            dispatch(this.failure(type, err));
-            reject(err);
-          });
+        this.fetcher.fetchOPDSData(url).then((data: T) => {
+          dispatch(this.success(type));
+          dispatch(this.load<T>(type, data, url));
+          resolve(data);
+        }).catch(err => {
+          dispatch(this.failure(type, err));
+          reject(err);
+        });
       });
     };
   }
 
   request(type: string, url?: string) {
-    return {type: `${type}_${ActionCreator.REQUEST}`, url: url};
+    return { type: `${type}_${ActionCreator.REQUEST}`, url: url };
   }
 
   success(type: string) {
-    return {type: `${type}_${ActionCreator.SUCCESS}`};
+    return { type: `${type}_${ActionCreator.SUCCESS}` };
   }
 
   failure(type: string, error?: FetchErrorData) {
-    return {type: `${type}_${ActionCreator.FAILURE}`, error};
+    return { type: `${type}_${ActionCreator.FAILURE}`, error };
   }
 
   load<T>(type: string, data: T, url?: string): LoadAction<T> {
-    return {type: `${type}_${ActionCreator.LOAD}`, data, url};
+    return { type: `${type}_${ActionCreator.LOAD}`, data, url };
   }
 
   clear(type: string) {
-    return {type: `${type}_${ActionCreator.CLEAR}`};
+    return { type: `${type}_${ActionCreator.CLEAR}` };
   }
+
 
   fetchCollection(url: string) {
     return this.fetchOPDS<CollectionData>(ActionCreator.COLLECTION, url);
@@ -223,17 +203,12 @@ export default class ActionCreator {
   }
 
   fetchSearchDescription(url: string) {
-    return dispatch => {
+    return (dispatch) => {
       return new Promise<SearchData>((resolve, reject) => {
-        this.fetcher
-          .fetchSearchDescriptionData(url)
-          .then((data: SearchData) => {
-            dispatch(
-              this.load<SearchData>(ActionCreator.SEARCH_DESCRIPTION, data, url)
-            );
-            resolve(data);
-          })
-          .catch(err => reject(err));
+        this.fetcher.fetchSearchDescriptionData(url).then((data: SearchData) => {
+          dispatch(this.load<SearchData>(ActionCreator.SEARCH_DESCRIPTION, data, url));
+          resolve(data);
+        }).catch(err => reject(err));
       });
     };
   }
@@ -243,7 +218,7 @@ export default class ActionCreator {
   }
 
   closeError() {
-    return {type: ActionCreator.CLOSE_ERROR};
+    return { type: ActionCreator.CLOSE_ERROR };
   }
 
   loadBook(data: BookData, url: string) {
@@ -262,33 +237,29 @@ export default class ActionCreator {
     return this.fetchBlob(ActionCreator.FULFILL_BOOK, url);
   }
 
-  indirectFulfillBook(
-    url: string,
-    type: string
-  ): (dispatch: any) => Promise<string> {
-    return dispatch => {
+  indirectFulfillBook(url: string, type: string): (dispatch: any) => Promise<string> {
+    return (dispatch) => {
       return new Promise<string>((resolve, reject) => {
         dispatch(this.request(ActionCreator.FULFILL_BOOK, url));
-        this.fetcher
-          .fetchOPDSData(url)
-          .then((book: BookData) => {
-            let link = book.fulfillmentLinks.find(link => link.type === type);
+        this.fetcher.fetchOPDSData(url).then((book: BookData) => {
+          let link = book.fulfillmentLinks.find(link =>
+            link.type === type
+          );
 
-            if (link) {
-              dispatch(this.success(ActionCreator.FULFILL_BOOK));
-              resolve(link.url);
-            } else {
-              throw {
-                status: 200,
-                response: "Couldn't fulfill book",
-                url: url
-              };
-            }
-          })
-          .catch(err => {
-            dispatch(this.failure(ActionCreator.FULFILL_BOOK, err));
-            reject(err);
-          });
+          if (link) {
+            dispatch(this.success(ActionCreator.FULFILL_BOOK));
+            resolve(link.url);
+          } else {
+            throw({
+              status: 200,
+              response: "Couldn't fulfill book",
+              url: url
+            });
+          }
+        }).catch(err => {
+          dispatch(this.failure(ActionCreator.FULFILL_BOOK, err));
+          reject(err);
+        });
       });
     };
   }
@@ -305,39 +276,31 @@ export default class ActionCreator {
     error?: string,
     attemptedProvider?: string
   ) {
-    return {
-      type: ActionCreator.SHOW_AUTH_FORM,
-      callback,
-      cancel,
-      providers,
-      title,
-      error,
-      attemptedProvider
-    };
+    return { type: ActionCreator.SHOW_AUTH_FORM, callback, cancel, providers, title, error, attemptedProvider };
   }
 
   closeErrorAndHideAuthForm() {
-    return dispatch => {
+    return (dispatch) => {
       dispatch(this.closeError());
       dispatch(this.hideAuthForm());
     };
   }
 
   hideAuthForm() {
-    return {type: ActionCreator.HIDE_AUTH_FORM};
+    return { type: ActionCreator.HIDE_AUTH_FORM };
   }
 
   saveAuthCredentials(credentials: AuthCredentials) {
     this.fetcher.setAuthCredentials(credentials);
-    return {type: ActionCreator.SAVE_AUTH_CREDENTIALS, credentials};
+    return { type: ActionCreator.SAVE_AUTH_CREDENTIALS, credentials };
   }
 
   clearAuthCredentials() {
     this.fetcher.clearAuthCredentials();
-    return {type: ActionCreator.CLEAR_AUTH_CREDENTIALS};
+    return { type: ActionCreator.CLEAR_AUTH_CREDENTIALS };
   }
 
   setPreference(key: string, value: string) {
-    return {type: ActionCreator.SET_PREFERENCE, key: key, value: value};
+    return { type: ActionCreator.SET_PREFERENCE, key: key, value: value };
   }
 }

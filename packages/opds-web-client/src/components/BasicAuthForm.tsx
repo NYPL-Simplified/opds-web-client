@@ -1,6 +1,6 @@
 import * as React from "react";
-import {BasicAuthMethod} from "../interfaces";
-import {AuthFormProps} from "./AuthProviderSelectionForm";
+import { BasicAuthMethod } from "../interfaces";
+import { AuthFormProps } from "./AuthProviderSelectionForm";
 
 export interface BasicAuthFormProps extends AuthFormProps<BasicAuthMethod> {}
 export interface BasicAuthFormState {
@@ -8,52 +8,46 @@ export interface BasicAuthFormState {
 }
 
 /** Form for logging in with basic auth. */
-export default class BasicAuthForm extends React.Component<
-  BasicAuthFormProps,
-  BasicAuthFormState
-> {
+export default class BasicAuthForm extends React.Component<BasicAuthFormProps, BasicAuthFormState> {
   constructor(props) {
     super(props);
-    this.state = {error: this.props.error};
+    this.state = { error: this.props.error };
     this.submit = this.submit.bind(this);
   }
 
   render() {
     return (
       <form onSubmit={this.submit}>
-        {this.state.error && (
-          <div className="auth-error">{this.state.error}</div>
-        )}
+        { this.state.error &&
+          <div className="auth-error">
+            { this.state.error }
+          </div>
+        }
         <input
           className="form-control"
           ref="login"
           type="text"
           autoFocus
           placeholder={this.loginLabel()}
-        />
+          />
         <br />
         <input
           className="form-control"
           ref="password"
           type="password"
           placeholder={this.passwordLabel()}
-        />
+          />
         <br />
         <input type="submit" className="btn btn-default" value="Submit" />
-        {this.props.cancel && (
-          <input
-            type="reset"
-            className="btn btn-default"
-            onClick={this.props.cancel}
-            value="Cancel"
-          />
-        )}
+        { this.props.cancel &&
+          <input type="reset" className="btn btn-default" onClick={this.props.cancel} value="Cancel" />
+        }
       </form>
     );
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({error: nextProps.error});
+    this.setState({ error: nextProps.error });
   }
 
   loginLabel() {
@@ -77,7 +71,7 @@ export default class BasicAuthForm extends React.Component<
       });
       return false;
     } else {
-      this.setState({error: null});
+      this.setState({ error: null });
     }
 
     return true;

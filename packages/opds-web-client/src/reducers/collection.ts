@@ -1,4 +1,4 @@
-import {CollectionData, LinkData, FetchErrorData} from "../interfaces";
+import { CollectionData, LinkData, FetchErrorData } from "../interfaces";
 import history from "./history";
 import ActionCreator from "../actions";
 
@@ -90,7 +90,7 @@ const collection = (state = initialState, action): CollectionState => {
       };
 
     case ActionCreator.CLOSE_ERROR:
-      return {...state, error: null};
+      return { ...state, error: null };
 
     default:
       return state;

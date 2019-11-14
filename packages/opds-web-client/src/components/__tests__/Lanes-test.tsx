@@ -1,12 +1,12 @@
-import {expect} from "chai";
-import {stub} from "sinon";
+import { expect } from "chai";
+import { stub } from "sinon";
 
 import * as React from "react";
-import {shallow} from "enzyme";
+import { shallow } from "enzyme";
 
-import {Lanes} from "../Lanes";
+import { Lanes } from "../Lanes";
 import Lane from "../Lane";
-import {groupedCollectionData} from "./collectionData";
+import { groupedCollectionData } from "./collectionData";
 import spinner from "../../images/spinner";
 
 describe("Lanes", () => {
@@ -30,7 +30,7 @@ describe("Lanes", () => {
         updateBook={updateBook}
         fulfillBook={fulfillBook}
         indirectFulfillBook={indirectFulfillBook}
-      />
+        />
     );
   });
 
@@ -60,7 +60,7 @@ describe("Lanes", () => {
         updateBook={updateBook}
         fulfillBook={fulfillBook}
         indirectFulfillBook={indirectFulfillBook}
-      />
+        />
     );
 
     expect(fetchCollection.callCount).to.equal(1);
@@ -79,7 +79,7 @@ describe("Lanes", () => {
         updateBook={updateBook}
         fulfillBook={fulfillBook}
         indirectFulfillBook={indirectFulfillBook}
-      />
+        />
     );
     expect(clearCollection.callCount).to.equal(0);
     expect(fetchCollection.callCount).to.equal(1);
@@ -104,7 +104,7 @@ describe("Lanes", () => {
         updateBook={updateBook}
         fulfillBook={fulfillBook}
         indirectFulfillBook={indirectFulfillBook}
-      />
+        />
     );
     wrapper.instance().componentWillUnmount();
     expect(clearCollection.callCount).to.equal(1);

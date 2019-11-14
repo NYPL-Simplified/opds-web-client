@@ -1,7 +1,7 @@
-import {expect} from "chai";
+import { expect } from "chai";
 
 import * as React from "react";
-import {shallow} from "enzyme";
+import { shallow } from "enzyme";
 
 import LaneMoreLink from "../LaneMoreLink";
 import CatalogLink from "../CatalogLink";
@@ -26,7 +26,9 @@ describe("LaneMoreLink", () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<LaneMoreLink lane={laneData} />);
+    wrapper = shallow(
+      <LaneMoreLink lane={laneData} />
+    );
   });
 
   it("shows CatalogLink pointing to lane url", () => {

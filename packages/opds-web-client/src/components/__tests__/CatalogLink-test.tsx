@@ -1,11 +1,11 @@
-import {expect} from "chai";
+import { expect } from "chai";
 
 import * as React from "react";
-import {shallow} from "enzyme";
+import { shallow } from "enzyme";
 
 import CatalogLink from "../CatalogLink";
-import {Link} from "react-router";
-import {mockRouterContext} from "./routing";
+import { Link } from "react-router";
+import { mockRouterContext } from "./routing";
 
 describe("CatalogLink", () => {
   it("renders Link with location and props and context", () => {
@@ -18,21 +18,18 @@ describe("CatalogLink", () => {
     };
     let context = mockRouterContext();
     let location = context.pathFor(props.collectionUrl, props.bookUrl);
-    let linkProps = Object.assign({}, Link.defaultProps, props, {to: location});
+    let linkProps = Object.assign({}, Link.defaultProps, props, { to: location });
     delete linkProps["collectionUrl"];
     delete linkProps["bookUrl"];
     let requiredRouterKeys = [
-      "push",
-      "createHref",
-      "isActive",
-      "replace",
-      "go",
-      "goBack",
-      "goForward",
-      "setRouteLeaveHook"
+      "push", "createHref", "isActive", "replace",
+      "go", "goBack", "goForward", "setRouteLeaveHook"
     ];
 
-    let wrapper = shallow(<CatalogLink {...props} />, {context});
+    let wrapper = shallow(
+      <CatalogLink {...props} />,
+      { context }
+    );
 
     let link = wrapper.find(Link);
     let instance = wrapper.instance() as any;
@@ -56,7 +53,7 @@ describe("CatalogLink", () => {
       <CatalogLink {...props}>
         <div className="child"></div>
       </CatalogLink>,
-      {context}
+      { context }
     );
 
     let child = wrapper.children().first();

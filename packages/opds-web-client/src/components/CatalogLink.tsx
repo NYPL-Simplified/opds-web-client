@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
-import {Link, Router} from "react-router";
-import {NavigateContext, Router as RouterType} from "../interfaces";
+import { Link, Router } from "react-router";
+import { NavigateContext, Router as RouterType } from "../interfaces";
 
 export interface CatalogLinkProps extends React.HTMLProps<{}> {
   collectionUrl?: string;
@@ -25,25 +25,27 @@ export default class CatalogLink extends React.Component<CatalogLinkProps, {}> {
   // see https://github.com/reactjs/react-router/blob/master/docs/API.md#contextrouter
   // and https://github.com/reactjs/react-router/blob/master/modules/PropTypes.js
   getChildContext() {
-    let noop = () => {};
+    let noop = () => { };
     let router: Router = Object.assign({}, this.context.router, {
       replace: noop,
       go: noop,
       goBack: noop,
       goForward: noop,
-      setRouteLeaveHook: noop
+      setRouteLeaveHook: noop,
     });
 
-    return {router};
+    return { router };
   }
 
   render(): JSX.Element {
-    let {collectionUrl, bookUrl, ...props} = this.props;
+    let { collectionUrl, bookUrl, ...props } = this.props;
     collectionUrl = collectionUrl || null;
     bookUrl = bookUrl || null;
 
     let location = this.context.pathFor(collectionUrl, bookUrl);
 
-    return <Link to={location} {...props} />;
+    return (
+      <Link to={location} {...props} />
+    );
   }
 }

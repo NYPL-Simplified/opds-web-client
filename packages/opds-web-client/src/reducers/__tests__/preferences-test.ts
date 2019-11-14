@@ -1,12 +1,12 @@
-import {expect} from "chai";
-import {stub} from "sinon";
+import { expect } from "chai";
+import { stub } from "sinon";
 
 import reducer from "../preferences";
 import DataFetcher from "../../DataFetcher";
 import ActionCreator from "../../actions";
-import {adapter} from "../../OPDSDataAdapter";
+import { adapter } from "../../OPDSDataAdapter";
 
-let fetcher = new DataFetcher({adapter});
+let fetcher = new DataFetcher({ adapter });
 let actions = new ActionCreator(fetcher);
 
 describe("preferences reducer", () => {
@@ -18,7 +18,7 @@ describe("preferences reducer", () => {
 
   it("handles SET_PREFERENCE", () => {
     let action = actions.setPreference("key", "value");
-    let newState = {...initState, key: "value"};
+    let newState = { ...initState, "key": "value" };
     expect(reducer(initState, action)).to.deep.equal(newState);
   });
 });

@@ -1,7 +1,7 @@
-import {AuthData} from "../interfaces";
+import { AuthData } from "../interfaces";
 import ActionCreator from "../actions";
 
-export interface AuthState extends AuthData {}
+export interface AuthState extends AuthData {};
 
 const initialState: AuthState = {
   showForm: false,
@@ -36,10 +36,10 @@ export default (state: AuthState = initialState, action): AuthState => {
       };
 
     case ActionCreator.SAVE_AUTH_CREDENTIALS:
-      return {...state, credentials: action.credentials};
+      return { ...state, credentials: action.credentials };
 
     case ActionCreator.CLEAR_AUTH_CREDENTIALS:
-      return {...state, credentials: null};
+      return { ...state, credentials: null };
 
     default:
       return state;

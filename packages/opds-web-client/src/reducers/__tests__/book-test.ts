@@ -1,12 +1,12 @@
-import {expect} from "chai";
+import { expect } from "chai";
 
 import reducer from "../book";
 import DataFetcher from "../../DataFetcher";
 import ActionCreator from "../../actions";
-import {adapter} from "../../OPDSDataAdapter";
-import {BookData} from "../../interfaces";
+import { adapter } from "../../OPDSDataAdapter";
+import { BookData } from "../../interfaces";
 
-let fetcher = new DataFetcher({adapter});
+let fetcher = new DataFetcher({ adapter });
 let actions = new ActionCreator(fetcher);
 
 describe("book reducer", () => {
@@ -49,7 +49,7 @@ describe("book reducer", () => {
     error: {
       status: 500,
       response: "error",
-      url: "url"
+      url: "url",
     }
   };
 
@@ -92,11 +92,7 @@ describe("book reducer", () => {
       id: "some id",
       title: "some title"
     };
-    let action = actions.load<BookData>(
-      ActionCreator.BOOK,
-      data,
-      "some other url"
-    );
+    let action = actions.load<BookData>(ActionCreator.BOOK, data, "some other url");
     let newState = {
       ...bookState,
       url: "some other url",
@@ -124,13 +120,9 @@ describe("book reducer", () => {
   });
 
   it("should update book in state on UPDATE_BOOK_LOAD", () => {
-    let newBook = {...book, title: "new title"};
-    let action = actions.load<BookData>(
-      ActionCreator.UPDATE_BOOK,
-      newBook,
-      "url"
-    );
-    let newState = {...bookState, data: newBook};
+    let newBook = { ...book, title: "new title" };
+    let action = actions.load<BookData>(ActionCreator.UPDATE_BOOK, newBook, "url");
+    let newState = { ...bookState, data: newBook };
     expect(reducer(bookState, action)).to.deep.equal(newState);
   });
 });

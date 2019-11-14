@@ -1,7 +1,7 @@
-import {expect} from "chai";
+import { expect } from "chai";
 
 import * as React from "react";
-import {shallow} from "enzyme";
+import { shallow } from "enzyme";
 
 import BookCover from "../BookCover";
 
@@ -15,7 +15,9 @@ describe("BookCover", () => {
     };
 
     beforeEach(() => {
-      wrapper = shallow(<BookCover book={bookData} />);
+      wrapper = shallow(
+        <BookCover book={bookData} />
+      );
     });
 
     it("shows title and authors", () => {
@@ -37,7 +39,9 @@ describe("BookCover", () => {
     };
 
     beforeEach(() => {
-      wrapper = shallow(<BookCover book={bookData} />);
+      wrapper = shallow(
+        <BookCover book={bookData} />
+      );
     });
 
     it("shows the book cover with empty alt", () => {
@@ -61,7 +65,7 @@ describe("BookCover", () => {
         id: "new book",
         imageUrl: "https://dlotdqc6pnwqb.cloudfront.net/3M/abcdefg/cover.jpg"
       };
-      wrapper.setProps({book: newBookData});
+      wrapper.setProps({ book: newBookData });
       image = wrapper.find("img");
       expect(image.props().src).to.equal(newBookData.imageUrl);
     });
