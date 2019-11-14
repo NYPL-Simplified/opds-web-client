@@ -1,5 +1,6 @@
 # Dependency directory
 packages/**/node_modules
+node_modules
 
 # Compiled JS directory
 packages/opds-web-client/lib
