@@ -7,9 +7,7 @@ import SkipNavigationLink from "../SkipNavigationLink";
 
 describe("SkipNavigationLink", () => {
   it("shows link", () => {
-    let wrapper = shallow(
-      <SkipNavigationLink target="#main" />
-    );
+    let wrapper = shallow(<SkipNavigationLink target="#main" />);
 
     let element = wrapper.find(".skip-navigation a");
     expect(element.text()).to.equal("Skip navigation");
@@ -18,7 +16,7 @@ describe("SkipNavigationLink", () => {
 
   it("uses label", () => {
     let wrapper = shallow(
-      <SkipNavigationLink target="#main" label="skippable things"/>
+      <SkipNavigationLink target="#main" label="skippable things" />
     );
     let element = wrapper.find(".skip-navigation a");
     expect(element.text()).to.equal("Skip skippable things");

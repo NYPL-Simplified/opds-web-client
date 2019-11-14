@@ -40,7 +40,7 @@ export default class DataFetcher {
   }
 
   fetchOPDSData(url: string) {
-    let parser = new OPDSParser;
+    let parser = new OPDSParser();
 
     if (!this.adapter) {
       return Promise.reject({
@@ -51,63 +51,76 @@ export default class DataFetcher {
     }
 
     return new Promise((resolve, reject: RequestRejector) => {
-      this.fetch(url).then(response => {
-        response.text().then(text => {
-          if (this.isErrorCode(response.status)) {
-            reject({
-              status: response.status,
-              response: text,
-              url: url,
-              headers: response.headers
-            });
-          }
+      this.fetch(url)
+        .then(response => {
+          response
+            .text()
+            .then(text => {
+              if (this.isErrorCode(response.status)) {
+                reject({
+                  status: response.status,
+                  response: text,
+                  url: url,
+                  headers: response.headers
+                });
+              }
 
-          parser.parse(text).then((parsedData: OPDSFeed | OPDSEntry) => {
-            resolve(this.adapter(parsedData, url));
-          }).catch(err => {
-            reject({
-              status: null,
-              response: "Failed to parse OPDS data",
-              url: url
+              parser
+                .parse(text)
+                .then((parsedData: OPDSFeed | OPDSEntry) => {
+                  resolve(this.adapter(parsedData, url));
+                })
+                .catch(err => {
+                  reject({
+                    status: null,
+                    response: "Failed to parse OPDS data",
+                    url: url
+                  });
+                });
+            })
+            .catch(error => {
+              reject({
+                status: response.status,
+                response: error.message,
+                url: url,
+                headers: response.headers
+              });
             });
-          });
-        }).catch(error => {
-          reject({
-            status: response.status,
-            response: error.message,
-            url: url,
-            headers: response.headers
-          });
-        });
-      }).catch(error => reject(error));
+        })
+        .catch(error => reject(error));
     });
   }
 
   fetchSearchDescriptionData(searchDescriptionUrl: string) {
-    let parser = new OpenSearchDescriptionParser;
+    let parser = new OpenSearchDescriptionParser();
 
     return new Promise((resolve, reject: RequestRejector) => {
-      this.fetch(searchDescriptionUrl).then(response => {
-        response.text().then(text => {
-          if (this.isErrorCode(response.status)) {
-            reject({
-              status: response.status,
-              response: text,
-              url: searchDescriptionUrl
-            });
-          }
+      this.fetch(searchDescriptionUrl)
+        .then(response => {
+          response.text().then(text => {
+            if (this.isErrorCode(response.status)) {
+              reject({
+                status: response.status,
+                response: text,
+                url: searchDescriptionUrl
+              });
+            }
 
-          parser.parse(text, searchDescriptionUrl).then((openSearchDescription) => {
-            resolve(openSearchDescription);
-          }).catch(err => {
-            reject({
-              status: null,
-              response: "Failed to parse OPDS data",
-              url: searchDescriptionUrl
-            });
+            parser
+              .parse(text, searchDescriptionUrl)
+              .then(openSearchDescription => {
+                resolve(openSearchDescription);
+              })
+              .catch(err => {
+                reject({
+                  status: null,
+                  response: "Failed to parse OPDS data",
+                  url: searchDescriptionUrl
+                });
+              });
           });
-        });
-      }).catch(reject);
+        })
+        .catch(reject);
     });
   }
 

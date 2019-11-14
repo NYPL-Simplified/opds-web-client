@@ -18,18 +18,23 @@ describe("CatalogLink", () => {
     };
     let context = mockRouterContext();
     let location = context.pathFor(props.collectionUrl, props.bookUrl);
-    let linkProps = Object.assign({}, Link.defaultProps, props, { to: location });
+    let linkProps = Object.assign({}, Link.defaultProps, props, {
+      to: location
+    });
     delete linkProps["collectionUrl"];
     delete linkProps["bookUrl"];
     let requiredRouterKeys = [
-      "push", "createHref", "isActive", "replace",
-      "go", "goBack", "goForward", "setRouteLeaveHook"
+      "push",
+      "createHref",
+      "isActive",
+      "replace",
+      "go",
+      "goBack",
+      "goForward",
+      "setRouteLeaveHook"
     ];
 
-    let wrapper = shallow(
-      <CatalogLink {...props} />,
-      { context }
-    );
+    let wrapper = shallow(<CatalogLink {...props} />, { context });
 
     let link = wrapper.find(Link);
     let instance = wrapper.instance() as any;

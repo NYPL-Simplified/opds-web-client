@@ -4,7 +4,10 @@ export interface BorrowButtonProps extends React.HTMLProps<{}> {
   borrow: () => Promise<any>;
 }
 
-export default class BorrowButton extends React.Component<BorrowButtonProps, {}> {
+export default class BorrowButton extends React.Component<
+  BorrowButtonProps,
+  {}
+> {
   render() {
     const { ref, borrow, children,
       // pull this off so we can safely spread the rest
@@ -15,7 +18,8 @@ export default class BorrowButton extends React.Component<BorrowButtonProps, {}>
       <button
         className="btn btn-default"
         {...props}
-        onClick={this.props.borrow}>
+        onClick={this.props.borrow}
+      >
         {this.props.children}
       </button>
     );
