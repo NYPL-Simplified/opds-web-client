@@ -1,6 +1,11 @@
 {
-  "extends": ["tslint-react-a11y"],
+  "extends": [
+    "tslint-react-a11y",
+    "tslint-config-prettier",
+    "tslint-plugin-prettier"
+  ],
   "rules": {
+    "prettier": true,
     "class-name": true,
     "comment-format": [true, "check-space"],
     "indent": [true, "spaces"],
