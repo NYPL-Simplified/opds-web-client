@@ -92,4 +92,4 @@ export function hierarchyComputeBreadcrumbs(collection: CollectionData, history:
   });
 
   return links;
-};
+}

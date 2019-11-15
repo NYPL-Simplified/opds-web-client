@@ -1,6 +1,6 @@
 import * as React from "react";
-import { PropTypes } from "prop-types";
-import { NavigateContext } from "../interfaces";
+import * as PropTypes from "prop-types";
+import { NavigateContext, Router as RouterType } from "../interfaces";
 
 export interface UrlFormProps {
   collectionUrl?: string;
@@ -18,7 +18,7 @@ export default class UrlForm extends React.Component<UrlFormProps, {}> {
   }
 
   static contextTypes: React.ValidationMap<NavigateContext> = {
-    router: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired as React.Validator<RouterType>,
     pathFor: PropTypes.func.isRequired
   };
 

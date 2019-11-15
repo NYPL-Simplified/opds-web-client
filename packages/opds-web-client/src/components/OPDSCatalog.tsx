@@ -1,12 +1,12 @@
 import * as React from "react";
-import { PropTypes } from "prop-types";
+import * as PropTypes from "prop-types";
 import * as Redux from "redux";
 import Root, { RootProps } from "./Root";
 import buildStore from "../store";
 import { State } from "../state";
 import AuthPlugin from "../AuthPlugin";
 import BasicAuthPlugin from "../BasicAuthPlugin";
-import { NavigateContext } from "../interfaces";
+import { NavigateContext, Router as RouterType } from "../interfaces";
 
 export interface OPDSCatalogProps {
   collectionUrl?: string;
@@ -24,7 +24,7 @@ export default class OPDSCatalog extends React.Component<OPDSCatalogProps, {}> {
   context: NavigateContext;
 
   static contextTypes: React.ValidationMap<NavigateContext> = {
-    router: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired as React.Validator<RouterType>,
     pathFor: PropTypes.func.isRequired
   };
 

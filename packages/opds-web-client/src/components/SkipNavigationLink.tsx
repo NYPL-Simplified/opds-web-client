@@ -16,4 +16,4 @@ export default class SkipNavigationLink extends React.Component<SkipNavigationLi
       </div>
     );
   }
-};
+}

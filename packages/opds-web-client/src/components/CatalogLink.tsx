@@ -1,7 +1,7 @@
 import * as React from "react";
-import { PropTypes } from "prop-types";
+import * as PropTypes from "prop-types";
 import { Link, Router } from "react-router";
-import { NavigateContext } from "../interfaces";
+import { NavigateContext, Router as RouterType } from "../interfaces";
 
 export interface CatalogLinkProps extends React.HTMLProps<{}> {
   collectionUrl?: string;
@@ -13,19 +13,19 @@ export default class CatalogLink extends React.Component<CatalogLinkProps, {}> {
   context: NavigateContext;
 
   static contextTypes: React.ValidationMap<NavigateContext> = {
-    router: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired as React.Validator<RouterType>,
     pathFor: PropTypes.func.isRequired
   };
 
   static childContextTypes: React.ValidationMap<NavigateContext> = {
-    router: PropTypes.object.isRequired
+    router: PropTypes.object.isRequired as React.Validator<RouterType>
   };
 
   // provides full router context expected by but not actually used by Link
   // see https://github.com/reactjs/react-router/blob/master/docs/API.md#contextrouter
   // and https://github.com/reactjs/react-router/blob/master/modules/PropTypes.js
   getChildContext() {
-    let noop = () => {};
+    let noop = () => { };
     let router: Router = Object.assign({}, this.context.router, {
       replace: noop,
       go: noop,
@@ -35,7 +35,7 @@ export default class CatalogLink extends React.Component<CatalogLinkProps, {}> {
     });
 
     return { router };
-  };
+  }
 
   render(): JSX.Element {
     let { collectionUrl, bookUrl, ...props } = this.props;

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { PropTypes } from "prop-types";
+import * as PropTypes from "prop-types";
 import { Store } from "redux";
 import { connect } from "react-redux";
 import { State } from "../state";
@@ -20,7 +20,8 @@ import SkipNavigationLink from "./SkipNavigationLink";
 import CatalogLink from "./CatalogLink";
 import {
   CollectionData, BookData, StateProps, NavigateContext,
-  AuthCallback, AuthProvider, AuthMethod, AuthCredentials, FacetGroupData
+  AuthCallback, AuthProvider, AuthMethod, AuthCredentials, FacetGroupData,
+  Router as RouterType
 } from "../interfaces";
 import AuthPlugin from "../AuthPlugin";
 
@@ -93,7 +94,7 @@ export class Root extends React.Component<RootProps, RootState> {
   context: NavigateContext;
 
   static contextTypes: React.ValidationMap<NavigateContext> = {
-    router: PropTypes.object,
+    router: PropTypes.object as React.Validator<RouterType>,
     pathFor: PropTypes.func
   };
 
@@ -384,7 +385,7 @@ export class Root extends React.Component<RootProps, RootState> {
         this.context.router.push(this.context.pathFor(this.props.collectionData.url, nextBookUrl));
       }
     }
-  };
+  }
 
   loanedBookData(book: BookData | null, bookUrl?: string): BookData {
     if (!this.props.loans || this.props.loans.length === 0) {
