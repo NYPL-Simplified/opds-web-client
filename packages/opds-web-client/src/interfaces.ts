@@ -160,7 +160,7 @@ export interface AuthProvider<T extends AuthMethod> {
 export interface AuthMethod {
   type: string;
   description?: string;
-};
+}
 
 export interface AuthData {
   showForm: boolean;

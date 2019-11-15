@@ -69,7 +69,7 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                 ) {
                   let callback: AuthCallback = () => {
                     // use dispatch() instead of next() to start from the top
-                    store.dispatch(action).then(() => {;
+                    store.dispatch(action).then(() => {
                       resolve();
                     }).catch((err) => {
                       reject(err);

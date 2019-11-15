@@ -12,3 +12,4 @@ packages/opds-web-client/docs
 
 # Temporary files
 *~
+node_modules
