@@ -43,6 +43,28 @@ describe("Search", () => {
     expect(fetchSearchDescription.callCount).to.equal(1);
   });
 
+  it("should have an aria-label for the input", () => {
+    let fetchSearchDescription = stub();
+    let searchData = {
+      description: "description",
+      shortName: "shortName",
+      template: (s) => s
+    };
+    let context = mockRouterContext();
+    let wrapper = shallow(
+      <Search
+        searchData={searchData}
+        fetchSearchDescription={fetchSearchDescription}
+      />,
+      { context }
+    );
+
+    let input = wrapper.find("input");
+
+    expect(input.length).to.equal(1);
+    expect(input.prop("aria-label")).to.equal("Enter search keyword or keywords");
+  });
+
   it("shows the search form with bootstrap classes", () => {
     let searchData = {
       description: "description",

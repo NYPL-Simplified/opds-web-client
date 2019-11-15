@@ -1,21 +1,36 @@
-.breadcrumb {
+.breadcrumbs {
   font-size: 1.2em;
   background-color: $pagecolorlight;
   border-radius: 0;
   margin-bottom: 0;
   max-width: 100%;
   overflow-x: scroll;
+  padding: 7px 5px;
 
+  a {
+    &:visited {
+      color: $linkcolor;
+    }
+  }
   > li + li:before {
     color: $pagetextcolor;
     content: " > ";
+    padding-right: 3px;
   }
 
   li {
+    &.breadcrumb {
+      display: inline;
+      padding: 0;
+      margin-left: 5px;
+
+      &:first-child {
+        margin-left: 10px;
+      }
+    }
     span {
       font-weight: 600;
     }
-
     &:last-child {
       a {
         font-weight: 600;

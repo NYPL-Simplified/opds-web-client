@@ -18,21 +18,23 @@ export default class Breadcrumbs extends React.Component<BreadcrumbsProps, {}> {
   };
   render(): JSX.Element {
     return (
-      <ol className="breadcrumb" aria-label="breadcrumbs" role="navigation">
-        { this.props.links && this.props.links.map((link, i) =>
-          <li key={link.url}>
-            {
-              (i === this.props.links.length - 1) && (!this.props.currentLink) ?
-                <span>{link.text}</span> :
-                <CatalogLink
-                  collectionUrl={link.url}
-                  bookUrl={null}>
-                  {link.text}
-                </CatalogLink>
-            }
-          </li>
-        ) }
-      </ol>
+      <nav aria-label="breadcrumbs" role="navigation">
+        <ol className="breadcrumbs">
+          { this.props.links && this.props.links.map((link, i) =>
+              <li key={link.url} className="breadcrumb">
+                {
+                  (i === this.props.links.length - 1) && (!this.props.currentLink) ?
+                    <span>{link.text}</span> :
+                    <CatalogLink
+                      collectionUrl={link.url}
+                      bookUrl={null}>
+                      {link.text}
+                    </CatalogLink>
+                }
+              </li>)
+          }
+        </ol>
+      </nav>
     );
   }
 }
