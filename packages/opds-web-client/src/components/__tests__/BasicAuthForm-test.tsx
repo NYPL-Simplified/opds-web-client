@@ -36,13 +36,13 @@ describe("BasicAuthForm", () => {
     });
 
     it("shows username input", () => {
-      let input = wrapper.find("label").at(0);
-      expect(input.text()).to.equal("code name");
+      let input = wrapper.find("input").at(0);
+      expect(input.prop("aria-label")).to.equal("Input for code name");
     });
 
     it("shows password input", () => {
-      let input = wrapper.find("label").at(1);
-      expect(input.text()).to.equal("secret password");
+      let input = wrapper.find("input").at(1);
+      expect(input.prop("aria-label")).to.equal("Input for secret password");
     });
 
     it("shows submit button", () => {

@@ -26,21 +26,21 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, B
             { this.state.error }
           </div>
         }
-        <label htmlFor="login-input">{this.loginLabel()}</label>
         <input
-          id="login-input"
+          aria-label={`Input for ${this.loginLabel()}`}
           className="form-control"
           ref={this.loginRef}
           type="text"
           autoFocus
+          placeholder={this.loginLabel()}
           />
         <br />
-        <label htmlFor="password-input">{this.passwordLabel()}</label>
         <input
-          id="password-input"
+          aria-label={`Input for ${this.passwordLabel()}`}
           className="form-control"
           ref={this.passwordRef}
           type="password"
+          placeholder={this.passwordLabel()}
           />
         <br />
         <input type="submit" className="btn btn-default" value="Submit" />
