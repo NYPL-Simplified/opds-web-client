@@ -26,9 +26,7 @@ describe("LaneMoreLink", () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = shallow(
-      <LaneMoreLink lane={laneData} />
-    );
+    wrapper = shallow(<LaneMoreLink lane={laneData} />);
   });
 
   it("shows CatalogLink pointing to lane url", () => {

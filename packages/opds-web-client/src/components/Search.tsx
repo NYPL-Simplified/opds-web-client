@@ -28,8 +28,11 @@ export default class Search extends React.Component<SearchProps, {}> {
   render(): JSX.Element {
     return (
       <div className="search" role="search">
-        { this.props.searchData && (
-          <form onSubmit={this.onSubmit} className={this.props.className || "form-inline"}>
+        {this.props.searchData && (
+          <form
+            onSubmit={this.onSubmit}
+            className={this.props.className || "form-inline"}
+          >
             <input
               className="form-control"
               ref="input"
@@ -37,10 +40,12 @@ export default class Search extends React.Component<SearchProps, {}> {
               type="text"
               name="search"
               title={this.props.searchData.shortName}
-              placeholder={this.props.searchData.shortName} />&nbsp;
-            <button
-              className="btn btn btn-default"
-              type="submit">Search</button>
+              placeholder={this.props.searchData.shortName}
+            />
+            &nbsp;
+            <button className="btn btn btn-default" type="submit">
+              Search
+            </button>
           </form>
         )}
       </div>

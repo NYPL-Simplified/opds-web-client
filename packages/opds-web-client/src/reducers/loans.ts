@@ -29,13 +29,16 @@ export default (state: LoansState = initialState, action): LoansState => {
     case ActionCreator.CLEAR_AUTH_CREDENTIALS:
       // Clear auth credentials should remove the authenticated
       // user's loans as well.
-      return {...state, books: [] };
+      return { ...state, books: [] };
 
     case ActionCreator.UPDATE_BOOK_LOAD:
       // A book has been updated, so the loans feed is now outdated.
       let updatedBook = action.data;
-      let isReserved = (updatedBook.availability && updatedBook.availability.status === "reserved");
-      let isBorrowed = (updatedBook.fulfillmentLinks && updatedBook.fulfillmentLinks.length > 0);
+      let isReserved =
+        updatedBook.availability &&
+        updatedBook.availability.status === "reserved";
+      let isBorrowed =
+        updatedBook.fulfillmentLinks && updatedBook.fulfillmentLinks.length > 0;
 
       let newLoans = [];
       // Copy over all the books except the updated one.

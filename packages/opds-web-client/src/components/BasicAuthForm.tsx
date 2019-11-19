@@ -8,7 +8,10 @@ export interface BasicAuthFormState {
 }
 
 /** Form for logging in with basic auth. */
-export default class BasicAuthForm extends React.Component<BasicAuthFormProps, BasicAuthFormState> {
+export default class BasicAuthForm extends React.Component<
+  BasicAuthFormProps,
+  BasicAuthFormState
+> {
   constructor(props) {
     super(props);
     this.state = { error: this.props.error };
@@ -18,11 +21,9 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, B
   render() {
     return (
       <form onSubmit={this.submit}>
-        { this.state.error &&
-          <div className="auth-error">
-            { this.state.error }
-          </div>
-        }
+        {this.state.error && (
+          <div className="auth-error">{this.state.error}</div>
+        )}
         <input
           aria-label={`Input for ${this.loginLabel()}`}
           className="form-control"
@@ -30,7 +31,7 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, B
           type="text"
           autoFocus
           placeholder={this.loginLabel()}
-          />
+        />
         <br />
         <input
           aria-label={`Input for ${this.passwordLabel()}`}
@@ -38,12 +39,17 @@ export default class BasicAuthForm extends React.Component<BasicAuthFormProps, B
           ref={this.passwordRef}
           type="password"
           placeholder={this.passwordLabel()}
-          />
+        />
         <br />
         <input type="submit" className="btn btn-default" value="Submit" />
-        { this.props.cancel &&
-          <input type="reset" className="btn btn-default" onClick={this.props.cancel} value="Cancel" />
-        }
+        {this.props.cancel && (
+          <input
+            type="reset"
+            className="btn btn-default"
+            onClick={this.props.cancel}
+            value="Cancel"
+          />
+        )}
       </form>
     );
   }

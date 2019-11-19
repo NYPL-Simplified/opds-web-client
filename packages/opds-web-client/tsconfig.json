@@ -10,9 +10,7 @@
     "types": ["mocha", "node"],
     "declaration": true
   },
-  "exclude": [
-    "node_modules"
-  ],
+  "exclude": ["node_modules"],
   "typedocOptions": {
     "mode": "file",
     "out": "docs"

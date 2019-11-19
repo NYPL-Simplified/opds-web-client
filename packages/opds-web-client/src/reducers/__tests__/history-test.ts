@@ -1,6 +1,11 @@
 import { expect } from "chai";
 
-import reducer, { shouldClear, shorten, addLink, addCollection } from "../history";
+import reducer, {
+  shouldClear,
+  shorten,
+  addLink,
+  addCollection
+} from "../history";
 import DataFetcher from "../../DataFetcher";
 import ActionCreator from "../../actions";
 import { adapter } from "../../OPDSDataAdapter";
@@ -34,11 +39,7 @@ let fourthLink = {
   text: "fourth text"
 };
 
-let longHistory = [
-  rootLink,
-  secondLink,
-  thirdLink
-];
+let longHistory = [rootLink, secondLink, thirdLink];
 
 let basicCollection = {
   id: "test id",
@@ -149,11 +150,15 @@ describe("addCollection", () => {
   it("adds a collection to a history", () => {
     let collection = basicCollection;
     let newHistory = addCollection(longHistory, collection);
-    expect(newHistory).to.deep.equal(longHistory.concat([{
-      id: collection.id,
-      url: collection.url,
-      text: collection.title
-    }]));
+    expect(newHistory).to.deep.equal(
+      longHistory.concat([
+        {
+          id: collection.id,
+          url: collection.url,
+          text: collection.title
+        }
+      ])
+    );
   });
 });
 
@@ -213,12 +218,18 @@ describe("history reducer", () => {
       books: [],
       navigationLinks: []
     };
-    let action = actions.load<CollectionData>(ActionCreator.COLLECTION, data, "some other url");
-    let newHistory = [{
-      id: "id",
-      text: "title",
-      url: "url"
-    }];
+    let action = actions.load<CollectionData>(
+      ActionCreator.COLLECTION,
+      data,
+      "some other url"
+    );
+    let newHistory = [
+      {
+        id: "id",
+        text: "title",
+        url: "url"
+      }
+    ];
 
     expect(reducer(currentState, action)).to.deep.equal(newHistory);
   });
@@ -232,18 +243,24 @@ describe("history reducer", () => {
       books: [],
       navigationLinks: []
     };
-    let action = actions.load<CollectionData>(ActionCreator.COLLECTION, data, "some other url");
+    let action = actions.load<CollectionData>(
+      ActionCreator.COLLECTION,
+      data,
+      "some other url"
+    );
     expect(reducer(currentState, action)).to.deep.equal(currentState.history);
   });
 
   it("should clear history on COLLECTION_LOAD with the old catalog root", () => {
     let stateWithHistory = {
       ...currentState,
-      history: [{
-        id: "test id",
-        url: "test url",
-        text: "test title"
-      }]
+      history: [
+        {
+          id: "test id",
+          url: "test url",
+          text: "test title"
+        }
+      ]
     };
     let data = {
       id: "some id",
@@ -253,18 +270,24 @@ describe("history reducer", () => {
       books: [],
       navigationLinks: []
     };
-    let action = actions.load<CollectionData>(ActionCreator.COLLECTION, data, "root url");
+    let action = actions.load<CollectionData>(
+      ActionCreator.COLLECTION,
+      data,
+      "root url"
+    );
     expect(reducer(stateWithHistory, action)).to.deep.equal([]);
   });
 
   it("should clear history on COLLECTION_LOAD with a new catalog", () => {
     let stateWithHistory = {
       ...currentState,
-      history: [{
-        id: "test id",
-        url: "test url",
-        text: "test title"
-      }]
+      history: [
+        {
+          id: "test id",
+          url: "test url",
+          text: "test title"
+        }
+      ]
     };
     let data = {
       id: "some id",
@@ -278,12 +301,18 @@ describe("history reducer", () => {
       books: [],
       navigationLinks: []
     };
-    let action = actions.load<CollectionData>(ActionCreator.COLLECTION, data, "some url");
-    let newHistory = [{
-      id: null,
-      url: "new root url",
-      text: "new root title"
-    }];
+    let action = actions.load<CollectionData>(
+      ActionCreator.COLLECTION,
+      data,
+      "some url"
+    );
+    let newHistory = [
+      {
+        id: null,
+        url: "new root url",
+        text: "new root title"
+      }
+    ];
 
     expect(reducer(stateWithHistory, action)).to.deep.equal(newHistory);
   });
@@ -291,19 +320,23 @@ describe("history reducer", () => {
   it("should remove history up to loaded url on COLLECTION_LOAD with url in history", () => {
     let stateWithHistory = {
       ...currentState,
-      history: [{
-        id: "first id",
-        url: "first url",
-        text: "first title"
-      }, {
-        id: "test id",
-        url: "test url",
-        text: "test title"
-      }, {
-        id: "other id",
-        url: "other url",
-        text: "other title"
-      }]
+      history: [
+        {
+          id: "first id",
+          url: "first url",
+          text: "first title"
+        },
+        {
+          id: "test id",
+          url: "test url",
+          text: "test title"
+        },
+        {
+          id: "other id",
+          url: "other url",
+          text: "other title"
+        }
+      ]
     };
     let data = {
       id: "test id",
@@ -313,12 +346,18 @@ describe("history reducer", () => {
       books: [],
       navigationLinks: []
     };
-    let action = actions.load<CollectionData>(ActionCreator.COLLECTION, data, "test url");
-    let newHistory = [{
-      id: "first id",
-      url: "first url",
-      text: "first title"
-    }];
+    let action = actions.load<CollectionData>(
+      ActionCreator.COLLECTION,
+      data,
+      "test url"
+    );
+    let newHistory = [
+      {
+        id: "first id",
+        url: "first url",
+        text: "first title"
+      }
+    ];
 
     expect(reducer(stateWithHistory, action)).to.deep.equal(newHistory);
   });
@@ -332,7 +371,11 @@ describe("history reducer", () => {
       books: [],
       navigationLinks: []
     };
-    let action = actions.load<CollectionData>(ActionCreator.COLLECTION, data, "some url");
+    let action = actions.load<CollectionData>(
+      ActionCreator.COLLECTION,
+      data,
+      "some url"
+    );
 
     expect(reducer(errorState, action)).to.deep.equal([]);
   });

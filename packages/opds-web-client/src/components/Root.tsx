@@ -4,23 +4,33 @@ import { Store } from "redux";
 import { connect } from "react-redux";
 import { State } from "../state";
 import {
-  mapStateToProps, mapDispatchToProps, mergeRootProps
+  mapStateToProps,
+  mapDispatchToProps,
+  mergeRootProps
 } from "./mergeRootProps";
 import BookDetails from "./BookDetails";
 import LoadingIndicator from "./LoadingIndicator";
 import ErrorMessage from "./ErrorMessage";
-import AuthProviderSelectionForm  from "./AuthProviderSelectionForm";
+import AuthProviderSelectionForm from "./AuthProviderSelectionForm";
 import Search from "./Search";
 import Breadcrumbs, {
-  ComputeBreadcrumbs, defaultComputeBreadcrumbs
+  ComputeBreadcrumbs,
+  defaultComputeBreadcrumbs
 } from "./Breadcrumbs";
 import Collection from "./Collection";
 import UrlForm from "./UrlForm";
 import SkipNavigationLink from "./SkipNavigationLink";
 import CatalogLink from "./CatalogLink";
 import {
-  CollectionData, BookData, StateProps, NavigateContext,
-  AuthCallback, AuthProvider, AuthMethod, AuthCredentials, FacetGroupData
+  CollectionData,
+  BookData,
+  StateProps,
+  NavigateContext,
+  AuthCallback,
+  AuthProvider,
+  AuthMethod,
+  AuthCredentials,
+  FacetGroupData
 } from "../interfaces";
 import AuthPlugin from "../AuthPlugin";
 
@@ -55,7 +65,10 @@ export interface RootProps extends StateProps {
   bookUrl?: string;
   proxyUrl?: string;
   dispatch?: any;
-  setCollectionAndBook?: (collectionUrl: string, bookUrl: string) => Promise<any>;
+  setCollectionAndBook?: (
+    collectionUrl: string,
+    bookUrl: string
+  ) => Promise<any>;
   clearCollection?: () => void;
   clearBook?: () => void;
   fetchSearchDescription?: (url: string) => void;
@@ -77,7 +90,11 @@ export interface RootProps extends StateProps {
   fetchLoans?: (url: string) => Promise<CollectionData>;
   saveAuthCredentials?: (credentials: AuthCredentials) => void;
   clearAuthCredentials?: () => void;
-  showAuthForm?: (callback: AuthCallback, providers: AuthProvider<AuthMethod>[], title: string) => void;
+  showAuthForm?: (
+    callback: AuthCallback,
+    providers: AuthProvider<AuthMethod>[],
+    title: string
+  ) => void;
   closeErrorAndHideAuthForm?: () => void;
   setPreference?: (key: string, value: string) => void;
   allLanguageSearch?: boolean;
@@ -107,24 +124,33 @@ export class Root extends React.Component<RootProps, RootState> {
     let Header = this.props.Header;
     let Footer = this.props.Footer;
     let CollectionContainer = this.props.CollectionContainer;
-    let collectionTitle = this.props.collectionData ? this.props.collectionData.title : null;
+    let collectionTitle = this.props.collectionData
+      ? this.props.collectionData.title
+      : null;
     let bookTitle = this.props.bookData ? this.props.bookData.title : null;
 
-    let computeBreadcrumbs = this.props.computeBreadcrumbs || defaultComputeBreadcrumbs;
-    let breadcrumbsLinks = computeBreadcrumbs(this.props.collectionData, this.props.history);
+    let computeBreadcrumbs =
+      this.props.computeBreadcrumbs || defaultComputeBreadcrumbs;
+    let breadcrumbsLinks = computeBreadcrumbs(
+      this.props.collectionData,
+      this.props.history
+    );
 
     let showCollection = this.props.collectionData && !this.props.bookData;
     let showBook = this.props.bookData;
     let showBookWrapper = this.props.bookUrl || this.props.bookData;
     let showUrlForm = !this.props.collectionUrl && !this.props.bookUrl;
-    let showBreadcrumbs = this.props.collectionData && breadcrumbsLinks.length > 0;
-    let showSearch = this.props.collectionData && this.props.collectionData.search;
+    let showBreadcrumbs =
+      this.props.collectionData && breadcrumbsLinks.length > 0;
+    let showSearch =
+      this.props.collectionData && this.props.collectionData.search;
     let showFooter = this.props.collectionData && Footer;
     // The tabs should only display if the component is passed and if
     // the catalog is being displayed and not a book.
     let showCollectionContainer = !!CollectionContainer && !showBook;
     let allLanguageSearch = this.props.allLanguageSearch;
-    let hasError = this.props.error && (!this.props.auth || !this.props.auth.showForm);
+    let hasError =
+      this.props.error && (!this.props.auth || !this.props.auth.showForm);
     let errorMessage = "";
     if (hasError) {
       errorMessage = `Could not fetch data: ${this.props.error.url}\n
@@ -135,84 +161,90 @@ export class Root extends React.Component<RootProps, RootState> {
       <div className="catalog">
         <SkipNavigationLink target="#main" />
 
-        { Header ?
+        {Header ? (
           <Header
             collectionTitle={collectionTitle}
             bookTitle={bookTitle}
             loansUrl={this.props.loansUrl}
             isSignedIn={this.props.isSignedIn}
             fetchLoans={this.props.fetchLoans}
-            clearAuthCredentials={this.props.clearAuthCredentials}>
-            { showSearch &&
+            clearAuthCredentials={this.props.clearAuthCredentials}
+          >
+            {showSearch && (
               <Search
                 url={this.props.collectionData.search.url}
                 searchData={this.props.collectionData.search.searchData}
                 fetchSearchDescription={this.props.fetchSearchDescription}
                 allLanguageSearch={allLanguageSearch}
-                />
-            }
-          </Header> :
+              />
+            )}
+          </Header>
+        ) : (
           <nav className="header navbar navbar-default" role="navigation">
             <div className="container-fluid">
-              <span className="navbar-brand">
-                OPDS Web Client
-              </span>
+              <span className="navbar-brand">OPDS Web Client</span>
 
-              { this.props.loansUrl &&
+              {this.props.loansUrl && (
                 <ul className="nav navbar-nav">
                   <li>
                     <CatalogLink
                       collectionUrl={this.props.loansUrl}
-                      bookUrl={null}>
+                      bookUrl={null}
+                    >
                       My Books
                     </CatalogLink>
                   </li>
                   <li>
-                  { this.props.isSignedIn &&
-                    <button onClick={this.props.clearAuthCredentials}>Sign Out</button>
-                  }
+                    {this.props.isSignedIn && (
+                      <button onClick={this.props.clearAuthCredentials}>
+                        Sign Out
+                      </button>
+                    )}
                   </li>
                 </ul>
-              }
+              )}
             </div>
           </nav>
-        }
+        )}
 
-        { (showBreadcrumbs || showSearch) &&
+        {(showBreadcrumbs || showSearch) && (
           <div className="breadcrumbs-or-search-wrapper">
-            { showBreadcrumbs &&
+            {showBreadcrumbs && (
               <Breadcrumbs links={breadcrumbsLinks} currentLink={!!showBook} />
-            }
-            { showSearch &&
+            )}
+            {showSearch && (
               <Search
                 url={this.props.collectionData.search.url}
                 searchData={this.props.collectionData.search.searchData}
                 fetchSearchDescription={this.props.fetchSearchDescription}
                 allLanguageSearch={allLanguageSearch}
-                />
-            }
+              />
+            )}
           </div>
-        }
+        )}
 
         <main id="main" className="main" role="main" tabIndex={-1}>
-
-          { this.state.authError &&
+          {this.state.authError && (
             <ErrorMessage
               message={this.state.authError}
-              close={() => { this.setState({ authError: null }); }} />
-          }
+              close={() => {
+                this.setState({ authError: null });
+              }}
+            />
+          )}
 
-          { hasError &&
+          {hasError && (
             <ErrorMessage
               message={errorMessage}
-              retry={this.props.retryCollectionAndBook} />
-          }
+              retry={this.props.retryCollectionAndBook}
+            />
+          )}
 
-          { (this.props.isFetchingCollection || this.props.isFetchingBook) &&
+          {(this.props.isFetchingCollection || this.props.isFetchingBook) && (
             <LoadingIndicator />
-          }
+          )}
 
-          { this.props.auth && this.props.auth.showForm &&
+          {this.props.auth && this.props.auth.showForm && (
             <AuthProviderSelectionForm
               saveCredentials={this.props.saveAuthCredentials}
               hide={this.props.closeErrorAndHideAuthForm}
@@ -222,50 +254,58 @@ export class Root extends React.Component<RootProps, RootState> {
               error={this.props.auth.error}
               attemptedProvider={this.props.auth.attemptedProvider}
               providers={this.props.auth.providers}
-              />
-          }
+            />
+          )}
 
-          { showUrlForm &&
-            <UrlForm collectionUrl={this.props.collectionUrl} />
-          }
+          {showUrlForm && <UrlForm collectionUrl={this.props.collectionUrl} />}
 
           <div className="body">
-            { showBookWrapper &&
+            {showBookWrapper && (
               <div className="book-details-wrapper">
-                { showBook &&
-                  ( BookDetailsContainer && (this.props.bookUrl || this.props.bookData.url) ?
+                {showBook &&
+                  (BookDetailsContainer &&
+                  (this.props.bookUrl || this.props.bookData.url) ? (
                     <BookDetailsContainer
-                      book={this.loanedBookData(this.props.bookData, this.props.bookUrl)}
+                      book={this.loanedBookData(
+                        this.props.bookData,
+                        this.props.bookUrl
+                      )}
                       bookUrl={this.props.bookUrl || this.props.bookData.url}
                       collectionUrl={this.props.collectionUrl}
                       refreshCatalog={this.props.refreshCollectionAndBook}
-                      >
+                    >
                       <BookDetails
-                        book={this.loanedBookData(this.props.bookData, this.props.bookUrl)}
+                        book={this.loanedBookData(
+                          this.props.bookData,
+                          this.props.bookUrl
+                        )}
                         updateBook={this.props.updateBook}
                         fulfillBook={this.props.fulfillBook}
                         indirectFulfillBook={this.props.indirectFulfillBook}
                         isSignedIn={this.props.isSignedIn}
                         epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
-                        />
-                    </BookDetailsContainer> :
+                      />
+                    </BookDetailsContainer>
+                  ) : (
                     <div className="without-container">
                       <BookDetails
-                        book={this.loanedBookData(this.props.bookData, this.props.bookUrl)}
+                        book={this.loanedBookData(
+                          this.props.bookData,
+                          this.props.bookUrl
+                        )}
                         updateBook={this.props.updateBook}
                         fulfillBook={this.props.fulfillBook}
                         indirectFulfillBook={this.props.indirectFulfillBook}
                         isSignedIn={this.props.isSignedIn}
                         epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
-                        />
+                      />
                     </div>
-                  )
-                }
+                  ))}
               </div>
-            }
+            )}
 
-            { showCollection ?
-              (showCollectionContainer ?
+            {showCollection ? (
+              showCollectionContainer ? (
                 <CollectionContainer>
                   <Collection
                     collection={this.collectionDataWithLoans()}
@@ -282,7 +322,8 @@ export class Root extends React.Component<RootProps, RootState> {
                     preferences={this.props.preferences}
                     setPreference={this.props.setPreference}
                   />
-                </CollectionContainer> :
+                </CollectionContainer>
+              ) : (
                 <Collection
                   collection={this.collectionDataWithLoans()}
                   fetchPage={this.props.fetchPage}
@@ -297,15 +338,16 @@ export class Root extends React.Component<RootProps, RootState> {
                   epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
                   preferences={this.props.preferences}
                   setPreference={this.props.setPreference}
-                />) : null
-            }
+                />
+              )
+            ) : null}
           </div>
         </main>
-        { showFooter &&
+        {showFooter && (
           <footer>
             <Footer collection={this.props.collectionData} />
           </footer>
-        }
+        )}
       </div>
     );
   }
@@ -333,20 +375,29 @@ export class Root extends React.Component<RootProps, RootState> {
     if (authError) {
       this.setState({ authError });
     } else if (this.props.collectionUrl || this.props.bookUrl) {
-      return this.props.setCollectionAndBook(
-        this.props.collectionUrl,
-        this.props.bookUrl
-      ).then(({ collectionData, bookData }) => {
-        if (this.props.authCredentials && collectionData && collectionData.shelfUrl) {
-          this.props.fetchLoans(collectionData.shelfUrl);
-        }
-      });
+      return this.props
+        .setCollectionAndBook(this.props.collectionUrl, this.props.bookUrl)
+        .then(({ collectionData, bookData }) => {
+          if (
+            this.props.authCredentials &&
+            collectionData &&
+            collectionData.shelfUrl
+          ) {
+            this.props.fetchLoans(collectionData.shelfUrl);
+          }
+        });
     }
   }
 
   componentWillReceiveProps(nextProps: RootProps) {
-    if (nextProps.collectionUrl !== this.props.collectionUrl || nextProps.bookUrl !== this.props.bookUrl) {
-      this.props.setCollectionAndBook(nextProps.collectionUrl, nextProps.bookUrl);
+    if (
+      nextProps.collectionUrl !== this.props.collectionUrl ||
+      nextProps.bookUrl !== this.props.bookUrl
+    ) {
+      this.props.setCollectionAndBook(
+        nextProps.collectionUrl,
+        nextProps.bookUrl
+      );
     }
 
     this.updatePageTitle(nextProps);
@@ -368,8 +419,12 @@ export class Root extends React.Component<RootProps, RootState> {
     this.showRelativeBook(1);
   }
 
-  showRelativeBook (relativeIndex: number) {
-    if (this.context.router && this.props.collectionData && this.props.bookData) {
+  showRelativeBook(relativeIndex: number) {
+    if (
+      this.context.router &&
+      this.props.collectionData &&
+      this.props.bookData
+    ) {
       let books = this.props.collectionData.lanes.reduce((books, lane) => {
         return books.concat(lane.books);
       }, this.props.collectionData.books);
@@ -378,13 +433,16 @@ export class Root extends React.Component<RootProps, RootState> {
 
       if (currentBookIndex !== -1) {
         // wrap index at start and end of bookIds array
-        let nextBookIndex = (currentBookIndex + relativeIndex + bookIds.length) % bookIds.length;
+        let nextBookIndex =
+          (currentBookIndex + relativeIndex + bookIds.length) % bookIds.length;
         let nextBookUrl = books[nextBookIndex].url || books[nextBookIndex].id;
 
-        this.context.router.push(this.context.pathFor(this.props.collectionData.url, nextBookUrl));
+        this.context.router.push(
+          this.context.pathFor(this.props.collectionData.url, nextBookUrl)
+        );
       }
     }
-  };
+  }
 
   loanedBookData(book: BookData | null, bookUrl?: string): BookData {
     if (!this.props.loans || this.props.loans.length === 0) {
@@ -408,7 +466,9 @@ export class Root extends React.Component<RootProps, RootState> {
     // loaned version. This currently only changes ungrouped books, not books in lanes,
     // since lanes don't need any loan-related information.
     return Object.assign({}, this.props.collectionData, {
-      books: this.props.collectionData.books.map(book => this.loanedBookData(book))
+      books: this.props.collectionData.books.map(book =>
+        this.loanedBookData(book)
+      )
     });
   }
 }

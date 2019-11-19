@@ -1,7 +1,9 @@
 import { expect } from "chai";
 
 import {
-  OPDSCollectionLink, OPDSAcquisitionLink, OPDSShelfLink
+  OPDSCollectionLink,
+  OPDSAcquisitionLink,
+  OPDSShelfLink
 } from "opds-feed-parser";
 import * as factory from "./OPDSFactory";
 import { feedToCollection } from "../OPDSDataAdapter";
@@ -11,12 +13,12 @@ describe("OPDSDataAdapter", () => {
   it("extracts book info", () => {
     let largeImageLink = factory.artworkLink({
       href: "https://dlotdqc6pnwqb.cloudfront.net/3M/crrmnr9/cover.jpg",
-      rel: "http://opds-spec.org/image",
+      rel: "http://opds-spec.org/image"
     });
 
     let thumbImageLink = factory.artworkLink({
       href: "http://example.com/testthumb.jpg",
-      rel: "http://opds-spec.org/image/thumbnail",
+      rel: "http://opds-spec.org/image/thumbnail"
     });
 
     let openAccessLink = factory.acquisitionLink({
@@ -36,9 +38,12 @@ describe("OPDSDataAdapter", () => {
       href: "http://example.com/fulfill",
       rel: OPDSAcquisitionLink.GENERIC_REL,
       type: "application/atom+xml;type=entry;profile=opds-catalog",
-      indirectAcquisitions: [{
-        type: "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media"
-      }]
+      indirectAcquisitions: [
+        {
+          type:
+            "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media"
+        }
+      ]
     });
 
     let collectionLink = factory.collectionLink({
@@ -50,12 +55,29 @@ describe("OPDSDataAdapter", () => {
     let entry = factory.entry({
       id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
       title: "The Mayan Secrets",
-      authors: [factory.contributor({name: "Clive Cussler"}), factory.contributor({name: "Thomas Perry"})],
-      contributors: [factory.contributor({name: "contributor"})],
+      authors: [
+        factory.contributor({ name: "Clive Cussler" }),
+        factory.contributor({ name: "Thomas Perry" })
+      ],
+      contributors: [factory.contributor({ name: "contributor" })],
       subtitle: "A Sam and Remi Fargo Adventure",
-      summary: factory.summary({content: "&lt;b&gt;Sam and Remi Fargo race for treasure&#8212;and survival&#8212;in this lightning-paced new adventure from #1&lt;i&gt; New York Times&lt;/i&gt; bestselling author Clive Cussler.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;Husband-and-wife team Sam and Remi Fargo are in Mexico when they come upon a remarkable discovery&#8212;the mummified remainsof a man clutching an ancient sealed pot. Within the pot is a Mayan book larger than any known before.&lt;br /&gt;&lt;br /&gt;The book contains astonishing information about the Mayans, their cities, and about mankind itself. The secrets are so powerful that some people would do anything to possess them&#8212;as the Fargos are about to find out. Many men and women are going to die for that book.<script>alert('danger!');</script>"}),
-      categories: [factory.category({label: "label"}), factory.category({term: "no label"}), factory.category({label: "label 2"})],
-      links: [largeImageLink, thumbImageLink, openAccessLink, borrowLink, fulfillmentLink, collectionLink],
+      summary: factory.summary({
+        content:
+          "&lt;b&gt;Sam and Remi Fargo race for treasure&#8212;and survival&#8212;in this lightning-paced new adventure from #1&lt;i&gt; New York Times&lt;/i&gt; bestselling author Clive Cussler.&lt;/b&gt;&lt;br /&gt;&lt;br /&gt;Husband-and-wife team Sam and Remi Fargo are in Mexico when they come upon a remarkable discovery&#8212;the mummified remainsof a man clutching an ancient sealed pot. Within the pot is a Mayan book larger than any known before.&lt;br /&gt;&lt;br /&gt;The book contains astonishing information about the Mayans, their cities, and about mankind itself. The secrets are so powerful that some people would do anything to possess them&#8212;as the Fargos are about to find out. Many men and women are going to die for that book.<script>alert('danger!');</script>"
+      }),
+      categories: [
+        factory.category({ label: "label" }),
+        factory.category({ term: "no label" }),
+        factory.category({ label: "label 2" })
+      ],
+      links: [
+        largeImageLink,
+        thumbImageLink,
+        openAccessLink,
+        borrowLink,
+        fulfillmentLink,
+        collectionLink
+      ],
       issued: "2014-06-08",
       publisher: "Fake Publisher",
       series: {
@@ -89,7 +111,9 @@ describe("OPDSDataAdapter", () => {
     expect(book.series.position).to.equal(entry.series.position);
     expect(book.subtitle).to.equal(entry.subtitle);
     expect(book.summary).to.equal(sanitizeHtml(entry.summary.content));
-    expect(book.summary).to.contain("Many men and women are going to die for that book.");
+    expect(book.summary).to.contain(
+      "Many men and women are going to die for that book."
+    );
     expect(book.summary).not.to.contain("script");
     expect(book.summary).not.to.contain("danger");
     expect(book.categories.length).to.equal(2);
@@ -103,7 +127,9 @@ describe("OPDSDataAdapter", () => {
     expect(book.borrowUrl).to.equal(borrowLink.href);
     expect(book.fulfillmentLinks[0].url).to.equal(fulfillmentLink.href);
     expect(book.fulfillmentLinks[0].type).to.equal(fulfillmentLink.type);
-    expect(book.fulfillmentLinks[0].indirectType).to.equal(fulfillmentLink.indirectAcquisitions[0].type);
+    expect(book.fulfillmentLinks[0].indirectType).to.equal(
+      fulfillmentLink.indirectAcquisitions[0].type
+    );
     expect(book.availability).to.equal(borrowLink.availability);
     expect(book.holds).to.equal(borrowLink.holds);
     expect(book.copies).to.equal(borrowLink.copies);
@@ -111,18 +137,18 @@ describe("OPDSDataAdapter", () => {
 
   it("extracts navigation link info", () => {
     let navigationLink = factory.link({
-      href: "href",
+      href: "href"
     });
 
     let linkEntry = factory.entry({
       id: "feed.xml",
       title: "Feed",
-      links: [navigationLink],
+      links: [navigationLink]
     });
 
     let navigationFeed = factory.navigationFeed({
       id: "some id",
-      entries: [linkEntry],
+      entries: [linkEntry]
     });
 
     let collection = feedToCollection(navigationFeed, "");
@@ -157,7 +183,7 @@ describe("OPDSDataAdapter", () => {
     let acquisitionFeed = factory.acquisitionFeed({
       id: "some id",
       entries: [],
-      links: facetLinks,
+      links: facetLinks
     });
 
     let collection = feedToCollection(acquisitionFeed, "");
@@ -189,13 +215,13 @@ describe("OPDSDataAdapter", () => {
 
   it("extracts search link", () => {
     let searchLink = factory.searchLink({
-      href: "search%20url",
+      href: "search%20url"
     });
 
     let navigationFeed = factory.navigationFeed({
       id: "some id",
       entries: [],
-      links: [searchLink],
+      links: [searchLink]
     });
 
     let collection = feedToCollection(navigationFeed, "");

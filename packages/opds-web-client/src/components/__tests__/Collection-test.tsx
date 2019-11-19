@@ -10,7 +10,10 @@ import { Lanes } from "../Lanes";
 import Book from "../Book";
 import FacetGroup from "../FacetGroup";
 import SkipNavigationLink from "../SkipNavigationLink";
-import { groupedCollectionData, ungroupedCollectionData } from "./collectionData";
+import {
+  groupedCollectionData,
+  ungroupedCollectionData
+} from "./collectionData";
 import { CollectionData } from "../../interfaces";
 import { mockRouterContext } from "./routing";
 
@@ -29,14 +32,18 @@ describe("Collection", () => {
 
   describe("empty collection", () => {
     it("says the collection is empty", () => {
-      let collectionData: CollectionData = { ...groupedCollectionData, lanes: [] };
+      let collectionData: CollectionData = {
+        ...groupedCollectionData,
+        lanes: []
+      };
       let wrapper = mount(
-        <Collection collection={collectionData}
+        <Collection
+          collection={collectionData}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
           setPreference={setPreference}
-          />
+        />
       );
       expect(wrapper.text()).to.equal("No books found.");
     });
@@ -49,7 +56,8 @@ describe("Collection", () => {
     beforeEach(() => {
       let context = mockRouterContext();
       wrapper = mount(
-        <Collection collection={collectionData}
+        <Collection
+          collection={collectionData}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
@@ -89,7 +97,8 @@ describe("Collection", () => {
     beforeEach(() => {
       let context = mockRouterContext();
       wrapper = mount(
-        <Collection collection={collectionData}
+        <Collection
+          collection={collectionData}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
@@ -113,7 +122,9 @@ describe("Collection", () => {
     it("shows books in order", () => {
       let books = wrapper.find(Book);
       let bookDatas = books.map(book => book.props().book);
-      let uniqueCollectionUrls = Array.from(new Set(books.map(book => book.props().collectionUrl)));
+      let uniqueCollectionUrls = Array.from(
+        new Set(books.map(book => book.props().collectionUrl))
+      );
 
       expect(books.length).to.equal(collectionData.books.length);
       expect(bookDatas).to.deep.equal(collectionData.books);
@@ -123,13 +134,15 @@ describe("Collection", () => {
     it("shows grid or list view", () => {
       let context = mockRouterContext();
       wrapper = mount(
-        <Collection collection={collectionData}
+        <Collection
+          collection={collectionData}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
           setPreference={setPreference}
         />,
-        { context,
+        {
+          context,
           childContextTypes: {
             router: PropTypes.object,
             pathFor: PropTypes.func
@@ -177,13 +190,15 @@ describe("Collection", () => {
     it("sets view preference", () => {
       let context = mockRouterContext();
       wrapper = mount(
-        <Collection collection={collectionData}
+        <Collection
+          collection={collectionData}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
           setPreference={setPreference}
-          />,
-        { context,
+        />,
+        {
+          context,
           childContextTypes: {
             router: PropTypes.object,
             pathFor: PropTypes.func
@@ -224,14 +239,17 @@ describe("Collection", () => {
         books: [],
         lanes: [],
         navigationLinks: [],
-        facetGroups: [{
-          label: "group",
-          facets: []
-        }]
+        facetGroups: [
+          {
+            label: "group",
+            facets: []
+          }
+        ]
       };
 
       wrapper = mount(
-        <Collection collection={collectionData}
+        <Collection
+          collection={collectionData}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
@@ -258,7 +276,6 @@ describe("Collection", () => {
       let links = wrapper.find(SkipNavigationLink);
       expect(links.length).to.equal(1);
     });
-
   });
 
   describe("collection with next page", () => {
@@ -279,7 +296,8 @@ describe("Collection", () => {
       };
       let context = mockRouterContext();
       let wrapper = mount(
-        <Collection collection={collectionData}
+        <Collection
+          collection={collectionData}
           fetchPage={fetchPage}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
@@ -319,13 +337,14 @@ describe("Collection", () => {
       };
       let context = mockRouterContext();
       let wrapper = mount(
-        <Collection collection={collectionData}
+        <Collection
+          collection={collectionData}
           fetchPage={fetchPage}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
           setPreference={setPreference}
-          />,
+        />,
         { context }
       );
 
@@ -354,13 +373,14 @@ describe("Collection", () => {
       };
       let context = mockRouterContext();
       let wrapper = mount(
-        <Collection collection={collectionData}
+        <Collection
+          collection={collectionData}
           fetchPage={fetchPage}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
           setPreference={setPreference}
-          />,
+        />,
         { context }
       );
 
@@ -391,17 +411,18 @@ describe("Collection", () => {
         title: "title",
         books: [],
         lanes: [],
-        navigationLinks: [],
+        navigationLinks: []
       };
 
       let wrapper = mount(
-        <Collection collection={collectionData}
+        <Collection
+          collection={collectionData}
           isFetchingPage={true}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
           setPreference={setPreference}
-          />
+        />
       );
 
       let loadings = wrapper.find(".loading-next-page");
@@ -415,7 +436,8 @@ describe("Collection", () => {
       });
       let context = mockRouterContext();
       let wrapper = mount(
-        <Collection collection={collectionData}
+        <Collection
+          collection={collectionData}
           isFetchingPage={false}
           fetchPage={fetchPage}
           updateBook={updateBook}
@@ -453,13 +475,14 @@ describe("Collection", () => {
     beforeEach(() => {
       context = mockRouterContext();
       wrapper = mount(
-        <Collection collection={collectionData}
+        <Collection
+          collection={collectionData}
           isFetchingCollection={true}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
           setPreference={setPreference}
-          />,
+        />,
         { context }
       );
       main = wrapper.instance().refs["collection-main"] as any;
@@ -481,19 +504,19 @@ describe("Collection", () => {
         url: "url"
       };
       wrapper = mount(
-        <Collection collection={collectionData}
+        <Collection
+          collection={collectionData}
           isFetchingCollection={false}
           error={error}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
           setPreference={setPreference}
-          />,
+        />,
         { context }
       );
 
       expect(main.scrollTop).to.equal(1000);
     });
   });
-
 });

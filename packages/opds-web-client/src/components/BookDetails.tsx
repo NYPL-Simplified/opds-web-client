@@ -3,7 +3,7 @@ import * as moment from "moment";
 import BookCover from "./BookCover";
 import Book, { BookProps } from "./Book";
 
-export interface BookDetailsProps extends BookProps {};
+export interface BookDetailsProps extends BookProps {}
 
 /** Detail page for a single book. */
 export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
@@ -19,34 +19,38 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
           </div>
           <div className="details">
             <h1 className="title">{this.props.book.title}</h1>
-            {
-              this.props.book.subtitle &&
-              <p className="subtitle">{ this.props.book.subtitle }</p>
-            }
-            {
-              this.props.book.series && this.props.book.series.name &&
-              <p className="series">{ this.props.book.series.name }</p>
-            }
-            {
-              this.props.book.authors && this.props.book.authors.length > 0 &&
+            {this.props.book.subtitle && (
+              <p className="subtitle">{this.props.book.subtitle}</p>
+            )}
+            {this.props.book.series && this.props.book.series.name && (
+              <p className="series">{this.props.book.series.name}</p>
+            )}
+            {this.props.book.authors && this.props.book.authors.length > 0 && (
               <p className="authors">By {this.props.book.authors.join(", ")}</p>
-            }
-            {
-              this.props.book.contributors && this.props.book.contributors.length > 0 &&
-              <p className="contributors">Contributors: {this.props.book.contributors.join(", ")}</p>
-            }
+            )}
+            {this.props.book.contributors &&
+              this.props.book.contributors.length > 0 && (
+                <p className="contributors">
+                  Contributors: {this.props.book.contributors.join(", ")}
+                </p>
+              )}
             <ul className="fields" lang="en">
-              { fields.map(field =>
-                field.value &&
-                  <li className={field.name.toLowerCase().replace(" ", "-")} key={field.name}>
-                    {field.name}: {field.value}
-                  </li>
-              ) }
-              {
-                medium && (
-                  <li className="item-icon-container">{this.getMediumSVG(medium)}</li>
-                )
-              }
+              {fields.map(
+                field =>
+                  field.value && (
+                    <li
+                      className={field.name.toLowerCase().replace(" ", "-")}
+                      key={field.name}
+                    >
+                      {field.name}: {field.value}
+                    </li>
+                  )
+              )}
+              {medium && (
+                <li className="item-icon-container">
+                  {this.getMediumSVG(medium)}
+                </li>
+              )}
             </ul>
           </div>
         </div>
@@ -54,21 +58,20 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
         <div className="main">
           <div className="row">
             <div className="top col-sm-6 col-sm-offset-3">
-              <div className="circulation-links">
-                { this.circulationLinks() }
-              </div>
-              <div className="circulation-info">
-                { this.circulationInfo() }
-              </div>
+              <div className="circulation-links">{this.circulationLinks()}</div>
+              <div className="circulation-info">{this.circulationInfo()}</div>
             </div>
             <div className="right-column-links col-sm-3">
-              { this.rightColumnLinks() }
+              {this.rightColumnLinks()}
             </div>
           </div>
 
-          <h2>Summary</h2> 
-          <div className="summary" lang={this.props.book.language}
-               dangerouslySetInnerHTML={{ __html: this.props.book.summary }}></div>
+          <h2>Summary</h2>
+          <div
+            className="summary"
+            lang={this.props.book.language}
+            dangerouslySetInnerHTML={{ __html: this.props.book.summary }}
+          ></div>
         </div>
       </div>
     );
@@ -92,34 +95,44 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
 
   circulationInfo() {
     if (this.isOpenAccess()) {
-      return [(
-        <div key="oa" className="open-access-info">This open-access book is available to keep.</div>
-      )];
+      return [
+        <div key="oa" className="open-access-info">
+          This open-access book is available to keep.
+        </div>
+      ];
     }
 
     if (this.isBorrowed()) {
-      let availableUntil = this.props.book.availability && this.props.book.availability.until;
+      let availableUntil =
+        this.props.book.availability && this.props.book.availability.until;
       if (availableUntil) {
         let timeLeft = moment(availableUntil).fromNow(true);
-        return [(
-          <div key="loan" className="loan-info">You have this book on loan for { timeLeft }.</div>
-        )];
+        return [
+          <div key="loan" className="loan-info">
+            You have this book on loan for {timeLeft}.
+          </div>
+        ];
       }
       return [];
     }
 
     let info = [];
 
-    let availableCopies = (this.props.book.copies && this.props.book.copies.available);
-    let totalCopies = (this.props.book.copies && this.props.book.copies.total);
-    let totalHolds = (this.props.book.holds && this.props.book.holds.total);
-    let holdsPosition = (this.props.book.holds && this.props.book.holds.position);
+    let availableCopies =
+      this.props.book.copies && this.props.book.copies.available;
+    let totalCopies = this.props.book.copies && this.props.book.copies.total;
+    let totalHolds = this.props.book.holds && this.props.book.holds.total;
+    let holdsPosition = this.props.book.holds && this.props.book.holds.position;
 
-    if (availableCopies !== undefined && availableCopies !== null
-          && totalCopies !== undefined && totalCopies !== null) {
+    if (
+      availableCopies !== undefined &&
+      availableCopies !== null &&
+      totalCopies !== undefined &&
+      totalCopies !== null
+    ) {
       info.push(
         <div key="copies" className="copies-info">
-          { availableCopies } of { totalCopies } copies available
+          {availableCopies} of {totalCopies} copies available
         </div>
       );
     }
@@ -127,13 +140,17 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
     if (totalHolds && availableCopies === 0) {
       info.push(
         <div key="holds" className="holds-info">
-          { totalHolds } patrons in hold queue
+          {totalHolds} patrons in hold queue
         </div>
       );
-      if (this.isReserved() && holdsPosition !== undefined && holdsPosition !== null) {
+      if (
+        this.isReserved() &&
+        holdsPosition !== undefined &&
+        holdsPosition !== null
+      ) {
         info.push(
           <div key="holds-position" className="holds-info">
-            Your holds position: { holdsPosition }
+            Your holds position: {holdsPosition}
           </div>
         );
       }

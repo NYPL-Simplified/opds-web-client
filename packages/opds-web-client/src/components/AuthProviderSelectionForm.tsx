@@ -1,5 +1,10 @@
 import * as React from "react";
-import { AuthCallback, AuthCredentials, AuthProvider, AuthMethod } from "../interfaces";
+import {
+  AuthCallback,
+  AuthCredentials,
+  AuthProvider,
+  AuthMethod
+} from "../interfaces";
 
 export interface AuthFormProps<T extends AuthMethod> {
   hide?: () => void;
@@ -32,30 +37,41 @@ export interface AuthProviderSelectionFormState {
 
 /** Shows buttons for each available authentication provider, or the form for
     the selected authentication provider. */
-export default class AuthProviderSelectionForm extends React.Component<AuthProviderSelectionFormProps, AuthProviderSelectionFormState> {
+export default class AuthProviderSelectionForm extends React.Component<
+  AuthProviderSelectionFormProps,
+  AuthProviderSelectionFormState
+> {
   constructor(props) {
     super(props);
     let selectedProvider = null;
     if (this.props.error && this.props.attemptedProvider) {
-        for (let provider of this.props.providers) {
-            if (this.props.attemptedProvider === provider.id) {
-                selectedProvider = provider;
-                break;
-            }
+      for (let provider of this.props.providers) {
+        if (this.props.attemptedProvider === provider.id) {
+          selectedProvider = provider;
+          break;
         }
+      }
     }
     this.state = { selectedProvider };
     this.selectProvider = this.selectProvider.bind(this);
   }
 
   render() {
-    let AuthForm = this.state.selectedProvider && this.state.selectedProvider.plugin.formComponent;
+    let AuthForm =
+      this.state.selectedProvider &&
+      this.state.selectedProvider.plugin.formComponent;
 
     return (
-      <div className="auth-form" role="dialog" aria-labelledby="auth-form-title">
+      <div
+        className="auth-form"
+        role="dialog"
+        aria-labelledby="auth-form-title"
+      >
         <div>
-          <h3 id="auth-form-title">{ this.props.title ? this.props.title + " " : ""}Login</h3>
-          { this.state.selectedProvider &&
+          <h3 id="auth-form-title">
+            {this.props.title ? this.props.title + " " : ""}Login
+          </h3>
+          {this.state.selectedProvider && (
             <AuthForm
               hide={this.props.hide}
               saveCredentials={this.props.saveCredentials}
@@ -64,19 +80,26 @@ export default class AuthProviderSelectionForm extends React.Component<AuthProvi
               error={this.props.error}
               provider={this.state.selectedProvider}
             />
-          }
-          { !this.state.selectedProvider && this.props.providers && this.props.providers.length > 0 &&
-            <div>
-              <ul className="subtle-list" aria-label="authentication options">
-                { this.props.providers.map(provider =>
-                  <li key={provider.id}>
-                    <provider.plugin.buttonComponent provider={provider} onClick={() => this.selectProvider(provider)}/>
-                  </li>
-                ) }
-              </ul>
-              <button className="btn btn-default" onClick={this.props.cancel}>Cancel</button>
-            </div>
-          }
+          )}
+          {!this.state.selectedProvider &&
+            this.props.providers &&
+            this.props.providers.length > 0 && (
+              <div>
+                <ul className="subtle-list" aria-label="authentication options">
+                  {this.props.providers.map(provider => (
+                    <li key={provider.id}>
+                      <provider.plugin.buttonComponent
+                        provider={provider}
+                        onClick={() => this.selectProvider(provider)}
+                      />
+                    </li>
+                  ))}
+                </ul>
+                <button className="btn btn-default" onClick={this.props.cancel}>
+                  Cancel
+                </button>
+              </div>
+            )}
         </div>
       </div>
     );

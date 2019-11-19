@@ -4,10 +4,7 @@ import BookCover from "./BookCover";
 import BorrowButton from "./BorrowButton";
 import DownloadButton from "./DownloadButton";
 import { BookData } from "../interfaces";
-import {
-  AudioHeadphoneIcon,
-  BookIcon,
-} from "@nypl/dgx-svg-icons";
+import { AudioHeadphoneIcon, BookIcon } from "@nypl/dgx-svg-icons";
 const download = require("downloadjs");
 
 export interface BookProps {
@@ -31,14 +28,17 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
     const book = this.props.book;
     // Remove HTML tags from the summary to fit more information into a truncated view.
     // The summary may still contain HTML character entities and needs to be rendered as HTML.
-    let summary = (book && book.summary && book.summary.replace(/<\/?[^>]+(>|$)/g, " ")) || "";
+    let summary =
+      (book && book.summary && book.summary.replace(/<\/?[^>]+(>|$)/g, " ")) ||
+      "";
     const bookMedium = this.getMedium(book);
     const showMediaIconClass = bookMedium ? "show-media" : "";
     const hasAuthors = !!(book.authors && book.authors.length);
     const hasContributors = !!(book.contributors && book.contributors.length);
-    const contributors = book.contributors && book.contributors.length ?
-      book.contributors.join(", ") :
-      "";
+    const contributors =
+      book.contributors && book.contributors.length
+        ? book.contributors.join(", ")
+        : "";
     // Display contributors only if there are no authors.
     const authors = hasAuthors ? book.authors.join(", ") : contributors;
 
@@ -48,21 +48,21 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
           collectionUrl={this.props.collectionUrl}
           bookUrl={book.url || book.id}
           title={book.title}
-          >
+        >
           <BookCover book={book} />
           <div className={`compact-info ${showMediaIconClass}`}>
             {this.getMediumSVG(bookMedium, false)}
             <div className="empty"></div>
             <div className="item-details">
               <div className="title">{book.title}</div>
-              { book.series && book.series.name &&
+              {book.series && book.series.name && (
                 <div className="series">{book.series.name}</div>
-              }
-              { (hasAuthors || hasContributors) &&
+              )}
+              {(hasAuthors || hasContributors) && (
                 <div className="authors">
                   <span>By {authors}</span>
                 </div>
-              }
+              )}
             </div>
           </div>
         </CatalogLink>
@@ -73,42 +73,42 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
                 collectionUrl={this.props.collectionUrl}
                 bookUrl={book.url || book.id}
                 title={book.title}
-                >
-                  <div className="title">{book.title}</div>
+              >
+                <div className="title">{book.title}</div>
               </CatalogLink>
-              { book.series && book.series.name &&
+              {book.series && book.series.name && (
                 <div className="series">{book.series.name}</div>
-              }
-              { (hasAuthors || hasContributors) &&
+              )}
+              {(hasAuthors || hasContributors) && (
                 <div className="authors">
                   <span>By {authors}</span>
                 </div>
-              }
+              )}
             </div>
-            <div className="circulation-links">
-              { this.circulationLinks() }
-            </div>
+            <div className="circulation-links">{this.circulationLinks()}</div>
           </div>
           <div className="details">
             <div className="fields" lang="en">
-              {
-                bookMedium && (
-                  <span>{this.getMediumSVG(bookMedium)}</span>
-                )
-              }
-              { this.fields().map((field, key) =>
-                field.value ? <div className={field.name.toLowerCase().replace(" ", "-")} key={`${field.name}`}>{field.name}: {field.value}</div> : null
-              ) }
+              {bookMedium && <span>{this.getMediumSVG(bookMedium)}</span>}
+              {this.fields().map((field, key) =>
+                field.value ? (
+                  <div
+                    className={field.name.toLowerCase().replace(" ", "-")}
+                    key={`${field.name}`}
+                  >
+                    {field.name}: {field.value}
+                  </div>
+                ) : null
+              )}
             </div>
             <div className="summary" lang={book.language}>
-              <span
-                dangerouslySetInnerHTML={{__html: summary}}>
-              </span>
+              <span dangerouslySetInnerHTML={{ __html: summary }}></span>
               <CatalogLink
                 collectionUrl={this.props.collectionUrl}
                 bookUrl={book.url || book.id}
                 title={book.title}
-                >&hellip; More
+              >
+                &hellip; More
               </CatalogLink>
             </div>
           </div>
@@ -118,22 +118,24 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
   }
 
   fields() {
-    return this.props.book ? [
-      {
-        name: "Publisher",
-        value: this.props.book.publisher
-      },
-      {
-        name: "Published",
-        "value": this.props.book.published
-      },
-      {
-        name: "Categories",
-        value: this.props.book.categories ?
-                 this.props.book.categories.join(", ") :
-                 null
-      }
-    ] : [];
+    return this.props.book
+      ? [
+          {
+            name: "Publisher",
+            value: this.props.book.publisher
+          },
+          {
+            name: "Published",
+            value: this.props.book.published
+          },
+          {
+            name: "Categories",
+            value: this.props.book.categories
+              ? this.props.book.categories.join(", ")
+              : null
+          }
+        ]
+      : [];
   }
 
   circulationLinks() {
@@ -153,7 +155,8 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
                   className="btn btn-default read-button"
                   href={this.props.epubReaderUrlTemplate(link.url)}
                   target="_blank"
-                  >Read Online
+                >
+                  Read Online
                 </a>
               </span>
             );
@@ -170,19 +173,23 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
               url={link.url}
               mimeType={link.type}
               isPlainLink={true}
-              />
-            );
+            />
+          );
         })
       );
     } else if (this.isBorrowed()) {
       // Put streaming links first, followed by a disabled "Borrowed" button that will
       // display in the list view if streaming is not available.
 
-      let streamingMediaType = "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media";
+      let streamingMediaType =
+        "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media";
       let streamingLinks = [];
       let downloadLinks = [];
       for (let link of this.props.book.fulfillmentLinks) {
-        if (link.type === streamingMediaType || link.indirectType === streamingMediaType) {
+        if (
+          link.type === streamingMediaType ||
+          link.indirectType === streamingMediaType
+        ) {
           streamingLinks.push(link);
         } else {
           downloadLinks.push(link);
@@ -202,7 +209,7 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
               title={this.props.book.title}
               isPlainLink={isDirectStreaming || !this.props.isSignedIn}
               indirectType={link.indirectType}
-              />
+            />
           );
         })
       );
@@ -211,7 +218,8 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
           key={this.props.book.borrowUrl}
           className="btn btn-default borrowed-button"
           disabled={true}
-          borrow={this.borrow}>
+          borrow={this.borrow}
+        >
           Borrowed
         </BorrowButton>
       );
@@ -227,7 +235,7 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
               title={this.props.book.title}
               isPlainLink={!this.props.isSignedIn}
               indirectType={link.indirectType}
-              />
+            />
           );
         })
       );
@@ -235,19 +243,20 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
 
     if (this.isReserved()) {
       links.push(
-        <button key="onhold" className="btn btn-default disabled">Reserved</button>
+        <button key="onhold" className="btn btn-default disabled">
+          Reserved
+        </button>
       );
     } else if (!this.isBorrowed() && this.props.book.borrowUrl) {
-      let label = !this.isReady() &&
-                  this.props.book.copies &&
-                  this.props.book.copies.available === 0 ?
-                  "Reserve" :
-                  "Borrow";
+      let label =
+        !this.isReady() &&
+        this.props.book.copies &&
+        this.props.book.copies.available === 0
+          ? "Reserve"
+          : "Borrow";
       links.push(
-        <BorrowButton
-          key={this.props.book.borrowUrl}
-          borrow={this.borrow}>
-          { label }
+        <BorrowButton key={this.props.book.borrowUrl} borrow={this.borrow}>
+          {label}
         </BorrowButton>
       );
     }
@@ -256,12 +265,17 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
   }
 
   getMedium(book) {
-    if (!book.raw || !book.raw["$"] || !book.raw["$"]["schema:additionalType"]) {
+    if (
+      !book.raw ||
+      !book.raw["$"] ||
+      !book.raw["$"]["schema:additionalType"]
+    ) {
       return "";
     }
 
-    return book.raw["$"]["schema:additionalType"].value ?
-      book.raw["$"]["schema:additionalType"].value : "";
+    return book.raw["$"]["schema:additionalType"].value
+      ? book.raw["$"]["schema:additionalType"].value
+      : "";
   }
 
   getMediumSVG(medium, displayLabel = true) {
@@ -272,22 +286,24 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
     const svgMediumTypes = {
       "http://bib.schema.org/Audiobook": {
         element: <AudioHeadphoneIcon ariaHidden title="Audio/Headphone Icon" />,
-        label: "Audio",
+        label: "Audio"
       },
       "http://schema.org/EBook": {
         element: <BookIcon ariaHidden title="eBook Icon" />,
-        label: "eBook",
+        label: "eBook"
       },
       "http://schema.org/Book": {
         element: <BookIcon ariaHidden title="eBook Icon" />,
-        label: "eBook",
-      },
+        label: "eBook"
+      }
     };
     const svgElm = svgMediumTypes[medium];
 
-    return svgElm ?
-      (<div className="item-icon">{svgElm.element} {displayLabel ? svgElm.label : null}</div>)
-      : null;
+    return svgElm ? (
+      <div className="item-icon">
+        {svgElm.element} {displayLabel ? svgElm.label : null}
+      </div>
+    ) : null;
   }
 
   borrow(): Promise<BookData> {
@@ -295,22 +311,30 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
   }
 
   isReserved() {
-    return this.props.book.availability &&
-           this.props.book.availability.status === "reserved";
+    return (
+      this.props.book.availability &&
+      this.props.book.availability.status === "reserved"
+    );
   }
 
   isReady() {
-    return this.props.book.availability &&
-           this.props.book.availability.status === "ready";
+    return (
+      this.props.book.availability &&
+      this.props.book.availability.status === "ready"
+    );
   }
 
   isBorrowed() {
-    return this.props.book.fulfillmentLinks &&
-           this.props.book.fulfillmentLinks.length > 0;
+    return (
+      this.props.book.fulfillmentLinks &&
+      this.props.book.fulfillmentLinks.length > 0
+    );
   }
 
   isOpenAccess() {
-    return this.props.book.openAccessLinks &&
-           this.props.book.openAccessLinks.length > 0;
+    return (
+      this.props.book.openAccessLinks &&
+      this.props.book.openAccessLinks.length > 0
+    );
   }
 }
