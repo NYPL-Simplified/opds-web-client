@@ -1,10 +1,10 @@
 import * as React from "react";
-import {Provider} from "react-redux";
+import { Provider } from "react-redux";
 import * as Redux from "redux";
 import { State } from "../../state";
 import AuthPlugin from "../../AuthPlugin";
 import buildStore from "../../store";
-import {PathForContext} from "./PathForContext";
+import { PathForContext } from "./PathForContext";
 import BasicAuthPlugin from "../../BasicAuthPlugin";
 
 type OPDSStoreProps = {
@@ -25,14 +25,14 @@ export default class OPDSStore extends React.Component<OPDSStoreProps> {
 
   constructor(props, context) {
     super(props);
-    this.store = buildStore(this.props.initialState || undefined, this.props.authPlugins || [BasicAuthPlugin], context.pathFor);
+    this.store = buildStore(
+      this.props.initialState || undefined,
+      this.props.authPlugins || [BasicAuthPlugin],
+      context.pathFor
+    );
   }
 
   render() {
-    return (
-      <Provider store={this.store}>
-        {this.props.children}
-      </Provider>
-    );
+    return <Provider store={this.store}>{this.props.children}</Provider>;
   }
 }

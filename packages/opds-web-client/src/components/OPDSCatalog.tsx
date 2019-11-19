@@ -21,27 +21,19 @@ export interface OPDSCatalogProps {
  * The main application component.
  *  - Renders root and passes props along with store to root
  *  - Creates the redux store using OPDSStore
+ *  - consumes and passes it down
  *  - Passes the redux store down the tree in context
  */
-const OPDSCatalog: React.FunctionComponent<OPDSCatalogProps> = (props) => {
-
+const OPDSCatalog: React.FunctionComponent<OPDSCatalogProps> = props => {
   return (
-    <OPDSStore initialState={props.initialState} authPlugins={props.authPlugins}>
-      <RootWrapper {...props} />
+    <OPDSStore
+      initialState={props.initialState}
+      authPlugins={props.authPlugins}
+    >
+      <ReactReduxContext.Consumer>
+        {(store: Redux.Store<State>) => <Root store={store} {...props} />}
+      </ReactReduxContext.Consumer>
     </OPDSStore>
-  );
-};
-
-/**
- * Simple wrapper to allow store to become available in context
- * before we try to access it.
- */
-const RootWrapper: React.FunctionComponent<OPDSCatalogProps> = (props) => {
-
-  return (
-    <ReactReduxContext.Consumer >
-      {(store: Redux.Store<State>) => <Root store={store} {...props} />}
-    </ReactReduxContext.Consumer>
   );
 };
 

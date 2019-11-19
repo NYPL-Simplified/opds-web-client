@@ -18,15 +18,16 @@ type RouterContextProps = {
   children: React.ReactChild;
 };
 
-export default class RouterProvider extends React.Component<RouterContextProps> {
-
+export default class RouterProvider extends React.Component<
+  RouterContextProps
+> {
   static childContextTypes: React.ValidationMap<{}> = {
     router: PropTypes.func.isRequired
   };
 
   getChildContext() {
     return {
-      router: this.props.router,
+      router: this.props.router
     };
   }
 
