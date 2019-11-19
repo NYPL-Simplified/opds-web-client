@@ -12,10 +12,7 @@ export interface DownloadButtonProps extends React.HTMLProps<{}> {
 }
 
 /** Shows a button to fulfill and download a book or download it directly. */
-export default class DownloadButton extends React.Component<
-  DownloadButtonProps,
-  {}
-> {
+export default class DownloadButton extends React.Component<DownloadButtonProps, {}> {
   constructor(props) {
     super(props);
     this.fulfill = this.fulfill.bind(this);
@@ -23,53 +20,35 @@ export default class DownloadButton extends React.Component<
 
   render() {
     // Only get the props needed for the anchor or button element.
-    const {
-      ref,
-      url,
-      mimeType,
-      isPlainLink,
-      fulfill,
-      indirectFulfill,
-      indirectType,
-      title,
-      ...props
-    } = this.props;
+    const { ref, url, mimeType, isPlainLink, fulfill,
+      indirectFulfill, indirectType, title, ...props } = this.props;
 
     return (
       <span>
-        {this.props.isPlainLink ? (
+        { this.props.isPlainLink ?
           <a
             className="btn btn-default download-button"
             {...props}
             href={this.props.url}
-            target="_blank"
-          >
+            target="_blank">
             {this.downloadLabel()}
-          </a>
-        ) : (
+          </a> :
           <button
-            className={
-              "btn btn-default download-button download-" +
-              this.fileExtension().slice(1) +
-              "-button"
-            }
+            className={"btn btn-default download-button download-" + this.fileExtension().slice(1) + "-button"}
             {...props}
-            onClick={this.fulfill}
-          >
+            onClick={this.fulfill}>
             {this.downloadLabel()}
           </button>
-        )}
+        }
       </span>
     );
   }
 
   fulfill() {
     if (this.isIndirect()) {
-      return this.props
-        .indirectFulfill(this.props.url, this.props.indirectType)
-        .then(url => {
-          window.open(url, "_blank");
-        });
+      return this.props.indirectFulfill(this.props.url, this.props.indirectType).then(url => {
+        window.open(url, "_blank");
+      });
     } else {
       return this.props.fulfill(this.props.url).then(blob => {
         download(
@@ -83,49 +62,32 @@ export default class DownloadButton extends React.Component<
   }
 
   isIndirect() {
-    return (
-      this.props.indirectType &&
-      this.props.mimeType ===
-        "application/atom+xml;type=entry;profile=opds-catalog"
-    );
+    return this.props.indirectType &&
+      this.props.mimeType === "application/atom+xml;type=entry;profile=opds-catalog";
   }
 
   generateFilename(str: string): string {
-    return (
-      str
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-|-$)/g, "") + this.fileExtension()
-    );
+    return str.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") + this.fileExtension();
   }
 
   mimeType() {
-    return this.props.mimeType === "vnd.adobe/adept+xml"
-      ? "application/vnd.adobe.adept+xml"
-      : this.props.mimeType;
+    return this.props.mimeType === "vnd.adobe/adept+xml" ? "application/vnd.adobe.adept+xml" : this.props.mimeType;
   }
 
   fileExtension() {
-    return (
-      {
-        "application/epub+zip": ".epub",
-        "application/pdf": ".pdf",
-        "application/vnd.adobe.adept+xml": ".acsm",
-        "application/x-mobipocket-ebook": ".mobi"
-      }[this.mimeType()] || ""
-    );
+    return {
+      "application/epub+zip": ".epub",
+      "application/pdf": ".pdf",
+      "application/vnd.adobe.adept+xml": ".acsm",
+      "application/x-mobipocket-ebook": ".mobi"
+    }[this.mimeType()] || "";
   }
 
   downloadLabel() {
-    if (
-      this.props.indirectType ===
-      "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media"
-    ) {
+    if (this.props.indirectType === "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media") {
       return "Read Online";
     }
-    let type = this.fileExtension()
-      .replace(".", "")
-      .toUpperCase();
+    let type = this.fileExtension().replace(".", "").toUpperCase();
     return "Download" + (type ? " " + type : "");
   }
 }

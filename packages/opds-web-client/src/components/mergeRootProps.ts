@@ -1,12 +1,7 @@
 import ActionsCreator from "../actions";
 import DataFetcher from "../DataFetcher";
 import { adapter } from "../OPDSDataAdapter";
-import {
-  CollectionData,
-  BookData,
-  AuthCallback,
-  AuthCredentials
-} from "../interfaces";
+import { CollectionData, BookData, AuthCallback, AuthCredentials } from "../interfaces";
 
 export function findBookInCollection(collection: CollectionData, book: string) {
   if (collection) {
@@ -26,7 +21,7 @@ export function mapStateToProps(state, ownProps) {
     isFetchingCollection: state.collection.isFetching,
     isFetchingPage: state.collection.isFetchingPage,
     isFetchingBook: state.book.isFetching,
-    error: state.collection.error || state.book.error,
+    error: (state.collection.error || state.book.error),
     bookData: state.book.data || ownProps.bookData,
     history: state.collection.history,
     loadedCollectionUrl: state.collection.url,
@@ -39,46 +34,34 @@ export function mapStateToProps(state, ownProps) {
     isSignedIn: !!state.auth.credentials,
     preferences: state.preferences
   };
-}
+};
 
 export function mapDispatchToProps(dispatch) {
   return {
-    createDispatchProps: fetcher => {
+    createDispatchProps: (fetcher) => {
       let actions = new ActionsCreator(fetcher);
       return {
-        fetchCollection: (url: string) =>
-          dispatch(actions.fetchCollection(url)),
+        fetchCollection: (url: string) => dispatch(actions.fetchCollection(url)),
         fetchPage: (url: string) => dispatch(actions.fetchPage(url)),
         fetchBook: (url: string) => dispatch(actions.fetchBook(url)),
-        loadBook: (book: BookData, url: string) =>
-          dispatch(actions.loadBook(book, url)),
+        loadBook: (book: BookData, url: string) => dispatch(actions.loadBook(book, url)),
         clearCollection: () => dispatch(actions.clearCollection()),
         clearBook: () => dispatch(actions.clearBook()),
-        fetchSearchDescription: (url: string) =>
-          dispatch(actions.fetchSearchDescription(url)),
+        fetchSearchDescription: (url: string) => dispatch(actions.fetchSearchDescription(url)),
         closeError: () => dispatch(actions.closeError()),
         updateBook: (url: string) => dispatch(actions.updateBook(url)),
         fulfillBook: (url: string) => dispatch(actions.fulfillBook(url)),
-        indirectFulfillBook: (url: string, type: string) =>
-          dispatch(actions.indirectFulfillBook(url, type)),
+        indirectFulfillBook: (url: string, type: string) => dispatch(actions.indirectFulfillBook(url, type)),
         fetchLoans: (url: string) => dispatch(actions.fetchLoans(url)),
-        saveAuthCredentials: (credentials: AuthCredentials) =>
-          dispatch(actions.saveAuthCredentials(credentials)),
+        saveAuthCredentials: (credentials: AuthCredentials) => dispatch(actions.saveAuthCredentials(credentials)),
         clearAuthCredentials: () => dispatch(actions.clearAuthCredentials()),
-        showAuthForm: (
-          callback: AuthCallback,
-          cancel: () => void,
-          providers: any,
-          title: string
-        ) => dispatch(actions.showAuthForm(callback, cancel, providers, title)),
-        closeErrorAndHideAuthForm: () =>
-          dispatch(actions.closeErrorAndHideAuthForm()),
-        setPreference: (key: string, value: string) =>
-          dispatch(actions.setPreference(key, value))
+        showAuthForm: (callback: AuthCallback, cancel: () => void, providers: any, title: string) => dispatch(actions.showAuthForm(callback, cancel, providers, title)),
+        closeErrorAndHideAuthForm: () => dispatch(actions.closeErrorAndHideAuthForm()),
+        setPreference: (key: string, value: string) => dispatch(actions.setPreference(key, value))
       };
     }
   };
-}
+};
 
 // only used by a server when it needs to fetch collection and/or book data
 // for a particular route into a store before it renders to HTML
@@ -86,10 +69,7 @@ export function createFetchCollectionAndBook(dispatch) {
   let fetcher = new DataFetcher({ adapter });
   let actions = mapDispatchToProps(dispatch).createDispatchProps(fetcher);
   let { fetchCollection, fetchBook } = actions;
-  return (
-    collectionUrl: string,
-    bookUrl: string
-  ): Promise<{ collectionData: CollectionData; bookData: BookData }> => {
+  return (collectionUrl: string, bookUrl: string): Promise<{ collectionData: CollectionData, bookData: BookData }> => {
     return fetchCollectionAndBook({
       fetchCollection,
       fetchBook,
@@ -100,43 +80,30 @@ export function createFetchCollectionAndBook(dispatch) {
 }
 
 export function fetchCollectionAndBook({
-  fetchCollection,
-  fetchBook,
-  collectionUrl,
-  bookUrl
-}): Promise<{ collectionData: CollectionData; bookData: BookData }> {
+  fetchCollection, fetchBook, collectionUrl, bookUrl
+}): Promise<{ collectionData: CollectionData, bookData: BookData }> {
   return new Promise((resolve, reject) => {
     if (collectionUrl) {
-      fetchCollection(collectionUrl)
-        .then(collectionData => {
-          if (bookUrl) {
-            fetchBook(bookUrl)
-              .then(bookData => {
-                resolve({ collectionData, bookData });
-              })
-              .catch(err => reject(err));
-          } else {
-            resolve({ collectionData, bookData: null });
-          }
-        })
-        .catch(err => reject(err));
+      fetchCollection(collectionUrl).then(collectionData => {
+        if (bookUrl) {
+          fetchBook(bookUrl).then(bookData => {
+            resolve({ collectionData, bookData });
+          }).catch(err => reject(err));
+        } else {
+          resolve({ collectionData, bookData: null });
+        }
+      }).catch(err => reject(err));
     } else if (bookUrl) {
-      fetchBook(bookUrl)
-        .then(bookData => {
-          resolve({ collectionData: null, bookData });
-        })
-        .catch(err => reject(err));
+      fetchBook(bookUrl).then(bookData => {
+        resolve({ collectionData: null, bookData });
+      }).catch(err => reject(err));
     } else {
       resolve({ collectionData: null, bookData: null });
     }
   });
-}
+};
 
-export function mergeRootProps(
-  stateProps,
-  createDispatchProps,
-  componentProps
-) {
+export function mergeRootProps(stateProps, createDispatchProps, componentProps) {
   let fetcher = new DataFetcher({
     proxyUrl: componentProps.proxyUrl,
     adapter: adapter
@@ -165,10 +132,7 @@ export function mergeRootProps(
     });
   };
 
-  let setBook = (
-    book: BookData | string,
-    collectionData: CollectionData = null
-  ) => {
+  let setBook = (book: BookData|string, collectionData: CollectionData = null) => {
     return new Promise((resolve, reject) => {
       let url = null;
       let bookData = null;
@@ -195,22 +159,18 @@ export function mergeRootProps(
 
   let setCollectionAndBook = (collectionUrl: string, bookUrl: string) => {
     return new Promise((resolve, reject) => {
-      setCollection(collectionUrl)
-        .then((collectionData: CollectionData) => {
-          setBook(bookUrl, collectionData)
-            .then((bookData: BookData) => {
-              resolve({ collectionData, bookData });
-            })
-            .catch(err => reject(err));
-        })
-        .catch(err => reject(err));
+      setCollection(collectionUrl).then((collectionData: CollectionData) => {
+        setBook(bookUrl, collectionData).then((bookData: BookData) => {
+          resolve({ collectionData, bookData });
+        }).catch(err => reject(err));
+      }).catch(err => reject(err));
     });
   };
 
   let { fetchCollection, fetchBook } = dispatchProps;
 
   let updateBook = (url: string) => {
-    return dispatchProps.updateBook(url).then(data => {
+    return dispatchProps.updateBook(url).then((data) => {
       if (stateProps.loansUrl) {
         dispatchProps.fetchLoans(stateProps.loansUrl);
       }
@@ -249,4 +209,4 @@ export function mergeRootProps(
     },
     updateBook: updateBook
   });
-}
+};

@@ -13,9 +13,7 @@ body {
   font-size: $basefont;
 }
 
-html,
-body,
-body > div {
+html, body, body > div {
   height: 100%;
 }
 
@@ -32,28 +30,24 @@ body > div {
   }
 }
 
-input[type="text"],
-input[type="button"],
-input[type="submit"],
-button,
-button.btn {
+input[type=text], input[type=button], input[type=submit], button, button.btn {
   &:focus {
     box-shadow: inset 0 0 0 $focus-width $focuscolor;
     outline: none;
   }
 }
 
-input[type="text"]::-webkit-input-placeholder {
+input[type=text]::-webkit-input-placeholder {
   color: $pagetextcolor;
 }
-input[type="text"]::-moz-placeholder {
+input[type=text]::-moz-placeholder {
   color: $pagetextcolor;
   opacity: 1;
 }
-input[type="text"]:-ms-input-placeholder {
+input[type=text]:-ms-input-placeholder {
   color: $pagetextcolor;
 }
-input[type="text"]:-moz-placeholder {
+input[type=text]:-moz-placeholder {
   color: $pagetextcolor;
   opacity: 1;
 }
@@ -67,8 +61,7 @@ a {
     color: $linkvisitedcolor;
   }
 
-  &:visited:hover,
-  &:hover {
+  &:visited:hover, &:hover {
     color: $linkhovercolor;
     text-decoration: none;
   }
@@ -103,8 +96,7 @@ a {
       flex-direction: row;
       flex-wrap: nowrap;
       padding-top: 2px;
-      input,
-      .btn {
+      input, .btn {
         width: auto;
         float: left;
       }
@@ -146,14 +138,13 @@ a {
   footer {
     padding: $padding;
     background-color: $footercolor;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #CCC;
     z-index: 200;
   }
 }
 
 // override bootstrap
-.navbar-default,
-.navbar-collapse {
+.navbar-default, .navbar-collapse {
   background-color: $dark;
   border: none;
   color: white;
@@ -171,8 +162,7 @@ a {
       padding-top: 15px;
       padding-bottom: 15px;
 
-      &:hover,
-      &:focus {
+      &:hover, &:focus {
         color: white;
         text-decoration: none;
       }

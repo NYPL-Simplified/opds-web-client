@@ -69,14 +69,7 @@ describe("auth reducer", () => {
     };
     let error = "Invalid Credentials";
     let attemptedProvider = "library";
-    let action = actions.showAuthForm(
-      callback,
-      cancel,
-      [provider],
-      "library",
-      error,
-      attemptedProvider
-    );
+    let action = actions.showAuthForm(callback, cancel, [provider], "library", error, attemptedProvider);
     let previousAttemptState = { ...initState, title: "library" };
     let newState = {
       ...previousAttemptState,

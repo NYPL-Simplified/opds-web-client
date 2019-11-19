@@ -14,7 +14,9 @@ describe("FacetGroup", () => {
       facets: []
     };
 
-    let wrapper = shallow(<FacetGroup facetGroup={facetGroup} />);
+    let wrapper = shallow(
+      <FacetGroup facetGroup={facetGroup} />
+    );
 
     let label = wrapper.find(".facet-group-label");
     expect(label.text()).to.equal(facetGroup.label);
@@ -37,17 +39,12 @@ describe("FacetGroup", () => {
       ]
     };
 
-    let wrapper = shallow(<FacetGroup facetGroup={facetGroup} />);
+    let wrapper = shallow(
+      <FacetGroup facetGroup={facetGroup} />
+    );
 
     let links = wrapper.find(CatalogLink);
     expect(links.length).to.equal(2);
-    expect(
-      links.map(facet =>
-        facet
-          .children()
-          .at(0)
-          .text()
-      )
-    ).to.deep.equal(facetGroup.facets.map(facet => facet.label));
+    expect(links.map(facet => facet.children().at(0).text())).to.deep.equal(facetGroup.facets.map(facet => facet.label));
   });
 });

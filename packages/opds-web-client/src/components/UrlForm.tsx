@@ -23,8 +23,7 @@ export default class UrlForm extends React.Component<UrlFormProps, {}> {
   };
 
   render(): JSX.Element {
-    let placeholder =
-      "e.g. http://feedbooks.github.io/opds-test-catalog/catalog/root.xml";
+    let placeholder = "e.g. http://feedbooks.github.io/opds-test-catalog/catalog/root.xml";
 
     return (
       <div className="url-form">
@@ -38,12 +37,9 @@ export default class UrlForm extends React.Component<UrlFormProps, {}> {
             type="text"
             className="form-control input-lg"
             defaultValue={this.props.collectionUrl}
-            placeholder={placeholder}
-          />
+            placeholder={placeholder} />
           &nbsp;
-          <button type="submit" className="btn btn-lg btn-default">
-            Go
-          </button>
+          <button type="submit" className="btn btn-lg btn-default">Go</button>
         </form>
       </div>
     );

@@ -26,7 +26,10 @@ describe("BasicAuthButton", () => {
       onClick = stub();
 
       wrapper = shallow(
-        <BasicAuthButton provider={provider} onClick={onClick} />
+        <BasicAuthButton
+          provider={provider}
+          onClick={onClick}
+          />
       );
     });
 

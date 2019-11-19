@@ -18,13 +18,9 @@ let book: BookData = {
   id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
   title: "The Mayan Secrets",
   authors: ["Clive Cussler", "Thomas Perry"],
-  summary:
-    "<strong>Sam and Remi Fargo race for treasure&#8212;and survival&#8212;in this lightning-paced new adventure from #1&lt;i&gt; New York Times&lt;/i&gt; bestselling author Clive Cussler.</strong><br />Husband-and-wife team Sam and Remi Fargo are in Mexico when they come upon a remarkable discovery&#8212;the mummified remainsof a man clutching an ancient sealed pot. Within the pot is a Mayan book larger than any known before.<br />The book contains astonishing information about the Mayans, their cities, and about mankind itself. The secrets are so powerful that some people would do anything to possess them&#8212;as the Fargos are about to find out.",
+  summary: "<strong>Sam and Remi Fargo race for treasure&#8212;and survival&#8212;in this lightning-paced new adventure from #1&lt;i&gt; New York Times&lt;/i&gt; bestselling author Clive Cussler.</strong><br />Husband-and-wife team Sam and Remi Fargo are in Mexico when they come upon a remarkable discovery&#8212;the mummified remainsof a man clutching an ancient sealed pot. Within the pot is a Mayan book larger than any known before.<br />The book contains astonishing information about the Mayans, their cities, and about mankind itself. The secrets are so powerful that some people would do anything to possess them&#8212;as the Fargos are about to find out.",
   imageUrl: "https://dlotdqc6pnwqb.cloudfront.net/3M/crrmnr9/cover.jpg",
-  openAccessLinks: [
-    { url: "secrets.epub", type: "application/epub+zip" },
-    { url: "secrets.mobi", type: "application/x-mobipocket-ebook" }
-  ],
+  openAccessLinks: [{ url: "secrets.epub", type: "application/epub+zip" }, { url: "secrets.mobi", type: "application/x-mobipocket-ebook" }],
   borrowUrl: "borrow url",
   publisher: "Penguin Publishing Group",
   published: "February 29, 2016",
@@ -33,9 +29,7 @@ let book: BookData = {
     name: "Fake Series"
   },
   language: "de",
-  raw: {
-    $: { "schema:additionalType": { value: "http://bib.schema.org/Audiobook" } }
-  }
+  raw: { "$": { "schema:additionalType": { value: "http://bib.schema.org/Audiobook" } } },
 };
 
 describe("Book", () => {
@@ -53,31 +47,26 @@ describe("Book", () => {
 
   it("shows the book cover", () => {
     let wrapper = shallow(
-      <Book
-        book={book}
+      <Book book={book}
         updateBook={updateBook}
         fulfillBook={fulfillBook}
         indirectFulfillBook={indirectFulfillBook}
-      />
+        />
     );
 
     let links = wrapper.find(CatalogLink);
-    let cover = links
-      .at(0)
-      .children()
-      .at(0);
+    let cover = links.at(0).children().at(0);
     expect(cover.type()).to.equal(BookCover);
     expect(cover.props().book).to.equal(book);
   });
 
   it("has language attribute matching the book's language", () => {
     let wrapper = shallow(
-      <Book
-        book={book}
+      <Book book={book}
         updateBook={updateBook}
         fulfillBook={fulfillBook}
         indirectFulfillBook={indirectFulfillBook}
-      />
+        />
     );
 
     let bookElement = wrapper.find(".book");
@@ -87,12 +76,11 @@ describe("Book", () => {
   describe("getMedium function", () => {
     it("returns value with data or an empty string", () => {
       let wrapper = shallow(
-        <Book
-          book={book}
+        <Book book={book}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
-        />
+          />
       );
 
       let instance = wrapper.instance() as any;
@@ -100,10 +88,8 @@ describe("Book", () => {
 
       expect(getMedium({})).to.equal("");
       expect(getMedium({ raw: {} })).to.equal("");
-      expect(getMedium({ raw: { $: {} } })).to.equal("");
-      expect(
-        getMedium({ raw: { $: { "schema:additionalType": {} } } })
-      ).to.equal("");
+      expect(getMedium({ raw: { "$":  {}} })).to.equal("");
+      expect(getMedium({ raw: { "$":  { "schema:additionalType": {}}} })).to.equal("");
       expect(getMedium(book)).to.equal("http://bib.schema.org/Audiobook");
     });
   });
@@ -115,12 +101,11 @@ describe("Book", () => {
 
     beforeEach(() => {
       wrapper = shallow(
-        <Book
-          book={book}
+        <Book book={book}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
-        />
+          />
       );
 
       instance = wrapper.instance() as any;
@@ -136,34 +121,28 @@ describe("Book", () => {
     });
 
     it("returns a component with the appropriate svg and label for the medium input", () => {
-      expect(
-        mount(getMediumSVG("http://bib.schema.org/Audiobook")).text()
-      ).to.equal("Audio/Headphone Icon Audio");
+      expect(mount(getMediumSVG("http://bib.schema.org/Audiobook")).text())
+        .to.equal("Audio/Headphone Icon Audio");
     });
 
     it("returns a component with the appropriate svg but no label for the medium input", () => {
-      expect(
-        mount(getMediumSVG("http://bib.schema.org/Audiobook", false)).text()
-      ).to.equal("Audio/Headphone Icon ");
+      expect(mount(getMediumSVG("http://bib.schema.org/Audiobook", false)).text())
+        .to.equal("Audio/Headphone Icon ");
     });
   });
 
   describe("compact info", () => {
     it("shows book info", () => {
       let wrapper = shallow(
-        <Book
-          book={book}
+        <Book book={book}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
-        />
+          />
       );
 
       let links = wrapper.find(CatalogLink);
-      let bookInfo = links
-        .at(0)
-        .children()
-        .at(1);
+      let bookInfo = links.at(0).children().at(1);
       let title = bookInfo.find(".title");
       let authors = bookInfo.find(".authors");
 
@@ -177,19 +156,15 @@ describe("Book", () => {
         contributors: ["contributor"]
       });
       let wrapper = shallow(
-        <Book
-          book={bookCopy}
+        <Book book={bookCopy}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
-        />
+          />
       );
 
       let links = wrapper.find(CatalogLink);
-      let bookInfo = links
-        .at(0)
-        .children()
-        .at(1);
+      let bookInfo = links.at(0).children().at(1);
       let authors = bookInfo.find(".authors");
       expect(authors.text()).to.equal(`By ${bookCopy.contributors[0]}`);
     });
@@ -208,12 +183,7 @@ describe("Book", () => {
       let svg = itemIcon.find(AudioHeadphoneIcon);
 
       expect(svg.length).to.equal(2);
-      expect(
-        itemIcon
-          .first()
-          .render()
-          .text()
-      ).to.equal("Audio/Headphone Icon ");
+      expect(itemIcon.first().render().text()).to.equal("Audio/Headphone Icon ");
     });
   });
 
@@ -221,13 +191,12 @@ describe("Book", () => {
     let wrapper;
     beforeEach(() => {
       wrapper = shallow(
-        <Book
-          book={book}
+        <Book book={book}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
           epubReaderUrlTemplate={epubReaderUrlTemplate}
-        />
+          />
       );
     });
 
@@ -246,12 +215,11 @@ describe("Book", () => {
         contributors: ["contributor"]
       });
       wrapper = shallow(
-        <Book
-          book={bookCopy}
+        <Book book={bookCopy}
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
-        />
+          />
       );
 
       let bookInfo = wrapper.find(".expanded-info");
@@ -280,7 +248,7 @@ describe("Book", () => {
           updateBook={stub()}
           fulfillBook={stub()}
           indirectFulfillBook={stub()}
-        />
+          />
       );
 
       let publisher = wrapper.find(".publisher");
@@ -305,7 +273,7 @@ describe("Book", () => {
           updateBook={stub()}
           fulfillBook={stub()}
           indirectFulfillBook={stub()}
-        />
+          />
       );
 
       let categories = wrapper.find(".categories");
@@ -325,9 +293,8 @@ describe("Book", () => {
           updateBook={updateBook}
           fulfillBook={stub()}
           indirectFulfillBook={stub()}
-        />,
-        {
-          context,
+          />,
+        { context,
           childContextTypes: {
             router: PropTypes.object,
             pathFor: PropTypes.func
@@ -354,9 +321,7 @@ describe("Book", () => {
       expect(epubButton.props().isPlainLink).to.equal(true);
 
       expect(mobiButton.props().url).to.equal("secrets.mobi");
-      expect(mobiButton.props().mimeType).to.equal(
-        "application/x-mobipocket-ebook"
-      );
+      expect(mobiButton.props().mimeType).to.equal("application/x-mobipocket-ebook");
       expect(mobiButton.props().isPlainLink).to.equal(true);
     });
 
@@ -377,7 +342,7 @@ describe("Book", () => {
           updateBook={updateBook}
           fulfillBook={stub()}
           indirectFulfillBook={stub()}
-        />
+          />
       );
 
       let button = wrapper.find(BorrowButton);
@@ -395,10 +360,7 @@ describe("Book", () => {
     });
 
     it("shows fulfill button if there's no download button", () => {
-      let link = {
-        url: "fulfillment url",
-        type: "application/vnd.adobe.adept+xml"
-      };
+      let link = { url: "fulfillment url", type: "application/vnd.adobe.adept+xml" };
       let bookCopy = Object.assign({}, book, {
         openAccessLinks: [],
         fulfillmentLinks: [link]
@@ -412,7 +374,7 @@ describe("Book", () => {
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
           isSignedIn={false}
-        />
+          />
       );
       let button = wrapper.find(DownloadButton);
       expect(button.props().fulfill).to.equal(fulfillBook);
@@ -424,10 +386,7 @@ describe("Book", () => {
     });
 
     it("shows 'borrowed'", () => {
-      let link = {
-        url: "fulfillment url",
-        type: "application/vnd.adobe.adept+xml"
-      };
+      let link = { url: "fulfillment url", type: "application/vnd.adobe.adept+xml" };
       let bookCopy = Object.assign({}, book, {
         openAccessLinks: [],
         fulfillmentLinks: [link]
@@ -438,7 +397,7 @@ describe("Book", () => {
           updateBook={stub()}
           fulfillBook={stub()}
           indirectFulfillBook={stub()}
-        />
+          />
       );
       let button = wrapper.find(BorrowButton);
       expect(button.props().children).to.equal("Borrowed");
@@ -456,7 +415,7 @@ describe("Book", () => {
           updateBook={stub()}
           fulfillBook={stub()}
           indirectFulfillBook={stub()}
-        />
+          />
       );
       let button = wrapper.find("button");
       expect(button.text()).to.equal("Reserved");
@@ -474,7 +433,7 @@ describe("Book", () => {
           updateBook={stub()}
           fulfillBook={stub()}
           indirectFulfillBook={stub()}
-        />
+          />
       );
       let button = wrapper.find(BorrowButton);
       expect(button.length).to.equal(1);

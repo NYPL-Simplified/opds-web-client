@@ -39,9 +39,7 @@
 }
 
 .circulation-links {
-  a,
-  button,
-  .btn-default {
+  a, button, .btn-default {
     border-radius: 5px;
     border: 1px solid $linkcolor;
     background-color: transparent;
@@ -61,8 +59,7 @@
   }
 }
 
-.grid-view .book,
-.lane .book {
+.grid-view .book, .lane .book {
   margin-bottom: $padding;
 
   .compact-info {
@@ -71,7 +68,7 @@
     color: $linkcolor;
     bottom: 0;
     box-shadow: inset 0px -5px 6px -7px black;
-    height: $bookHeight * 0;
+    height: $bookHeight * 0.0;
     width: 150px;
     position: absolute;
     text-align: left;
@@ -148,8 +145,7 @@
     display: none;
   }
 
-  a:focus .compact-info,
-  a:hover .compact-info {
+  a:focus .compact-info, a:hover .compact-info {
     height: 100%;
     width: 150px;
 
@@ -256,12 +252,7 @@
         top: -1.3em;
         left: calc(100% - 6em);
         text-align: right;
-        background: linear-gradient(
-          to right,
-          transparent,
-          $pagecolor 40%,
-          $pagecolor
-        );
+        background: linear-gradient(to right, transparent, $pagecolor 40%, $pagecolor);
       }
     }
 
@@ -286,10 +277,5 @@
 }
 
 .list-view li:nth-child(odd) .book .expanded-info .summary a {
-  background: linear-gradient(
-    to right,
-    transparent,
-    $pagecolorlight 40%,
-    $pagecolorlight
-  );
+  background: linear-gradient(to right, transparent, $pagecolorlight 40%, $pagecolorlight);
 }

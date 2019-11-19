@@ -31,11 +31,11 @@ export default class CatalogLink extends React.Component<CatalogLinkProps, {}> {
       go: noop,
       goBack: noop,
       goForward: noop,
-      setRouteLeaveHook: noop
+      setRouteLeaveHook: noop,
     });
 
     return { router };
-  }
+  };
 
   render(): JSX.Element {
     let { collectionUrl, bookUrl, ...props } = this.props;
@@ -44,6 +44,8 @@ export default class CatalogLink extends React.Component<CatalogLinkProps, {}> {
 
     let location = this.context.pathFor(collectionUrl, bookUrl);
 
-    return <Link to={location} {...props} />;
+    return (
+      <Link to={location} {...props} />
+    );
   }
 }

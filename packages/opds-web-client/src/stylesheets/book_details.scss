@@ -62,7 +62,7 @@
 
   .main {
     padding-top: 2em;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #CCC;
 
     .top {
       text-align: center;
@@ -72,8 +72,7 @@
     .circulation-links {
       margin-bottom: 5px;
 
-      a,
-      button {
+      a, button {
         display: inline-block;
 
         &.borrowed-button {

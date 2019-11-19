@@ -12,14 +12,14 @@ import LaneMoreLink from "../LaneMoreLink";
 import { LaneData, BookData } from "../../interfaces";
 import { mockRouterContext } from "./routing";
 
-let books: BookData[] = [1, 2, 3].map(i => {
+let books: BookData[] = [1, 2, 3].map((i) => {
   return {
     id: `test book id ${i}`,
     title: `test book title ${i}`,
     authors: [`test author ${i}`],
     summary: `test summary ${i}`,
     imageUrl: `https://example.com/testimage${i}`,
-    publisher: `test publisher ${i}`
+    publisher: `test publisher ${i}`,
   };
 });
 let laneData: LaneData = {
@@ -49,26 +49,19 @@ describe("Lane", () => {
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
-        />
+          />
       );
     });
 
     it("shows the lane title in a CatalogLink", () => {
       let titleLink = wrapper.find(CatalogLink);
-      expect(
-        titleLink
-          .first()
-          .children()
-          .text()
-      ).to.equal(laneData.title);
+      expect(titleLink.first().children().text()).to.equal(laneData.title);
     });
 
     it("shows Books", () => {
       let bookComponents = wrapper.find(Book);
       let bookDatas = bookComponents.map(book => book.props().book);
-      let uniqueCollectionUrls = Array.from(
-        new Set(bookComponents.map(book => book.props().collectionUrl))
-      );
+      let uniqueCollectionUrls = Array.from(new Set(bookComponents.map(book => book.props().collectionUrl)));
 
       expect(bookComponents.length).to.equal(books.length);
       expect(bookDatas).to.deep.equal(books);
@@ -120,7 +113,7 @@ describe("Lane", () => {
 
   describe("behavior", () => {
     beforeEach(() => {
-      window.requestAnimationFrame = f => {
+      window.requestAnimationFrame = (f) => {
         f(0);
         return 1;
       };
@@ -135,7 +128,7 @@ describe("Lane", () => {
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           indirectFulfillBook={indirectFulfillBook}
-        />,
+          />,
         {
           context,
           childContextTypes: {

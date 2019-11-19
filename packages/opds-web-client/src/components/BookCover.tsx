@@ -12,10 +12,7 @@ export interface BookCoverState {
 
 /** Shows a cover image from the OPDS feed or an automatically generated cover for
     a single book. */
-export default class BookCover extends React.Component<
-  BookCoverProps,
-  BookCoverState
-> {
+export default class BookCover extends React.Component<BookCoverProps, BookCoverState> {
   constructor(props) {
     super(props);
     this.state = { error: false };
@@ -42,7 +39,7 @@ export default class BookCover extends React.Component<
           className="book-cover"
           role="presentation"
           alt=""
-        />
+          />
       );
     }
 
@@ -54,14 +51,10 @@ export default class BookCover extends React.Component<
 
     return (
       <div className="auto-book-cover" style={{ backgroundColor: bgColor }}>
-        <div className="title" style={{ fontSize: titleFontSize }}>
-          {title}
-        </div>
-        {authors.length && (
-          <div className="authors" style={{ fontSize: authorFontSize }}>
-            By {authors.join(", ")}
-          </div>
-        )}
+        <div className="title" style={{ fontSize: titleFontSize }}>{ title }</div>
+        { authors.length &&
+          <div className="authors" style={{ fontSize: authorFontSize }}>By { authors.join(", ") }</div>
+        }
       </div>
     );
   }
@@ -72,12 +65,9 @@ export default class BookCover extends React.Component<
     let words = text.split(/\s/);
     let wordCount = words.length;
     let maxLength = Math.max(...words.map(word => word.length));
-    let fontSize = Math.max(
-      minFontSize,
-      baseFontSize - maxLength * 2 - Math.max(0, wordCount - 3) * 2
-    );
+    let fontSize = Math.max(minFontSize, baseFontSize - maxLength * 2 - Math.max(0, wordCount - 3) * 2);
 
-    return fontSize / 13 + "em";
+    return (fontSize / 13) + "em";
   }
 
   seededRandomHue(seed) {
