@@ -21,11 +21,13 @@ let loansData = {
   url: "collection url",
   title: "title",
   id: "id",
-  books: [{
-    id: "book id",
-    url: "book url",
-    title: "book title"
-  }],
+  books: [
+    {
+      id: "book id",
+      url: "book url",
+      title: "book title"
+    }
+  ],
   lanes: [],
   navigationLinks: []
 };
@@ -41,7 +43,10 @@ describe("loans reducer", () => {
   });
 
   it("handles COLLECTION_LOAD", () => {
-    let action = actions.load<CollectionData>(ActionCreator.COLLECTION, collectionData);
+    let action = actions.load<CollectionData>(
+      ActionCreator.COLLECTION,
+      collectionData
+    );
     let newState = { ...initState, url: "loans url" };
     expect(reducer(initState, action)).to.deep.equal(newState);
   });
@@ -49,7 +54,11 @@ describe("loans reducer", () => {
   it("handles COLLECTION_LOAD for loans feed", () => {
     let oldState = { ...initState, url: "loans url" };
     let loansCollectionData = { ...collectionData, books: loansData.books };
-    let action = actions.load<CollectionData>(ActionCreator.COLLECTION, loansCollectionData, "loans url");
+    let action = actions.load<CollectionData>(
+      ActionCreator.COLLECTION,
+      loansCollectionData,
+      "loans url"
+    );
     let newState = { ...oldState, books: loansData.books };
     expect(reducer(oldState, action)).to.deep.equal(newState);
   });
@@ -88,9 +97,7 @@ describe("loans reducer", () => {
       id: "new book id",
       url: "new book url",
       title: "new book title",
-      fulfillmentLinks: [
-        { url: "url", type: "text/html", indirectType: null }
-      ]
+      fulfillmentLinks: [{ url: "url", type: "text/html", indirectType: null }]
     };
     let action = actions.load<BookData>(ActionCreator.UPDATE_BOOK, newBookData);
     let newState = { ...oldState, books: [loansData.books[0], newBookData] };

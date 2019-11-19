@@ -30,7 +30,11 @@ export default class OPDSCatalog extends React.Component<OPDSCatalogProps, {}> {
 
   constructor(props, context) {
     super(props);
-    this.store = buildStore(this.props.initialState || undefined, this.props.authPlugins || [BasicAuthPlugin], context.pathFor);
+    this.store = buildStore(
+      this.props.initialState || undefined,
+      this.props.authPlugins || [BasicAuthPlugin],
+      context.pathFor
+    );
   }
 
   render(): JSX.Element {
@@ -38,8 +42,6 @@ export default class OPDSCatalog extends React.Component<OPDSCatalogProps, {}> {
       store: this.store
     });
 
-    return (
-      <Root {...props} />
-    );
+    return <Root {...props} />;
   }
 }

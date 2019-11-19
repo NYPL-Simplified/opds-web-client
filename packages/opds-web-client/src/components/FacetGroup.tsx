@@ -13,16 +13,17 @@ export default class FacetGroup extends React.Component<FacetGroupProps, {}> {
     return (
       <div className="facet-group">
         <h3 className="facet-group-label">{this.props.facetGroup.label}</h3>
-        <ul aria-label={this.props.facetGroup.label + " options"} className="subtle-list">
-        { this.props.facetGroup.facets.map(facet =>
-          <li key={facet.label} className={facet.active ? "active" : null}>
-            <CatalogLink
-              className="facetLink"
-              collectionUrl={facet.href}>
-              {facet.label}
-            </CatalogLink>
-          </li>
-        ) }
+        <ul
+          aria-label={this.props.facetGroup.label + " options"}
+          className="subtle-list"
+        >
+          {this.props.facetGroup.facets.map(facet => (
+            <li key={facet.label} className={facet.active ? "active" : null}>
+              <CatalogLink className="facetLink" collectionUrl={facet.href}>
+                {facet.label}
+              </CatalogLink>
+            </li>
+          ))}
         </ul>
       </div>
     );

@@ -25,13 +25,13 @@ export default class CatalogLink extends React.Component<CatalogLinkProps, {}> {
   // see https://github.com/reactjs/react-router/blob/master/docs/API.md#contextrouter
   // and https://github.com/reactjs/react-router/blob/master/modules/PropTypes.js
   getChildContext() {
-    let noop = () => { };
+    let noop = () => {};
     let router: Router = Object.assign({}, this.context.router, {
       replace: noop,
       go: noop,
       goBack: noop,
       goForward: noop,
-      setRouteLeaveHook: noop,
+      setRouteLeaveHook: noop
     });
 
     return { router };
@@ -44,8 +44,6 @@ export default class CatalogLink extends React.Component<CatalogLinkProps, {}> {
 
     let location = this.context.pathFor(collectionUrl, bookUrl);
 
-    return (
-      <Link to={location} {...props} />
-    );
+    return <Link to={location} {...props} />;
   }
 }

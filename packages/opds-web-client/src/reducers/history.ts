@@ -2,48 +2,74 @@ import { CollectionState } from "./collection";
 import { LoadAction } from "../actions";
 import { CollectionData, LinkData } from "../interfaces";
 
-function newCollectionIsOldCollection(newCollection: CollectionData, oldCollection: CollectionData): boolean {
-  return oldCollection && (
-           newCollection.url === oldCollection.url ||
-           newCollection.id === oldCollection.id
-         );
+function newCollectionIsOldCollection(
+  newCollection: CollectionData,
+  oldCollection: CollectionData
+): boolean {
+  return (
+    oldCollection &&
+    (newCollection.url === oldCollection.url ||
+      newCollection.id === oldCollection.id)
+  );
 }
 
-function newCollectionIsOldRoot(newCollection: CollectionData, oldCollection: CollectionData): boolean {
-  return oldCollection &&
-         oldCollection.catalogRootLink &&
-         oldCollection.catalogRootLink.url &&
-         oldCollection.catalogRootLink.url === newCollection.url;
+function newCollectionIsOldRoot(
+  newCollection: CollectionData,
+  oldCollection: CollectionData
+): boolean {
+  return (
+    oldCollection &&
+    oldCollection.catalogRootLink &&
+    oldCollection.catalogRootLink.url &&
+    oldCollection.catalogRootLink.url === newCollection.url
+  );
 }
 
 function newCollectionIsNewRoot(newCollection: CollectionData): boolean {
-  return newCollection.catalogRootLink &&
-         newCollection.catalogRootLink.url === newCollection.url;
+  return (
+    newCollection.catalogRootLink &&
+    newCollection.catalogRootLink.url === newCollection.url
+  );
 }
 
-function newRootIsNotOldRoot(newCollection: CollectionData, oldCollection: CollectionData): boolean {
-  return oldCollection &&
-         newCollection.catalogRootLink &&
-         oldCollection.catalogRootLink &&
-         newCollection.catalogRootLink.url !== oldCollection.catalogRootLink.url;
+function newRootIsNotOldRoot(
+  newCollection: CollectionData,
+  oldCollection: CollectionData
+): boolean {
+  return (
+    oldCollection &&
+    newCollection.catalogRootLink &&
+    oldCollection.catalogRootLink &&
+    newCollection.catalogRootLink.url !== oldCollection.catalogRootLink.url
+  );
 }
 
-export function shouldClear(newCollection: CollectionData, oldCollection: CollectionData): boolean {
-  return newCollectionIsOldRoot(newCollection, oldCollection) ||
-         newCollectionIsNewRoot(newCollection) ||
-         newRootIsNotOldRoot(newCollection, oldCollection);
+export function shouldClear(
+  newCollection: CollectionData,
+  oldCollection: CollectionData
+): boolean {
+  return (
+    newCollectionIsOldRoot(newCollection, oldCollection) ||
+    newCollectionIsNewRoot(newCollection) ||
+    newRootIsNotOldRoot(newCollection, oldCollection)
+  );
 }
 
 export function addLink(history: LinkData[], link: LinkData): LinkData[] {
   return history.concat([{ id: null, ...link }]);
 }
 
-export function addCollection(history: LinkData[], collection: CollectionData): LinkData[] {
-  return history.concat([{
-    id: collection.id,
-    url: collection.url,
-    text: collection.title
-  }]);
+export function addCollection(
+  history: LinkData[],
+  collection: CollectionData
+): LinkData[] {
+  return history.concat([
+    {
+      id: collection.id,
+      url: collection.url,
+      text: collection.title
+    }
+  ]);
 }
 
 export function shorten(history: LinkData[], newUrl: string) {
@@ -57,10 +83,14 @@ export function shorten(history: LinkData[], newUrl: string) {
 }
 
 export function shouldAddRoot(newCollection: CollectionData) {
-  return newCollection.catalogRootLink && newCollection.catalogRootLink.text && !newCollectionIsNewRoot(newCollection);
+  return (
+    newCollection.catalogRootLink &&
+    newCollection.catalogRootLink.text &&
+    !newCollectionIsNewRoot(newCollection)
+  );
 }
 
-export function onlyRoot(newCollection:  CollectionData) {
+export function onlyRoot(newCollection: CollectionData) {
   return addLink([], newCollection.catalogRootLink);
 }
 
@@ -79,7 +109,12 @@ export default (state: CollectionState, action: LoadAction<CollectionData>) => {
   newHistory = shorten(newHistoryCopy, newCollection.url);
   let shortened = newHistory !== newHistoryCopy;
 
-  if (!cleared && !shortened && oldCollection && !newCollectionIsOldCollection(newCollection, oldCollection)) {
+  if (
+    !cleared &&
+    !shortened &&
+    oldCollection &&
+    !newCollectionIsOldCollection(newCollection, oldCollection)
+  ) {
     newHistory = addCollection(newHistory, oldCollection);
   }
 

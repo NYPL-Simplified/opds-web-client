@@ -87,7 +87,9 @@ describe("collection reducer", () => {
   let historyStub;
 
   beforeEach(() => {
-    historyStub = stub(history, "default").callsFake((state, action) => state.history);
+    historyStub = stub(history, "default").callsFake(
+      (state, action) => state.history
+    );
   });
 
   afterEach(() => {
@@ -137,7 +139,11 @@ describe("collection reducer", () => {
       books: [],
       navigationLinks: []
     };
-    let action = actions.load<CollectionData>(ActionCreator.COLLECTION, data, "some other url");
+    let action = actions.load<CollectionData>(
+      ActionCreator.COLLECTION,
+      data,
+      "some other url"
+    );
     let newState = {
       ...currentState,
       url: "some other url",
@@ -157,7 +163,11 @@ describe("collection reducer", () => {
       books: [],
       navigationLinks: []
     };
-    let action = actions.load<CollectionData>(ActionCreator.COLLECTION, data, "some url");
+    let action = actions.load<CollectionData>(
+      ActionCreator.COLLECTION,
+      data,
+      "some url"
+    );
     let newState = {
       ...errorState,
       url: "some url",
@@ -216,14 +226,16 @@ describe("collection reducer", () => {
       url: "test url",
       title: "some title",
       lanes: [],
-      books: [{
-        id: "new book",
-        title: "new title",
-        authors: [],
-        summary: "new summary",
-        imageUrl: "",
-        publisher: ""
-      }],
+      books: [
+        {
+          id: "new book",
+          title: "new title",
+          authors: [],
+          summary: "new summary",
+          imageUrl: "",
+          publisher: ""
+        }
+      ],
       navigationLinks: [],
       nextPageUrl: "next"
     };
@@ -245,15 +257,19 @@ describe("collection reducer", () => {
     let searchData = {
       description: "d",
       shortName: "s",
-      template: (s) => s + " template"
+      template: s => s + " template"
     };
-    let action = actions.load<SearchData>(ActionCreator.SEARCH_DESCRIPTION, { searchData });
+    let action = actions.load<SearchData>(ActionCreator.SEARCH_DESCRIPTION, {
+      searchData
+    });
 
     let newState = reducer(currentState, action);
     expect(newState.data.search).to.be.ok;
     expect(newState.data.search.searchData.description).to.equal("d");
     expect(newState.data.search.searchData.shortName).to.equal("s");
-    expect(newState.data.search.searchData.template("test")).to.equal("test template");
+    expect(newState.data.search.searchData.template("test")).to.equal(
+      "test template"
+    );
   });
 
   it("should handle CLOSE_ERROR", () => {
