@@ -32,7 +32,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,md}": [
-      "prettier --write",
+      "prettier --write --ignore-path .gitignore",
       "git add"
     ]
   }
