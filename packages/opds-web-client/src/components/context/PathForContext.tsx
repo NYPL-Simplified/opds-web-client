@@ -15,14 +15,13 @@ type PathForProps = {
 };
 
 export default class PathForProvider extends React.Component<PathForProps> {
-
   static childContextTypes: React.ValidationMap<{}> = {
     pathFor: PropTypes.func.isRequired
   };
 
   getChildContext() {
     return {
-      pathFor: this.props.pathFor,
+      pathFor: this.props.pathFor
     };
   }
 

@@ -9,7 +9,7 @@ import AuthPlugin from "./AuthPlugin";
 import "./stylesheets/app.scss";
 import PathForProvider from "./components/context/PathForContext";
 
-const OPDSCatalogRouterHandler = (config) => {
+const OPDSCatalogRouterHandler = config => {
   interface OPDSCatalogParams {
     collectionUrl: string;
     bookUrl: string;
@@ -19,7 +19,7 @@ const OPDSCatalogRouterHandler = (config) => {
   }
   class OPDSCatalogRoute extends React.Component<OPDSCatalogProps, {}> {
     static contextTypes = {
-      router: PropTypes.object.isRequired,
+      router: PropTypes.object.isRequired
     };
 
     render() {
@@ -30,9 +30,10 @@ const OPDSCatalogRouterHandler = (config) => {
         bookUrl
       };
       return (
-      <PathForProvider pathFor={config.pathFor}>
-        <OPDSCatalog {...mergedProps} />
-      </PathForProvider>);
+        <PathForProvider pathFor={config.pathFor}>
+          <OPDSCatalog {...mergedProps} />
+        </PathForProvider>
+      );
     }
   }
 
@@ -45,16 +46,23 @@ class OPDSWebClient {
   pathPattern: string;
   RouteHandler: any;
 
-  constructor(config: {
-    headerTitle?: string;
-    proxyUrl?: string;
-    authPlugins?: AuthPlugin[];
-    pageTitleTemplate?: (collectionTitle: string, bookTitle: string) => string;
-    pathPattern?: string;
-    pathFor: PathFor;
-  }, elementId: string) {
+  constructor(
+    config: {
+      headerTitle?: string;
+      proxyUrl?: string;
+      authPlugins?: AuthPlugin[];
+      pageTitleTemplate?: (
+        collectionTitle: string,
+        bookTitle: string
+      ) => string;
+      pathPattern?: string;
+      pathFor: PathFor;
+    },
+    elementId: string
+  ) {
     this.elementId = elementId;
-    this.pathPattern = config.pathPattern || "/(collection/:collectionUrl/)(book/:bookUrl/)";
+    this.pathPattern =
+      config.pathPattern || "/(collection/:collectionUrl/)(book/:bookUrl/)";
     this.RouteHandler = OPDSCatalogRouterHandler(config);
     this.render();
   }

@@ -1,7 +1,6 @@
 {
   "name": "opds-web-client",
-  "scripts": {
-  },
+  "scripts": {},
   "env": {
     "NPM_CONFIG_PRODUCTION": {
       "required": true
@@ -12,15 +11,13 @@
       "quantity": 1
     }
   },
-  "addons": [
-
-  ],
+  "addons": [],
   "buildpacks": [
     {
       "url": "heroku/nodejs"
     }
   ],
   "engines": {
-    "node": "10.x" 
+    "node": "10.x"
   }
 }

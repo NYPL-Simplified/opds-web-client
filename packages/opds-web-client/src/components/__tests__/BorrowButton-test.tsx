@@ -16,13 +16,13 @@ describe("BorrowButton", () => {
 
   beforeEach(() => {
     borrow = stub().returns(
-      new Promise((resolve, reject) => resolve({ blob: "blob", mimeType: "mime/type" }))
+      new Promise((resolve, reject) =>
+        resolve({ blob: "blob", mimeType: "mime/type" })
+      )
     );
     style = { border: "100px solid black" };
     wrapper = shallow(
-      <BorrowButton
-        style={style}
-        borrow={borrow}>
+      <BorrowButton style={style} borrow={borrow}>
         Borrow
       </BorrowButton>
     );

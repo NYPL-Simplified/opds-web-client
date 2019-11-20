@@ -18,7 +18,7 @@ describe("preferences reducer", () => {
 
   it("handles SET_PREFERENCE", () => {
     let action = actions.setPreference("key", "value");
-    let newState = { ...initState, "key": "value" };
+    let newState = { ...initState, key: "value" };
     expect(reducer(initState, action)).to.deep.equal(newState);
   });
 });

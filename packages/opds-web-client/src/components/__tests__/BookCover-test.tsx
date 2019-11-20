@@ -15,9 +15,7 @@ describe("BookCover", () => {
     };
 
     beforeEach(() => {
-      wrapper = shallow(
-        <BookCover book={bookData} />
-      );
+      wrapper = shallow(<BookCover book={bookData} />);
     });
 
     it("shows title and authors", () => {
@@ -39,9 +37,7 @@ describe("BookCover", () => {
     };
 
     beforeEach(() => {
-      wrapper = shallow(
-        <BookCover book={bookData} />
-      );
+      wrapper = shallow(<BookCover book={bookData} />);
     });
 
     it("shows the book cover with empty alt", () => {

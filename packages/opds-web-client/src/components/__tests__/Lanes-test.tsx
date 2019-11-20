@@ -30,7 +30,7 @@ describe("Lanes", () => {
         updateBook={updateBook}
         fulfillBook={fulfillBook}
         indirectFulfillBook={indirectFulfillBook}
-        />
+      />
     );
   });
 
@@ -60,7 +60,7 @@ describe("Lanes", () => {
         updateBook={updateBook}
         fulfillBook={fulfillBook}
         indirectFulfillBook={indirectFulfillBook}
-        />
+      />
     );
 
     expect(fetchCollection.callCount).to.equal(1);
@@ -79,16 +79,16 @@ describe("Lanes", () => {
         updateBook={updateBook}
         fulfillBook={fulfillBook}
         indirectFulfillBook={indirectFulfillBook}
-        />
+      />
     );
     expect(clearCollection.callCount).to.equal(0);
     expect(fetchCollection.callCount).to.equal(1);
 
-    wrapper.instance().componentWillReceiveProps({url: "test1"});
+    wrapper.instance().componentWillReceiveProps({ url: "test1" });
     expect(clearCollection.callCount).to.equal(0);
     expect(fetchCollection.callCount).to.equal(1);
 
-    wrapper.instance().componentWillReceiveProps({url: "test2"});
+    wrapper.instance().componentWillReceiveProps({ url: "test2" });
     expect(clearCollection.callCount).to.equal(1);
     expect(fetchCollection.callCount).to.equal(2);
     expect(fetchCollection.args[1][0]).to.equal("test2");
@@ -104,7 +104,7 @@ describe("Lanes", () => {
         updateBook={updateBook}
         fulfillBook={fulfillBook}
         indirectFulfillBook={indirectFulfillBook}
-        />
+      />
     );
     wrapper.instance().componentWillUnmount();
     expect(clearCollection.callCount).to.equal(1);

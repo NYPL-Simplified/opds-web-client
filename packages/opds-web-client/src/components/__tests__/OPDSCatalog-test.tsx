@@ -16,27 +16,27 @@ describe("OPDSCatalog", () => {
     bookUrl: "book url",
     proxyUrl: "proxy url",
     navigate: stub(),
-    pathFor: (collectionUrl: string, bookUrl: string): string => { return "path"; },
+    pathFor: (collectionUrl: string, bookUrl: string): string => {
+      return "path";
+    },
     bookData: {
       id: "book id",
       title: "book title",
       url: "book url"
     },
     pageTitleTemplate: (c, b) => "test title",
-    epubReaderUrlTemplate: (a) => "test reader url"
+    epubReaderUrlTemplate: a => "test reader url"
   };
   let context = mockRouterContext();
 
   it("creates a store for Root if not given one", () => {
-    let wrapper = shallow(
-      <OPDSCatalog {...props} />,
-      { context,
-        childContextTypes: {
-          router: PropTypes.object,
-          pathFor: PropTypes.func
-        }
+    let wrapper = shallow(<OPDSCatalog {...props} />, {
+      context,
+      childContextTypes: {
+        router: PropTypes.object,
+        pathFor: PropTypes.func
       }
-    );
+    });
     let root = wrapper.find<RootProps>(Root);
     expect(root.props().store).to.be.ok;
   });
@@ -44,29 +44,25 @@ describe("OPDSCatalog", () => {
   it("passes state to Root if given one", () => {
     let store = buildStore();
     let state = store.getState();
-    let wrapper = shallow(
-      <OPDSCatalog {...props} initialState={state} />,
-      { context,
-        childContextTypes: {
-          router: PropTypes.object,
-          pathFor: PropTypes.func
-        }
+    let wrapper = shallow(<OPDSCatalog {...props} initialState={state} />, {
+      context,
+      childContextTypes: {
+        router: PropTypes.object,
+        pathFor: PropTypes.func
       }
-    );
+    });
     let root = wrapper.find<RootProps>(Root);
     expect(root.props().store.getState()).to.deep.equal(state);
   });
 
   it("passes props to Root", () => {
-    let wrapper = shallow(
-      <OPDSCatalog {...props} />,
-      { context,
-        childContextTypes: {
-          router: PropTypes.object,
-          pathFor: PropTypes.func
-        }
+    let wrapper = shallow(<OPDSCatalog {...props} />, {
+      context,
+      childContextTypes: {
+        router: PropTypes.object,
+        pathFor: PropTypes.func
       }
-    );
+    });
     let root = wrapper.find<RootProps>(Root);
 
     Object.keys(props).forEach(key => {

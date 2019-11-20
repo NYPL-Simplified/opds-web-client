@@ -5,7 +5,12 @@ import { adapter } from "../OPDSDataAdapter";
 import DataFetcher from "../DataFetcher";
 import ActionsCreator from "../actions";
 import Lane from "./Lane";
-import { CollectionData, LaneData, FetchErrorData, BookData } from "../interfaces";
+import {
+  CollectionData,
+  LaneData,
+  FetchErrorData,
+  BookData
+} from "../interfaces";
 import spinner from "../images/spinner";
 
 export interface LanesProps {
@@ -13,7 +18,7 @@ export interface LanesProps {
   lanes?: LaneData[];
   fetchCollection?: (url: string) => Promise<CollectionData>;
   clearCollection?: () => void;
-  store?: Store<{ collection: CollectionData; }>;
+  store?: Store<{ collection: CollectionData }>;
   namespace?: string;
   proxyUrl?: string;
   hiddenBookIds?: string[];
@@ -31,37 +36,41 @@ export class Lanes extends React.Component<LanesProps, {}> {
   render() {
     return (
       <div className="lanes">
-        { this.props.isFetching &&
+        {this.props.isFetching && (
           <div className="spinner">
             <img src={spinner} role="presentation" alt="" />
           </div>
-        }
+        )}
 
-        { this.props.lanes && this.props.lanes.length > 0 ?
+        {this.props.lanes && this.props.lanes.length > 0 ? (
           <ul aria-label="groups of books" className="subtle-list">
-          { this.props.lanes && this.props.lanes.map((lane, index) =>
-            <li key={index}>
-              <Lane
-                lane={lane}
-                collectionUrl={this.props.url}
-                hideMoreLink={this.props.hideMoreLinks}
-                hiddenBookIds={this.props.hiddenBookIds}
-                updateBook={this.props.updateBook}
-                fulfillBook={this.props.fulfillBook}
-                indirectFulfillBook={this.props.indirectFulfillBook}
-                isSignedIn={this.props.isSignedIn}
-                epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
-                />
-            </li>
-          ) }
-          </ul> : null
-        }
+            {this.props.lanes &&
+              this.props.lanes.map((lane, index) => (
+                <li key={index}>
+                  <Lane
+                    lane={lane}
+                    collectionUrl={this.props.url}
+                    hideMoreLink={this.props.hideMoreLinks}
+                    hiddenBookIds={this.props.hiddenBookIds}
+                    updateBook={this.props.updateBook}
+                    fulfillBook={this.props.fulfillBook}
+                    indirectFulfillBook={this.props.indirectFulfillBook}
+                    isSignedIn={this.props.isSignedIn}
+                    epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
+                  />
+                </li>
+              ))}
+          </ul>
+        ) : null}
       </div>
     );
   }
 
   componentWillMount() {
-    if (this.props.fetchCollection && (!this.props.lanes || !this.props.lanes.length)) {
+    if (
+      this.props.fetchCollection &&
+      (!this.props.lanes || !this.props.lanes.length)
+    ) {
       this.props.fetchCollection(this.props.url);
     }
   }
@@ -98,7 +107,8 @@ function mapDispatchToProps(dispatch) {
       let actions = new ActionsCreator(fetcher);
 
       return {
-        fetchCollection: (url: string) => dispatch(actions.fetchCollection(url)),
+        fetchCollection: (url: string) =>
+          dispatch(actions.fetchCollection(url)),
         clearCollection: () => dispatch(actions.clearCollection())
       };
     }

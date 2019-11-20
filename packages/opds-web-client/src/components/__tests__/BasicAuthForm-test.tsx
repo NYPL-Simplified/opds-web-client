@@ -31,7 +31,7 @@ describe("BasicAuthForm", () => {
           cancel={stub()}
           error="you forgot the secret password! what kind of spy arre you?"
           provider={provider}
-          />
+        />
       );
     });
 
@@ -57,7 +57,9 @@ describe("BasicAuthForm", () => {
 
     it("shows error", () => {
       let error = wrapper.find(".auth-error");
-      expect(error.text()).to.equal("you forgot the secret password! what kind of spy arre you?");
+      expect(error.text()).to.equal(
+        "you forgot the secret password! what kind of spy arre you?"
+      );
     });
   });
 
@@ -95,7 +97,7 @@ describe("BasicAuthForm", () => {
           cancel={cancel}
           error="you forgot the secret password! what kind of spy arre you?"
           provider={provider}
-          />
+        />
       );
     });
 
@@ -133,7 +135,9 @@ describe("BasicAuthForm", () => {
         username.value = "doubleohseven";
         password = wrapper.find("input[type='password']").getDOMNode();
         password.value = "thenameisbond";
-        credentials = wrapper.instance().generateCredentials("doubleohseven", "thenameisbond");
+        credentials = wrapper
+          .instance()
+          .generateCredentials("doubleohseven", "thenameisbond");
         validate = stub().returns(true);
         wrapper.instance().validate = validate;
         form = wrapper.find("form");
