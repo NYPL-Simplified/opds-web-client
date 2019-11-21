@@ -13,7 +13,7 @@ type OPDSStoreProps = {
   authPlugins?: AuthPlugin[];
 };
 /**
- * Builds the redux store and makes it available in context.
+ * Builds the redux store and makes it available in context via new API.
  * takes in the pathFor context. Will be used by OPDSCatalog
  * as well as circulation-patron-web.
  */

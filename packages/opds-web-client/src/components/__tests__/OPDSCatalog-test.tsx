@@ -7,7 +7,6 @@ import { shallow } from "enzyme";
 
 import OPDSCatalog from "../OPDSCatalog";
 import Root, { RootProps } from "../Root";
-import buildStore from "../../store";
 import { mockRouterContext } from "./routing";
 
 describe("OPDSCatalog", () => {
@@ -28,32 +27,6 @@ describe("OPDSCatalog", () => {
     epubReaderUrlTemplate: a => "test reader url"
   };
   let context = mockRouterContext();
-
-  it("creates a store for Root if not given one", () => {
-    let wrapper = shallow(<OPDSCatalog {...props} />, {
-      context,
-      childContextTypes: {
-        router: PropTypes.object,
-        pathFor: PropTypes.func
-      }
-    });
-    let root = wrapper.find<RootProps>(Root);
-    expect(root.props().store).to.be.ok;
-  });
-
-  it("passes state to Root if given one", () => {
-    let store = buildStore();
-    let state = store.getState();
-    let wrapper = shallow(<OPDSCatalog {...props} initialState={state} />, {
-      context,
-      childContextTypes: {
-        router: PropTypes.object,
-        pathFor: PropTypes.func
-      }
-    });
-    let root = wrapper.find<RootProps>(Root);
-    expect(root.props().store.getState()).to.deep.equal(state);
-  });
 
   it("passes props to Root", () => {
     let wrapper = shallow(<OPDSCatalog {...props} />, {
