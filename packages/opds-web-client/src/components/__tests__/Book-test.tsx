@@ -12,7 +12,7 @@ import CatalogLink from "../CatalogLink";
 import BookCover from "../BookCover";
 import BorrowButton from "../BorrowButton";
 import DownloadButton from "../DownloadButton";
-import { mockRouterContext } from "./routing";
+import { mockRouterContext } from "../../__mocks__/routing";
 
 let book: BookData = {
   id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",

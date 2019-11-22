@@ -3,7 +3,7 @@ import { Router as RouterType } from "../../interfaces";
 import * as PropTypes from "prop-types";
 
 /**
- * This component that will pass the router down the tree
+ * This component will pass the router down the tree
  * via both old and new context apis. Currently, OPDS web
  * gets this context from react-router's Router, but that
  * context goes away in RR v4+. This makes it possible for
@@ -22,7 +22,7 @@ export default class RouterProvider extends React.Component<
   RouterContextProps
 > {
   static childContextTypes: React.ValidationMap<{}> = {
-    router: PropTypes.func.isRequired
+    router: PropTypes.object.isRequired
   };
 
   getChildContext() {

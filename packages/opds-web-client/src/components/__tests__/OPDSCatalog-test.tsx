@@ -7,7 +7,7 @@ import { shallow } from "enzyme";
 
 import OPDSCatalog from "../OPDSCatalog";
 import Root, { RootProps } from "../Root";
-import { mockRouterContext } from "./routing";
+import { mockRouterContext } from "../../__mocks__/routing";
 
 describe("OPDSCatalog", () => {
   let props = {

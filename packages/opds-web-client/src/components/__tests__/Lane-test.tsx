@@ -10,7 +10,7 @@ import Book from "../Book";
 import CatalogLink from "../CatalogLink";
 import LaneMoreLink from "../LaneMoreLink";
 import { LaneData, BookData } from "../../interfaces";
-import { mockRouterContext } from "./routing";
+import { mockRouterContext } from "../../__mocks__/routing";
 
 let books: BookData[] = [1, 2, 3].map(i => {
   return {
