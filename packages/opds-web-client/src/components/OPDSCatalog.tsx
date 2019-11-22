@@ -31,7 +31,9 @@ const OPDSCatalog: React.FunctionComponent<OPDSCatalogProps> = props => {
       authPlugins={props.authPlugins}
     >
       <ReactReduxContext.Consumer>
-        {(store: Redux.Store<State>) => <Root store={store} {...props} />}
+        {({ store }: { store: Redux.Store<State> }) => {
+          return <Root store={store} {...props} />;
+        }}
       </ReactReduxContext.Consumer>
     </OPDSStore>
   );

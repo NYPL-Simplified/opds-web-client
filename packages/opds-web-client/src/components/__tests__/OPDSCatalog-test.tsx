@@ -4,6 +4,7 @@ import { stub } from "sinon";
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import { shallow } from "enzyme";
+import { ReactReduxContext } from "react-redux";
 
 import OPDSCatalog from "../OPDSCatalog";
 import Root, { RootProps } from "../Root";
@@ -36,8 +37,17 @@ describe("OPDSCatalog", () => {
         pathFor: PropTypes.func
       }
     });
-    let root = wrapper.find<RootProps>(Root);
+    /**
+     * This is painfully fragile, but must be done to make
+     * enzyme render the child function beneath ReactReduxContext.Consumer
+     */
+    const root = wrapper
+      .dive()
+      .dive()
+      .dive()
+      .dive();
 
+    // test that all of the props we passed in are present there
     Object.keys(props).forEach(key => {
       expect(root.props()[key]).to.equal(props[key]);
     });
