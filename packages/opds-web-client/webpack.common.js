@@ -14,7 +14,6 @@ module.exports = {
       "process.env.TEST_AXE": JSON.stringify(process.env.TEST_AXE)
     })
   ],
-
   module: {
     rules: [
       {

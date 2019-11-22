@@ -71,6 +71,8 @@ export default class ActionCreator {
 
   static readonly SET_PREFERENCE = "SET_PREFERENCE";
 
+  static readonly ABORT_FETCH = "ABORT_FETCH";
+
   constructor(fetcher: DataFetcher) {
     this.fetcher = fetcher;
   }
@@ -162,8 +164,13 @@ export default class ActionCreator {
           dispatch(this.load<T>(type, data, url));
           resolve(data);
         }).catch(err => {
-          dispatch(this.failure(type, err));
-          reject(err);
+          console.log("error: ", err);
+          if (err.name !== "AbortError") {
+            dispatch(this.failure(type, err));
+            reject(err);
+          } else {
+            console.log("aborted!! okay to do nothing");
+          }
         });
       });
     };
@@ -189,7 +196,6 @@ export default class ActionCreator {
     return { type: `${type}_${ActionCreator.CLEAR}` };
   }
 
-
   fetchCollection(url: string) {
     return this.fetchOPDS<CollectionData>(ActionCreator.COLLECTION, url);
   }
@@ -211,6 +217,11 @@ export default class ActionCreator {
         }).catch(err => reject(err));
       });
     };
+  }
+
+  abort() {
+    this.fetcher.abort();
+    return { type: ActionCreator.ABORT_FETCH };
   }
 
   clearCollection() {

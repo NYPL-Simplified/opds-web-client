@@ -23,6 +23,7 @@ export interface CollectionProps extends React.HTMLProps<Collection> {
     [key: string]: string;
   };
   setPreference: (key: string, value: string) => void;
+  abort?: () => void;
 }
 
 /** Displays books in an OPDS collection as either lanes, a grid or a list. */
@@ -92,7 +93,8 @@ export default class Collection extends React.Component<CollectionProps, {}> {
                 indirectFulfillBook={this.props.indirectFulfillBook}
                 isSignedIn={this.props.isSignedIn}
                 epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
-                /> : null
+                abort={this.props.abort}
+              /> : null
             }
 
             { this.props.collection.books &&
@@ -191,6 +193,10 @@ export default class Collection extends React.Component<CollectionProps, {}> {
     let body = this.refs["collection-main"] as HTMLElement;
     body.removeEventListener("scroll", this.handleScrollOrResize);
     window.removeEventListener("resize", this.handleScrollOrResize);
+
+    if (this.props.abort) {
+      this.props.abort();
+    }
   }
 
   canFetch() {

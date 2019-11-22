@@ -5,7 +5,7 @@ import { adapter } from "../OPDSDataAdapter";
 import DataFetcher from "../DataFetcher";
 import ActionsCreator from "../actions";
 import Lane from "./Lane";
-import { CollectionData, LaneData, FetchErrorData, BookData } from "../interfaces";
+import { CollectionData, LaneData, BookData } from "../interfaces";
 import spinner from "../images/spinner";
 
 export interface LanesProps {
@@ -13,6 +13,7 @@ export interface LanesProps {
   lanes?: LaneData[];
   fetchCollection?: (url: string) => Promise<CollectionData>;
   clearCollection?: () => void;
+  abort?: () => void;
   store?: Store<{ collection: CollectionData; }>;
   namespace?: string;
   proxyUrl?: string;
@@ -80,6 +81,11 @@ export class Lanes extends React.Component<LanesProps, {}> {
   componentWillUnmount() {
     if (this.props.clearCollection) {
       this.props.clearCollection();
+    }
+
+    if (this.props.abort) {
+      console.log("umounting lanes");
+      this.props.abort();
     }
   }
 }

@@ -18,6 +18,7 @@ export interface BookProps {
   indirectFulfillBook: (url: string, type: string) => Promise<string>;
   isSignedIn?: boolean;
   epubReaderUrlTemplate?: (epubUrl: string) => string;
+  abort?: () => void;
 }
 
 /** Displays a single book for use in a lane, list, or grid view. */

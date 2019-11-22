@@ -80,6 +80,10 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
 
   componentWillUnmount() {
     this.setBodyOverflow("visible");
+    if (this.props.abort) {
+      console.log("umounting bookdetails");
+      this.props.abort();
+    }
   }
 
   setBodyOverflow(value: string) {

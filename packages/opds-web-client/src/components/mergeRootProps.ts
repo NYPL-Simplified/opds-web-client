@@ -57,7 +57,8 @@ export function mapDispatchToProps(dispatch) {
         clearAuthCredentials: () => dispatch(actions.clearAuthCredentials()),
         showAuthForm: (callback: AuthCallback, cancel: () => void, providers: any, title: string) => dispatch(actions.showAuthForm(callback, cancel, providers, title)),
         closeErrorAndHideAuthForm: () => dispatch(actions.closeErrorAndHideAuthForm()),
-        setPreference: (key: string, value: string) => dispatch(actions.setPreference(key, value))
+        setPreference: (key: string, value: string) => dispatch(actions.setPreference(key, value)),
+        abort: () => dispatch(actions.abort())
       };
     }
   };

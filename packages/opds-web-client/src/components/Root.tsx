@@ -82,6 +82,7 @@ export interface RootProps extends StateProps {
   closeErrorAndHideAuthForm?: () => void;
   setPreference?: (key: string, value: string) => void;
   allLanguageSearch?: boolean;
+  abort?: () => void;
 }
 
 export interface RootState {
@@ -248,7 +249,8 @@ export class Root extends React.Component<RootProps, RootState> {
                         indirectFulfillBook={this.props.indirectFulfillBook}
                         isSignedIn={this.props.isSignedIn}
                         epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
-                        />
+                        abort={this.props.abort}
+                      />
                     </BookDetailsContainer> :
                     <div className="without-container">
                       <BookDetails
@@ -258,7 +260,8 @@ export class Root extends React.Component<RootProps, RootState> {
                         indirectFulfillBook={this.props.indirectFulfillBook}
                         isSignedIn={this.props.isSignedIn}
                         epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
-                        />
+                        abort={this.props.abort}
+                      />
                     </div>
                   )
                 }
@@ -282,6 +285,7 @@ export class Root extends React.Component<RootProps, RootState> {
                     epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
                     preferences={this.props.preferences}
                     setPreference={this.props.setPreference}
+                    abort={this.props.abort}
                   />
                 </CollectionContainer> :
                 <Collection
@@ -298,6 +302,7 @@ export class Root extends React.Component<RootProps, RootState> {
                   epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
                   preferences={this.props.preferences}
                   setPreference={this.props.setPreference}
+                  abort={this.props.abort}
                 />) : null
             }
           </div>
