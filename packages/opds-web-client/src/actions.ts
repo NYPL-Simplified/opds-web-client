@@ -164,12 +164,12 @@ export default class ActionCreator {
           dispatch(this.load<T>(type, data, url));
           resolve(data);
         }).catch(err => {
-          console.log("error: ", err);
           if (err.name !== "AbortError") {
             dispatch(this.failure(type, err));
             reject(err);
           } else {
-            console.log("aborted!! okay to do nothing");
+            // TODO: Update this with a better behavior
+            console.log("aborted! okay to do nothing");
           }
         });
       });

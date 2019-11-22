@@ -40,6 +40,7 @@ export interface FooterProps extends React.Props<{}> {
 
 export interface CollectionContainerProps extends React.Props<{}> {
   facetGroups?: FacetGroupData[];
+  abort?: () => void;
 }
 
 export interface BookDetailsContainerProps extends React.Props<{}> {
@@ -270,7 +271,7 @@ export class Root extends React.Component<RootProps, RootState> {
 
             { showCollection ?
               (showCollectionContainer ?
-                <CollectionContainer>
+                <CollectionContainer abort={this.props.abort}>
                   <Collection
                     collection={this.collectionDataWithLoans()}
                     fetchPage={this.props.fetchPage}

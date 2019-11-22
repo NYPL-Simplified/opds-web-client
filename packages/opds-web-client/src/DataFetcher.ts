@@ -2,11 +2,7 @@ import OPDSParser, { OPDSFeed, OPDSEntry } from "opds-feed-parser";
 import OpenSearchDescriptionParser from "./OpenSearchDescriptionParser";
 import { AuthCredentials } from "./interfaces";
 const Cookie = require("js-cookie");
-// const { AbortController, abortableFetch } = require("abortcontroller-polyfill/dist/cjs-ponyfill");
-// const { fetch } = abortableFetch(require("node-fetch"));
-require("node-fetch");
-// (global as any).AbortController = AbortController;
-// require("isomorphic-fetch");
+require("isomorphic-fetch");
 
 export interface RequestError {
   status: number;
@@ -35,18 +31,16 @@ export default class DataFetcher {
   public authKey: string;
   private proxyUrl: string;
   private adapter: (data: OPDSFeed | OPDSEntry, url: string) => any;
-  // private abortController: AbortController;
+  private abortController: AbortController;
 
   constructor(config: DataFetcherConfig = {}) {
-    // let abortController;
-    // try {
-    //   abortController = new AbortController();
-    // } catch (err) {
-    //   console.warn("Cannot create an AbortController.");
-    // }
-    // console.log("abortController", abortController);
-    // this.abortController = abortController;
-    console.log("no abort");
+    let abortController;
+    try {
+      abortController = new AbortController();
+    } catch (err) {
+      console.warn("Cannot create an AbortController.");
+    }
+    this.abortController = abortController;
     this.proxyUrl = config.proxyUrl;
     this.adapter = config.adapter;
     this.authKey = "authCredentials";
@@ -92,7 +86,9 @@ export default class DataFetcher {
             headers: response.headers
           });
         });
-      }).catch(error => reject(error));
+      }).catch(error => {
+        reject(error)
+      });
     });
   }
 
@@ -125,24 +121,20 @@ export default class DataFetcher {
   }
 
   abort() {
-    // console.log("calling abort!", this.abortController);
-    // return this.abortController && this.abortController.abort();
+    return this.abortController && this.abortController.abort();
   }
 
   fetch(url: string, options = {}) {
-    // const signal = this.abortController && this.abortController.signal;
+    const signal = this.abortController && this.abortController.signal;
 
     options = Object.assign(
       { credentials: "same-origin" },
       options
     );
 
-    // if (signal) {
-    //   console.log("there's a signal");
-    //   (options as any).signal = signal;
-    // } else {
-    //   console.log("No signal!");
-    // }
+    if (signal) {
+      (options as any).signal = signal;
+    }
 
     if (this.proxyUrl) {
       let formData = new (window as any).FormData();
