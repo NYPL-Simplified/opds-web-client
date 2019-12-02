@@ -36,6 +36,7 @@ export default class Search extends React.Component<SearchProps, {}> {
             <input
               className="form-control"
               ref="input"
+              aria-label="Enter search keyword or keywords"
               type="text"
               name="search"
               title={this.props.searchData.shortName}

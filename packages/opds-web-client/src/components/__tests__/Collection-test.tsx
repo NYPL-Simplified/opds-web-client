@@ -278,6 +278,57 @@ describe("Collection", () => {
     });
   });
 
+  describe("collection with navigation links", () => {
+    let collectionData, wrapper;
+
+    beforeEach(() => {
+      let context = mockRouterContext();
+      collectionData = {
+        id: "test collection",
+        url: "test url",
+        title: "title",
+        books: [],
+        lanes: [],
+        navigationLinks: [
+          { text: "link 1", url: "url 1" },
+          { text: "link 2", url: "url 2" }
+        ],
+        facetGroups: [
+          {
+            label: "group",
+            facets: []
+          }
+        ]
+      };
+
+      wrapper = mount(
+        <Collection
+          collection={collectionData}
+          updateBook={updateBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          setPreference={setPreference}
+        />,
+        {
+          context,
+          childContextTypes: {
+            router: PropTypes.object,
+            pathFor: PropTypes.func
+          }
+        }
+      );
+    });
+
+    it("renders a navigation links nav", () => {
+      let nav = wrapper.find("nav");
+      let links = wrapper.find("li");
+
+      expect(nav.prop("role")).to.equal("navigation");
+      expect(nav.prop("aria-label")).to.equal("navigation links");
+      expect(links.length).to.equal(2);
+    });
+  });
+
   describe("collection with next page", () => {
     const pause = (ms = 0): Promise<void> => {
       return new Promise<void>(resolve => setTimeout(resolve, ms));

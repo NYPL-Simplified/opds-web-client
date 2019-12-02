@@ -25,18 +25,26 @@ describe("Breadcrumbs", () => {
     ];
   });
 
+  it("should render a role of type navigation", () => {
+    let wrapper = shallow(<Breadcrumbs links={data} />);
+    let nav = wrapper.find("nav");
+
+    expect(nav.prop("role")).to.equal("navigation");
+    expect(nav.prop("aria-label")).to.equal("breadcrumbs");
+  });
+
   it("shows links with bootstrap classes", () => {
     let wrapper = shallow(<Breadcrumbs links={data} />);
 
     let list = wrapper.find("ol");
     let links = wrapper.find(CatalogLink);
     let currentLink = wrapper.find("ol li").last();
-    expect(list.hasClass("breadcrumb")).to.equal(true);
+    expect(list.hasClass("breadcrumbs")).to.equal(true);
     // The current page is no longer a link unless `currentLink` is true:
     expect(links.length).to.equal(1);
     expect(links.at(0).props().children).to.contain("2nd title");
     expect(links.at(0).props().collectionUrl).to.equal("2nd url");
-    // last link is wrapped in <strong>
+    // last link is wrapped in <span>
     expect(currentLink.text()).to.equal("last title");
   });
 
@@ -45,8 +53,7 @@ describe("Breadcrumbs", () => {
 
     let list = wrapper.find("ol");
     let links = wrapper.find(CatalogLink);
-    let currentLink = wrapper.find("ol li").last();
-    expect(list.hasClass("breadcrumb")).to.equal(true);
+    expect(list.hasClass("breadcrumbs")).to.equal(true);
     expect(links.length).to.equal(2);
     expect(links.at(0).props().children).to.contain("2nd title");
     expect(links.at(0).props().collectionUrl).to.equal("2nd url");

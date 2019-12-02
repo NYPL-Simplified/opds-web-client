@@ -30,7 +30,13 @@ html, body, body > div {
   }
 }
 
-input[type=text], input[type=button], input[type=submit], button, button.btn {
+input[type=text],
+input[type=button],
+input[type=submit],
+input[type=password],
+input[type=reset],
+button,
+button.btn {
   &:focus {
     box-shadow: inset 0 0 0 $focus-width $focuscolor;
     outline: none;
@@ -92,13 +98,10 @@ a {
     z-index: 100;
 
     .search {
-      display: inline-flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      padding-top: 2px;
-      input, .btn {
-        width: auto;
-        float: left;
+      padding: 5px;
+
+      label {
+        display: block;
       }
     }
 

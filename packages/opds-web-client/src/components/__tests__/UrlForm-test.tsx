@@ -35,4 +35,13 @@ describe("UrlForm", () => {
     expect(push.callCount).to.equal(1);
     expect(push.args[0][0]).to.equal(context.pathFor("some url", null));
   });
+
+  it("should render a label ", () => {
+    let context = mockRouterContext();
+    let wrapper = mount(<UrlForm />, { context });
+    let label = wrapper.find("label");
+
+    expect(label.length).to.equal(1);
+    expect(label.prop("htmlFor")).to.equal("opds-input");
+  });
 });

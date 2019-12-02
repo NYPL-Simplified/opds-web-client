@@ -805,7 +805,7 @@ describe("Root", () => {
       wrapper.setProps({ bookData });
 
       let collectionLink = wrapper
-        .find("ol.breadcrumb")
+        .find("ol.breadcrumbs")
         .find(CatalogLink)
         .last();
       let collectionUrl = collectionData.url;

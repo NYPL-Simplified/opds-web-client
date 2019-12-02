@@ -12,6 +12,9 @@ export default class BasicAuthForm extends React.Component<
   BasicAuthFormProps,
   BasicAuthFormState
 > {
+  private loginRef = React.createRef<HTMLInputElement>();
+  private passwordRef = React.createRef<HTMLInputElement>();
+
   constructor(props) {
     super(props);
     this.state = { error: this.props.error };
@@ -25,16 +28,18 @@ export default class BasicAuthForm extends React.Component<
           <div className="auth-error">{this.state.error}</div>
         )}
         <input
+          aria-label={`Input for ${this.loginLabel()}`}
           className="form-control"
-          ref="login"
+          ref={this.loginRef}
           type="text"
           autoFocus
           placeholder={this.loginLabel()}
         />
         <br />
         <input
+          aria-label={`Input for ${this.passwordLabel()}`}
           className="form-control"
-          ref="password"
+          ref={this.passwordRef}
           type="password"
           placeholder={this.passwordLabel()}
         />
@@ -69,8 +74,7 @@ export default class BasicAuthForm extends React.Component<
    * Not all libraries require a password to log in so that value is not checked.
    */
   validate() {
-    let login = (this.refs["login"] as any).value;
-
+    const login = this.loginRef.current && this.loginRef.current.value;
     if (!login) {
       this.setState({
         error: `${this.loginLabel()} is required`
@@ -87,8 +91,9 @@ export default class BasicAuthForm extends React.Component<
     event.preventDefault();
 
     if (this.validate()) {
-      let login = (this.refs["login"] as any).value;
-      let password = (this.refs["password"] as any).value;
+      const login = this.loginRef.current && this.loginRef.current.value;
+      const password =
+        this.passwordRef.current && this.passwordRef.current.value;
       let credentials = this.generateCredentials(login, password);
 
       this.props.saveCredentials({
@@ -104,6 +109,7 @@ export default class BasicAuthForm extends React.Component<
   }
 
   generateCredentials(login, password) {
-    return "Basic " + btoa(login + ":" + password);
+    const btoaStr = btoa(`${login}:${password}`);
+    return `Basic ${btoaStr}`;
   }
 }

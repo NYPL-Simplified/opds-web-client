@@ -9,6 +9,7 @@ export interface UrlFormProps {
 /** Page for entering the URL of an OPDS feed that's shown when no feed
     is specified in the URL. Submitting the form adds the feed to the URL. */
 export default class UrlForm extends React.Component<UrlFormProps, {}> {
+  private inputRef = React.createRef<HTMLInputElement>();
   context: NavigateContext;
 
   constructor(props) {
@@ -29,15 +30,16 @@ export default class UrlForm extends React.Component<UrlFormProps, {}> {
       <div className="url-form">
         <h2>View OPDS Feed</h2>
         <form onSubmit={this.onSubmit} className="form-inline">
+          <label htmlFor="opds-input">Enter OPDS feed URL</label>
           <input
-            ref="input"
+            id="opds-input"
+            ref={this.inputRef}
             name="collection"
             type="text"
             className="form-control input-lg"
             defaultValue={this.props.collectionUrl}
             placeholder={placeholder}
           />
-          &nbsp;
           <button type="submit" className="btn btn-lg btn-default">
             Go
           </button>
@@ -47,8 +49,11 @@ export default class UrlForm extends React.Component<UrlFormProps, {}> {
   }
 
   onSubmit(event) {
-    let url = this.refs["input"]["value"];
-    this.context.router.push(this.context.pathFor(url, null));
     event.preventDefault();
+
+    const url = this.inputRef.current && this.inputRef.current.value;
+    if (url !== "") {
+      this.context.router.push(this.context.pathFor(url, null));
+    }
   }
 }

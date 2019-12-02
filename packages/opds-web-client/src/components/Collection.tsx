@@ -53,11 +53,7 @@ export default class Collection extends React.Component<CollectionProps, {}> {
     return (
       <div className="collection">
         {hasFacets && (
-          <div
-            className="facet-groups"
-            role="complementary"
-            aria-label="filters"
-          >
+          <div className="facet-groups" aria-label="filters">
             <SkipNavigationLink target="#collection-main" label="filters" />
             {this.props.collection.facetGroups.map(facetGroup => (
               <FacetGroup key={facetGroup.label} facetGroup={facetGroup} />
@@ -126,19 +122,17 @@ export default class Collection extends React.Component<CollectionProps, {}> {
             )}
 
             {this.props.collection.navigationLinks && (
-              <ul
-                aria-label="navigation links"
-                className="navigation-links subtle-list"
-                role="navigation"
-              >
-                {this.props.collection.navigationLinks.map((link, index) => (
-                  <li key={index}>
-                    <CatalogLink collectionUrl={link.url}>
-                      {link.text}
-                    </CatalogLink>
-                  </li>
-                ))}
-              </ul>
+              <nav role="navigation" aria-label="navigation links">
+                <ul className="navigation-links subtle-list">
+                  {this.props.collection.navigationLinks.map((link, index) => (
+                    <li key={index}>
+                      <CatalogLink collectionUrl={link.url}>
+                        {link.text}
+                      </CatalogLink>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
             )}
 
             {this.isEmpty() && (
