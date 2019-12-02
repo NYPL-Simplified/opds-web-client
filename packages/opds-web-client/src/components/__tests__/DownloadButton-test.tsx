@@ -19,9 +19,7 @@ describe("DownloadButton", () => {
   beforeEach(() => {
     downloadStub = stub(download, "default").callsFake(downloadMock);
 
-    fulfill = stub().returns(
-      new Promise((resolve, reject) => resolve("blob"))
-    );
+    fulfill = stub().returns(new Promise((resolve, reject) => resolve("blob")));
     indirectFulfill = stub().returns(
       new Promise((resolve, reject) => resolve("web reader url"))
     );
@@ -34,7 +32,7 @@ describe("DownloadButton", () => {
         fulfill={fulfill}
         indirectFulfill={indirectFulfill}
         title="title"
-        />
+      />
     );
   });
 
@@ -63,22 +61,30 @@ describe("DownloadButton", () => {
     expect(fulfill.args[0][0]).to.equal("download url");
   });
 
-  it("downloads after fulfilling", (done) => {
+  it("downloads after fulfilling", done => {
     let button = wrapper.find("button");
-    button.props().onClick().then(() => {
-      expect(downloadMock.getBlob()).to.equal("blob");
-      expect(downloadMock.getFilename()).to.equal(
-        wrapper.instance().generateFilename("title")
-      );
-      expect(downloadMock.getMimeType()).to.equal(
-        wrapper.instance().mimeType()
-      );
-      done();
-    }).catch(err => { console.log(err); throw(err); });
+    button
+      .props()
+      .onClick()
+      .then(() => {
+        expect(downloadMock.getBlob()).to.equal("blob");
+        expect(downloadMock.getFilename()).to.equal(
+          wrapper.instance().generateFilename("title")
+        );
+        expect(downloadMock.getMimeType()).to.equal(
+          wrapper.instance().mimeType()
+        );
+        done();
+      })
+      .catch(err => {
+        console.log(err);
+        throw err;
+      });
   });
 
   it("fulfills OPDS-based indirect links", () => {
-    let streamingType = "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media";
+    let streamingType =
+      "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media";
     wrapper.setProps({
       mimeType: "application/atom+xml;type=entry;profile=opds-catalog",
       indirectType: streamingType
@@ -101,18 +107,25 @@ describe("DownloadButton", () => {
     expect(fulfill.args[0][0]).to.equal("download url");
   });
 
-  it("opens indirect fulfillment link in new tab", (done) => {
+  it("opens indirect fulfillment link in new tab", done => {
     wrapper.setProps({
       mimeType: "application/atom+xml;type=entry;profile=opds-catalog",
       indirectType: "some/type"
     });
     let windowOpenStub = stub(window, "open");
     let button = wrapper.find("button");
-    button.props().onClick().then(() => {
-      expect(windowOpenStub.callCount).to.equal(1);
-      expect(windowOpenStub.args[0][0]).to.equal("web reader url");
-      expect(windowOpenStub.args[0][1]).to.equal("_blank");
-      done();
-    }).catch(err => { console.log(err); throw(err); });
+    button
+      .props()
+      .onClick()
+      .then(() => {
+        expect(windowOpenStub.callCount).to.equal(1);
+        expect(windowOpenStub.args[0][0]).to.equal("web reader url");
+        expect(windowOpenStub.args[0][1]).to.equal("_blank");
+        done();
+      })
+      .catch(err => {
+        console.log(err);
+        throw err;
+      });
   });
 });

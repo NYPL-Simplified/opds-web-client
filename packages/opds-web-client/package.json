@@ -1,6 +1,6 @@
 {
   "name": "opds-web-client",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "OPDS web client",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -66,6 +66,8 @@
     "style-loader": "^0.13.1",
     "ts-loader": "^6.2.1",
     "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "^2.0.1",
     "tslint-react-a11y": "^1.0.0",
     "typedoc": "^0.15.0",
     "typescript": "^3.7.2",

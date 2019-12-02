@@ -40,7 +40,10 @@ if (typeof window === "undefined") {
 }
 
 /** Converts OPDS data into the internal representation used by components. */
-export function adapter(data: OPDSFeed|OPDSEntry, url: string): CollectionData|BookData {
+export function adapter(
+  data: OPDSFeed | OPDSEntry,
+  url: string
+): CollectionData | BookData {
   if (data instanceof OPDSFeed) {
     let collectionData = feedToCollection(data, url);
     return collectionData;
@@ -48,25 +51,27 @@ export function adapter(data: OPDSFeed|OPDSEntry, url: string): CollectionData|B
     let bookData = entryToBook(data, url);
     return bookData;
   } else {
-    throw("parsed data must be OPDSFeed or OPDSEntry");
+    throw "parsed data must be OPDSFeed or OPDSEntry";
   }
 }
 
 export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
-  let authors = entry.authors.map((author) => {
+  let authors = entry.authors.map(author => {
     return author.name;
   });
 
-  let contributors = entry.contributors.map((contributor) => {
+  let contributors = entry.contributors.map(contributor => {
     return contributor.name;
   });
 
   let imageUrl, imageThumbLink;
-  let artworkLinks = entry.links.filter((link) => {
-    return (link instanceof OPDSArtworkLink);
+  let artworkLinks = entry.links.filter(link => {
+    return link instanceof OPDSArtworkLink;
   });
   if (artworkLinks.length > 0) {
-    imageThumbLink = artworkLinks.find(link => link.rel === "http://opds-spec.org/image/thumbnail");
+    imageThumbLink = artworkLinks.find(
+      link => link.rel === "http://opds-spec.org/image/thumbnail"
+    );
     if (imageThumbLink) {
       imageUrl = resolve(feedUrl, imageThumbLink.href);
     } else {
@@ -81,21 +86,30 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
     detailUrl = resolve(feedUrl, detailLink.href);
   }
 
-  let categories = entry.categories.filter(category => !!category.label).map(category => category.label);
+  let categories = entry.categories
+    .filter(category => !!category.label)
+    .map(category => category.label);
 
-  let openAccessLinks = entry.links.filter(link => {
-    return link instanceof OPDSAcquisitionLink &&
-           link.rel === OPDSAcquisitionLink.OPEN_ACCESS_REL;
-  }).map(link => {
-    return {
-      url: resolve(feedUrl, link.href),
-      type: link.type
-    };
-  });
+  let openAccessLinks = entry.links
+    .filter(link => {
+      return (
+        link instanceof OPDSAcquisitionLink &&
+        link.rel === OPDSAcquisitionLink.OPEN_ACCESS_REL
+      );
+    })
+    .map(link => {
+      return {
+        url: resolve(feedUrl, link.href),
+        type: link.type
+      };
+    });
 
   let borrowUrl;
   let borrowLink = <OPDSAcquisitionLink>entry.links.find(link => {
-    return link instanceof OPDSAcquisitionLink && link.rel === OPDSAcquisitionLink.BORROW_REL;
+    return (
+      link instanceof OPDSAcquisitionLink &&
+      link.rel === OPDSAcquisitionLink.BORROW_REL
+    );
   });
   if (borrowLink) {
     borrowUrl = resolve(feedUrl, borrowLink.href);
@@ -103,23 +117,27 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
 
   let fulfillmentUrls;
   let fulfillmentType;
-  let fulfillmentLinks = entry.links.filter(link => {
-    return link instanceof OPDSAcquisitionLink &&
-           link.rel === OPDSAcquisitionLink.GENERIC_REL;
-  }).map(link => {
-    let indirectType;
-    let indirects = (link as OPDSAcquisitionLink).indirectAcquisitions;
+  let fulfillmentLinks = entry.links
+    .filter(link => {
+      return (
+        link instanceof OPDSAcquisitionLink &&
+        link.rel === OPDSAcquisitionLink.GENERIC_REL
+      );
+    })
+    .map(link => {
+      let indirectType;
+      let indirects = (link as OPDSAcquisitionLink).indirectAcquisitions;
 
-    if (indirects && indirects.length > 0) {
-      indirectType = indirects[0].type;
-    }
+      if (indirects && indirects.length > 0) {
+        indirectType = indirects[0].type;
+      }
 
-    return {
-      url: resolve(feedUrl, link.href),
-      type: link.type,
-      indirectType
-    };
-  });
+      return {
+        url: resolve(feedUrl, link.href),
+        type: link.type,
+        indirectType
+      };
+    });
 
   let availability;
   let holds;
@@ -159,7 +177,7 @@ function entryToLink(entry: OPDSEntry, feedUrl: string): LinkData {
   let href: string;
   let links = entry.links;
   if (links.length > 0) {
-     href = resolve(feedUrl, links[0].href);
+    href = resolve(feedUrl, links[0].href);
   }
   return <LinkData>{
     id: entry.id,
@@ -180,10 +198,18 @@ function dedupeBooks(books: BookData[]): BookData[] {
 
 function formatDate(inputDate: string): string {
   let monthNames = [
-    "January", "February", "March",
-    "April", "May", "June", "July",
-    "August", "September", "October",
-    "November", "December"
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
   ];
 
   let date = new Date(inputDate);
@@ -207,7 +233,10 @@ function OPDSLinkToLinkData(feedUrl, link: OPDSLink = null) {
   };
 }
 
-export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionData {
+export function feedToCollection(
+  feed: OPDSFeed,
+  feedUrl: string
+): CollectionData {
   let collection = <CollectionData>{
     id: feed.id,
     title: feed.title,
@@ -229,14 +258,20 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
   feed.entries.forEach(entry => {
     if (feed instanceof AcquisitionFeed) {
       let book = entryToBook(entry, feedUrl);
-      let collectionLink: OPDSCollectionLink = entry.links.find(link => link instanceof OPDSCollectionLink);
+      let collectionLink: OPDSCollectionLink = entry.links.find(
+        link => link instanceof OPDSCollectionLink
+      );
       if (collectionLink) {
         let { title, href } = collectionLink;
 
         if (laneIndex[title]) {
           laneIndex[title].books.push(book);
         } else {
-          laneIndex[title] = { title, url: resolve(feedUrl, href), books: [book] };
+          laneIndex[title] = {
+            title,
+            url: resolve(feedUrl, href),
+            books: [book]
+          };
           // use array of titles to preserve lane order
           laneTitles.push(title);
         }
@@ -259,25 +294,25 @@ export function feedToCollection(feed: OPDSFeed, feedUrl: string): CollectionDat
   let facetLinks = [];
   if (feed.links) {
     facetLinks = feed.links.filter(link => {
-      return (link instanceof OPDSFacetLink);
+      return link instanceof OPDSFacetLink;
     });
 
     let searchLink = feed.links.find(link => {
-      return (link instanceof SearchLink);
+      return link instanceof SearchLink;
     });
     if (searchLink) {
-      search = {url: resolve(feedUrl, searchLink.href)};
+      search = { url: resolve(feedUrl, searchLink.href) };
     }
 
     let nextPageLink = feed.links.find(link => {
-      return (link.rel === "next");
+      return link.rel === "next";
     });
     if (nextPageLink) {
       nextPageUrl = resolve(feedUrl, nextPageLink.href);
     }
 
     catalogRootLink = feed.links.find(link => {
-      return (link instanceof OPDSCatalogRootLink);
+      return link instanceof OPDSCatalogRootLink;
     });
 
     parentLink = feed.links.find(link => link.rel === "up");

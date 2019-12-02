@@ -10,10 +10,7 @@ import { mockRouterContext } from "./routing";
 describe("UrlForm", () => {
   it("shows the form with bootstrap classes", () => {
     let context = mockRouterContext();
-    let wrapper = shallow(
-      <UrlForm />,
-      { context }
-    );
+    let wrapper = shallow(<UrlForm />, { context });
 
     let form = wrapper.find("form");
     let input = wrapper.find("input");
@@ -27,10 +24,7 @@ describe("UrlForm", () => {
   it("fetches the url", () => {
     let push = stub();
     let context = mockRouterContext(push);
-    let wrapper = mount(
-      <UrlForm />,
-      { context }
-    );
+    let wrapper = mount(<UrlForm />, { context });
 
     let form = wrapper.find("form");
     let input = wrapper.find("input").getDOMNode();
@@ -44,10 +38,7 @@ describe("UrlForm", () => {
 
   it("should render a label ", () => {
     let context = mockRouterContext();
-    let wrapper = mount(
-      <UrlForm />,
-      { context }
-    );
+    let wrapper = mount(<UrlForm />, { context });
     let label = wrapper.find("label");
 
     expect(label.length).to.equal(1);

@@ -1,23 +1,21 @@
-var webpack = require('webpack');
+var webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const merge = require('webpack-merge');
+const merge = require("webpack-merge");
 const path = require("path");
 
-const common = require('./webpack.common.js');
+const common = require("./webpack.common.js");
 
 var config = merge(common, {
   mode: "production",
   // devtool: "source-map",
   entry: {
-    app: [
-      './src/app.tsx',
-    ],
+    app: ["./src/app.tsx"]
   },
   output: {
     path: path.resolve(__dirname, "./dist"),
-    filename: 'opds-web-client.js',
-    library: 'OPDSWebClient',
-    libraryTarget: 'umd'
+    filename: "opds-web-client.js",
+    library: "OPDSWebClient",
+    libraryTarget: "umd"
   },
   plugins: [
     // jsdom is needed for server rendering, but causes errors
@@ -31,20 +29,14 @@ var config = merge(common, {
     rules: [
       {
         test: /\.scss$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader",
-          "sass-loader"
-        ]
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"]
       },
       {
         test: /\.tsx?$/,
         exclude: [/node_modules/],
-        loaders: [
-          'ts-loader'
-        ]
+        loaders: ["ts-loader"]
       }
-    ],
+    ]
   }
 });
 

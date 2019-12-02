@@ -1,6 +1,6 @@
 const path = require("path");
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-var webpack = require('webpack');
+const CleanWebpackPlugin = require("clean-webpack-plugin");
+var webpack = require("webpack");
 
 module.exports = {
   plugins: [
@@ -19,7 +19,7 @@ module.exports = {
     rules: [
       {
         test: /\.(ttf|woff|eot|svg|png|woff2|gif|jpg)(\?[\s\S]+)?$/,
-        loader: 'url-loader?limit=100000'
+        loader: "url-loader?limit=100000"
       }
     ]
   },

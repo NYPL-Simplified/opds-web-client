@@ -1,16 +1,19 @@
-var express = require('express');
+var express = require("express");
 var request = require("request");
 var app = express();
 var port = process.env.PORT || 3000;
 
-var multer  = require('multer');
+var multer = require("multer");
 var form = multer();
 
-var serverManifestJson = require("r2-streamer-js/dist/src/server-manifestjson").serverManifestJson;
-var serverMediaOverlays = require("r2-streamer-js/dist/src/server-mediaoverlays").serverMediaOverlays;
+var serverManifestJson = require("r2-streamer-js/dist/src/server-manifestjson")
+  .serverManifestJson;
+var serverMediaOverlays = require("r2-streamer-js/dist/src/server-mediaoverlays")
+  .serverMediaOverlays;
 var serverPub = require("r2-streamer-js/dist/src/server-pub").serverPub;
-var serverAssets = require("r2-streamer-js/dist/src/server-assets").serverAssets;
-var Server = require("r2-streamer-js/dist/src/server").Server
+var serverAssets = require("r2-streamer-js/dist/src/server-assets")
+  .serverAssets;
+var Server = require("r2-streamer-js/dist/src/server").Server;
 
 app.use(express.static(__dirname + "/../opds-web-client/dist"));
 // Uncomment to enable the webreader when `nypl-simplified-webpub-viewer` is installed.
@@ -19,8 +22,8 @@ app.use(express.static(__dirname + "/node_modules/whatwg-fetch"));
 app.use(express.static(__dirname + "/node_modules/promise-polyfill"));
 app.use(express.static(__dirname + "/node_modules/requirejs"));
 app.use(express.static(__dirname + "/node_modules/url-polyfill"));
-app.set('views', __dirname + "/views");
-app.set('view engine', 'ejs');
+app.set("views", __dirname + "/views");
+app.set("view engine", "ejs");
 
 app.listen(port, function() {
   console.log("Server listening on port " + port);
@@ -57,8 +60,8 @@ app.post("/proxy", form.array(), function(req, res, next) {
   var options = {
     uri: req.body.url,
     headers: {
-      "Authorization": req.headers.authorization,
-      "X-Requested-With": req.headers["x-requested-with"],
+      Authorization: req.headers.authorization,
+      "X-Requested-With": req.headers["x-requested-with"]
     }
   };
 
@@ -74,12 +77,18 @@ app.post("/proxy", form.array(), function(req, res, next) {
 app.options("/proxy", function(req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", true);
-  res.setHeader("Access-Control-Allow-Methods", req.headers["access-control-request-method"]);
-  res.setHeader("Access-Control-Allow-Headers", req.headers["access-control-request-headers"]);
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    req.headers["access-control-request-method"]
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    req.headers["access-control-request-headers"]
+  );
   res.status(200).end();
 });
 
-app.get("/reader", function (req, res, next) {
+app.get("/reader", function(req, res, next) {
   res.render("reader.html.ejs");
 });
 
