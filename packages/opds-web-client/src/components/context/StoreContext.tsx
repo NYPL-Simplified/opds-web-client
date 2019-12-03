@@ -19,16 +19,16 @@ type OPDSStoreProps = {
  */
 export default class OPDSStore extends React.Component<OPDSStoreProps> {
   static contextType = PathForContext;
-  context: React.ContextType<typeof PathForContext>;
+  declare context: React.ContextType<typeof PathForContext>;
 
   store: Redux.Store<State>;
 
-  constructor(props, context) {
+  constructor(props, pathFor) {
     super(props);
     this.store = buildStore(
       this.props.initialState || undefined,
       this.props.authPlugins || [BasicAuthPlugin],
-      context.pathFor
+      pathFor
     );
   }
 

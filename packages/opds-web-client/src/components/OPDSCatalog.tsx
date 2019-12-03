@@ -21,7 +21,7 @@ export interface OPDSCatalogProps {
  * The main application component.
  *  - Renders root and passes props along with store to root
  *  - Creates the redux store using OPDSStore
- *  - consumes and passes it down
+ *  - Consumes and passes it down
  *  - Passes the redux store down the tree in context
  */
 const OPDSCatalog: React.FunctionComponent<OPDSCatalogProps> = props => {

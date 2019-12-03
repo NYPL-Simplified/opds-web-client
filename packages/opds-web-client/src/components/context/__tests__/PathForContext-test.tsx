@@ -1,13 +1,11 @@
 import * as React from "react";
 import { expect } from "chai";
-import { stub } from "sinon";
 
 import * as PropTypes from "prop-types";
-import { shallow, mount } from "enzyme";
+import { mount } from "enzyme";
 
 import PathForProvider, { PathForContext } from "../PathForContext";
 import { PathFor } from "../../../interfaces";
-import { isNull } from "util";
 
 const pathFor: PathFor = (collectionUrl, bookUrl) => {
   return "path";

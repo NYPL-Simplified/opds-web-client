@@ -17,7 +17,7 @@ import { isNull } from "util";
 /**
  *  Testing the StoreContext component. Based on old OPDSCatalog Tests
  *    - if not given state, it will build state on its own
- *      (seems like this should be a test of buildState maybe?)
+ *      (seems like this should be a test of buildStore maybe?)
  *    - if given a state, it will use it and pass it down.
  *    - passes props down
  *    - test that the context really is available through old and new APIs (and it's the same?)
