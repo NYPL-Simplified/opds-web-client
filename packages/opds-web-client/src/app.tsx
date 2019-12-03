@@ -7,6 +7,7 @@ import { RootProps } from "./components/Root";
 import { PathFor } from "./interfaces";
 import AuthPlugin from "./AuthPlugin";
 import "./stylesheets/app.scss";
+import PathForProvider from "./components/context/PathForContext";
 
 const OPDSCatalogRouterHandler = config => {
   interface OPDSCatalogParams {
@@ -21,15 +22,6 @@ const OPDSCatalogRouterHandler = config => {
       router: PropTypes.object.isRequired
     };
 
-    static childContextTypes: React.ValidationMap<{}> = {
-      pathFor: PropTypes.func.isRequired
-    };
-
-    getChildContext() {
-      return {
-        pathFor: config.pathFor
-      };
-    }
     render() {
       let { collectionUrl, bookUrl } = this.props.params;
       let mergedProps: RootProps = {
@@ -37,7 +29,11 @@ const OPDSCatalogRouterHandler = config => {
         collectionUrl,
         bookUrl
       };
-      return <OPDSCatalog {...mergedProps} />;
+      return (
+        <PathForProvider pathFor={config.pathFor}>
+          <OPDSCatalog {...mergedProps} />
+        </PathForProvider>
+      );
     }
   }
 

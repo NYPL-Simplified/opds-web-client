@@ -5,7 +5,7 @@ import * as React from "react";
 import { shallow, mount } from "enzyme";
 
 import Search from "../Search";
-import { mockRouterContext } from "./routing";
+import { mockRouterContext } from "../../__mocks__/routing";
 
 describe("Search", () => {
   it("fetches the search description", () => {

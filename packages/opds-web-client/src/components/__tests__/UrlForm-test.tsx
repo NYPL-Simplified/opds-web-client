@@ -5,7 +5,7 @@ import * as React from "react";
 import { shallow, mount } from "enzyme";
 
 import UrlForm from "../UrlForm";
-import { mockRouterContext } from "./routing";
+import { mockRouterContext } from "../../__mocks__/routing";
 
 describe("UrlForm", () => {
   it("shows the form with bootstrap classes", () => {

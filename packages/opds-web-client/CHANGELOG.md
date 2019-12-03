@@ -1,5 +1,11 @@
 ## Changelog
 
+### v0.3.2
+
+- Pass the redux store down the tree via context
+- Extracted PathForContext from the Root, which provides context via both legacy and new context APIs
+- Created a RouterContext component which can be used by any application to pass a `router` context down the tree. See `circulation-patron-web` as an example.
+
 ### v0.3.1
 
 - added "prettier" code formatter and a git hook to run prettier before each commit

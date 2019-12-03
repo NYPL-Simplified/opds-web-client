@@ -15,7 +15,7 @@ import {
   ungroupedCollectionData
 } from "./collectionData";
 import { CollectionData } from "../../interfaces";
-import { mockRouterContext } from "./routing";
+import { mockRouterContext } from "../../__mocks__/routing";
 
 describe("Collection", () => {
   let updateBook;

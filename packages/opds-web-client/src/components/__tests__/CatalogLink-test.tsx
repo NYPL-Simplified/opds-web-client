@@ -5,7 +5,7 @@ import { shallow } from "enzyme";
 
 import CatalogLink from "../CatalogLink";
 import { Link } from "react-router";
-import { mockRouterContext } from "./routing";
+import { mockRouterContext } from "../../__mocks__/routing";
 
 describe("CatalogLink", () => {
   it("renders Link with location and props and context", () => {

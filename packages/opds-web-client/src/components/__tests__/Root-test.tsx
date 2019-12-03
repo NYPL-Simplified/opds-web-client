@@ -29,7 +29,7 @@ import {
 } from "./collectionData";
 import { State } from "../../state";
 import { CollectionData, BookData, LinkData } from "../../interfaces";
-import { mockRouterContext } from "./routing";
+import { mockRouterContext } from "../../__mocks__/routing";
 
 const setCollectionAndBookPromise = new Promise((resolve, reject) => {
   resolve({

@@ -1,12 +1,11 @@
 import * as React from "react";
 import * as PropTypes from "prop-types";
 import * as Redux from "redux";
-import Root, { RootProps } from "./Root";
-import buildStore from "../store";
+import { ReactReduxContext } from "react-redux";
+import Root from "./Root";
 import { State } from "../state";
 import AuthPlugin from "../AuthPlugin";
-import BasicAuthPlugin from "../BasicAuthPlugin";
-import { NavigateContext, Router as RouterType } from "../interfaces";
+import OPDSStore from "./context/StoreContext";
 
 export interface OPDSCatalogProps {
   collectionUrl?: string;
@@ -18,30 +17,26 @@ export interface OPDSCatalogProps {
   epubReaderUrlTemplate?: (epubUrl: string) => string;
 }
 
-/** The main application component. */
-export default class OPDSCatalog extends React.Component<OPDSCatalogProps, {}> {
-  store: Redux.Store<State>;
-  context: NavigateContext;
+/**
+ * The main application component.
+ *  - Renders root and passes props along with store to root
+ *  - Creates the redux store using OPDSStore
+ *  - Consumes and passes it down
+ *  - Passes the redux store down the tree in context
+ */
+const OPDSCatalog: React.FunctionComponent<OPDSCatalogProps> = props => {
+  return (
+    <OPDSStore
+      initialState={props.initialState}
+      authPlugins={props.authPlugins}
+    >
+      <ReactReduxContext.Consumer>
+        {({ store }: { store: Redux.Store<State> }) => {
+          return <Root store={store} {...props} />;
+        }}
+      </ReactReduxContext.Consumer>
+    </OPDSStore>
+  );
+};
 
-  static contextTypes: React.ValidationMap<NavigateContext> = {
-    router: PropTypes.object.isRequired as React.Validator<RouterType>,
-    pathFor: PropTypes.func.isRequired
-  };
-
-  constructor(props, context) {
-    super(props);
-    this.store = buildStore(
-      this.props.initialState || undefined,
-      this.props.authPlugins || [BasicAuthPlugin],
-      context.pathFor
-    );
-  }
-
-  render(): JSX.Element {
-    let props: RootProps = Object.assign({}, this.props, {
-      store: this.store
-    });
-
-    return <Root {...props} />;
-  }
-}
+export default OPDSCatalog;
