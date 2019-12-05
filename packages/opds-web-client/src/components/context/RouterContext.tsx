@@ -15,7 +15,6 @@ export const RouterContext = React.createContext<RouterType>(null);
 
 type RouterContextProps = {
   router: RouterType;
-  children: React.ReactChild;
 };
 
 export default class RouterProvider extends React.Component<
