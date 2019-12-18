@@ -12,7 +12,7 @@ export interface CollectionState {
   pageUrl?: string;
 }
 
-const initialState: CollectionState = {
+export const initialState: CollectionState = {
   url: null,
   data: null,
   isFetching: false,
