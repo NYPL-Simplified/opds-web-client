@@ -117,7 +117,7 @@ export interface StateProps {
 }
 
 export interface PathFor {
-  (collectionUrl: string, bookUrl: string): string;
+  (collectionUrl?: string, bookUrl?: string): string;
 }
 
 export interface FetchErrorData {

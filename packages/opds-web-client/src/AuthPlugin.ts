@@ -13,7 +13,7 @@ interface AuthPlugin {
     credentials?: AuthCredentials;
     error?: string;
   } | void;
-  formComponent: new (props: AuthFormProps<AuthMethod>) => React.Component<
+  formComponent?: new (props: AuthFormProps<AuthMethod>) => React.Component<
     AuthFormProps<AuthMethod>,
     {}
   >;
