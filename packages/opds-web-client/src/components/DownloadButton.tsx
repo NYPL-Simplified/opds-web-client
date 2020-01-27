@@ -1,5 +1,6 @@
 import * as React from "react";
 import download from "./download";
+import { typeMap, generateFilename } from "../utils/file";
 
 export interface DownloadButtonProps extends React.HTMLProps<{}> {
   url: string;
@@ -75,7 +76,7 @@ export default class DownloadButton extends React.Component<
       return this.props.fulfill(this.props.url).then(blob => {
         download(
           blob,
-          this.generateFilename(this.props.title),
+          generateFilename(this.props.title, this.fileExtension()),
           // TODO: use mimeType variable once we fix the link type in our OPDS entries
           this.mimeType()
         );
@@ -107,14 +108,7 @@ export default class DownloadButton extends React.Component<
   }
 
   fileExtension() {
-    return (
-      {
-        "application/epub+zip": ".epub",
-        "application/pdf": ".pdf",
-        "application/vnd.adobe.adept+xml": ".acsm",
-        "application/x-mobipocket-ebook": ".mobi"
-      }[this.mimeType()] || ""
-    );
+    return typeMap[this.mimeType()]?.extension ?? "";
   }
 
   downloadLabel() {
@@ -124,9 +118,8 @@ export default class DownloadButton extends React.Component<
     ) {
       return "Read Online";
     }
-    let type = this.fileExtension()
-      .replace(".", "")
-      .toUpperCase();
+    let type = typeMap[this.mimeType()]?.name;
+
     return "Download" + (type ? " " + type : "");
   }
 }
