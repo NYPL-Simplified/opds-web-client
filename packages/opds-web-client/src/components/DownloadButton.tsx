@@ -92,15 +92,6 @@ export default class DownloadButton extends React.Component<
     );
   }
 
-  generateFilename(str: string): string {
-    return (
-      str
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-|-$)/g, "") + this.fileExtension()
-    );
-  }
-
   mimeType() {
     return this.props.mimeType === "vnd.adobe/adept+xml"
       ? "application/vnd.adobe.adept+xml"
@@ -108,6 +99,9 @@ export default class DownloadButton extends React.Component<
   }
 
   fileExtension() {
+    // this ?? syntax is similar to x || y, except that it will only
+    // fall back if the predicate is undefined or null, not if it
+    // is falsy (false, 0, etc).
     return typeMap[this.mimeType()]?.extension ?? "";
   }
 

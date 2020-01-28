@@ -1,5 +1,12 @@
 import AuthPlugin from "./AuthPlugin";
 
+export type OpenAccessLinkType =
+  | "application/epub+zip"
+  | "application/pdf"
+  | "application/vnd.adobe.adept+xml"
+  | "application/x-mobipocket-ebook"
+  | "application/x-mobi8-ebook";
+
 export interface BookData {
   id: string;
   title: string;
@@ -14,7 +21,7 @@ export interface BookData {
   imageUrl?: string;
   openAccessLinks?: {
     url: string;
-    type: string;
+    type: OpenAccessLinkType;
   }[];
   borrowUrl?: string;
   fulfillmentLinks?: {

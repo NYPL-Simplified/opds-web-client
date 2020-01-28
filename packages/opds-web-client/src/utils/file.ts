@@ -1,7 +1,16 @@
-export const typeMap = {
+import { OpenAccessLinkType } from "./../interfaces";
+
+type TypeMap = {
+  [key in OpenAccessLinkType]: {
+    extension: string;
+    name: string;
+  };
+};
+
+export const typeMap: TypeMap = {
   "application/epub+zip": {
     extension: ".epub",
-    name: "ePub"
+    name: "EPUB"
   },
   "application/pdf": {
     extension: ".pdf",
@@ -14,6 +23,10 @@ export const typeMap = {
   "application/x-mobipocket-ebook": {
     extension: ".mobi",
     name: "MOBI"
+  },
+  "application/x-mobi8-ebook": {
+    extension: ".azw3",
+    name: "Mobi8"
   }
 };
 

@@ -43,7 +43,7 @@ describe("DownloadButton", () => {
   it("shows button", () => {
     let button = wrapper.find("button");
     expect(button.props().style).to.deep.equal(style);
-    expect(button.text()).to.equal("Download ePub");
+    expect(button.text()).to.equal("Download EPUB");
   });
 
   it("shows plain link if specified", () => {
@@ -51,7 +51,7 @@ describe("DownloadButton", () => {
     let link = wrapper.find("a");
     expect(link.props().style).to.deep.equal(style);
     expect(link.props().href).to.equal("download url");
-    expect(link.text()).to.equal("Download ePub");
+    expect(link.text()).to.equal("Download EPUB");
   });
 
   it("fulfills when clicked", () => {
