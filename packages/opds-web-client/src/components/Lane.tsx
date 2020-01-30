@@ -3,16 +3,16 @@ import Book from "./Book";
 import CatalogLink from "./CatalogLink";
 import LaneMoreLink from "./LaneMoreLink";
 import { LaneData, BookData } from "../interfaces";
+import useTypedSelector from "../hooks/useTypedSelector";
+import { useActions } from "./context/ActionsContext";
 
 export interface LaneProps {
   lane: LaneData;
   collectionUrl?: string;
   hideMoreLink?: boolean;
   hiddenBookIds?: string[];
-  updateBook: (url: string) => Promise<BookData>;
-  fulfillBook: (url: string) => Promise<Blob>;
-  indirectFulfillBook: (url: string, type: string) => Promise<string>;
   isSignedIn?: boolean;
+  updateBook: (url: string) => Promise<BookData>;
   epubReaderUrlTemplate?: (epubUrl: string) => string;
 }
 
@@ -67,8 +67,6 @@ export default class Lane extends React.Component<LaneProps, LaneState> {
                   book={book}
                   collectionUrl={this.props.collectionUrl}
                   updateBook={this.props.updateBook}
-                  fulfillBook={this.props.fulfillBook}
-                  indirectFulfillBook={this.props.indirectFulfillBook}
                   isSignedIn={this.props.isSignedIn}
                   epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
                 />

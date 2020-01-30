@@ -56,8 +56,6 @@ describe("Book", () => {
       <Book
         book={book}
         updateBook={updateBook}
-        fulfillBook={fulfillBook}
-        indirectFulfillBook={indirectFulfillBook}
       />
     );
 
@@ -75,8 +73,6 @@ describe("Book", () => {
       <Book
         book={book}
         updateBook={updateBook}
-        fulfillBook={fulfillBook}
-        indirectFulfillBook={indirectFulfillBook}
       />
     );
 
@@ -90,8 +86,6 @@ describe("Book", () => {
         <Book
           book={book}
           updateBook={updateBook}
-          fulfillBook={fulfillBook}
-          indirectFulfillBook={indirectFulfillBook}
         />
       );
 
@@ -118,8 +112,6 @@ describe("Book", () => {
         <Book
           book={book}
           updateBook={updateBook}
-          fulfillBook={fulfillBook}
-          indirectFulfillBook={indirectFulfillBook}
         />
       );
 
@@ -154,8 +146,6 @@ describe("Book", () => {
         <Book
           book={book}
           updateBook={updateBook}
-          fulfillBook={fulfillBook}
-          indirectFulfillBook={indirectFulfillBook}
         />
       );
 
@@ -180,8 +170,6 @@ describe("Book", () => {
         <Book
           book={bookCopy}
           updateBook={updateBook}
-          fulfillBook={fulfillBook}
-          indirectFulfillBook={indirectFulfillBook}
         />
       );
 
@@ -199,8 +187,6 @@ describe("Book", () => {
         <Book
           book={book}
           updateBook={updateBook}
-          fulfillBook={fulfillBook}
-          indirectFulfillBook={indirectFulfillBook}
         />
       );
 
@@ -224,8 +210,6 @@ describe("Book", () => {
         <Book
           book={book}
           updateBook={updateBook}
-          fulfillBook={fulfillBook}
-          indirectFulfillBook={indirectFulfillBook}
           epubReaderUrlTemplate={epubReaderUrlTemplate}
         />
       );
@@ -249,8 +233,6 @@ describe("Book", () => {
         <Book
           book={bookCopy}
           updateBook={updateBook}
-          fulfillBook={fulfillBook}
-          indirectFulfillBook={indirectFulfillBook}
         />
       );
 
@@ -278,8 +260,6 @@ describe("Book", () => {
         <Book
           book={bookCopy}
           updateBook={stub()}
-          fulfillBook={stub()}
-          indirectFulfillBook={stub()}
         />
       );
 
@@ -303,8 +283,6 @@ describe("Book", () => {
         <Book
           book={bookCopy}
           updateBook={stub()}
-          fulfillBook={stub()}
-          indirectFulfillBook={stub()}
         />
       );
 
@@ -323,8 +301,6 @@ describe("Book", () => {
         <Book
           book={book}
           updateBook={updateBook}
-          fulfillBook={stub()}
-          indirectFulfillBook={stub()}
         />,
         {
           context,
@@ -375,8 +351,6 @@ describe("Book", () => {
         <Book
           book={bookCopy}
           updateBook={updateBook}
-          fulfillBook={stub()}
-          indirectFulfillBook={stub()}
         />
       );
 
@@ -409,8 +383,6 @@ describe("Book", () => {
         <Book
           book={bookCopy}
           updateBook={stub()}
-          fulfillBook={fulfillBook}
-          indirectFulfillBook={indirectFulfillBook}
           isSignedIn={false}
         />
       );
@@ -436,8 +408,6 @@ describe("Book", () => {
         <Book
           book={bookCopy}
           updateBook={stub()}
-          fulfillBook={stub()}
-          indirectFulfillBook={stub()}
         />
       );
       let button = wrapper.find(BorrowButton);
@@ -454,8 +424,6 @@ describe("Book", () => {
         <Book
           book={bookCopy}
           updateBook={stub()}
-          fulfillBook={stub()}
-          indirectFulfillBook={stub()}
         />
       );
       let button = wrapper.find("button");
@@ -472,8 +440,6 @@ describe("Book", () => {
         <Book
           book={bookCopy}
           updateBook={stub()}
-          fulfillBook={stub()}
-          indirectFulfillBook={stub()}
         />
       );
       let button = wrapper.find(BorrowButton);

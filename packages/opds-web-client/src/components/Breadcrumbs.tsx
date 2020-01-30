@@ -11,36 +11,37 @@ export interface ComputeBreadcrumbs {
   (collection: CollectionData, history: LinkData[]): LinkData[];
 }
 
-/** Shows a list of breadcrumbs links above a collection. */
-export default class Breadcrumbs extends React.Component<BreadcrumbsProps, {}> {
-  public static defaultProps: Partial<BreadcrumbsProps> = {
-    currentLink: false
-  };
-  render(): JSX.Element {
-    return (
-      <nav aria-label="breadcrumbs" role="navigation">
-        <ol className="breadcrumbs">
-          {this.props.links &&
-            this.props.links.map((link, i) => (
-              <li key={link.url} className="breadcrumb">
-                {i === this.props.links.length - 1 &&
-                !this.props.currentLink ? (
-                  <span>{link.text}</span>
-                ) : (
-                  <CatalogLink collectionUrl={link.url} bookUrl={null}>
-                    {link.text}
-                  </CatalogLink>
-                )}
-              </li>
-            ))}
-        </ol>
-      </nav>
-    );
-  }
-}
+/**
+ * Shows a list of breadcrumbs links above a collection.
+ **/
+const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ links, currentLink }) => (
+  <nav aria-label="breadcrumbs" role="navigation">
+    <ol className="breadcrumbs">
+      {links &&
+        links.map((link, i) => (
+          <li key={link.url} className="breadcrumb">
+            {i === links.length - 1 && !currentLink ? (
+              <span>{link.text}</span>
+            ) : (
+              <CatalogLink collectionUrl={link.url} bookUrl={null}>
+                {link.text}
+              </CatalogLink>
+            )}
+          </li>
+        ))}
+    </ol>
+  </nav>
+);
+Breadcrumbs.defaultProps = {
+  currentLink: false
+};
 
-/** Computes breadcrumbs based on the browser history, with the current collection as the
-    final element. */
+export default Breadcrumbs;
+
+/**
+ * Computes breadcrumbs based on the browser history, with the current
+ * collection as the final element.
+ **/
 export function defaultComputeBreadcrumbs(
   collection: CollectionData,
   history: LinkData[]
@@ -57,9 +58,12 @@ export function defaultComputeBreadcrumbs(
   return links;
 }
 
-/** Computes breadcrumbs assuming that the OPDS feed is hierarchical - uses the catalog root
-    link, the parent of the current collection if it's not the root, and the current collection.
-    The OPDS spec doesn't require a hierarchy, so this may not make sense for some feeds. */
+/**
+ * Computes breadcrumbs assuming that the OPDS feed is hierarchical - uses
+ * the catalog root link, the parent of the current collection if it's not
+ * the root, and the current collection. The OPDS spec doesn't require a
+ * hierarchy, so this may not make sense for some feeds.
+ * */
 export function hierarchyComputeBreadcrumbs(
   collection: CollectionData,
   history: LinkData[],

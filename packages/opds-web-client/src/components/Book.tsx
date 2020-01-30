@@ -11,8 +11,6 @@ export interface BookProps {
   book: BookData;
   collectionUrl?: string;
   updateBook: (url: string) => Promise<BookData>;
-  fulfillBook: (url: string) => Promise<Blob>;
-  indirectFulfillBook: (url: string, type: string) => Promise<string>;
   isSignedIn?: boolean;
   epubReaderUrlTemplate?: (epubUrl: string) => string;
 }
@@ -202,8 +200,6 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
           return (
             <DownloadButton
               key={`${link.url}-${index}`}
-              fulfill={this.props.fulfillBook}
-              indirectFulfill={this.props.indirectFulfillBook}
               url={link.url}
               mimeType={link.type}
               title={this.props.book.title}
@@ -228,8 +224,6 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
           return (
             <DownloadButton
               key={`${link.url}-${index}`}
-              fulfill={this.props.fulfillBook}
-              indirectFulfill={this.props.indirectFulfillBook}
               url={link.url}
               mimeType={link.type}
               title={this.props.book.title}

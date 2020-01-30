@@ -46,8 +46,6 @@ describe("BookDetails", () => {
       <BookDetails
         book={book}
         updateBook={stub()}
-        fulfillBook={stub()}
-        indirectFulfillBook={stub()}
         epubReaderUrlTemplate={stub().returns("test reader url")}
       />
     );
@@ -106,8 +104,6 @@ describe("BookDetails", () => {
       <BookDetails
         book={bookCopy}
         updateBook={stub()}
-        fulfillBook={stub()}
-        indirectFulfillBook={stub()}
       />
     );
 
@@ -131,8 +127,6 @@ describe("BookDetails", () => {
       <BookDetails
         book={bookCopy}
         updateBook={stub()}
-        fulfillBook={stub()}
-        indirectFulfillBook={stub()}
       />
     );
 
@@ -188,8 +182,6 @@ describe("BookDetails", () => {
       <BookDetails
         book={bookCopy}
         updateBook={updateBook}
-        fulfillBook={stub()}
-        indirectFulfillBook={stub()}
       />
     );
 
@@ -222,8 +214,6 @@ describe("BookDetails", () => {
       <BookDetails
         book={bookCopy}
         updateBook={stub()}
-        fulfillBook={fulfillBook}
-        indirectFulfillBook={indirectFulfillBook}
         isSignedIn={false}
       />
     );
@@ -245,8 +235,6 @@ describe("BookDetails", () => {
       <BookDetails
         book={bookCopy}
         updateBook={stub()}
-        fulfillBook={stub()}
-        indirectFulfillBook={stub()}
       />
     );
     let button = wrapper.find("button");
@@ -269,8 +257,6 @@ describe("BookDetails", () => {
       <BookDetails
         book={bookCopy}
         updateBook={stub()}
-        fulfillBook={stub()}
-        indirectFulfillBook={stub()}
       />
     );
     let circulationInfo = wrapper.find(".circulation-info");
@@ -293,8 +279,6 @@ describe("BookDetails", () => {
       <BookDetails
         book={bookCopy}
         updateBook={stub()}
-        fulfillBook={stub()}
-        indirectFulfillBook={stub()}
       />
     );
     let circulationInfo = wrapper.find(".circulation-info");
@@ -320,8 +304,6 @@ describe("BookDetails", () => {
       <BookDetails
         book={bookCopy}
         updateBook={stub()}
-        fulfillBook={stub()}
-        indirectFulfillBook={stub()}
       />
     );
     let circulationInfo = wrapper.find(".circulation-info");
@@ -345,8 +327,6 @@ describe("BookDetails", () => {
       <BookDetails
         book={bookCopy}
         updateBook={stub()}
-        fulfillBook={stub()}
-        indirectFulfillBook={stub()}
       />
     );
     let circulationInfo = wrapper.find(".circulation-info");

@@ -29,8 +29,6 @@ describe("DownloadButton", () => {
         style={style}
         url="download url"
         mimeType="application/epub+zip"
-        fulfill={fulfill}
-        indirectFulfill={indirectFulfill}
         title="title"
       />
     );
