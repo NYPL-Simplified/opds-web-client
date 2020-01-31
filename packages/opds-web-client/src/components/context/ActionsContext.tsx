@@ -4,7 +4,7 @@ import useThunkDispatch from "../../hooks/useThunkDispatch";
 import DataFetcher from "../../DataFetcher";
 import { adapter } from "../../OPDSDataAdapter";
 
-const ActionsContext = React.createContext<ActionsCreator | undefined>(
+export const ActionsContext = React.createContext<ActionsCreator | undefined>(
   undefined
 );
 

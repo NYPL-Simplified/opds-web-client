@@ -100,12 +100,7 @@ describe("BookDetails", () => {
     let bookCopy = Object.assign({}, book, {
       publisher: null
     });
-    wrapper = shallow(
-      <BookDetails
-        book={bookCopy}
-        updateBook={stub()}
-      />
-    );
+    wrapper = shallow(<BookDetails book={bookCopy} updateBook={stub()} />);
 
     let publisher = wrapper.find(".publisher");
     expect(publisher.length).to.equal(0);
@@ -123,12 +118,7 @@ describe("BookDetails", () => {
 
   it("doesn't show categories when there aren't any", () => {
     let bookCopy = Object.assign({}, book, { categories: [] });
-    wrapper = shallow(
-      <BookDetails
-        book={bookCopy}
-        updateBook={stub()}
-      />
-    );
+    wrapper = shallow(<BookDetails book={bookCopy} updateBook={stub()} />);
 
     let categories = wrapper.find(".categories");
     expect(categories.length).to.equal(0);
@@ -178,12 +168,7 @@ describe("BookDetails", () => {
       borrowUrl: "borrow url"
     });
     let updateBook = stub();
-    wrapper = shallow(
-      <BookDetails
-        book={bookCopy}
-        updateBook={updateBook}
-      />
-    );
+    wrapper = shallow(<BookDetails book={bookCopy} updateBook={updateBook} />);
 
     let button = wrapper.find(BorrowButton);
     expect(button.children().text()).to.equal("Borrow");
@@ -208,18 +193,10 @@ describe("BookDetails", () => {
       openAccessLinks: [],
       fulfillmentLinks: [link]
     });
-    let fulfillBook = stub();
-    let indirectFulfillBook = stub();
     wrapper = shallow(
-      <BookDetails
-        book={bookCopy}
-        updateBook={stub()}
-        isSignedIn={false}
-      />
+      <BookDetails book={bookCopy} updateBook={stub()} isSignedIn={false} />
     );
     let button = wrapper.find(DownloadButton);
-    expect(button.props().fulfill).to.equal(fulfillBook);
-    expect(button.props().indirectFulfill).to.equal(indirectFulfillBook);
     expect(button.props().url).to.equal(link.url);
     expect(button.props().title).to.equal(bookCopy.title);
     expect(button.props().mimeType).to.equal(link.type);
@@ -231,12 +208,7 @@ describe("BookDetails", () => {
       openAccessLinks: [],
       availability: { status: "reserved" }
     });
-    wrapper = shallow(
-      <BookDetails
-        book={bookCopy}
-        updateBook={stub()}
-      />
-    );
+    wrapper = shallow(<BookDetails book={bookCopy} updateBook={stub()} />);
     let button = wrapper.find("button");
     expect(button.text()).to.equal("Reserved");
     expect(button.props().className).to.contain("disabled");
@@ -253,12 +225,7 @@ describe("BookDetails", () => {
         total: 6
       }
     });
-    wrapper = shallow(
-      <BookDetails
-        book={bookCopy}
-        updateBook={stub()}
-      />
-    );
+    wrapper = shallow(<BookDetails book={bookCopy} updateBook={stub()} />);
     let circulationInfo = wrapper.find(".circulation-info");
     expect(circulationInfo.text()).to.contain("0 of 12 copies available");
     expect(circulationInfo.text()).to.contain("6 patrons in hold queue");
@@ -275,12 +242,7 @@ describe("BookDetails", () => {
         total: 6
       }
     });
-    wrapper = shallow(
-      <BookDetails
-        book={bookCopy}
-        updateBook={stub()}
-      />
-    );
+    wrapper = shallow(<BookDetails book={bookCopy} updateBook={stub()} />);
     let circulationInfo = wrapper.find(".circulation-info");
     expect(circulationInfo.text()).to.contain("5 of 12 copies available");
     expect(circulationInfo.text()).not.to.contain("6");
@@ -300,12 +262,7 @@ describe("BookDetails", () => {
       fulfillmentLinks: ["http://fulfill"],
       availability: { status: "available", until: tomorrow }
     });
-    wrapper = shallow(
-      <BookDetails
-        book={bookCopy}
-        updateBook={stub()}
-      />
-    );
+    wrapper = shallow(<BookDetails book={bookCopy} updateBook={stub()} />);
     let circulationInfo = wrapper.find(".circulation-info");
     expect(circulationInfo.text()).to.contain("on loan for a day");
   });
@@ -323,12 +280,7 @@ describe("BookDetails", () => {
         position: 3
       }
     });
-    wrapper = shallow(
-      <BookDetails
-        book={bookCopy}
-        updateBook={stub()}
-      />
-    );
+    wrapper = shallow(<BookDetails book={bookCopy} updateBook={stub()} />);
     let circulationInfo = wrapper.find(".circulation-info");
     expect(circulationInfo.text()).to.contain("0 of 12 copies available");
     expect(circulationInfo.text()).to.contain("6 patrons in hold queue");
