@@ -29,7 +29,6 @@ const DownloadButton: React.FC<DownloadButtonProps> = props => {
       action = actions.indirectFulfillBook(url, indirectType);
       dispatchFn = dispatch(action).then(url => {
         window.open(url, "_blank");
-        console.log("called window", window.open);
       });
     } else {
       // TODO: use mimeType variable once we fix the link type in our
