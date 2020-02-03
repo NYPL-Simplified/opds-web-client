@@ -5,7 +5,7 @@ import * as download from "../download";
 const downloadMock = require("../../__mocks__/downloadjs");
 
 import * as React from "react";
-import { mount, shallow } from "enzyme";
+import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { generateFilename, typeMap } from "../../utils/file";
 
@@ -19,14 +19,17 @@ describe("DownloadButton", () => {
   let wrapper;
   let fulfill;
   let indirectFulfill;
-  let acFStub;
-  let acIFStub;
+  let actionFulfillStub;
+  let acctionIndirectFulfillStub;
   let style;
   let downloadStub;
   let store = buildStore();
   let fetcher = new DataFetcher();
   let actions = new ActionCreator(fetcher);
-  let wrapperFn = component => (
+  /**
+   * Function to render a component wrapped in the Redux and Actions providers.
+   **/
+  const providerWrapper: React.FC<React.ReactNode> = component => (
     <Provider store={store}>
       <ActionsContext.Provider value={actions}>
         {component}
@@ -45,10 +48,12 @@ describe("DownloadButton", () => {
     indirectFulfill = stub().returns(
       async () => new Promise((resolve, reject) => resolve("web reader url"))
     );
-    acFStub = stub(actions, "fulfillBook").callsFake(fulfill);
-    acIFStub = stub(actions, "indirectFulfillBook").callsFake(indirectFulfill);
+    actionFulfillStub = stub(actions, "fulfillBook").callsFake(fulfill);
+    acctionIndirectFulfillStub = stub(actions, "indirectFulfillBook").callsFake(
+      indirectFulfill
+    );
     style = { border: "100px solid black" };
-    let downloadButton = wrapperFn(
+    let downloadButton = providerWrapper(
       <DownloadButton
         style={style}
         url="download url"
@@ -60,8 +65,8 @@ describe("DownloadButton", () => {
   });
 
   afterEach(() => {
-    acFStub.restore();
-    acIFStub.restore();
+    actionFulfillStub.restore();
+    acctionIndirectFulfillStub.restore();
     downloadStub.restore();
   });
 
@@ -72,7 +77,7 @@ describe("DownloadButton", () => {
   });
 
   it("shows plain link if specified", () => {
-    let downloadButton = wrapperFn(
+    let downloadButton = providerWrapper(
       <DownloadButton
         style={style}
         url="download url"
@@ -108,7 +113,7 @@ describe("DownloadButton", () => {
   it("fulfills OPDS-based indirect links", async () => {
     let streamingType =
       "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media";
-    let downloadButton = wrapperFn(
+    let downloadButton = providerWrapper(
       <DownloadButton
         style={style}
         url="download url"
@@ -126,7 +131,7 @@ describe("DownloadButton", () => {
   });
 
   it("fulfills ACSM-based indirect links", async () => {
-    let downloadButton = wrapperFn(
+    let downloadButton = providerWrapper(
       <DownloadButton
         style={style}
         url="download url"
@@ -144,7 +149,7 @@ describe("DownloadButton", () => {
 
   it("opens indirect fulfillment link in new tab", async () => {
     let windowStub = stub(window, "open");
-    let downloadButton = wrapperFn(
+    let downloadButton = providerWrapper(
       <DownloadButton
         style={style}
         url="web reader url"

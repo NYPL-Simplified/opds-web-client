@@ -14,7 +14,10 @@ export interface ComputeBreadcrumbs {
 /**
  * Shows a list of breadcrumbs links above a collection.
  **/
-const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ links, currentLink }) => (
+const Breadcrumbs: React.FC<BreadcrumbsProps> = ({
+  links,
+  currentLink = false
+}) => (
   <nav aria-label="breadcrumbs" role="navigation">
     <ol className="breadcrumbs">
       {links &&
@@ -32,9 +35,6 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ links, currentLink }) => (
     </ol>
   </nav>
 );
-Breadcrumbs.defaultProps = {
-  currentLink: false
-};
 
 export default Breadcrumbs;
 

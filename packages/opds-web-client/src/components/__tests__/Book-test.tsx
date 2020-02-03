@@ -15,7 +15,6 @@ import BorrowButton from "../BorrowButton";
 import DownloadButton from "../DownloadButton";
 import { mockRouterContext } from "../../__mocks__/routing";
 import { ActionsProvider } from "../context/ActionsContext";
-import ActionCreator from "../../actions";
 import buildStore from "../../store";
 
 let book: BookData = {
@@ -44,14 +43,10 @@ let book: BookData = {
 
 describe("Book", () => {
   let updateBook;
-  let fulfillBook;
-  let indirectFulfillBook;
   let epubReaderUrlTemplate;
 
   beforeEach(() => {
     updateBook = stub();
-    fulfillBook = stub();
-    indirectFulfillBook = stub();
     epubReaderUrlTemplate = stub().returns("test reader url");
   });
 

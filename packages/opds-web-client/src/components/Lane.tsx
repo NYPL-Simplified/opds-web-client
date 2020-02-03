@@ -3,8 +3,6 @@ import Book from "./Book";
 import CatalogLink from "./CatalogLink";
 import LaneMoreLink from "./LaneMoreLink";
 import { LaneData, BookData } from "../interfaces";
-import useTypedSelector from "../hooks/useTypedSelector";
-import { useActions } from "./context/ActionsContext";
 
 export interface LaneProps {
   lane: LaneData;
