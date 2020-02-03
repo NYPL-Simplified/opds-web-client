@@ -4,7 +4,7 @@ import ActionCreator from "../actions";
 
 export interface CollectionState {
   url: string;
-  data: CollectionData;
+  data?: CollectionData;
   isFetching: boolean;
   isFetchingPage: boolean;
   error: FetchErrorData;
