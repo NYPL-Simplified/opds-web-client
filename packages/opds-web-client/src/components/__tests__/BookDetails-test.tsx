@@ -10,8 +10,9 @@ import BookDetails from "../BookDetails";
 import BookCover from "../BookCover";
 import BorrowButton from "../BorrowButton";
 import DownloadButton from "../DownloadButton";
+import { BookData } from "../../interfaces";
 
-let book = {
+let book: BookData = {
   id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
   url: "http://circulation.librarysimplified.org/works/3M/crrmnr9",
   title: "The Mayan Secrets",

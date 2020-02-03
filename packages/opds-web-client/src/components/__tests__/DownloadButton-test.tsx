@@ -7,6 +7,7 @@ const downloadMock = require("../../__mocks__/downloadjs");
 import * as React from "react";
 import { mount, shallow } from "enzyme";
 import { Provider } from "react-redux";
+import { generateFilename, typeMap } from "../../utils/file";
 
 import DownloadButton from "../DownloadButton";
 import buildStore from "../../store";
@@ -33,6 +34,9 @@ describe("DownloadButton", () => {
     </Provider>
   );
 
+  const mimeType = "application/epub+zip";
+  const title = "title";
+
   beforeEach(() => {
     downloadStub = stub(download, "default").callsFake(downloadMock);
     fulfill = stub().returns(
@@ -48,8 +52,8 @@ describe("DownloadButton", () => {
       <DownloadButton
         style={style}
         url="download url"
-        mimeType="application/epub+zip"
-        title="title"
+        mimeType={mimeType}
+        title={title}
       />
     );
     wrapper = mount(downloadButton);
@@ -95,8 +99,10 @@ describe("DownloadButton", () => {
     let button = wrapper.find("button");
     await button.props().onClick();
     expect(downloadMock.getBlob()).to.equal("blob");
-    expect(downloadMock.getFilename()).to.equal("title.epub");
-    expect(downloadMock.getMimeType()).to.equal("application/epub+zip");
+    expect(downloadMock.getFilename()).to.equal(
+      generateFilename(title, typeMap[mimeType].extension)
+    );
+    expect(downloadMock.getMimeType()).to.equal(mimeType);
   });
 
   it("fulfills OPDS-based indirect links", async () => {

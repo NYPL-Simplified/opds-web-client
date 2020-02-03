@@ -1,6 +1,7 @@
 import * as React from "react";
 import download from "./download";
 import { useActions } from "./context/ActionsContext";
+import { typeMap, generateFilename } from "../utils/file";
 
 export interface DownloadButtonProps extends React.HTMLProps<{}> {
   url: string;
@@ -35,7 +36,7 @@ const DownloadButton: React.FC<DownloadButtonProps> = props => {
       // OPDS entries
       action = actions.fulfillBook(url);
       dispatchFn = dispatch(action).then(blob => {
-        download(blob, generateFilename(title), mimeTypeFn());
+        download(blob, generateFilename(title, fileExtension()), mimeTypeFn());
       });
     }
     return dispatchFn;
@@ -43,22 +44,15 @@ const DownloadButton: React.FC<DownloadButtonProps> = props => {
   const isIndirect = () =>
     indirectType &&
     mimeType === "application/atom+xml;type=entry;profile=opds-catalog";
-  const generateFilename = (str: string): string =>
-    str
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "") + fileExtension();
   const mimeTypeFn = () =>
     mimeType === "vnd.adobe/adept+xml"
       ? "application/vnd.adobe.adept+xml"
       : mimeType;
   const fileExtension = () =>
-    ({
-      "application/epub+zip": ".epub",
-      "application/pdf": ".pdf",
-      "application/vnd.adobe.adept+xml": ".acsm",
-      "application/x-mobipocket-ebook": ".mobi"
-    }[mimeTypeFn()] || "");
+    // this ?? syntax is similar to x || y, except that it will only
+    // fall back if the predicate is undefined or null, not if it
+    // is falsy (false, 0, etc).
+    typeMap[mimeTypeFn()]?.extension ?? "";
   const downloadLabel = () => {
     if (
       indirectType ===
@@ -66,9 +60,7 @@ const DownloadButton: React.FC<DownloadButtonProps> = props => {
     ) {
       return "Read Online";
     }
-    let type = fileExtension()
-      .replace(".", "")
-      .toUpperCase();
+    let type = typeMap[mimeTypeFn()]?.name;
     return `Download${type ? " " + type : ""}`;
   };
   let downloadProps = {

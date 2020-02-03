@@ -18,8 +18,8 @@ export interface State {
     package, but it's available for other apps if they need to build the state
     for server-side rendering. */
 export default function buildInitialState(
-  collectionUrl: string,
-  bookUrl: string
+  collectionUrl?: string,
+  bookUrl?: string
 ): Promise<State> {
   const store = buildStore(undefined, []);
   const fetchCollectionAndBook = createFetchCollectionAndBook(store.dispatch);

@@ -33,3 +33,11 @@ export default class PathForProvider extends React.Component<PathForProps> {
     );
   }
 }
+
+export function usePathFor() {
+  const context = React.useContext(PathForContext);
+  if (typeof context === "undefined") {
+    throw new Error("usePathFor must be used within a PathForProvider");
+  }
+  return context;
+}
