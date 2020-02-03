@@ -1,5 +1,13 @@
 ## Changelog
 
+### v0.3.3
+
+- created a hook called `usePathFor` to consume `PathFor` context
+- extracted `DownloadButton` logic for use in circulation-patron-web
+- made many properties optional because they were already effectively optional, only this
+  repo didn't have `strictNullChecks` turned on, while circulation-patron-web now does
+- make `OpenAccessLinksType` string literal type for better checking and autofill
+
 ### v0.3.2
 
 - Pass the redux store down the tree via context

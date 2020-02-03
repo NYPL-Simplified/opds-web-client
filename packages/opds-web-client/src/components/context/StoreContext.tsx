@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Provider } from "react-redux";
+import { Provider, ReactReduxContext } from "react-redux";
 import * as Redux from "redux";
 import { State } from "../../state";
 import AuthPlugin from "../../AuthPlugin";
@@ -7,10 +7,10 @@ import buildStore from "../../store";
 import { PathForContext } from "./PathForContext";
 import BasicAuthPlugin from "../../BasicAuthPlugin";
 
-type OPDSStoreProps = {
-  children: React.ReactElement;
+export type OPDSStoreProps = {
   initialState?: State;
   authPlugins?: AuthPlugin[];
+  children: React.ReactNode;
 };
 /**
  * Builds the redux store and makes it available in context via new API.
@@ -36,3 +36,5 @@ export default class OPDSStore extends React.Component<OPDSStoreProps> {
     return <Provider store={this.store}>{this.props.children}</Provider>;
   }
 }
+
+export const ReduxContext = ReactReduxContext;

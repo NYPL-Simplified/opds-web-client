@@ -4,7 +4,7 @@ import ActionCreator from "../actions";
 
 export interface CollectionState {
   url: string;
-  data: CollectionData;
+  data?: CollectionData;
   isFetching: boolean;
   isFetchingPage: boolean;
   error: FetchErrorData;
@@ -12,7 +12,7 @@ export interface CollectionState {
   pageUrl?: string;
 }
 
-const initialState: CollectionState = {
+export const initialState: CollectionState = {
   url: null,
   data: null,
   isFetching: false,

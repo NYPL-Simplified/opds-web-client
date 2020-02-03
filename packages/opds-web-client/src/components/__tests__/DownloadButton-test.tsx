@@ -6,6 +6,7 @@ const downloadMock = require("../../__mocks__/downloadjs");
 
 import * as React from "react";
 import { shallow } from "enzyme";
+import { generateFilename, typeMap } from "../../utils/file";
 
 import DownloadButton from "../DownloadButton";
 
@@ -15,6 +16,9 @@ describe("DownloadButton", () => {
   let indirectFulfill;
   let style;
   let downloadStub;
+
+  const mimeType = "application/epub+zip";
+  const title = "title";
 
   beforeEach(() => {
     downloadStub = stub(download, "default").callsFake(downloadMock);
@@ -28,10 +32,10 @@ describe("DownloadButton", () => {
       <DownloadButton
         style={style}
         url="download url"
-        mimeType="application/epub+zip"
+        mimeType={mimeType}
         fulfill={fulfill}
         indirectFulfill={indirectFulfill}
-        title="title"
+        title={title}
       />
     );
   });
@@ -69,7 +73,7 @@ describe("DownloadButton", () => {
       .then(() => {
         expect(downloadMock.getBlob()).to.equal("blob");
         expect(downloadMock.getFilename()).to.equal(
-          wrapper.instance().generateFilename("title")
+          generateFilename(title, typeMap[mimeType].extension)
         );
         expect(downloadMock.getMimeType()).to.equal(
           wrapper.instance().mimeType()
