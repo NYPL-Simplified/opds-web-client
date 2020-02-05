@@ -13,7 +13,7 @@ export interface BookData {
   series?: {
     name: string;
     position?: number;
-  };
+  } | null;
   authors?: string[];
   contributors?: string[];
   subtitle?: string;
@@ -96,7 +96,7 @@ export interface SearchData {
 export interface LinkData {
   text: string;
   url: string;
-  id?: string;
+  id?: string | null;
   type?: string;
 }
 
