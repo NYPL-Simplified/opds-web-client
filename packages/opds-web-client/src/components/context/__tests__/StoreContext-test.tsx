@@ -35,8 +35,8 @@ const PathForContext = ({ children }) => {
 
 describe("StoreContext", () => {
   const props = {
-    initialState: null,
-    authPlugins: null
+    initialState: undefined,
+    authPlugins: undefined
   };
 
   class Child extends React.Component {

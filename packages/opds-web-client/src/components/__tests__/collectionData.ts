@@ -1,3 +1,4 @@
+import { BookData } from "./../../interfaces";
 import { CollectionData } from "../../interfaces";
 
 let groupedCollectionData: CollectionData = {
@@ -78,12 +79,11 @@ let ungroupedCollectionData: CollectionData = Object.assign(
   {},
   groupedCollectionData
 );
-ungroupedCollectionData.books = ungroupedCollectionData.lanes.reduce(
-  (results, lane) => {
-    return results.concat(lane.books);
-  },
-  []
-);
+ungroupedCollectionData.books = ungroupedCollectionData.lanes.reduce<
+  BookData[]
+>((results, lane) => {
+  return results.concat(lane.books);
+}, []);
 ungroupedCollectionData.lanes = [];
 ungroupedCollectionData.url = "http://circulation.librarysimplified.org/lane/";
 

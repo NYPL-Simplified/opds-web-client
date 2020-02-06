@@ -9,8 +9,8 @@ import {
 export interface AuthFormProps<T extends AuthMethod> {
   hide?: () => void;
   saveCredentials?: (credentials: AuthCredentials) => void;
-  callback?: AuthCallback;
-  cancel?: () => void;
+  callback?: AuthCallback | null;
+  cancel?: (() => void) | null;
   error?: string | null;
   provider: AuthProvider<T>;
 }
@@ -23,12 +23,12 @@ export interface AuthButtonProps<T extends AuthMethod> {
 export interface AuthProviderSelectionFormProps {
   hide?: () => void;
   saveCredentials?: (credentials: AuthCredentials) => void;
-  callback?: AuthCallback;
-  cancel: () => void;
-  title?: string;
+  callback?: AuthCallback | null;
+  cancel: (() => void) | null;
+  title?: string | null;
   error?: string | null;
   attemptedProvider?: string | null;
-  providers?: AuthProvider<AuthMethod>[];
+  providers?: AuthProvider<AuthMethod>[] | null;
 }
 
 export interface AuthProviderSelectionFormState {
@@ -95,7 +95,10 @@ export default class AuthProviderSelectionForm extends React.Component<
                     </li>
                   ))}
                 </ul>
-                <button className="btn btn-default" onClick={this.props.cancel}>
+                <button
+                  className="btn btn-default"
+                  onClick={this.props.cancel ?? undefined}
+                >
                   Cancel
                 </button>
               </div>
