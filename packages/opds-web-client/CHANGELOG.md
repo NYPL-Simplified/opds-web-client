@@ -1,5 +1,10 @@
 ## Changelog
 
+### v0.3.4
+
+- fixed some additional incorrect typings that aren't being caught because strictNullChecks is not
+  enabled.
+
 ### v0.3.3
 
 - created a hook called `usePathFor` to consume `PathFor` context
