@@ -2,10 +2,10 @@ import { BookData, FetchErrorData } from "../interfaces";
 import ActionCreator from "../actions";
 
 export interface BookState {
-  url: string;
-  data: BookData;
+  url: string | null;
+  data: BookData | null;
   isFetching: boolean;
-  error: FetchErrorData;
+  error: FetchErrorData | null;
 }
 
 const initialState: BookState = {

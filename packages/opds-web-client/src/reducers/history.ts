@@ -15,38 +15,27 @@ function newCollectionIsOldCollection(
 
 function newCollectionIsOldRoot(
   newCollection: CollectionData,
-  oldCollection: CollectionData
+  oldCollection: CollectionData | undefined
 ): boolean {
-  return (
-    oldCollection &&
-    oldCollection.catalogRootLink &&
-    oldCollection.catalogRootLink.url &&
-    oldCollection.catalogRootLink.url === newCollection.url
-  );
+  return oldCollection?.catalogRootLink?.url === newCollection.url;
 }
 
 function newCollectionIsNewRoot(newCollection: CollectionData): boolean {
-  return (
-    newCollection.catalogRootLink &&
-    newCollection.catalogRootLink.url === newCollection.url
-  );
+  return newCollection?.catalogRootLink?.url === newCollection.url;
 }
 
 function newRootIsNotOldRoot(
   newCollection: CollectionData,
-  oldCollection: CollectionData
+  oldCollection: CollectionData | undefined
 ): boolean {
   return (
-    oldCollection &&
-    newCollection.catalogRootLink &&
-    oldCollection.catalogRootLink &&
-    newCollection.catalogRootLink.url !== oldCollection.catalogRootLink.url
+    newCollection?.catalogRootLink?.url !== oldCollection?.catalogRootLink?.url
   );
 }
 
 export function shouldClear(
   newCollection: CollectionData,
-  oldCollection: CollectionData
+  oldCollection: CollectionData | undefined
 ): boolean {
   return (
     newCollectionIsOldRoot(newCollection, oldCollection) ||
@@ -91,6 +80,7 @@ export function shouldAddRoot(newCollection: CollectionData) {
 }
 
 export function onlyRoot(newCollection: CollectionData) {
+  if (!newCollection.catalogRootLink) return [];
   return addLink([], newCollection.catalogRootLink);
 }
 

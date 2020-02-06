@@ -9,7 +9,7 @@ import { AuthCallback, AuthProvider, AuthMethod, PathFor } from "./interfaces";
     See Redux Middleware docs:
     http://redux.js.org/docs/advanced/Middleware.html */
 
-export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
+export default (authPlugins: AuthPlugin[], pathFor?: PathFor) => {
   return store => next => action => {
     let fetcher = new DataFetcher();
     let actions = new ActionCreator(fetcher);
@@ -84,7 +84,7 @@ export default (authPlugins: AuthPlugin[], pathFor: PathFor) => {
                   let oldBookUrl = store.getState().book.url;
                   let currentUrl = window.location.pathname;
                   let cancel;
-                  if (pathFor(oldCollectionUrl, oldBookUrl) === currentUrl) {
+                  if (pathFor?.(oldCollectionUrl, oldBookUrl) === currentUrl) {
                     cancel = () => {
                       next(actions.hideAuthForm());
                     };

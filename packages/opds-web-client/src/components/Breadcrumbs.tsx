@@ -65,7 +65,7 @@ export function hierarchyComputeBreadcrumbs(
   history: LinkData[],
   comparator?: (url1: string, url2: string) => boolean
 ): LinkData[] {
-  let links = [];
+  let links: LinkData[] = [];
 
   if (!collection) {
     return [];

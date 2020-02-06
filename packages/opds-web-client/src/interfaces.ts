@@ -8,6 +8,12 @@ export type OpenAccessLinkType =
   | "application/x-mobipocket-ebook"
   | "application/x-mobi8-ebook";
 
+export type FulfillmentLink = {
+  url: string;
+  type: string;
+  indirectType: string;
+};
+
 export interface BookData {
   id: string;
   title: string;
@@ -25,11 +31,7 @@ export interface BookData {
     type: OpenAccessLinkType;
   }[];
   borrowUrl?: string;
-  fulfillmentLinks?: {
-    url: string;
-    type: string;
-    indirectType: string;
-  }[];
+  fulfillmentLinks?: FulfillmentLink[];
   availability?: {
     status: string;
     since?: string;
@@ -78,10 +80,10 @@ export interface CollectionData {
   facetGroups?: FacetGroupData[];
   search?: SearchData;
   nextPageUrl?: string;
-  catalogRootLink?: LinkData;
+  catalogRootLink?: LinkData | null;
   parentLink?: LinkData | null;
   shelfUrl?: string;
-  links?: LinkData[];
+  links?: LinkData[] | null;
   raw?: any;
 }
 
@@ -125,11 +127,11 @@ export interface StateProps {
 }
 
 export interface PathFor {
-  (collectionUrl?: string, bookUrl?: string): string;
+  (collectionUrl?: string | null, bookUrl?: string | null): string;
 }
 
 export interface FetchErrorData {
-  status: number;
+  status: number | null;
   response: string;
   url: string;
 }

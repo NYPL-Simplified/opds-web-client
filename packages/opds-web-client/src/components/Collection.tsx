@@ -44,10 +44,10 @@ export default class Collection extends React.Component<CollectionProps, {}> {
   }
 
   render(): JSX.Element {
-    let hasFacets =
+    const hasFacets =
       this.props.collection.facetGroups &&
       this.props.collection.facetGroups.length > 0;
-    let hasViews =
+    const hasViews =
       this.props.collection.books && this.props.collection.books.length > 0;
 
     return (
@@ -55,7 +55,7 @@ export default class Collection extends React.Component<CollectionProps, {}> {
         {hasFacets && (
           <div className="facet-groups" aria-label="filters">
             <SkipNavigationLink target="#collection-main" label="filters" />
-            {this.props.collection.facetGroups.map(facetGroup => (
+            {this.props.collection.facetGroups?.map(facetGroup => (
               <FacetGroup key={facetGroup.label} facetGroup={facetGroup} />
             ))}
           </div>
@@ -210,13 +210,15 @@ export default class Collection extends React.Component<CollectionProps, {}> {
     return (
       !this.props.hidden &&
       !this.props.isFetchingPage &&
-      this.props.collection.nextPageUrl
+      !!this.props.collection.nextPageUrl
     );
   }
 
   fetch() {
-    if (this.canFetch()) {
-      this.props.fetchPage(this.props.collection.nextPageUrl);
+    // had to move this typeguard into here for typescript to
+    // believe the nextPageUrl was defined.
+    if (this.canFetch() && this.props.collection.nextPageUrl) {
+      this.props.fetchPage?.(this.props.collection.nextPageUrl);
     }
   }
 
