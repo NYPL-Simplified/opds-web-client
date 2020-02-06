@@ -13,3 +13,6 @@ packages/opds-web-client/docs
 
 # Temporary files
 *~
+
+# Local editor files
+.vscode
