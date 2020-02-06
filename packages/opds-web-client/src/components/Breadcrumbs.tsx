@@ -8,7 +8,10 @@ export interface BreadcrumbsProps extends React.Props<{}> {
 }
 
 export interface ComputeBreadcrumbs {
-  (collection: CollectionData, history: LinkData[]): LinkData[];
+  (
+    collection: CollectionData | null | undefined,
+    history: LinkData[] | null | undefined
+  ): LinkData[];
 }
 
 /** Shows a list of breadcrumbs links above a collection. */

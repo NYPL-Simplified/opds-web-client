@@ -11,7 +11,7 @@ export interface AuthFormProps<T extends AuthMethod> {
   saveCredentials?: (credentials: AuthCredentials) => void;
   callback?: AuthCallback;
   cancel?: () => void;
-  error?: string;
+  error?: string | null;
   provider: AuthProvider<T>;
 }
 
@@ -21,13 +21,13 @@ export interface AuthButtonProps<T extends AuthMethod> {
 }
 
 export interface AuthProviderSelectionFormProps {
-  hide: () => void;
-  saveCredentials: (credentials: AuthCredentials) => void;
+  hide?: () => void;
+  saveCredentials?: (credentials: AuthCredentials) => void;
   callback?: AuthCallback;
   cancel: () => void;
   title?: string;
-  error?: string;
-  attemptedProvider?: string;
+  error?: string | null;
+  attemptedProvider?: string | null;
   providers?: AuthProvider<AuthMethod>[];
 }
 
