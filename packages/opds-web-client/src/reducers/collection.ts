@@ -7,7 +7,7 @@ export interface CollectionState {
   data?: CollectionData;
   isFetching?: boolean;
   isFetchingPage: boolean;
-  error: FetchErrorData;
+  error?: FetchErrorData | null;
   history: LinkData[];
   pageUrl?: string;
 }

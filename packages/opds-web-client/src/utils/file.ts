@@ -12,6 +12,11 @@ export const typeMap: TypeMap = {
     extension: ".epub",
     name: "EPUB"
   },
+  "application/kepub+zip": {
+    // got this from here: https://wiki.mobileread.com/wiki/Kepub
+    extension: ".kepub.epub",
+    name: "KEPUB"
+  },
   "application/pdf": {
     extension: ".pdf",
     name: "PDF"

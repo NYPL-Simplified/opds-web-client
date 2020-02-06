@@ -2,6 +2,7 @@ import AuthPlugin from "./AuthPlugin";
 
 export type OpenAccessLinkType =
   | "application/epub+zip"
+  | "application/kepub+zip"
   | "application/pdf"
   | "application/vnd.adobe.adept+xml"
   | "application/x-mobipocket-ebook"
@@ -37,11 +38,11 @@ export interface BookData {
   holds?: {
     total: number;
     position?: number;
-  };
+  } | null;
   copies?: {
     total: number;
     available: number;
-  };
+  } | null;
   url?: string;
   publisher?: string;
   published?: string;
@@ -78,7 +79,7 @@ export interface CollectionData {
   search?: SearchData;
   nextPageUrl?: string;
   catalogRootLink?: LinkData;
-  parentLink?: LinkData;
+  parentLink?: LinkData | null;
   shelfUrl?: string;
   links?: LinkData[];
   raw?: any;
@@ -94,7 +95,7 @@ export interface SearchData {
 }
 
 export interface LinkData {
-  text: string;
+  text?: string;
   url: string;
   id?: string | null;
   type?: string;
