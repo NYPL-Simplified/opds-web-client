@@ -142,7 +142,7 @@ export default class DataFetcher {
     return fetch(url, options);
   }
 
-  setAuthCredentials(credentials: AuthCredentials): void {
+  setAuthCredentials(credentials?: AuthCredentials): void {
     if (credentials) {
       Cookie.set(this.authKey, JSON.stringify(credentials));
     }

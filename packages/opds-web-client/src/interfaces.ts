@@ -177,13 +177,13 @@ export interface AuthMethod {
 
 export interface AuthData {
   showForm: boolean;
-  callback: AuthCallback;
-  cancel: () => void;
-  credentials: AuthCredentials;
-  title: string;
+  callback: AuthCallback | null;
+  cancel: (() => void) | null;
+  credentials: AuthCredentials | null;
+  title: string | null;
   error: string | null;
   attemptedProvider: string | null;
-  providers: AuthProvider<AuthMethod>[];
+  providers: AuthProvider<AuthMethod>[] | null;
 }
 
 export interface BasicAuthMethod extends AuthMethod {

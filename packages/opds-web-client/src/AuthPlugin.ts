@@ -12,7 +12,7 @@ interface AuthPlugin {
   lookForCredentials: () => {
     credentials?: AuthCredentials;
     error?: string;
-  } | void;
+  } | null;
   formComponent?: new (props: AuthFormProps<AuthMethod>) => React.Component<
     AuthFormProps<AuthMethod>,
     {}

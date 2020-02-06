@@ -15,7 +15,7 @@ function newCollectionIsOldCollection(
 
 function newCollectionIsOldRoot(
   newCollection: CollectionData,
-  oldCollection: CollectionData | undefined
+  oldCollection: CollectionData | undefined | null
 ): boolean {
   return oldCollection?.catalogRootLink?.url === newCollection.url;
 }
@@ -26,7 +26,7 @@ function newCollectionIsNewRoot(newCollection: CollectionData): boolean {
 
 function newRootIsNotOldRoot(
   newCollection: CollectionData,
-  oldCollection: CollectionData | undefined
+  oldCollection: CollectionData | undefined | null
 ): boolean {
   return (
     newCollection?.catalogRootLink?.url !== oldCollection?.catalogRootLink?.url
@@ -35,7 +35,7 @@ function newRootIsNotOldRoot(
 
 export function shouldClear(
   newCollection: CollectionData,
-  oldCollection: CollectionData | undefined
+  oldCollection: CollectionData | undefined | null
 ): boolean {
   return (
     newCollectionIsOldRoot(newCollection, oldCollection) ||
