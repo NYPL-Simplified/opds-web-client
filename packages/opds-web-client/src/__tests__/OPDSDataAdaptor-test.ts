@@ -102,13 +102,13 @@ describe("OPDSDataAdapter", () => {
     let book = collection.lanes[0].books[0];
     expect(book.id).to.equal(entry.id);
     expect(book.title).to.equal(entry.title);
-    expect(book.authors.length).to.equal(2);
-    expect(book.authors[0]).to.equal(entry.authors[0].name);
-    expect(book.authors[1]).to.equal(entry.authors[1].name);
-    expect(book.contributors.length).to.equal(1);
-    expect(book.contributors[0]).to.equal(entry.contributors[0].name);
-    expect(book.series.name).to.equal(entry.series.name);
-    expect(book.series.position).to.equal(entry.series.position);
+    expect(book.authors?.length).to.equal(2);
+    expect(book.authors?.[0]).to.equal(entry.authors[0].name);
+    expect(book.authors?.[1]).to.equal(entry.authors[1].name);
+    expect(book.contributors?.length).to.equal(1);
+    expect(book.contributors?.[0]).to.equal(entry.contributors[0].name);
+    expect(book.series?.name).to.equal(entry.series.name);
+    expect(book.series?.position).to.equal(entry.series.position);
     expect(book.subtitle).to.equal(entry.subtitle);
     expect(book.summary).to.equal(sanitizeHtml(entry.summary.content));
     expect(book.summary).to.contain(
@@ -116,18 +116,18 @@ describe("OPDSDataAdapter", () => {
     );
     expect(book.summary).not.to.contain("script");
     expect(book.summary).not.to.contain("danger");
-    expect(book.categories.length).to.equal(2);
+    expect(book.categories?.length).to.equal(2);
     expect(book.categories).to.contain("label");
     expect(book.categories).to.contain("label 2");
     expect(book.imageUrl).to.equal(thumbImageLink.href);
     expect(book.publisher).to.equal("Fake Publisher");
     expect(book.published).to.equal("June 8, 2014");
     expect(book.language).to.equal("en");
-    expect(book.openAccessLinks[0].url).to.equal(openAccessLink.href);
+    expect(book.openAccessLinks?.[0].url).to.equal(openAccessLink.href);
     expect(book.borrowUrl).to.equal(borrowLink.href);
-    expect(book.fulfillmentLinks[0].url).to.equal(fulfillmentLink.href);
-    expect(book.fulfillmentLinks[0].type).to.equal(fulfillmentLink.type);
-    expect(book.fulfillmentLinks[0].indirectType).to.equal(
+    expect(book.fulfillmentLinks?.[0].url).to.equal(fulfillmentLink.href);
+    expect(book.fulfillmentLinks?.[0].type).to.equal(fulfillmentLink.type);
+    expect(book.fulfillmentLinks?.[0].indirectType).to.equal(
       fulfillmentLink.indirectAcquisitions[0].type
     );
     expect(book.availability).to.equal(borrowLink.availability);
@@ -187,30 +187,30 @@ describe("OPDSDataAdapter", () => {
     });
 
     let collection = feedToCollection(acquisitionFeed, "");
-    expect(collection.facetGroups.length).to.equal(2);
+    expect(collection.facetGroups?.length).to.equal(2);
 
-    let groupA = collection.facetGroups[0];
-    expect(groupA.label).to.equal("group A");
-    expect(groupA.facets.length).to.equal(2);
+    let groupA = collection.facetGroups?.[0];
+    expect(groupA?.label).to.equal("group A");
+    expect(groupA?.facets.length).to.equal(2);
 
-    let groupB = collection.facetGroups[1];
-    expect(groupB.label).to.equal("group B");
-    expect(groupB.facets.length).to.equal(1);
+    let groupB = collection.facetGroups?.[1];
+    expect(groupB?.label).to.equal("group B");
+    expect(groupB?.facets.length).to.equal(1);
 
-    let facet1 = groupA.facets[0];
-    expect(facet1.label).to.equal("title 1");
-    expect(facet1.active).to.be.ok;
-    expect(facet1.href).to.equal("href1");
+    let facet1 = groupA?.facets[0];
+    expect(facet1?.label).to.equal("title 1");
+    expect(facet1?.active).to.be.ok;
+    expect(facet1?.href).to.equal("href1");
 
-    let facet2 = groupB.facets[0];
-    expect(facet2.label).to.equal("title 2");
-    expect(facet2.active).not.to.be.ok;
-    expect(facet2.href).to.equal("href2");
+    let facet2 = groupB?.facets[0];
+    expect(facet2?.label).to.equal("title 2");
+    expect(facet2?.active).not.to.be.ok;
+    expect(facet2?.href).to.equal("href2");
 
-    let facet3 = groupA.facets[1];
-    expect(facet3.label).to.equal("title 3");
-    expect(facet3.active).not.to.be.ok;
-    expect(facet3.href).to.equal("href3");
+    let facet3 = groupA?.facets[1];
+    expect(facet3?.label).to.equal("title 3");
+    expect(facet3?.active).not.to.be.ok;
+    expect(facet3?.href).to.equal("href3");
   });
 
   it("extracts search link", () => {
@@ -226,7 +226,7 @@ describe("OPDSDataAdapter", () => {
 
     let collection = feedToCollection(navigationFeed, "");
     expect(collection.search).to.be.ok;
-    expect(collection.search.url).to.equal(searchLink.href);
+    expect(collection.search?.url).to.equal(searchLink.href);
   });
 
   it("extracts next page url", () => {
@@ -279,9 +279,9 @@ describe("OPDSDataAdapter", () => {
     });
 
     let collection = feedToCollection(acquisitionFeed, "");
-    expect(collection.links.length).to.equal(2);
-    let urls = collection.links.map(link => link.url).sort();
-    let types = collection.links.map(link => link.type).sort();
+    expect(collection.links?.length).to.equal(2);
+    let urls = collection.links?.map(link => link.url).sort();
+    let types = collection.links?.map(link => link.type).sort();
     expect(urls).to.deep.equal(["about", "terms"]);
     expect(types).to.deep.equal(["about", "terms-of-service"]);
   });
