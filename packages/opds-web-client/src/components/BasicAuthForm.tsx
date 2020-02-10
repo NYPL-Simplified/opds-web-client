@@ -1,6 +1,7 @@
 import * as React from "react";
 import { BasicAuthMethod } from "../interfaces";
 import { AuthFormProps } from "./AuthProviderSelectionForm";
+import { generateCredentials } from "../utils/auth";
 
 export interface BasicAuthFormProps extends AuthFormProps<BasicAuthMethod> {}
 export interface BasicAuthFormState {
@@ -94,7 +95,7 @@ export default class BasicAuthForm extends React.Component<
       const login = this.loginRef.current && this.loginRef.current.value;
       const password =
         this.passwordRef.current && this.passwordRef.current.value;
-      let credentials = this.generateCredentials(login, password);
+      let credentials = generateCredentials(login, password);
 
       this.props.saveCredentials({
         provider: this.props.provider.id,
@@ -106,10 +107,5 @@ export default class BasicAuthForm extends React.Component<
         this.props.callback();
       }
     }
-  }
-
-  generateCredentials(login, password) {
-    const btoaStr = btoa(`${login}:${password}`);
-    return `Basic ${btoaStr}`;
   }
 }
