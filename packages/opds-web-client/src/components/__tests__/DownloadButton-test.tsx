@@ -5,42 +5,68 @@ import * as download from "../download";
 const downloadMock = require("../../__mocks__/downloadjs");
 
 import * as React from "react";
-import { shallow } from "enzyme";
+import { mount } from "enzyme";
+import { Provider } from "react-redux";
 import { generateFilename, typeMap } from "../../utils/file";
 
 import DownloadButton from "../DownloadButton";
+import buildStore from "../../store";
+import { ActionsContext } from "../context/ActionsContext";
+import ActionCreator from "../../actions";
+import DataFetcher from "../../DataFetcher";
 
 describe("DownloadButton", () => {
   let wrapper;
   let fulfill;
   let indirectFulfill;
+  let actionFulfillStub;
+  let acctionIndirectFulfillStub;
   let style;
   let downloadStub;
+  let store = buildStore();
+  let fetcher = new DataFetcher();
+  let actions = new ActionCreator(fetcher);
+  /**
+   * Function to render a component wrapped in the Redux and Actions providers.
+   **/
+  const providerWrapper: React.FC<React.ReactNode> = component => (
+    <Provider store={store}>
+      <ActionsContext.Provider value={actions}>
+        {component}
+      </ActionsContext.Provider>
+    </Provider>
+  );
 
   const mimeType = "application/epub+zip";
   const title = "title";
 
   beforeEach(() => {
     downloadStub = stub(download, "default").callsFake(downloadMock);
-
-    fulfill = stub().returns(new Promise((resolve, reject) => resolve("blob")));
+    fulfill = stub().returns(
+      async () => new Promise((resolve, reject) => resolve("blob"))
+    );
     indirectFulfill = stub().returns(
-      new Promise((resolve, reject) => resolve("web reader url"))
+      async () => new Promise((resolve, reject) => resolve("web reader url"))
+    );
+    actionFulfillStub = stub(actions, "fulfillBook").callsFake(fulfill);
+    acctionIndirectFulfillStub = stub(actions, "indirectFulfillBook").callsFake(
+      indirectFulfill
     );
     style = { border: "100px solid black" };
-    wrapper = shallow(
+    let downloadButton = providerWrapper(
       <DownloadButton
         style={style}
         url="download url"
         mimeType={mimeType}
-        fulfill={fulfill}
-        indirectFulfill={indirectFulfill}
         title={title}
       />
     );
+    wrapper = mount(downloadButton);
   });
 
   afterEach(() => {
+    actionFulfillStub.restore();
+    acctionIndirectFulfillStub.restore();
     downloadStub.restore();
   });
 
@@ -51,7 +77,16 @@ describe("DownloadButton", () => {
   });
 
   it("shows plain link if specified", () => {
-    wrapper.setProps({ isPlainLink: true });
+    let downloadButton = providerWrapper(
+      <DownloadButton
+        style={style}
+        url="download url"
+        mimeType="application/epub+zip"
+        title="title"
+        isPlainLink={true}
+      />
+    );
+    wrapper = mount(downloadButton);
     let link = wrapper.find("a");
     expect(link.props().style).to.deep.equal(style);
     expect(link.props().href).to.equal("download url");
@@ -65,71 +100,73 @@ describe("DownloadButton", () => {
     expect(fulfill.args[0][0]).to.equal("download url");
   });
 
-  it("downloads after fulfilling", done => {
+  it("downloads after fulfilling", async () => {
     let button = wrapper.find("button");
-    button
-      .props()
-      .onClick()
-      .then(() => {
-        expect(downloadMock.getBlob()).to.equal("blob");
-        expect(downloadMock.getFilename()).to.equal(
-          generateFilename(title, typeMap[mimeType].extension)
-        );
-        expect(downloadMock.getMimeType()).to.equal(
-          wrapper.instance().mimeType()
-        );
-        done();
-      })
-      .catch(err => {
-        console.log(err);
-        throw err;
-      });
+    await button.props().onClick();
+    expect(downloadMock.getBlob()).to.equal("blob");
+    expect(downloadMock.getFilename()).to.equal(
+      generateFilename(title, typeMap[mimeType].extension)
+    );
+    expect(downloadMock.getMimeType()).to.equal(mimeType);
   });
 
-  it("fulfills OPDS-based indirect links", () => {
+  it("fulfills OPDS-based indirect links", async () => {
     let streamingType =
       "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media";
-    wrapper.setProps({
-      mimeType: "application/atom+xml;type=entry;profile=opds-catalog",
-      indirectType: streamingType
-    });
+    let downloadButton = providerWrapper(
+      <DownloadButton
+        style={style}
+        url="download url"
+        mimeType="application/atom+xml;type=entry;profile=opds-catalog"
+        indirectType={streamingType}
+        title="title"
+      />
+    );
+    wrapper = mount(downloadButton);
     let button = wrapper.find("button");
-    button.simulate("click");
+    await button.simulate("click");
     expect(indirectFulfill.callCount).to.equal(1);
     expect(indirectFulfill.args[0][0]).to.equal("download url");
     expect(indirectFulfill.args[0][1]).to.equal(streamingType);
   });
 
-  it("fulfills ACSM-based indirect links", () => {
-    wrapper.setProps({
-      mimeType: "vnd.adobe/adept+xml",
-      indirectType: "application/epub+zip"
-    });
+  it("fulfills ACSM-based indirect links", async () => {
+    let downloadButton = providerWrapper(
+      <DownloadButton
+        style={style}
+        url="download url"
+        mimeType="vnd.adobe/adept+xml"
+        indirectType="application/epub+zip"
+        title="title"
+      />
+    );
+    wrapper = mount(downloadButton);
     let button = wrapper.find("button");
-    button.simulate("click");
+    await button.simulate("click");
     expect(fulfill.callCount).to.equal(1);
     expect(fulfill.args[0][0]).to.equal("download url");
   });
 
-  it("opens indirect fulfillment link in new tab", done => {
-    wrapper.setProps({
-      mimeType: "application/atom+xml;type=entry;profile=opds-catalog",
-      indirectType: "some/type"
-    });
-    let windowOpenStub = stub(window, "open");
+  it("opens indirect fulfillment link in new tab", async () => {
+    let windowStub = stub(window, "open");
+    let downloadButton = providerWrapper(
+      <DownloadButton
+        style={style}
+        url="web reader url"
+        mimeType="application/atom+xml;type=entry;profile=opds-catalog"
+        indirectType="some/type"
+        title="title"
+      />
+    );
+    wrapper = mount(downloadButton);
     let button = wrapper.find("button");
-    button
-      .props()
-      .onClick()
-      .then(() => {
-        expect(windowOpenStub.callCount).to.equal(1);
-        expect(windowOpenStub.args[0][0]).to.equal("web reader url");
-        expect(windowOpenStub.args[0][1]).to.equal("_blank");
-        done();
-      })
-      .catch(err => {
-        console.log(err);
-        throw err;
-      });
+
+    await button.props().onClick();
+
+    expect(windowStub.callCount).to.equal(1);
+    expect(windowStub.args[0][0]).to.equal("web reader url");
+    expect(windowStub.args[0][1]).to.equal("_blank");
+
+    windowStub.restore();
   });
 });

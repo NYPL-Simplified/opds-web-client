@@ -1,119 +1,93 @@
 import * as React from "react";
 import download from "./download";
+import { useActions } from "./context/ActionsContext";
 import { typeMap, generateFilename } from "../utils/file";
 
 export interface DownloadButtonProps extends React.HTMLProps<{}> {
   url: string;
   mimeType: string;
   isPlainLink?: boolean;
-  fulfill?: (url: string) => Promise<Blob>;
-  indirectFulfill?: (url: string, type: string) => Promise<string>;
   title?: string;
   indirectType?: string;
 }
 
-/** Shows a button to fulfill and download a book or download it directly. */
-export default class DownloadButton extends React.Component<
-  DownloadButtonProps,
-  {}
-> {
-  constructor(props) {
-    super(props);
-    this.fulfill = this.fulfill.bind(this);
-  }
-
-  render() {
-    // Only get the props needed for the anchor or button element.
-    const {
-      ref,
-      url,
-      mimeType,
-      isPlainLink,
-      fulfill,
-      indirectFulfill,
-      indirectType,
-      title,
-      type,
-      ...props
-    } = this.props;
-
-    return (
-      <span>
-        {this.props.isPlainLink ? (
-          <a
-            className="btn btn-default download-button"
-            {...props}
-            href={this.props.url}
-            target="_blank"
-          >
-            {this.downloadLabel()}
-          </a>
-        ) : (
-          <button
-            className={
-              "btn btn-default download-button download-" +
-              this.fileExtension().slice(1) +
-              "-button"
-            }
-            {...props}
-            onClick={this.fulfill}
-          >
-            {this.downloadLabel()}
-          </button>
-        )}
-      </span>
-    );
-  }
-
-  fulfill() {
-    if (this.isIndirect()) {
-      return this.props
-        .indirectFulfill(this.props.url, this.props.indirectType)
-        .then(url => {
-          window.open(url, "_blank");
-        });
+const DownloadButton: React.FC<DownloadButtonProps> = props => {
+  const {
+    ref,
+    url,
+    mimeType,
+    isPlainLink,
+    indirectType,
+    title,
+    type,
+    ...elementProps
+  } = props;
+  const { actions, dispatch } = useActions();
+  const mimeTypeValue =
+    mimeType === "vnd.adobe/adept+xml"
+      ? "application/vnd.adobe.adept+xml"
+      : mimeType;
+  const fulfill = () => {
+    let action;
+    if (isIndirect) {
+      action = actions.indirectFulfillBook(url, indirectType);
+      return dispatch(action).then(url => {
+        window.open(url, "_blank");
+      });
     } else {
-      return this.props.fulfill(this.props.url).then(blob => {
+      // TODO: use mimeType variable once we fix the link type in our
+      // OPDS entries
+      action = actions.fulfillBook(url);
+      return dispatch(action).then(blob => {
         download(
           blob,
-          generateFilename(this.props.title, this.fileExtension()),
-          // TODO: use mimeType variable once we fix the link type in our OPDS entries
-          this.mimeType()
+          generateFilename(title, fileExtension(mimeTypeValue)),
+          mimeTypeValue
         );
       });
     }
-  }
-
-  isIndirect() {
-    return (
-      this.props.indirectType &&
-      this.props.mimeType ===
-        "application/atom+xml;type=entry;profile=opds-catalog"
-    );
-  }
-
-  mimeType() {
-    return this.props.mimeType === "vnd.adobe/adept+xml"
-      ? "application/vnd.adobe.adept+xml"
-      : this.props.mimeType;
-  }
-
-  fileExtension() {
+  };
+  const isIndirect =
+    indirectType &&
+    mimeType === "application/atom+xml;type=entry;profile=opds-catalog";
+  const fileExtension = (mimeTypeValue: string) =>
     // this ?? syntax is similar to x || y, except that it will only
     // fall back if the predicate is undefined or null, not if it
     // is falsy (false, 0, etc).
-    return typeMap[this.mimeType()]?.extension ?? "";
-  }
-
-  downloadLabel() {
+    typeMap[mimeTypeValue]?.extension ?? "";
+  const downloadLabel = () => {
     if (
-      this.props.indirectType ===
+      indirectType ===
       "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media"
     ) {
       return "Read Online";
     }
-    let type = typeMap[this.mimeType()]?.name;
+    let type = typeMap[mimeTypeValue]?.name;
+    return `Download${type ? " " + type : ""}`;
+  };
+  const baseClassName = "btn btn-default download-button";
+  const buttonClassName = `${baseClassName} download-${fileExtension(
+    mimeTypeValue
+  ).slice(1)}-button`;
 
-    return "Download" + (type ? " " + type : "");
-  }
-}
+  return (
+    <span>
+      {isPlainLink ? (
+        <a
+          href={url}
+          target="_blank"
+          {...elementProps}
+          className={baseClassName}
+        >
+          {downloadLabel()}
+        </a>
+      ) : (
+        <button onClick={fulfill} {...elementProps} className={buttonClassName}>
+          {downloadLabel()}
+        </button>
+      )}
+    </span>
+  );
+};
+
+export default DownloadButton;

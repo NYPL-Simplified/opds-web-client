@@ -8,6 +8,7 @@ import { PathFor } from "./interfaces";
 import AuthPlugin from "./AuthPlugin";
 import "./stylesheets/app.scss";
 import PathForProvider from "./components/context/PathForContext";
+import { ActionsProvider } from "./components/context/ActionsContext";
 
 const OPDSCatalogRouterHandler = config => {
   interface OPDSCatalogParams {
@@ -31,7 +32,9 @@ const OPDSCatalogRouterHandler = config => {
       };
       return (
         <PathForProvider pathFor={config.pathFor}>
-          <OPDSCatalog {...mergedProps} />
+          <ActionsProvider>
+            <OPDSCatalog {...mergedProps} />
+          </ActionsProvider>
         </PathForProvider>
       );
     }

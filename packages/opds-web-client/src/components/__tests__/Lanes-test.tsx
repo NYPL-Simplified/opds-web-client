@@ -28,8 +28,6 @@ describe("Lanes", () => {
         hideMoreLinks={true}
         hiddenBookIds={hiddenBookIds}
         updateBook={updateBook}
-        fulfillBook={fulfillBook}
-        indirectFulfillBook={indirectFulfillBook}
       />
     );
   });
@@ -58,8 +56,6 @@ describe("Lanes", () => {
         lanes={[]}
         fetchCollection={fetchCollection}
         updateBook={updateBook}
-        fulfillBook={fulfillBook}
-        indirectFulfillBook={indirectFulfillBook}
       />
     );
 
@@ -77,8 +73,6 @@ describe("Lanes", () => {
         clearCollection={clearCollection}
         fetchCollection={fetchCollection}
         updateBook={updateBook}
-        fulfillBook={fulfillBook}
-        indirectFulfillBook={indirectFulfillBook}
       />
     );
     expect(clearCollection.callCount).to.equal(0);
@@ -102,8 +96,6 @@ describe("Lanes", () => {
         lanes={[]}
         clearCollection={clearCollection}
         updateBook={updateBook}
-        fulfillBook={fulfillBook}
-        indirectFulfillBook={indirectFulfillBook}
       />
     );
     wrapper.instance().componentWillUnmount();
