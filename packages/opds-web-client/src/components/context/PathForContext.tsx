@@ -7,7 +7,9 @@ import * as PropTypes from "prop-types";
  * via both old and new context apis.
  */
 
-export const PathForContext = React.createContext<PathFor>(null);
+export const PathForContext = React.createContext<PathFor | undefined>(
+  undefined
+);
 
 type PathForProps = {
   pathFor: PathFor;

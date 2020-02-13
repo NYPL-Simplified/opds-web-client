@@ -22,9 +22,9 @@ describe("OpenSearchDescriptionParser", () => {
         "http://example.com"
       )
       .then(result => {
-        expect(result.searchData.description).to.equal("d");
-        expect(result.searchData.shortName).to.equal("s");
-        expect(result.searchData.template("test")).to.equal(
+        expect(result.searchData?.description).to.equal("d");
+        expect(result.searchData?.shortName).to.equal("s");
+        expect(result.searchData?.template("test")).to.equal(
           "http://example.com/test"
         );
         done();
@@ -45,9 +45,9 @@ describe("OpenSearchDescriptionParser", () => {
         "http://example.com"
       )
       .then(result => {
-        expect(result.searchData.description).to.equal("d");
-        expect(result.searchData.shortName).to.equal("s");
-        expect(result.searchData.template("test")).to.equal(
+        expect(result.searchData?.description).to.equal("d");
+        expect(result.searchData?.shortName).to.equal("s");
+        expect(result.searchData?.template("test")).to.equal(
           "http://example.com/test"
         );
         done();

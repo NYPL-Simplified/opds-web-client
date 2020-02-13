@@ -11,7 +11,9 @@ import * as PropTypes from "prop-types";
  * compatibility with current opds-web.
  */
 
-export const RouterContext = React.createContext<RouterType>(null);
+export const RouterContext = React.createContext<RouterType | undefined>(
+  undefined
+);
 
 type RouterContextProps = {
   router: RouterType;

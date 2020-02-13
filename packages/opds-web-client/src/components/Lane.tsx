@@ -31,7 +31,7 @@ export default class Lane extends React.Component<LaneProps, LaneState> {
     this.updateScrollButtons = this.updateScrollButtons.bind(this);
   }
 
-  render(): JSX.Element {
+  render() {
     let visibleBooks = this.visibleBooks();
 
     if (visibleBooks.length === 0) {
@@ -100,7 +100,9 @@ export default class Lane extends React.Component<LaneProps, LaneState> {
     }
 
     return this.props.lane.books.filter(
-      book => this.props.hiddenBookIds.indexOf(book.id) === -1
+      // the following optional chaining will ensure it evaluates to false if
+      // hiddenBookIds is undefined
+      book => this.props.hiddenBookIds?.indexOf(book.id) === -1
     );
   }
 

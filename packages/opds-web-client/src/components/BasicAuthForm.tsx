@@ -5,7 +5,7 @@ import { generateCredentials } from "../utils/auth";
 
 export interface BasicAuthFormProps extends AuthFormProps<BasicAuthMethod> {}
 export interface BasicAuthFormState {
-  error: string;
+  error?: string | null;
 }
 
 /** Form for logging in with basic auth. */
@@ -63,11 +63,11 @@ export default class BasicAuthForm extends React.Component<
   }
 
   loginLabel() {
-    return this.props.provider.method.labels.login || "username";
+    return this.props.provider?.method.labels.login || "username";
   }
 
   passwordLabel() {
-    return this.props.provider.method.labels.password || "password";
+    return this.props.provider?.method.labels.password || "password";
   }
 
   /**
@@ -97,11 +97,11 @@ export default class BasicAuthForm extends React.Component<
         this.passwordRef.current && this.passwordRef.current.value;
       let credentials = generateCredentials(login, password);
 
-      this.props.saveCredentials({
-        provider: this.props.provider.id,
+      this.props.saveCredentials?.({
+        provider: this.props.provider?.id,
         credentials: credentials
       });
-      this.props.hide();
+      this.props.hide?.();
 
       if (this.props.callback) {
         this.props.callback();

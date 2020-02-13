@@ -53,7 +53,7 @@ export default class UrlForm extends React.Component<UrlFormProps, {}> {
 
     const url = this.inputRef.current && this.inputRef.current.value;
     if (url !== "") {
-      this.context.router.push(this.context.pathFor(url, null));
+      this.context.router?.push(this.context.pathFor(url, null));
     }
   }
 }

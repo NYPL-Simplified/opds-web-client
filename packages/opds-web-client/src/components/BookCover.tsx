@@ -47,7 +47,7 @@ export default class BookCover extends React.Component<
     }
 
     let titleFontSize = this.computeFontSize(title, 40);
-    let authorFontSize = this.computeFontSize(authors.join(", "), 25);
+    let authorFontSize = this.computeFontSize(authors?.join(", ") ?? "", 25);
 
     let hue = this.seededRandomHue(title);
     let bgColor = `hsla(${hue}, 40%, 60%, 1)`;
@@ -57,7 +57,7 @@ export default class BookCover extends React.Component<
         <div className="title" style={{ fontSize: titleFontSize }}>
           {title}
         </div>
-        {authors.length && (
+        {authors?.length && (
           <div className="authors" style={{ fontSize: authorFontSize }}>
             By {authors.join(", ")}
           </div>
@@ -66,7 +66,7 @@ export default class BookCover extends React.Component<
     );
   }
 
-  computeFontSize(text, baseFontSize = 40, minFontSize = 15) {
+  computeFontSize(text: string, baseFontSize = 40, minFontSize = 15) {
     // decrease size as max word length increases
     // decrease size as word count grows beyond 3
     let words = text.split(/\s/);

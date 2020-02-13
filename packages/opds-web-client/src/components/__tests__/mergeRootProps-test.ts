@@ -35,6 +35,7 @@ describe("findBookInCollection", () => {
   it("finds a book in the collection by url", () => {
     let collection = groupedCollectionData;
     let book = groupedCollectionData.lanes[0].books[0];
+    if (!book.url) throw new Error("Book is missing url");
     let result = findBookInCollection(collection, book.url);
     expect(result).to.equal(book);
   });

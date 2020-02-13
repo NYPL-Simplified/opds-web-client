@@ -8,7 +8,10 @@ import {
   AuthCredentials
 } from "../interfaces";
 
-export function findBookInCollection(collection: CollectionData, book: string) {
+export function findBookInCollection(
+  collection: CollectionData | null,
+  book: string
+) {
   if (collection) {
     let allBooks = collection.lanes.reduce((books, lane) => {
       return books.concat(lane.books);
@@ -87,9 +90,12 @@ export function createFetchCollectionAndBook(dispatch) {
   let actions = mapDispatchToProps(dispatch).createDispatchProps(fetcher);
   let { fetchCollection, fetchBook } = actions;
   return (
-    collectionUrl: string,
-    bookUrl: string
-  ): Promise<{ collectionData: CollectionData; bookData: BookData }> => {
+    collectionUrl: string | undefined | null,
+    bookUrl?: string | null
+  ): Promise<{
+    collectionData: CollectionData | null;
+    bookData: BookData | null;
+  }> => {
     return fetchCollectionAndBook({
       fetchCollection,
       fetchBook,
@@ -104,7 +110,10 @@ export function fetchCollectionAndBook({
   fetchBook,
   collectionUrl,
   bookUrl
-}): Promise<{ collectionData: CollectionData; bookData: BookData }> {
+}): Promise<{
+  collectionData: CollectionData | null;
+  bookData: BookData | null;
+}> {
   return new Promise((resolve, reject) => {
     if (collectionUrl) {
       fetchCollection(collectionUrl)
@@ -144,7 +153,7 @@ export function mergeRootProps(
   let dispatchProps = createDispatchProps.createDispatchProps(fetcher);
   let authCredentials = fetcher.getAuthCredentials();
 
-  let setCollection = (url: string) => {
+  let setCollection = (url: string | null) => {
     return new Promise((resolve, reject) => {
       if (url === stateProps.loadedCollectionUrl) {
         // if url is same, do nothing unless there's currently error
@@ -166,18 +175,18 @@ export function mergeRootProps(
   };
 
   let setBook = (
-    book: BookData | string,
-    collectionData: CollectionData = null
+    book: BookData | string | null,
+    collectionData: CollectionData | null = null
   ) => {
     return new Promise((resolve, reject) => {
-      let url = null;
-      let bookData = null;
+      let url: string | null = null;
+      let bookData: BookData | null = null;
 
       if (typeof book === "string") {
         url = book;
-        bookData = findBookInCollection(collectionData, url);
+        bookData = findBookInCollection(collectionData, url) ?? null;
       } else if (book && typeof book === "object") {
-        url = book.url;
+        url = book.url ?? null;
         bookData = book;
       }
 
