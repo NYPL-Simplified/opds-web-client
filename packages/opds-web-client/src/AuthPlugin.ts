@@ -13,14 +13,9 @@ interface AuthPlugin {
     credentials?: AuthCredentials;
     error?: string;
   } | null | void;
-  formComponent?: new (props: AuthFormProps<AuthMethod>) => React.Component<
-    AuthFormProps<AuthMethod>,
-    {}
-  >;
-  buttonComponent: new (props: AuthButtonProps<AuthMethod>) => React.Component<
-    AuthButtonProps<AuthMethod>,
-    {}
-  >;
+  formComponent?: React.ComponentType<AuthFormProps<AuthMethod>>;
+
+  buttonComponent: React.ComponentType<AuthButtonProps<AuthMethod>>;
 }
 
 export default AuthPlugin;

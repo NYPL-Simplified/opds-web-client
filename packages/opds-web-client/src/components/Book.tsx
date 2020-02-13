@@ -5,6 +5,12 @@ import BorrowButton from "./BorrowButton";
 import DownloadButton from "./DownloadButton";
 import { BookData, FulfillmentLink } from "../interfaces";
 import { AudioHeadphoneIcon, BookIcon } from "@nypl/dgx-svg-icons";
+import {
+  bookIsBorrowed,
+  bookIsReserved,
+  bookIsReady,
+  bookIsOpenAccess
+} from "../utils/book";
 const download = require("downloadjs");
 
 export interface BookProps {
@@ -144,7 +150,7 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
 
     let links: JSX.Element[] = [];
 
-    if (this.isOpenAccess()) {
+    if (bookIsOpenAccess(this.props.book)) {
       if (this.props.epubReaderUrlTemplate) {
         let index = 0;
         for (const link of this.props.book.openAccessLinks ?? []) {
@@ -175,7 +181,7 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
           />
         );
       });
-    } else if (this.isBorrowed()) {
+    } else if (bookIsBorrowed(this.props.book)) {
       // Put streaming links first, followed by a disabled "Borrowed" button that will
       // display in the list view if streaming is not available.
 
@@ -235,15 +241,15 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
       });
     }
 
-    if (this.isReserved()) {
+    if (bookIsReserved(this.props.book)) {
       links.push(
         <button key="onhold" className="btn btn-default disabled">
           Reserved
         </button>
       );
-    } else if (!this.isBorrowed() && this.props.book.borrowUrl) {
+    } else if (!bookIsBorrowed(this.props.book) && this.props.book.borrowUrl) {
       let label =
-        !this.isReady() &&
+        !bookIsReady(this.props.book) &&
         this.props.book.copies &&
         this.props.book.copies.available === 0
           ? "Reserve"
@@ -302,33 +308,5 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
 
   borrow(): Promise<BookData> {
     return this.props.updateBook(this.props.book.borrowUrl);
-  }
-
-  isReserved() {
-    return (
-      this.props.book.availability &&
-      this.props.book.availability.status === "reserved"
-    );
-  }
-
-  isReady() {
-    return (
-      this.props.book.availability &&
-      this.props.book.availability.status === "ready"
-    );
-  }
-
-  isBorrowed() {
-    return (
-      this.props.book.fulfillmentLinks &&
-      this.props.book.fulfillmentLinks.length > 0
-    );
-  }
-
-  isOpenAccess() {
-    return (
-      this.props.book.openAccessLinks &&
-      this.props.book.openAccessLinks.length > 0
-    );
   }
 }
