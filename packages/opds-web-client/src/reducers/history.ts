@@ -1,3 +1,4 @@
+import { RequiredKeys } from "./../interfaces";
 import { CollectionState } from "./collection";
 import { LoadAction } from "../actions";
 import { CollectionData, LinkData } from "../interfaces";
@@ -28,8 +29,11 @@ function newRootIsNotOldRoot(
   newCollection: CollectionData,
   oldCollection: CollectionData | undefined | null
 ): boolean {
-  return (
-    newCollection?.catalogRootLink?.url !== oldCollection?.catalogRootLink?.url
+  return !!(
+    oldCollection &&
+    newCollection.catalogRootLink &&
+    oldCollection.catalogRootLink &&
+    newCollection.catalogRootLink.url !== oldCollection.catalogRootLink.url
   );
 }
 
@@ -70,17 +74,18 @@ export function shorten(history: LinkData[], newUrl: string) {
     return history;
   }
 }
+type CollectionWithRootLink = RequiredKeys<CollectionData, "catalogRootLink">;
 
-export function shouldAddRoot(newCollection: CollectionData) {
-  return (
-    newCollection.catalogRootLink &&
-    newCollection.catalogRootLink.text &&
+export function shouldAddRoot(
+  newCollection: CollectionData
+): newCollection is CollectionWithRootLink {
+  return !!(
+    newCollection.catalogRootLink?.text &&
     !newCollectionIsNewRoot(newCollection)
   );
 }
 
-export function onlyRoot(newCollection: CollectionData) {
-  if (!newCollection.catalogRootLink) return [];
+export function onlyRoot(newCollection: CollectionWithRootLink) {
   return addLink([], newCollection.catalogRootLink);
 }
 

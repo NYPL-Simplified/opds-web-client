@@ -304,27 +304,9 @@ export class Root extends React.Component<RootProps, RootState> {
               </div>
             )}
 
-            {CollectionContainer &&
-              (showCollection ? (
-                showCollectionContainer ? (
-                  <CollectionContainer>
-                    <Collection
-                      collection={this.collectionDataWithLoans()}
-                      fetchPage={this.props.fetchPage}
-                      isFetchingCollection={this.props.isFetchingCollection}
-                      isFetchingBook={this.props.isFetchingBook}
-                      isFetchingPage={this.props.isFetchingPage}
-                      error={this.props.error}
-                      updateBook={this.props.updateBook}
-                      fulfillBook={this.props.fulfillBook}
-                      indirectFulfillBook={this.props.indirectFulfillBook}
-                      isSignedIn={this.props.isSignedIn}
-                      epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
-                      preferences={this.props.preferences}
-                      setPreference={this.props.setPreference}
-                    />
-                  </CollectionContainer>
-                ) : (
+            {showCollection ? (
+              showCollectionContainer && CollectionContainer ? (
+                <CollectionContainer>
                   <Collection
                     collection={this.collectionDataWithLoans()}
                     fetchPage={this.props.fetchPage}
@@ -340,8 +322,25 @@ export class Root extends React.Component<RootProps, RootState> {
                     preferences={this.props.preferences}
                     setPreference={this.props.setPreference}
                   />
-                )
-              ) : null)}
+                </CollectionContainer>
+              ) : (
+                <Collection
+                  collection={this.collectionDataWithLoans()}
+                  fetchPage={this.props.fetchPage}
+                  isFetchingCollection={this.props.isFetchingCollection}
+                  isFetchingBook={this.props.isFetchingBook}
+                  isFetchingPage={this.props.isFetchingPage}
+                  error={this.props.error}
+                  updateBook={this.props.updateBook}
+                  fulfillBook={this.props.fulfillBook}
+                  indirectFulfillBook={this.props.indirectFulfillBook}
+                  isSignedIn={this.props.isSignedIn}
+                  epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
+                  preferences={this.props.preferences}
+                  setPreference={this.props.setPreference}
+                />
+              )
+            ) : null}
           </div>
         </main>
         {Footer && this.props.collectionData && (
