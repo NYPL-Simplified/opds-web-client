@@ -34,6 +34,7 @@ import {
   Router as RouterType
 } from "../interfaces";
 import AuthPlugin from "../AuthPlugin";
+import { loanedBookData, collectionDataWithLoans } from "../utils";
 
 export interface HeaderProps extends React.Props<{}> {
   collectionTitle: string | null;
@@ -266,8 +267,9 @@ export class Root extends React.Component<RootProps, RootState> {
                   (BookDetailsContainer &&
                   (this.props.bookUrl || this.props.bookData?.url) ? (
                     <BookDetailsContainer
-                      book={this.loanedBookData(
+                      book={loanedBookData(
                         this.props.bookData,
+                        this.props.loans,
                         this.props.bookUrl
                       )}
                       bookUrl={this.props.bookUrl || this.props.bookData?.url}
@@ -275,8 +277,9 @@ export class Root extends React.Component<RootProps, RootState> {
                       refreshCatalog={this.props.refreshCollectionAndBook}
                     >
                       <BookDetails
-                        book={this.loanedBookData(
+                        book={loanedBookData(
                           this.props.bookData,
+                          this.props.loans,
                           this.props.bookUrl
                         )}
                         updateBook={this.props.updateBook}
@@ -289,8 +292,9 @@ export class Root extends React.Component<RootProps, RootState> {
                   ) : (
                     <div className="without-container">
                       <BookDetails
-                        book={this.loanedBookData(
+                        book={loanedBookData(
                           this.props.bookData,
+                          this.props.loans,
                           this.props.bookUrl
                         )}
                         updateBook={this.props.updateBook}
@@ -308,7 +312,10 @@ export class Root extends React.Component<RootProps, RootState> {
               showCollectionContainer && CollectionContainer ? (
                 <CollectionContainer>
                   <Collection
-                    collection={this.collectionDataWithLoans()}
+                    collection={collectionDataWithLoans(
+                      this.props.collectionData,
+                      this.props.loans
+                    )}
                     fetchPage={this.props.fetchPage}
                     isFetchingCollection={this.props.isFetchingCollection}
                     isFetchingBook={this.props.isFetchingBook}
@@ -325,7 +332,10 @@ export class Root extends React.Component<RootProps, RootState> {
                 </CollectionContainer>
               ) : (
                 <Collection
-                  collection={this.collectionDataWithLoans()}
+                  collection={collectionDataWithLoans(
+                    this.props.collectionData,
+                    this.props.loans
+                  )}
                   fetchPage={this.props.fetchPage}
                   isFetchingCollection={this.props.isFetchingCollection}
                   isFetchingBook={this.props.isFetchingBook}
@@ -375,6 +385,7 @@ export class Root extends React.Component<RootProps, RootState> {
     if (authError) {
       this.setState({ authError });
     } else if (this.props.collectionUrl || this.props.bookUrl) {
+      console.log("FETCH", this.props.collectionUrl, this.props.bookUrl);
       return this.props
         .setCollectionAndBook?.(this.props.collectionUrl, this.props.bookUrl)
         .then(({ collectionData, bookData }) => {
@@ -442,34 +453,6 @@ export class Root extends React.Component<RootProps, RootState> {
         );
       }
     }
-  }
-
-  loanedBookData(book: BookData, bookUrl?: string): BookData {
-    if (!this.props.loans || this.props.loans.length === 0) {
-      return book;
-    }
-
-    let loan = this.props.loans.find(loanedBook => {
-      if (book) {
-        return loanedBook.id === book.id;
-      } else if (bookUrl) {
-        return loanedBook.url === bookUrl;
-      } else {
-        return false;
-      }
-    });
-    return loan || book;
-  }
-
-  collectionDataWithLoans(): CollectionData {
-    // If any books in the collection are in the loans feed, replace them with their
-    // loaned version. This currently only changes ungrouped books, not books in lanes,
-    // since lanes don't need any loan-related information.
-    return Object.assign({}, this.props.collectionData, {
-      books: this.props.collectionData?.books.map(book =>
-        this.loanedBookData(book)
-      )
-    });
   }
 }
 
