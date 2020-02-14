@@ -1,7 +1,7 @@
-import { OpenAccessLinkType } from "./../interfaces";
+import { MediaType } from "./../interfaces";
 
 type TypeMap = {
-  [key in OpenAccessLinkType]: {
+  [key in MediaType]: {
     extension: string;
     name: string;
   };

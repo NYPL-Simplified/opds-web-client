@@ -93,11 +93,13 @@ describe("loans reducer", () => {
 
   it("adds newly borrowed book on UPDATE_BOOK_LOAD", () => {
     let oldState = { ...initState, books: loansData.books };
-    let newBookData = {
+    let newBookData: BookData = {
       id: "new book id",
       url: "new book url",
       title: "new book title",
-      fulfillmentLinks: [{ url: "url", type: "text/html", indirectType: "" }]
+      fulfillmentLinks: [
+        { url: "url", type: "application/pdf", indirectType: "" }
+      ]
     };
     let action = actions.load<BookData>(ActionCreator.UPDATE_BOOK, newBookData);
     let newState = { ...oldState, books: [loansData.books[0], newBookData] };
