@@ -8,16 +8,14 @@ export type MediaType =
   | "application/x-mobipocket-ebook"
   | "application/x-mobi8-ebook";
 
-export type FulfillmentLink = {
+export interface MediaLink {
   url: string;
   type: MediaType;
-  indirectType: string;
-};
+}
 
-export type OpenAccessLink = {
-  url: string;
-  type: MediaType;
-};
+export interface FulfillmentLink extends MediaLink {
+  indirectType: string;
+}
 
 export interface BookData {
   id: string;
@@ -31,7 +29,7 @@ export interface BookData {
   subtitle?: string;
   summary?: string;
   imageUrl?: string;
-  openAccessLinks?: OpenAccessLink[];
+  openAccessLinks?: MediaLink[];
   borrowUrl?: string;
   fulfillmentLinks?: FulfillmentLink[];
   availability?: {
