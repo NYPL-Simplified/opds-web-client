@@ -117,9 +117,9 @@ describe("BasicAuthForm", () => {
       expect(isValid).to.equal(false);
       expect(wrapper.state("error")).to.equal("code name is required");
 
-      // nothing blank
+      // // nothing blank
       username.value = "doubleohseven";
-      isValid = wrapper.instance().validate();
+      isValid = wrapper.instance().validate(username.value);
       expect(isValid).to.equal(true);
       expect(wrapper.state("error")).to.equal(null);
     });
