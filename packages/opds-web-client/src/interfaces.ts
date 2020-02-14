@@ -8,6 +8,12 @@ export type OpenAccessLinkType =
   | "application/x-mobipocket-ebook"
   | "application/x-mobi8-ebook";
 
+export type FulfillmentLink = {
+  url: string;
+  type: string;
+  indirectType: string;
+};
+
 export interface BookData {
   id: string;
   title: string;
@@ -25,11 +31,7 @@ export interface BookData {
     type: OpenAccessLinkType;
   }[];
   borrowUrl?: string;
-  fulfillmentLinks?: {
-    url: string;
-    type: string;
-    indirectType: string;
-  }[];
+  fulfillmentLinks?: FulfillmentLink[];
   availability?: {
     status: string;
     since?: string;
@@ -78,10 +80,10 @@ export interface CollectionData {
   facetGroups?: FacetGroupData[];
   search?: SearchData;
   nextPageUrl?: string;
-  catalogRootLink?: LinkData;
+  catalogRootLink?: LinkData | null;
   parentLink?: LinkData | null;
   shelfUrl?: string;
-  links?: LinkData[];
+  links?: LinkData[] | null;
   raw?: any;
 }
 
@@ -125,11 +127,11 @@ export interface StateProps {
 }
 
 export interface PathFor {
-  (collectionUrl?: string, bookUrl?: string): string;
+  (collectionUrl?: string | null, bookUrl?: string | null): string;
 }
 
 export interface FetchErrorData {
-  status: number;
+  status: number | null;
   response: string;
   url: string;
 }
@@ -175,13 +177,13 @@ export interface AuthMethod {
 
 export interface AuthData {
   showForm: boolean;
-  callback: AuthCallback;
-  cancel: () => void;
-  credentials: AuthCredentials;
-  title: string;
+  callback: AuthCallback | null;
+  cancel: (() => void) | null;
+  credentials: AuthCredentials | null;
+  title: string | null;
   error: string | null;
   attemptedProvider: string | null;
-  providers: AuthProvider<AuthMethod>[];
+  providers: AuthProvider<AuthMethod>[] | null;
 }
 
 export interface BasicAuthMethod extends AuthMethod {
@@ -190,3 +192,9 @@ export interface BasicAuthMethod extends AuthMethod {
     password: string;
   };
 }
+
+type PickAndRequire<T, K extends keyof T> = { [P in K]-?: NonNullable<T[P]> };
+
+/** Utility to make certain keys of a type required */
+export type RequiredKeys<T, K extends keyof T> = Omit<T, K> &
+  PickAndRequire<T, K>;

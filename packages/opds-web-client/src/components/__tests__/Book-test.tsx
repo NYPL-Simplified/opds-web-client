@@ -168,7 +168,7 @@ describe("Book", () => {
       let authors = bookInfo.find(".authors");
 
       expect(title.text()).to.equal(book.title);
-      expect(authors.text()).to.equal(`By ${book.authors.join(", ")}`);
+      expect(authors.text()).to.equal(`By ${book.authors?.join(", ")}`);
     });
 
     it("shows contributors when there's no author", () => {
@@ -237,7 +237,7 @@ describe("Book", () => {
       let authors = bookInfo.find(".authors");
 
       expect(title.text()).to.equal(book.title);
-      expect(authors.text()).to.equal(`By ${book.authors.join(", ")}`);
+      expect(authors.text()).to.equal(`By ${book.authors?.join(", ")}`);
     });
 
     it("shows contributors when there's no author", () => {
@@ -262,7 +262,7 @@ describe("Book", () => {
     it("shows series", () => {
       let bookInfo = wrapper.find(".expanded-info");
       let series = bookInfo.find(".series");
-      expect(series.text()).to.equal(book.series.name);
+      expect(series.text()).to.equal(book.series?.name);
     });
 
     it("shows publisher", () => {

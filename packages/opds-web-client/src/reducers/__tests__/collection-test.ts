@@ -264,10 +264,10 @@ describe("collection reducer", () => {
     });
 
     let newState = reducer(currentState, action);
-    expect(newState.data.search).to.be.ok;
-    expect(newState.data.search.searchData.description).to.equal("d");
-    expect(newState.data.search.searchData.shortName).to.equal("s");
-    expect(newState.data.search.searchData.template("test")).to.equal(
+    expect(newState.data?.search).to.be.ok;
+    expect(newState.data?.search?.searchData?.description).to.equal("d");
+    expect(newState.data?.search?.searchData?.shortName).to.equal("s");
+    expect(newState.data?.search?.searchData?.template("test")).to.equal(
       "test template"
     );
   });

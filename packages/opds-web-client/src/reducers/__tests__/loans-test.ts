@@ -97,7 +97,7 @@ describe("loans reducer", () => {
       id: "new book id",
       url: "new book url",
       title: "new book title",
-      fulfillmentLinks: [{ url: "url", type: "text/html", indirectType: null }]
+      fulfillmentLinks: [{ url: "url", type: "text/html", indirectType: "" }]
     };
     let action = actions.load<BookData>(ActionCreator.UPDATE_BOOK, newBookData);
     let newState = { ...oldState, books: [loansData.books[0], newBookData] };

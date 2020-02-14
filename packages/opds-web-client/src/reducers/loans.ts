@@ -2,7 +2,7 @@ import { BookData } from "../interfaces";
 import ActionCreator from "../actions";
 
 export interface LoansState {
-  url: string;
+  url: string | null;
   books: BookData[];
 }
 
@@ -40,7 +40,7 @@ export default (state: LoansState = initialState, action): LoansState => {
       let isBorrowed =
         updatedBook.fulfillmentLinks && updatedBook.fulfillmentLinks.length > 0;
 
-      let newLoans = [];
+      let newLoans: BookData[] = [];
       // Copy over all the books except the updated one.
       for (let loan of state.books) {
         if (loan.id !== updatedBook.id) {

@@ -342,6 +342,9 @@ describe("history reducer", () => {
       id: "test id",
       url: "test url",
       title: "test title",
+      catalogRootLink: {
+        url: "root url"
+      },
       lanes: [],
       books: [],
       navigationLinks: []

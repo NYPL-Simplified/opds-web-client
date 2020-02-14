@@ -110,7 +110,7 @@ export default class ActionCreator {
     };
   }
 
-  fetchJSON<T>(type: string, url?: string) {
+  fetchJSON<T>(type: string, url: string) {
     let err: RequestError;
     return (dispatch): Promise<T> => {
       return new Promise<T>((resolve, reject) => {
@@ -171,7 +171,7 @@ export default class ActionCreator {
     };
   }
 
-  fetchOPDS<T>(type: string, url?: string) {
+  fetchOPDS<T>(type: string, url: string) {
     return (dispatch): Promise<T> => {
       dispatch(this.request(type, url));
       return new Promise<T>((resolve, reject) => {
@@ -272,7 +272,7 @@ export default class ActionCreator {
         this.fetcher
           .fetchOPDSData(url)
           .then((book: BookData) => {
-            let link = book.fulfillmentLinks.find(link => link.type === type);
+            let link = book.fulfillmentLinks?.find(link => link.type === type);
 
             if (link) {
               dispatch(this.success(ActionCreator.FULFILL_BOOK));
@@ -303,7 +303,7 @@ export default class ActionCreator {
     providers: AuthProvider<AuthMethod>[],
     title: string,
     error?: string,
-    attemptedProvider?: string
+    attemptedProvider?: string | null
   ) {
     return {
       type: ActionCreator.SHOW_AUTH_FORM,

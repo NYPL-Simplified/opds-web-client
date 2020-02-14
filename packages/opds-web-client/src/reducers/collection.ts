@@ -3,8 +3,8 @@ import history from "./history";
 import ActionCreator from "../actions";
 
 export interface CollectionState {
-  url: string;
-  data?: CollectionData;
+  url: string | null;
+  data?: CollectionData | null;
   isFetching?: boolean;
   isFetchingPage: boolean;
   error?: FetchErrorData | null;
@@ -75,7 +75,9 @@ const collection = (state = initialState, action): CollectionState => {
       return {
         ...state,
         data: Object.assign({}, state.data, {
-          books: [...state.data.books].concat(action.data.books),
+          // the following optional chaining will evaluate to [] if
+          // state.data.books is null or undefined
+          books: [...(state.data?.books ?? [])].concat(action.data.books),
           nextPageUrl: action.data.nextPageUrl
         }),
         isFetchingPage: false

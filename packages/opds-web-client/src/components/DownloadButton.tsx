@@ -7,7 +7,7 @@ export interface DownloadButtonProps extends React.HTMLProps<{}> {
   mimeType: string;
   isPlainLink?: boolean;
   fulfill?: (url: string) => Promise<Blob>;
-  indirectFulfill?: (url: string, type: string) => Promise<string>;
+  indirectFulfill?: (url: string, type: string | undefined) => Promise<string>;
   title?: string;
   indirectType?: string;
 }
@@ -68,15 +68,20 @@ export default class DownloadButton extends React.Component<
   fulfill() {
     if (this.isIndirect()) {
       return this.props
-        .indirectFulfill(this.props.url, this.props.indirectType)
+        .indirectFulfill?.(this.props.url, this.props.indirectType)
         .then(url => {
           window.open(url, "_blank");
         });
     } else {
-      return this.props.fulfill(this.props.url).then(blob => {
+      return this.props.fulfill?.(this.props.url).then(blob => {
         download(
           blob,
-          generateFilename(this.props.title, this.fileExtension()),
+          generateFilename(
+            // the following is meant to smoothly handle the case where
+            // this.props.title is undefined or null
+            this.props.title ?? "untitled",
+            this.fileExtension()
+          ),
           // TODO: use mimeType variable once we fix the link type in our OPDS entries
           this.mimeType()
         );

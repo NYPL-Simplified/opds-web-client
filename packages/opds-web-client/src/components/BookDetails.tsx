@@ -75,7 +75,7 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
           <div
             className="summary"
             lang={this.props.book.language}
-            dangerouslySetInnerHTML={{ __html: this.props.book.summary }}
+            dangerouslySetInnerHTML={{ __html: this.props.book.summary ?? "" }}
           ></div>
         </div>
       </div>
@@ -121,7 +121,7 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
       return [];
     }
 
-    let info = [];
+    let info: JSX.Element[] = [];
 
     let availableCopies =
       this.props.book.copies && this.props.book.copies.available;
