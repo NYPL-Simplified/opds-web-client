@@ -193,8 +193,6 @@ export interface BasicAuthMethod extends AuthMethod {
   };
 }
 
-type PickAndRequire<T, K extends keyof T> = { [P in K]-?: NonNullable<T[P]> };
-
-/** Utility to make certain keys of a type required */
+/** Utility to make keys K of type T both required (defined) and not null */
 export type RequiredKeys<T, K extends keyof T> = Omit<T, K> &
-  PickAndRequire<T, K>;
+  { [P in K]-?: NonNullable<T[P]> };
