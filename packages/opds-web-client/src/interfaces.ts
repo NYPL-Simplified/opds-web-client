@@ -1,6 +1,6 @@
 import AuthPlugin from "./AuthPlugin";
 
-export type OpenAccessLinkType =
+export type MediaType =
   | "application/epub+zip"
   | "application/kepub+zip"
   | "application/pdf"
@@ -10,8 +10,13 @@ export type OpenAccessLinkType =
 
 export type FulfillmentLink = {
   url: string;
-  type: string;
+  type: MediaType;
   indirectType: string;
+};
+
+export type OpenAccessLink = {
+  url: string;
+  type: MediaType;
 };
 
 export interface BookData {
@@ -26,10 +31,7 @@ export interface BookData {
   subtitle?: string;
   summary?: string;
   imageUrl?: string;
-  openAccessLinks?: {
-    url: string;
-    type: OpenAccessLinkType;
-  }[];
+  openAccessLinks?: OpenAccessLink[];
   borrowUrl?: string;
   fulfillmentLinks?: FulfillmentLink[];
   availability?: {
