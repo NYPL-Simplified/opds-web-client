@@ -6,6 +6,7 @@ import { shallow, mount } from "enzyme";
 
 import BasicAuthForm from "../BasicAuthForm";
 import BasicAuthPlugin from "../../BasicAuthPlugin";
+import { generateCredentials } from "../../utils/auth";
 
 describe("BasicAuthForm", () => {
   describe("rendering", () => {
@@ -135,9 +136,7 @@ describe("BasicAuthForm", () => {
         username.value = "doubleohseven";
         password = wrapper.find("input[type='password']").getDOMNode();
         password.value = "thenameisbond";
-        credentials = wrapper
-          .instance()
-          .generateCredentials("doubleohseven", "thenameisbond");
+        credentials = generateCredentials("doubleohseven", "thenameisbond");
         validate = stub().returns(true);
         wrapper.instance().validate = validate;
         form = wrapper.find("form");
