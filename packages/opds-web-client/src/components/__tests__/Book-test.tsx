@@ -5,6 +5,7 @@ import * as React from "react";
 import * as PropTypes from "prop-types";
 import { shallow, mount } from "enzyme";
 import { AudioHeadphoneIcon } from "@nypl/dgx-svg-icons";
+import { Provider } from "react-redux";
 
 import Book from "../Book";
 import { BookData } from "../../interfaces";
@@ -13,6 +14,8 @@ import BookCover from "../BookCover";
 import BorrowButton from "../BorrowButton";
 import DownloadButton from "../DownloadButton";
 import { mockRouterContext } from "../../__mocks__/routing";
+import { ActionsProvider } from "../context/ActionsContext";
+import buildStore from "../../store";
 
 let book: BookData = {
   id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
@@ -40,26 +43,15 @@ let book: BookData = {
 
 describe("Book", () => {
   let updateBook;
-  let fulfillBook;
-  let indirectFulfillBook;
   let epubReaderUrlTemplate;
 
   beforeEach(() => {
     updateBook = stub();
-    fulfillBook = stub();
-    indirectFulfillBook = stub();
     epubReaderUrlTemplate = stub().returns("test reader url");
   });
 
   it("shows the book cover", () => {
-    let wrapper = shallow(
-      <Book
-        book={book}
-        updateBook={updateBook}
-        fulfillBook={fulfillBook}
-        indirectFulfillBook={indirectFulfillBook}
-      />
-    );
+    let wrapper = shallow(<Book book={book} updateBook={updateBook} />);
 
     let links = wrapper.find(CatalogLink);
     let cover = links
@@ -71,14 +63,7 @@ describe("Book", () => {
   });
 
   it("has language attribute matching the book's language", () => {
-    let wrapper = shallow(
-      <Book
-        book={book}
-        updateBook={updateBook}
-        fulfillBook={fulfillBook}
-        indirectFulfillBook={indirectFulfillBook}
-      />
-    );
+    let wrapper = shallow(<Book book={book} updateBook={updateBook} />);
 
     let bookElement = wrapper.find(".book");
     expect(bookElement.props().lang).to.equal("de");
@@ -86,14 +71,7 @@ describe("Book", () => {
 
   describe("getMedium function", () => {
     it("returns value with data or an empty string", () => {
-      let wrapper = shallow(
-        <Book
-          book={book}
-          updateBook={updateBook}
-          fulfillBook={fulfillBook}
-          indirectFulfillBook={indirectFulfillBook}
-        />
-      );
+      let wrapper = shallow(<Book book={book} updateBook={updateBook} />);
 
       let instance = wrapper.instance() as any;
       let getMedium = instance.getMedium;
@@ -114,14 +92,7 @@ describe("Book", () => {
     let getMediumSVG;
 
     beforeEach(() => {
-      wrapper = shallow(
-        <Book
-          book={book}
-          updateBook={updateBook}
-          fulfillBook={fulfillBook}
-          indirectFulfillBook={indirectFulfillBook}
-        />
-      );
+      wrapper = shallow(<Book book={book} updateBook={updateBook} />);
 
       instance = wrapper.instance() as any;
       getMediumSVG = instance.getMediumSVG;
@@ -150,14 +121,7 @@ describe("Book", () => {
 
   describe("compact info", () => {
     it("shows book info", () => {
-      let wrapper = shallow(
-        <Book
-          book={book}
-          updateBook={updateBook}
-          fulfillBook={fulfillBook}
-          indirectFulfillBook={indirectFulfillBook}
-        />
-      );
+      let wrapper = shallow(<Book book={book} updateBook={updateBook} />);
 
       let links = wrapper.find(CatalogLink);
       let bookInfo = links
@@ -176,14 +140,7 @@ describe("Book", () => {
         authors: [],
         contributors: ["contributor"]
       });
-      let wrapper = shallow(
-        <Book
-          book={bookCopy}
-          updateBook={updateBook}
-          fulfillBook={fulfillBook}
-          indirectFulfillBook={indirectFulfillBook}
-        />
-      );
+      let wrapper = shallow(<Book book={bookCopy} updateBook={updateBook} />);
 
       let links = wrapper.find(CatalogLink);
       let bookInfo = links
@@ -195,14 +152,7 @@ describe("Book", () => {
     });
 
     it("renders two icons and labels in the compact and expanded views", () => {
-      let wrapper = shallow(
-        <Book
-          book={book}
-          updateBook={updateBook}
-          fulfillBook={fulfillBook}
-          indirectFulfillBook={indirectFulfillBook}
-        />
-      );
+      let wrapper = shallow(<Book book={book} updateBook={updateBook} />);
 
       let itemIcon = wrapper.find(".item-icon");
       let svg = itemIcon.find(AudioHeadphoneIcon);
@@ -224,8 +174,6 @@ describe("Book", () => {
         <Book
           book={book}
           updateBook={updateBook}
-          fulfillBook={fulfillBook}
-          indirectFulfillBook={indirectFulfillBook}
           epubReaderUrlTemplate={epubReaderUrlTemplate}
         />
       );
@@ -245,14 +193,7 @@ describe("Book", () => {
         authors: [],
         contributors: ["contributor"]
       });
-      wrapper = shallow(
-        <Book
-          book={bookCopy}
-          updateBook={updateBook}
-          fulfillBook={fulfillBook}
-          indirectFulfillBook={indirectFulfillBook}
-        />
-      );
+      wrapper = shallow(<Book book={bookCopy} updateBook={updateBook} />);
 
       let bookInfo = wrapper.find(".expanded-info");
       let authors = bookInfo.find(".authors");
@@ -274,14 +215,7 @@ describe("Book", () => {
       let bookCopy = Object.assign({}, book, {
         publisher: null
       });
-      wrapper = shallow(
-        <Book
-          book={bookCopy}
-          updateBook={stub()}
-          fulfillBook={stub()}
-          indirectFulfillBook={stub()}
-        />
-      );
+      wrapper = shallow(<Book book={bookCopy} updateBook={stub()} />);
 
       let publisher = wrapper.find(".publisher");
       expect(publisher.length).to.equal(0);
@@ -299,14 +233,7 @@ describe("Book", () => {
 
     it("doesn't show categories when there aren't any", () => {
       let bookCopy = Object.assign({}, book, { categories: [] });
-      wrapper = shallow(
-        <Book
-          book={bookCopy}
-          updateBook={stub()}
-          fulfillBook={stub()}
-          indirectFulfillBook={stub()}
-        />
-      );
+      wrapper = shallow(<Book book={bookCopy} updateBook={stub()} />);
 
       let categories = wrapper.find(".categories");
       expect(categories.length).to.equal(0);
@@ -319,18 +246,19 @@ describe("Book", () => {
 
     it("shows summary, in book's language, with html stripped out and more link", () => {
       let context = mockRouterContext();
+      let store = buildStore();
       wrapper = mount(
-        <Book
-          book={book}
-          updateBook={updateBook}
-          fulfillBook={stub()}
-          indirectFulfillBook={stub()}
-        />,
+        <Provider store={store}>
+          <ActionsProvider>
+            <Book book={book} updateBook={updateBook} />
+          </ActionsProvider>
+        </Provider>,
         {
           context,
           childContextTypes: {
             router: PropTypes.object,
-            pathFor: PropTypes.func
+            pathFor: PropTypes.func,
+            actions: PropTypes.any
           }
         }
       );
@@ -371,14 +299,7 @@ describe("Book", () => {
         borrowUrl: "borrow url"
       });
       let updateBook = stub();
-      wrapper = shallow(
-        <Book
-          book={bookCopy}
-          updateBook={updateBook}
-          fulfillBook={stub()}
-          indirectFulfillBook={stub()}
-        />
-      );
+      wrapper = shallow(<Book book={bookCopy} updateBook={updateBook} />);
 
       let button = wrapper.find(BorrowButton);
       expect(button.children().text()).to.equal("Borrow");
@@ -403,20 +324,10 @@ describe("Book", () => {
         openAccessLinks: [],
         fulfillmentLinks: [link]
       });
-      let fulfillBook = stub();
-      let indirectFulfillBook = stub();
       wrapper = shallow(
-        <Book
-          book={bookCopy}
-          updateBook={stub()}
-          fulfillBook={fulfillBook}
-          indirectFulfillBook={indirectFulfillBook}
-          isSignedIn={false}
-        />
+        <Book book={bookCopy} updateBook={stub()} isSignedIn={false} />
       );
       let button = wrapper.find(DownloadButton);
-      expect(button.props().fulfill).to.equal(fulfillBook);
-      expect(button.props().indirectFulfill).to.equal(indirectFulfillBook);
       expect(button.props().url).to.equal(link.url);
       expect(button.props().title).to.equal(bookCopy.title);
       expect(button.props().mimeType).to.equal(link.type);
@@ -432,14 +343,7 @@ describe("Book", () => {
         openAccessLinks: [],
         fulfillmentLinks: [link]
       });
-      wrapper = shallow(
-        <Book
-          book={bookCopy}
-          updateBook={stub()}
-          fulfillBook={stub()}
-          indirectFulfillBook={stub()}
-        />
-      );
+      wrapper = shallow(<Book book={bookCopy} updateBook={stub()} />);
       let button = wrapper.find(BorrowButton);
       expect(button.props().children).to.equal("Borrowed");
       expect(button.props().disabled).to.equal(true);
@@ -450,14 +354,7 @@ describe("Book", () => {
         openAccessLinks: [],
         availability: { status: "reserved" }
       });
-      wrapper = shallow(
-        <Book
-          book={bookCopy}
-          updateBook={stub()}
-          fulfillBook={stub()}
-          indirectFulfillBook={stub()}
-        />
-      );
+      wrapper = shallow(<Book book={bookCopy} updateBook={stub()} />);
       let button = wrapper.find("button");
       expect(button.text()).to.equal("Reserved");
       expect(button.props().className).to.contain("disabled");
@@ -468,14 +365,7 @@ describe("Book", () => {
         openAccessLinks: [],
         availability: { status: "ready" }
       });
-      wrapper = shallow(
-        <Book
-          book={bookCopy}
-          updateBook={stub()}
-          fulfillBook={stub()}
-          indirectFulfillBook={stub()}
-        />
-      );
+      wrapper = shallow(<Book book={bookCopy} updateBook={stub()} />);
       let button = wrapper.find(BorrowButton);
       expect(button.length).to.equal(1);
       expect(button.html()).to.contain("Borrow");

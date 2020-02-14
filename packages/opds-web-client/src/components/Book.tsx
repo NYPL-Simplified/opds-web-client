@@ -205,8 +205,6 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
         links.push(
           <DownloadButton
             key={`${link.url}-${index}`}
-            fulfill={this.props.fulfillBook}
-            indirectFulfill={this.props.indirectFulfillBook}
             url={link.url}
             mimeType={link.type}
             title={this.props.book.title}
@@ -215,6 +213,7 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
           />
         );
       });
+
       links.push(
         <BorrowButton
           key={this.props.book.borrowUrl}
@@ -229,8 +228,6 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
         links.push(
           <DownloadButton
             key={`${link.url}-${index}`}
-            fulfill={this.props.fulfillBook}
-            indirectFulfill={this.props.indirectFulfillBook}
             url={link.url}
             mimeType={link.type}
             title={this.props.book.title}
@@ -239,6 +236,7 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
           />
         );
       });
+
     }
 
     if (bookIsReserved(this.props.book)) {

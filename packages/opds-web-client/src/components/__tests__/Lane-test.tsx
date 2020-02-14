@@ -47,8 +47,6 @@ describe("Lane", () => {
           lane={laneData}
           collectionUrl="test collection"
           updateBook={updateBook}
-          fulfillBook={fulfillBook}
-          indirectFulfillBook={indirectFulfillBook}
         />
       );
     });
@@ -133,8 +131,6 @@ describe("Lane", () => {
           lane={laneData}
           collectionUrl="test collection"
           updateBook={updateBook}
-          fulfillBook={fulfillBook}
-          indirectFulfillBook={indirectFulfillBook}
         />,
         {
           context,

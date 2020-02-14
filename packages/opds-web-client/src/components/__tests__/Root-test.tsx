@@ -555,8 +555,6 @@ describe("Root", () => {
     expect(bookWrapper.length).to.equal(1);
     expect(book.props().book).to.equal(loans[0]);
     expect(book.props().updateBook).to.equal(updateBook);
-    expect(book.props().fulfillBook).to.equal(fulfillBook);
-    expect(book.props().indirectFulfillBook).to.equal(indirectFulfillBook);
     expect(book.props().isSignedIn).to.equal(true);
     expect(book.props().epubReaderUrlTemplate).to.equal(epubReaderUrlTemplate);
   });

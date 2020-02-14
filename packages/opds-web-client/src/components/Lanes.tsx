@@ -25,8 +25,6 @@ export interface LanesProps {
   hideMoreLinks?: boolean;
   isFetching?: boolean;
   updateBook: (url: string) => Promise<BookData>;
-  fulfillBook: (url: string) => Promise<Blob>;
-  indirectFulfillBook: (url: string, type: string) => Promise<string>;
   isSignedIn?: boolean;
   epubReaderUrlTemplate?: (epubUrl: string) => string;
 }
@@ -49,12 +47,10 @@ export class Lanes extends React.Component<LanesProps, {}> {
                 <li key={index}>
                   <Lane
                     lane={lane}
-                    collectionUrl={this.props.url}
                     hideMoreLink={this.props.hideMoreLinks}
+                    collectionUrl={this.props.url}
                     hiddenBookIds={this.props.hiddenBookIds}
                     updateBook={this.props.updateBook}
-                    fulfillBook={this.props.fulfillBook}
-                    indirectFulfillBook={this.props.indirectFulfillBook}
                     isSignedIn={this.props.isSignedIn}
                     epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
                   />

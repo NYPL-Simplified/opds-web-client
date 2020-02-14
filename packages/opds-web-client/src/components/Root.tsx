@@ -137,13 +137,13 @@ export class Root extends React.Component<RootProps, RootState> {
       this.props.collectionData,
       this.props.history
     );
+    let showBreadcrumbs =
+      this.props.collectionData && breadcrumbsLinks.length > 0;
 
     let showCollection = this.props.collectionData && !this.props.bookData;
     const showBook = !!this.props.bookData;
     let showBookWrapper = this.props.bookUrl || this.props.bookData;
     let showUrlForm = !this.props.collectionUrl && !this.props.bookUrl;
-    let showBreadcrumbs =
-      this.props.collectionData && breadcrumbsLinks.length > 0;
     let showSearch =
       this.props.collectionData && this.props.collectionData.search;
     // The tabs should only display if the component is passed and if
@@ -283,8 +283,6 @@ export class Root extends React.Component<RootProps, RootState> {
                           this.props.bookUrl
                         )}
                         updateBook={this.props.updateBook}
-                        fulfillBook={this.props.fulfillBook}
-                        indirectFulfillBook={this.props.indirectFulfillBook}
                         isSignedIn={this.props.isSignedIn}
                         epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
                       />
@@ -298,8 +296,6 @@ export class Root extends React.Component<RootProps, RootState> {
                           this.props.bookUrl
                         )}
                         updateBook={this.props.updateBook}
-                        fulfillBook={this.props.fulfillBook}
-                        indirectFulfillBook={this.props.indirectFulfillBook}
                         isSignedIn={this.props.isSignedIn}
                         epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
                       />

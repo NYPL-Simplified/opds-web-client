@@ -93,8 +93,6 @@ export default class Collection extends React.Component<CollectionProps, {}> {
                 url={this.props.collection.url}
                 lanes={this.props.collection.lanes}
                 updateBook={this.props.updateBook}
-                fulfillBook={this.props.fulfillBook}
-                indirectFulfillBook={this.props.indirectFulfillBook}
                 isSignedIn={this.props.isSignedIn}
                 epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
               />
@@ -111,8 +109,6 @@ export default class Collection extends React.Component<CollectionProps, {}> {
                       book={book}
                       collectionUrl={this.props.collection.url}
                       updateBook={this.props.updateBook}
-                      fulfillBook={this.props.fulfillBook}
-                      indirectFulfillBook={this.props.indirectFulfillBook}
                       isSignedIn={this.props.isSignedIn}
                       epubReaderUrlTemplate={this.props.epubReaderUrlTemplate}
                     />
