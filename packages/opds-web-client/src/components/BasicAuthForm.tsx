@@ -74,8 +74,7 @@ export default class BasicAuthForm extends React.Component<
    * validate()
    * Not all libraries require a password to log in so that value is not checked.
    */
-  validate() {
-    const login = this.loginRef.current && this.loginRef.current.value;
+  validate(login?: string | null): login is string {
     if (!login) {
       this.setState({
         error: `${this.loginLabel()} is required`
@@ -91,11 +90,12 @@ export default class BasicAuthForm extends React.Component<
   submit(event) {
     event.preventDefault();
 
-    if (this.validate()) {
+    if (this.validate(this.loginRef.current?.value)) {
       const login = this.loginRef.current && this.loginRef.current.value;
       const password =
         this.passwordRef.current && this.passwordRef.current.value;
-      let credentials = generateCredentials(login, password);
+      // if there is no password provided, pass an empty string
+      let credentials = generateCredentials(login, password ?? "");
 
       this.props.saveCredentials?.({
         provider: this.props.provider?.id,
