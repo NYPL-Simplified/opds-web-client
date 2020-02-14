@@ -26,7 +26,7 @@ export function loanedBookData(
 }
 
 export function collectionDataWithLoans(
-  collectionData: CollectionData | undefined,
+  collectionData: CollectionData | null | undefined,
   loans: BookData[] | undefined
 ): CollectionData {
   // If any books in the collection are in the loans feed, replace them with their
