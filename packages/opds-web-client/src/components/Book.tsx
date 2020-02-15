@@ -17,8 +17,6 @@ export interface BookProps {
   book: BookData;
   collectionUrl?: string;
   updateBook: (url: string | undefined) => Promise<BookData>;
-  fulfillBook: (url: string) => Promise<Blob>;
-  indirectFulfillBook: (url: string, type: string) => Promise<string>;
   isSignedIn?: boolean;
   epubReaderUrlTemplate?: (epubUrl: string) => string;
 }
@@ -236,7 +234,6 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
           />
         );
       });
-
     }
 
     if (bookIsReserved(this.props.book)) {
