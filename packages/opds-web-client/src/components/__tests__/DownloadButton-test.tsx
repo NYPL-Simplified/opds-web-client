@@ -32,7 +32,7 @@ describe("DownloadButton", () => {
    **/
   const providerWrapper: React.FC<React.ReactNode> = component => (
     <Provider store={store}>
-      <ActionsContext.Provider value={actions}>
+      <ActionsContext.Provider value={{ actions, fetcher }}>
         {component}
       </ActionsContext.Provider>
     </Provider>

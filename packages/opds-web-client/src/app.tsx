@@ -32,7 +32,7 @@ const OPDSCatalogRouterHandler = config => {
       };
       return (
         <PathForProvider pathFor={config.pathFor}>
-          <ActionsProvider>
+          <ActionsProvider proxyUrl={config.proxyUrl}>
             <OPDSCatalog {...mergedProps} />
           </ActionsProvider>
         </PathForProvider>

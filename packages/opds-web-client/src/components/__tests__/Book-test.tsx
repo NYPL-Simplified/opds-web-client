@@ -249,7 +249,7 @@ describe("Book", () => {
       let store = buildStore();
       wrapper = mount(
         <Provider store={store}>
-          <ActionsProvider>
+          <ActionsProvider proxyUrl={null}>
             <Book book={book} updateBook={updateBook} />
           </ActionsProvider>
         </Provider>,

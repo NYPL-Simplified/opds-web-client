@@ -5,16 +5,19 @@ import DataFetcher from "../../DataFetcher";
 import { adapter } from "../../OPDSDataAdapter";
 
 // The main context for this app's Actions.
-export const ActionsContext = React.createContext<ActionsCreator | undefined>(
+type ActionsContextType =
+  | { fetcher: DataFetcher; actions: ActionsCreator }
+  | undefined;
+export const ActionsContext = React.createContext<ActionsContextType>(
   undefined
 );
 
-export function ActionsProvider({ children }) {
-  const fetcher = new DataFetcher({ adapter });
+export function ActionsProvider({ children, proxyUrl }) {
+  const fetcher = new DataFetcher({ adapter, proxyUrl });
   const actions = new ActionsCreator(fetcher);
 
   return (
-    <ActionsContext.Provider value={actions}>
+    <ActionsContext.Provider value={{ actions, fetcher }}>
       {children}
     </ActionsContext.Provider>
   );
@@ -29,7 +32,8 @@ export function useActions() {
   if (typeof context === "undefined") {
     throw new Error("useActions must be used within a ActionsProvider");
   }
-  return { actions: context, dispatch };
+  const { actions, fetcher } = context;
+  return { actions, fetcher, dispatch };
 }
 
 export default ActionsContext;
