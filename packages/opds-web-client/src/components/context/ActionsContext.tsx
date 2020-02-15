@@ -12,7 +12,13 @@ export const ActionsContext = React.createContext<ActionsContextType>(
   undefined
 );
 
-export function ActionsProvider({ children, proxyUrl }) {
+export function ActionsProvider({
+  children,
+  proxyUrl
+}: {
+  children: React.ReactNode;
+  proxyUrl?: string;
+}) {
   const fetcher = new DataFetcher({ adapter, proxyUrl });
   const actions = new ActionsCreator(fetcher);
 
