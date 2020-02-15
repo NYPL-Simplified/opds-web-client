@@ -6,7 +6,9 @@ export type MediaType =
   | "application/pdf"
   | "application/vnd.adobe.adept+xml"
   | "application/x-mobipocket-ebook"
-  | "application/x-mobi8-ebook";
+  | "application/x-mobi8-ebook"
+  | "application/atom+xml;type=entry;profile=opds-catalog"
+  | "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media";
 
 export interface MediaLink {
   url: string;

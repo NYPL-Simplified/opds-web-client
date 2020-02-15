@@ -277,12 +277,13 @@ describe("Book", () => {
       let epubButton = buttons.at(0);
       let mobiButton = buttons.at(1);
 
-      expect(epubButton.props().url).to.equal("secrets.epub");
-      expect(epubButton.props().mimeType).to.equal("application/epub+zip");
+      console.log(epubButton.props().link.type);
+      expect(epubButton.props().link.url).to.equal("secrets.epub");
+      expect(epubButton.props().link.type).to.equal("application/epub+zip");
       expect(epubButton.props().isPlainLink).to.equal(true);
 
-      expect(mobiButton.props().url).to.equal("secrets.mobi");
-      expect(mobiButton.props().mimeType).to.equal(
+      expect(mobiButton.props().link.url).to.equal("secrets.mobi");
+      expect(mobiButton.props().link.type).to.equal(
         "application/x-mobipocket-ebook"
       );
       expect(mobiButton.props().isPlainLink).to.equal(true);
@@ -328,9 +329,9 @@ describe("Book", () => {
         <Book book={bookCopy} updateBook={stub()} isSignedIn={false} />
       );
       let button = wrapper.find(DownloadButton);
-      expect(button.props().url).to.equal(link.url);
+      expect(button.props().link.url).to.equal(link.url);
       expect(button.props().title).to.equal(bookCopy.title);
-      expect(button.props().mimeType).to.equal(link.type);
+      expect(button.props().link.type).to.equal(link.type);
       expect(button.props().isPlainLink).to.equal(true);
     });
 

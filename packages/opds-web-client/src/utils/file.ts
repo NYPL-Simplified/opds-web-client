@@ -32,6 +32,14 @@ export const typeMap: TypeMap = {
   "application/x-mobi8-ebook": {
     extension: ".azw3",
     name: "Mobi8"
+  },
+  "application/atom+xml;type=entry;profile=opds-catalog": {
+    extension: "",
+    name: "atom"
+  },
+  "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media": {
+    extension: "",
+    name: "streaming-media"
   }
 };
 

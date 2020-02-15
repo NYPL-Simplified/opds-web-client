@@ -381,7 +381,6 @@ export class Root extends React.Component<RootProps, RootState> {
     if (authError) {
       this.setState({ authError });
     } else if (this.props.collectionUrl || this.props.bookUrl) {
-      console.log("FETCH", this.props.collectionUrl, this.props.bookUrl);
       return this.props
         .setCollectionAndBook?.(this.props.collectionUrl, this.props.bookUrl)
         .then(({ collectionData, bookData }) => {
