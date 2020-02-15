@@ -26,7 +26,7 @@ const STREAMING_MEDIA_LINK_TYPE: MediaType =
 
 export default function useDownloadButton(
   link: MediaLink | FulfillmentLink,
-  title
+  title: string
 ) {
   const { actions, dispatch } = useActions();
   const mimeTypeValue = fixMimeType(link.type);

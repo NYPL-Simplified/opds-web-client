@@ -1,7 +1,4 @@
 import * as React from "react";
-import download from "./download";
-import { useActions } from "./context/ActionsContext";
-import { typeMap, generateFilename } from "../utils/file";
 import useDownloadButton from "../hooks/useDownloadButton";
 import { MediaLink, FulfillmentLink } from "./../interfaces";
 
