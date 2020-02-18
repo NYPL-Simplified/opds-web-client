@@ -9,10 +9,10 @@ import {
 export interface AuthFormProps<T extends AuthMethod> {
   hide?: () => void;
   saveCredentials?: (credentials: AuthCredentials) => void;
-  callback?: AuthCallback;
-  cancel?: () => void;
-  error?: string;
-  provider?: AuthProvider<T>;
+  callback?: AuthCallback | null;
+  cancel?: (() => void) | null;
+  error?: string | null;
+  provider: AuthProvider<T>;
 }
 
 export interface AuthButtonProps<T extends AuthMethod> {
@@ -21,18 +21,18 @@ export interface AuthButtonProps<T extends AuthMethod> {
 }
 
 export interface AuthProviderSelectionFormProps {
-  hide: () => void;
-  saveCredentials: (credentials: AuthCredentials) => void;
-  callback?: AuthCallback;
-  cancel: () => void;
-  title?: string;
-  error?: string;
-  attemptedProvider?: string;
-  providers?: AuthProvider<AuthMethod>[];
+  hide?: () => void;
+  saveCredentials?: (credentials: AuthCredentials) => void;
+  callback?: AuthCallback | null;
+  cancel: (() => void) | null;
+  title?: string | null;
+  error?: string | null;
+  attemptedProvider?: string | null;
+  providers?: AuthProvider<AuthMethod>[] | null;
 }
 
 export interface AuthProviderSelectionFormState {
-  selectedProvider: AuthProvider<AuthMethod>;
+  selectedProvider: AuthProvider<AuthMethod> | null;
 }
 
 /** Shows buttons for each available authentication provider, or the form for
@@ -43,9 +43,9 @@ export default class AuthProviderSelectionForm extends React.Component<
 > {
   constructor(props) {
     super(props);
-    let selectedProvider = null;
+    let selectedProvider: AuthProvider<AuthMethod> | null = null;
     if (this.props.error && this.props.attemptedProvider) {
-      for (let provider of this.props.providers) {
+      for (let provider of this.props.providers ?? []) {
         if (this.props.attemptedProvider === provider.id) {
           selectedProvider = provider;
           break;
@@ -71,7 +71,7 @@ export default class AuthProviderSelectionForm extends React.Component<
           <h3 id="auth-form-title">
             {this.props.title ? this.props.title + " " : ""}Login
           </h3>
-          {this.state.selectedProvider && (
+          {this.state.selectedProvider && AuthForm && (
             <AuthForm
               hide={this.props.hide}
               saveCredentials={this.props.saveCredentials}
@@ -95,7 +95,10 @@ export default class AuthProviderSelectionForm extends React.Component<
                     </li>
                   ))}
                 </ul>
-                <button className="btn btn-default" onClick={this.props.cancel}>
+                <button
+                  className="btn btn-default"
+                  onClick={this.props.cancel ?? undefined}
+                >
                   Cancel
                 </button>
               </div>

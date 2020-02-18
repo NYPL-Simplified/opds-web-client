@@ -1,11 +1,17 @@
 ## Changelog
 
+### v0.3.5
+
+- Enables typescript `strictNullChecks`, which means that types cannot be `null` or `undefined` unless explicitly defined as such.
+- Changes many types to allow for this, attempting to maintain the original functionality when running into errors.
+- Adds kepub file type support via both typings and the typeMap.
+- Extracts some utilities from `Root` and `Book` and `BookDetails` from class methods to plain functions so they can be imported and used elsewhere.
+
 ### v0.3.4
 
 - Converted `Breadcrumbs.tsx` into a functional component.
 - Created custom hooks for to use with redux: `useTypedSelector`, `useThunkDispatch`, and `useActions`.
 - Refactored `DownloadButton.tsx` to use the hooks to call actions instead of having the `fulfillbook` and `indirectFulfillBook` functions be passed down as props from the root application component.
-
 
 ### v0.3.3
 

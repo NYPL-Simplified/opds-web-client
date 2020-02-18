@@ -3,14 +3,20 @@ import CatalogLink from "./CatalogLink";
 import BookCover from "./BookCover";
 import BorrowButton from "./BorrowButton";
 import DownloadButton from "./DownloadButton";
-import { BookData } from "../interfaces";
+import { BookData, FulfillmentLink } from "../interfaces";
 import { AudioHeadphoneIcon, BookIcon } from "@nypl/dgx-svg-icons";
+import {
+  bookIsBorrowed,
+  bookIsReserved,
+  bookIsReady,
+  bookIsOpenAccess
+} from "../utils/book";
 const download = require("downloadjs");
 
 export interface BookProps {
   book: BookData;
   collectionUrl?: string;
-  updateBook: (url: string) => Promise<BookData>;
+  updateBook: (url: string | undefined) => Promise<BookData>;
   isSignedIn?: boolean;
   epubReaderUrlTemplate?: (epubUrl: string) => string;
 }
@@ -38,7 +44,7 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
         ? book.contributors.join(", ")
         : "";
     // Display contributors only if there are no authors.
-    const authors = hasAuthors ? book.authors.join(", ") : contributors;
+    const authors = hasAuthors ? book.authors?.join(", ") : contributors;
 
     return (
       <div className={`book ${showMediaIconClass}`} lang={book.language}>
@@ -140,12 +146,12 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
     // Links are ordered so that the first link should be the most useful.
     // That way compact views can display only the first link.
 
-    let links = [];
+    let links: JSX.Element[] = [];
 
-    if (this.isOpenAccess()) {
+    if (bookIsOpenAccess(this.props.book)) {
       if (this.props.epubReaderUrlTemplate) {
         let index = 0;
-        for (const link of this.props.book.openAccessLinks) {
+        for (const link of this.props.book.openAccessLinks ?? []) {
           if (link.type === "application/epub+zip") {
             links.push(
               <span key={`${link.url}-${index}`}>
@@ -163,27 +169,25 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
         }
       }
 
-      links.push(
-        this.props.book.openAccessLinks.map((link, index) => {
-          return (
-            <DownloadButton
-              key={`${link.url}-${index}`}
-              url={link.url}
-              mimeType={link.type}
-              isPlainLink={true}
-            />
-          );
-        })
-      );
-    } else if (this.isBorrowed()) {
+      this.props.book.openAccessLinks?.forEach((link, index) => {
+        links.push(
+          <DownloadButton
+            key={`${link.url}-${index}`}
+            url={link.url}
+            mimeType={link.type}
+            isPlainLink={true}
+          />
+        );
+      });
+    } else if (bookIsBorrowed(this.props.book)) {
       // Put streaming links first, followed by a disabled "Borrowed" button that will
       // display in the list view if streaming is not available.
 
       let streamingMediaType =
         "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media";
-      let streamingLinks = [];
-      let downloadLinks = [];
-      for (let link of this.props.book.fulfillmentLinks) {
+      let streamingLinks: FulfillmentLink[] = [];
+      let downloadLinks: FulfillmentLink[] = [];
+      for (let link of this.props.book.fulfillmentLinks ?? []) {
         if (
           link.type === streamingMediaType ||
           link.indirectType === streamingMediaType
@@ -194,21 +198,20 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
         }
       }
 
-      links.push(
-        streamingLinks.map((link, index) => {
-          let isDirectStreaming = link.type === streamingMediaType;
-          return (
-            <DownloadButton
-              key={`${link.url}-${index}`}
-              url={link.url}
-              mimeType={link.type}
-              title={this.props.book.title}
-              isPlainLink={isDirectStreaming || !this.props.isSignedIn}
-              indirectType={link.indirectType}
-            />
-          );
-        })
-      );
+      streamingLinks.forEach((link, index) => {
+        let isDirectStreaming = link.type === streamingMediaType;
+        links.push(
+          <DownloadButton
+            key={`${link.url}-${index}`}
+            url={link.url}
+            mimeType={link.type}
+            title={this.props.book.title}
+            isPlainLink={isDirectStreaming || !this.props.isSignedIn}
+            indirectType={link.indirectType}
+          />
+        );
+      });
+
       links.push(
         <BorrowButton
           key={this.props.book.borrowUrl}
@@ -219,31 +222,29 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
           Borrowed
         </BorrowButton>
       );
-      links.push(
-        downloadLinks.map((link, index) => {
-          return (
-            <DownloadButton
-              key={`${link.url}-${index}`}
-              url={link.url}
-              mimeType={link.type}
-              title={this.props.book.title}
-              isPlainLink={!this.props.isSignedIn}
-              indirectType={link.indirectType}
-            />
-          );
-        })
-      );
+      downloadLinks.forEach((link, index) => {
+        links.push(
+          <DownloadButton
+            key={`${link.url}-${index}`}
+            url={link.url}
+            mimeType={link.type}
+            title={this.props.book.title}
+            isPlainLink={!this.props.isSignedIn}
+            indirectType={link.indirectType}
+          />
+        );
+      });
     }
 
-    if (this.isReserved()) {
+    if (bookIsReserved(this.props.book)) {
       links.push(
         <button key="onhold" className="btn btn-default disabled">
           Reserved
         </button>
       );
-    } else if (!this.isBorrowed() && this.props.book.borrowUrl) {
+    } else if (!bookIsBorrowed(this.props.book) && this.props.book.borrowUrl) {
       let label =
-        !this.isReady() &&
+        !bookIsReady(this.props.book) &&
         this.props.book.copies &&
         this.props.book.copies.available === 0
           ? "Reserve"
@@ -302,33 +303,5 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
 
   borrow(): Promise<BookData> {
     return this.props.updateBook(this.props.book.borrowUrl);
-  }
-
-  isReserved() {
-    return (
-      this.props.book.availability &&
-      this.props.book.availability.status === "reserved"
-    );
-  }
-
-  isReady() {
-    return (
-      this.props.book.availability &&
-      this.props.book.availability.status === "ready"
-    );
-  }
-
-  isBorrowed() {
-    return (
-      this.props.book.fulfillmentLinks &&
-      this.props.book.fulfillmentLinks.length > 0
-    );
-  }
-
-  isOpenAccess() {
-    return (
-      this.props.book.openAccessLinks &&
-      this.props.book.openAccessLinks.length > 0
-    );
   }
 }

@@ -5,7 +5,8 @@ const thunk = require("redux-thunk").default;
 import createAuthMiddleware from "./authMiddleware";
 import AuthPlugin from "./AuthPlugin";
 import { PathFor } from "./interfaces";
-let persistState = null;
+let persistState: any = null;
+
 try {
   const testKey = String(Math.random());
   window.localStorage.setItem(testKey, "test");

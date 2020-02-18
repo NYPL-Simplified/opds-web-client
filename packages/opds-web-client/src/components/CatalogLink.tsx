@@ -4,8 +4,8 @@ import { Link, Router } from "react-router";
 import { NavigateContext, Router as RouterType } from "../interfaces";
 
 export interface CatalogLinkProps extends React.HTMLProps<{}> {
-  collectionUrl?: string;
-  bookUrl?: string;
+  collectionUrl?: string | null;
+  bookUrl?: string | null;
 }
 
 /** Shows a link to another collection or book in the same OPDS catalog. */
@@ -38,9 +38,7 @@ export default class CatalogLink extends React.Component<CatalogLinkProps, {}> {
   }
 
   render(): JSX.Element {
-    let { collectionUrl, bookUrl, ...props } = this.props;
-    collectionUrl = collectionUrl || null;
-    bookUrl = bookUrl || null;
+    let { collectionUrl = null, bookUrl = null, ...props } = this.props;
 
     let location = this.context.pathFor(collectionUrl, bookUrl);
 

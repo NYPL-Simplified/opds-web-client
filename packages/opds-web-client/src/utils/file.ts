@@ -1,7 +1,7 @@
-import { OpenAccessLinkType } from "./../interfaces";
+import { MediaType } from "./../interfaces";
 
 type TypeMap = {
-  [key in OpenAccessLinkType]: {
+  [key in MediaType]: {
     extension: string;
     name: string;
   };
@@ -11,6 +11,11 @@ export const typeMap: TypeMap = {
   "application/epub+zip": {
     extension: ".epub",
     name: "EPUB"
+  },
+  "application/kepub+zip": {
+    // got this from here: https://wiki.mobileread.com/wiki/Kepub
+    extension: ".kepub.epub",
+    name: "KEPUB"
   },
   "application/pdf": {
     extension: ".pdf",

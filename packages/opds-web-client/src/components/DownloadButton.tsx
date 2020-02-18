@@ -29,7 +29,7 @@ const DownloadButton: React.FC<DownloadButtonProps> = props => {
       : mimeType;
   const fulfill = () => {
     let action;
-    if (isIndirect) {
+    if (isIndirect && indirectType) {
       action = actions.indirectFulfillBook(url, indirectType);
       return dispatch(action).then(url => {
         window.open(url, "_blank");
@@ -41,7 +41,7 @@ const DownloadButton: React.FC<DownloadButtonProps> = props => {
       return dispatch(action).then(blob => {
         download(
           blob,
-          generateFilename(title, fileExtension(mimeTypeValue)),
+          generateFilename(title ?? "untitled", fileExtension(mimeTypeValue)),
           mimeTypeValue
         );
       });

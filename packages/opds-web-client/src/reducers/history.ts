@@ -1,3 +1,4 @@
+import { RequiredKeys } from "./../interfaces";
 import { CollectionState } from "./collection";
 import { LoadAction } from "../actions";
 import { CollectionData, LinkData } from "../interfaces";
@@ -15,28 +16,20 @@ function newCollectionIsOldCollection(
 
 function newCollectionIsOldRoot(
   newCollection: CollectionData,
-  oldCollection: CollectionData
+  oldCollection: CollectionData | undefined | null
 ): boolean {
-  return (
-    oldCollection &&
-    oldCollection.catalogRootLink &&
-    oldCollection.catalogRootLink.url &&
-    oldCollection.catalogRootLink.url === newCollection.url
-  );
+  return oldCollection?.catalogRootLink?.url === newCollection.url;
 }
 
 function newCollectionIsNewRoot(newCollection: CollectionData): boolean {
-  return (
-    newCollection.catalogRootLink &&
-    newCollection.catalogRootLink.url === newCollection.url
-  );
+  return newCollection?.catalogRootLink?.url === newCollection.url;
 }
 
 function newRootIsNotOldRoot(
   newCollection: CollectionData,
-  oldCollection: CollectionData
+  oldCollection: CollectionData | undefined | null
 ): boolean {
-  return (
+  return !!(
     oldCollection &&
     newCollection.catalogRootLink &&
     oldCollection.catalogRootLink &&
@@ -46,7 +39,7 @@ function newRootIsNotOldRoot(
 
 export function shouldClear(
   newCollection: CollectionData,
-  oldCollection: CollectionData
+  oldCollection: CollectionData | undefined | null
 ): boolean {
   return (
     newCollectionIsOldRoot(newCollection, oldCollection) ||
@@ -81,16 +74,18 @@ export function shorten(history: LinkData[], newUrl: string) {
     return history;
   }
 }
+type CollectionWithRootLink = RequiredKeys<CollectionData, "catalogRootLink">;
 
-export function shouldAddRoot(newCollection: CollectionData) {
-  return (
-    newCollection.catalogRootLink &&
-    newCollection.catalogRootLink.text &&
+export function shouldAddRoot(
+  newCollection: CollectionData
+): newCollection is CollectionWithRootLink {
+  return !!(
+    newCollection.catalogRootLink?.text &&
     !newCollectionIsNewRoot(newCollection)
   );
 }
 
-export function onlyRoot(newCollection: CollectionData) {
+export function onlyRoot(newCollection: CollectionWithRootLink) {
   return addLink([], newCollection.catalogRootLink);
 }
 

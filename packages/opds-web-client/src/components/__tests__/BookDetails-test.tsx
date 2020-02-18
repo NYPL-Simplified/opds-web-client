@@ -69,18 +69,18 @@ describe("BookDetails", () => {
 
   it("shows series", () => {
     let series = wrapper.find(".series");
-    expect(series.text()).to.equal(book.series.name);
+    expect(series.text()).to.equal(book.series?.name);
   });
 
   it("shows authors", () => {
     let author = wrapper.find(".authors");
-    expect(author.text()).to.equal(`By ${book.authors.join(", ")}`);
+    expect(author.text()).to.equal(`By ${book.authors?.join(", ")}`);
   });
 
   it("shows contributors", () => {
     let contributor = wrapper.find(".contributors");
     expect(contributor.text()).to.equal(
-      "Contributors: " + book.contributors.join(", ")
+      "Contributors: " + book.contributors?.join(", ")
     );
   });
 

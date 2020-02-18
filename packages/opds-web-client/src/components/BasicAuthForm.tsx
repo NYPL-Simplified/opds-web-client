@@ -1,10 +1,11 @@
 import * as React from "react";
 import { BasicAuthMethod } from "../interfaces";
 import { AuthFormProps } from "./AuthProviderSelectionForm";
+import { generateCredentials } from "../utils/auth";
 
 export interface BasicAuthFormProps extends AuthFormProps<BasicAuthMethod> {}
 export interface BasicAuthFormState {
-  error: string;
+  error?: string | null;
 }
 
 /** Form for logging in with basic auth. */
@@ -62,19 +63,19 @@ export default class BasicAuthForm extends React.Component<
   }
 
   loginLabel() {
-    return this.props.provider.method.labels.login || "username";
+    return this.props.provider?.method.labels.login || "username";
   }
 
   passwordLabel() {
-    return this.props.provider.method.labels.password || "password";
+    return this.props.provider?.method.labels.password || "password";
   }
 
   /**
    * validate()
    * Not all libraries require a password to log in so that value is not checked.
    */
-  validate() {
-    const login = this.loginRef.current && this.loginRef.current.value;
+  validate(login: string | null | undefined): login is string {
+    // const login = this.loginRef.current && this.loginRef.current.value;
     if (!login) {
       this.setState({
         error: `${this.loginLabel()} is required`
@@ -90,26 +91,21 @@ export default class BasicAuthForm extends React.Component<
   submit(event) {
     event.preventDefault();
 
-    if (this.validate()) {
+    if (this.validate(this.loginRef.current?.value)) {
       const login = this.loginRef.current && this.loginRef.current.value;
       const password =
         this.passwordRef.current && this.passwordRef.current.value;
-      let credentials = this.generateCredentials(login, password);
+      let credentials = generateCredentials(login, password ?? "");
 
-      this.props.saveCredentials({
-        provider: this.props.provider.id,
+      this.props.saveCredentials?.({
+        provider: this.props.provider?.id,
         credentials: credentials
       });
-      this.props.hide();
+      this.props.hide?.();
 
       if (this.props.callback) {
         this.props.callback();
       }
     }
-  }
-
-  generateCredentials(login, password) {
-    const btoaStr = btoa(`${login}:${password}`);
-    return `Basic ${btoaStr}`;
   }
 }

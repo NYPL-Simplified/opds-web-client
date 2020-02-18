@@ -18,7 +18,10 @@ export default class FacetGroup extends React.Component<FacetGroupProps, {}> {
           className="subtle-list"
         >
           {this.props.facetGroup.facets.map(facet => (
-            <li key={facet.label} className={facet.active ? "active" : null}>
+            <li
+              key={facet.label}
+              className={facet.active ? "active" : undefined}
+            >
               <CatalogLink className="facetLink" collectionUrl={facet.href}>
                 {facet.label}
               </CatalogLink>

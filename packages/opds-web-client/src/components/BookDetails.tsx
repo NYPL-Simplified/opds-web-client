@@ -2,6 +2,11 @@ import * as React from "react";
 import * as moment from "moment";
 import BookCover from "./BookCover";
 import Book, { BookProps } from "./Book";
+import {
+  bookIsReserved,
+  bookIsBorrowed,
+  bookIsOpenAccess
+} from "../utils/book";
 
 export interface BookDetailsProps extends BookProps {}
 
@@ -70,7 +75,7 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
           <div
             className="summary"
             lang={this.props.book.language}
-            dangerouslySetInnerHTML={{ __html: this.props.book.summary }}
+            dangerouslySetInnerHTML={{ __html: this.props.book.summary ?? "" }}
           ></div>
         </div>
       </div>
@@ -94,7 +99,7 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
   }
 
   circulationInfo() {
-    if (this.isOpenAccess()) {
+    if (bookIsOpenAccess(this.props.book)) {
       return [
         <div key="oa" className="open-access-info">
           This open-access book is available to keep.
@@ -102,7 +107,7 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
       ];
     }
 
-    if (this.isBorrowed()) {
+    if (bookIsBorrowed(this.props.book)) {
       let availableUntil =
         this.props.book.availability && this.props.book.availability.until;
       if (availableUntil) {
@@ -116,7 +121,7 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
       return [];
     }
 
-    let info = [];
+    let info: JSX.Element[] = [];
 
     let availableCopies =
       this.props.book.copies && this.props.book.copies.available;
@@ -144,7 +149,7 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
         </div>
       );
       if (
-        this.isReserved() &&
+        bookIsReserved(this.props.book) &&
         holdsPosition !== undefined &&
         holdsPosition !== null
       ) {

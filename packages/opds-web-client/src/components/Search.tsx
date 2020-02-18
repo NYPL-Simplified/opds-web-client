@@ -54,7 +54,7 @@ export default class Search extends React.Component<SearchProps, {}> {
 
   componentWillMount() {
     if (this.props.url) {
-      this.props.fetchSearchDescription(this.props.url);
+      this.props.fetchSearchDescription?.(this.props.url);
     }
   }
 
@@ -66,11 +66,11 @@ export default class Search extends React.Component<SearchProps, {}> {
 
   onSubmit(event) {
     let searchTerms = encodeURIComponent(this.refs["input"]["value"]);
-    let url = this.props.searchData.template(searchTerms);
+    let url = this.props.searchData?.template(searchTerms);
     if (this.props.allLanguageSearch) {
       url += "&language=all";
     }
-    this.context.router.push(this.context.pathFor(url, null));
+    this.context.router?.push(this.context.pathFor(url, null));
     event.preventDefault();
   }
 }

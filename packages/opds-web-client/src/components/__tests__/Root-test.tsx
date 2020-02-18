@@ -30,6 +30,31 @@ import {
 import { State } from "../../state";
 import { CollectionData, BookData, LinkData } from "../../interfaces";
 import { mockRouterContext } from "../../__mocks__/routing";
+import AuthPlugin from "../../AuthPlugin";
+
+let book: BookData = {
+  id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
+  title: "The Mayan Secrets",
+  authors: ["Clive Cussler", "Thomas Perry"],
+  summary:
+    "<strong>Sam and Remi Fargo race for treasure&#8212;and survival&#8212;in this lightning-paced new adventure from #1&lt;i&gt; New York Times&lt;/i&gt; bestselling author Clive Cussler.</strong><br />Husband-and-wife team Sam and Remi Fargo are in Mexico when they come upon a remarkable discovery&#8212;the mummified remainsof a man clutching an ancient sealed pot. Within the pot is a Mayan book larger than any known before.<br />The book contains astonishing information about the Mayans, their cities, and about mankind itself. The secrets are so powerful that some people would do anything to possess them&#8212;as the Fargos are about to find out.",
+  imageUrl: "https://dlotdqc6pnwqb.cloudfront.net/3M/crrmnr9/cover.jpg",
+  openAccessLinks: [
+    { url: "secrets.epub", type: "application/epub+zip" },
+    { url: "secrets.mobi", type: "application/x-mobipocket-ebook" }
+  ],
+  borrowUrl: "borrow url",
+  publisher: "Penguin Publishing Group",
+  published: "February 29, 2016",
+  categories: ["category 1", "category 2"],
+  series: {
+    name: "Fake Series"
+  },
+  language: "de",
+  raw: {
+    $: { "schema:additionalType": { value: "http://bib.schema.org/Audiobook" } }
+  }
+};
 
 const setCollectionAndBookPromise = new Promise((resolve, reject) => {
   resolve({
@@ -38,17 +63,38 @@ const setCollectionAndBookPromise = new Promise((resolve, reject) => {
   });
 });
 const mockSetCollectionAndBook = stub().returns(setCollectionAndBookPromise);
+const fulfillBook = async (url: string): Promise<Blob> => new Blob();
+const updateBook = async (url: string): Promise<BookData> => book;
+const indirectFulfillBook = async (
+  url: string,
+  type: string
+): Promise<string> => "test value";
+const setPreference = () => null;
 
 describe("Root", () => {
   it("shows skip navigation link", () => {
-    let wrapper = shallow(<Root />);
+    let wrapper = shallow(
+      <Root
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
+      />
+    );
 
     let links = wrapper.find(SkipNavigationLink);
     expect(links.length).to.equal(1);
   });
 
   it("contains main element", () => {
-    let wrapper = shallow(<Root />);
+    let wrapper = shallow(
+      <Root
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
+      />
+    );
 
     let main = wrapper.find("main");
     expect(main.props().role).to.equal("main");
@@ -68,6 +114,10 @@ describe("Root", () => {
     let fetchSearchDescription = (url: string) => {};
     let wrapper = shallow(
       <Root
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
         collectionData={collectionData}
         fetchSearchDescription={fetchSearchDescription}
       />
@@ -85,7 +135,15 @@ describe("Root", () => {
 
   it("shows a collection if props include collectionData", () => {
     let collectionData: CollectionData = groupedCollectionData;
-    let wrapper = shallow(<Root collectionData={collectionData} />);
+    let wrapper = shallow(
+      <Root
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
+        collectionData={collectionData}
+      />
+    );
 
     let collections = wrapper.find(Collection);
     expect(collections.length).to.equal(1);
@@ -102,7 +160,14 @@ describe("Root", () => {
     });
     let loans = [loan];
     let wrapper = shallow(
-      <Root collectionData={collectionData} loans={loans} />
+      <Root
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
+        collectionData={collectionData}
+        loans={loans}
+      />
     );
     let collections = wrapper.find(Collection);
     expect(collections.length).to.equal(1);
@@ -120,7 +185,14 @@ describe("Root", () => {
   });
 
   it("shows a url form if no collection url or book url", () => {
-    let wrapper = shallow(<Root />);
+    let wrapper = shallow(
+      <Root
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
+      />
+    );
 
     let urlForms = wrapper.find(UrlForm);
     expect(urlForms.length).to.equal(1);
@@ -129,6 +201,10 @@ describe("Root", () => {
   it("doesn't show a url form if collection url", () => {
     let wrapper = shallow(
       <Root
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
         collectionUrl="test"
         setCollectionAndBook={mockSetCollectionAndBook}
       />
@@ -140,7 +216,14 @@ describe("Root", () => {
 
   it("doesn't show a url form if book url", () => {
     let wrapper = shallow(
-      <Root bookUrl="test" setCollectionAndBook={mockSetCollectionAndBook} />
+      <Root
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
+        bookUrl="test"
+        setCollectionAndBook={mockSetCollectionAndBook}
+      />
     );
 
     let urlForms = wrapper.find(UrlForm);
@@ -153,6 +236,10 @@ describe("Root", () => {
     let setCollectionAndBook = stub().returns(setCollectionAndBookPromise);
     let wrapper = shallow(
       <Root
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
         collectionUrl={collectionUrl}
         setCollectionAndBook={setCollectionAndBook}
       />
@@ -167,7 +254,14 @@ describe("Root", () => {
     let bookUrl = "http://example.com/book";
     let setCollectionAndBook = stub().returns(setCollectionAndBookPromise);
     let wrapper = shallow(
-      <Root bookUrl={bookUrl} setCollectionAndBook={setCollectionAndBook} />
+      <Root
+        bookUrl={bookUrl}
+        setCollectionAndBook={setCollectionAndBook}
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
+      />
     );
 
     expect(setCollectionAndBook.callCount).to.equal(1);
@@ -196,6 +290,10 @@ describe("Root", () => {
         setCollectionAndBook={setCollectionAndBook}
         fetchLoans={fetchLoans}
         authCredentials={credentials}
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
       />
     );
 
@@ -214,7 +312,13 @@ describe("Root", () => {
 
   it("updates page title on mount", () => {
     let wrapper = shallow(
-      <Root pageTitleTemplate={(collection, book) => "page title"} />
+      <Root
+        pageTitleTemplate={(collection, book) => "page title"}
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
+      />
     );
     expect(document.title).to.equal("page title");
   });
@@ -226,27 +330,39 @@ describe("Root", () => {
       <Root
         saveAuthCredentials={saveAuthCredentials}
         authCredentials={credentials}
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
       />
     );
     expect(saveAuthCredentials.callCount).to.equal(1);
     expect(saveAuthCredentials.args[0][0]).to.equal(credentials);
   });
 
+  const basicProps = {
+    fulfillBook,
+    indirectFulfillBook,
+    updateBook,
+    setPreference
+  };
+
   it("checks for credentials on mount", () => {
     let credentials = { provider: "test", credentials: "credentials" };
-    let plugin = {
+    let plugin: AuthPlugin = {
       type: "test",
       lookForCredentials: stub().returns({ credentials }),
-      formComponent: null,
-      buttonComponent: null
+      formComponent: stub(),
+      buttonComponent: stub()
     };
     let propsWithAuthPlugin = {
       authPlugins: [plugin],
-      saveAuthCredentials: stub()
+      saveAuthCredentials: stub(),
+      ...basicProps
     };
 
     let wrapper = shallow(<Root {...propsWithAuthPlugin} />);
-    expect(plugin.lookForCredentials.callCount).to.equal(1);
+    expect((plugin.lookForCredentials as typeof stub).callCount).to.equal(1);
     expect(propsWithAuthPlugin.saveAuthCredentials.callCount).to.equal(1);
     expect(propsWithAuthPlugin.saveAuthCredentials.args[0][0]).to.deep.equal(
       credentials
@@ -257,11 +373,12 @@ describe("Root", () => {
     let plugin = {
       type: "test",
       lookForCredentials: stub().returns({ error: "error!" }),
-      formComponent: null,
-      buttonComponent: null
+      formComponent: stub(),
+      buttonComponent: stub()
     };
     let propsWithAuthPlugin = {
-      authPlugins: [plugin]
+      authPlugins: [plugin],
+      ...basicProps
     };
 
     let wrapper = shallow(<Root {...propsWithAuthPlugin} />);
@@ -270,7 +387,14 @@ describe("Root", () => {
   });
 
   it("shows error message if there's an auth error in the state", () => {
-    let wrapper = shallow(<Root />);
+    let wrapper = shallow(
+      <Root
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
+      />
+    );
     wrapper.setState({ authError: "error!" });
     let error = wrapper.find(ErrorMessage);
     expect(error.length).to.equal(1);
@@ -288,6 +412,10 @@ describe("Root", () => {
     let setCollectionAndBook = stub().returns(setCollectionAndBookPromise);
     let wrapper = shallow(
       <Root
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
         collectionUrl={collectionUrl}
         setCollectionAndBook={setCollectionAndBook}
       />
@@ -302,12 +430,28 @@ describe("Root", () => {
   });
 
   it("shows loading message", () => {
-    let wrapper = shallow(<Root isFetchingCollection={true} />);
+    let wrapper = shallow(
+      <Root
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
+        isFetchingCollection={true}
+      />
+    );
 
     let loadings = wrapper.find(LoadingIndicator);
     expect(loadings.length).to.equal(1);
 
-    wrapper = shallow(<Root isFetchingBook={true} />);
+    wrapper = shallow(
+      <Root
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
+        isFetchingBook={true}
+      />
+    );
     loadings = wrapper.find(LoadingIndicator);
     expect(loadings.length).to.equal(1);
   });
@@ -320,7 +464,14 @@ describe("Root", () => {
     };
     let retry = stub();
     let wrapper = shallow(
-      <Root error={fetchError} retryCollectionAndBook={retry} />
+      <Root
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
+        error={fetchError}
+        retryCollectionAndBook={retry}
+      />
     );
 
     let error = wrapper.find(ErrorMessage);
@@ -344,6 +495,10 @@ describe("Root", () => {
     let closeErrorAndHideAuthForm = stub();
     let wrapper = shallow(
       <Root
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
         auth={auth}
         saveAuthCredentials={saveAuthCredentials}
         closeErrorAndHideAuthForm={closeErrorAndHideAuthForm}
@@ -390,6 +545,7 @@ describe("Root", () => {
         indirectFulfillBook={indirectFulfillBook}
         isSignedIn={true}
         epubReaderUrlTemplate={epubReaderUrlTemplate}
+        setPreference={setPreference}
       />
     );
 
@@ -418,7 +574,14 @@ describe("Root", () => {
     ];
 
     let wrapper = shallow(
-      <Root collectionData={ungroupedCollectionData} history={history} />
+      <Root
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
+        collectionData={ungroupedCollectionData}
+        history={history}
+      />
     );
 
     let breadcrumbs = wrapper.find(Breadcrumbs);
@@ -439,6 +602,10 @@ describe("Root", () => {
     let computeBreadcrumbs = data => [breadcrumb];
     let wrapper = shallow(
       <Root
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
         collectionData={ungroupedCollectionData}
         computeBreadcrumbs={computeBreadcrumbs}
       />
@@ -472,6 +639,8 @@ describe("Root", () => {
           updateBook={updateBook}
           fulfillBook={fulfillBook}
           epubReaderUrlTemplate={epubReaderUrlTemplate}
+          setPreference={setPreference}
+          indirectFulfillBook={indirectFulfillBook}
         />
       );
 
@@ -498,11 +667,15 @@ describe("Root", () => {
       let wrapper = shallow(
         <Root
           bookData={bookData}
-          bookUrl={null}
+          bookUrl={undefined}
           collectionUrl="test collection"
           refreshCollectionAndBook={refresh}
           setCollectionAndBook={mockSetCollectionAndBook}
           BookDetailsContainer={Container}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          updateBook={updateBook}
+          setPreference={setPreference}
         />
       );
       let containers = wrapper.find(Container);
@@ -522,6 +695,10 @@ describe("Root", () => {
         collectionData={collectionData}
         bookData={bookData}
         pageTitleTemplate={pageTitleTemplate}
+        fulfillBook={fulfillBook}
+        indirectFulfillBook={indirectFulfillBook}
+        updateBook={updateBook}
+        setPreference={setPreference}
       />
     );
 
@@ -586,6 +763,10 @@ describe("Root", () => {
           clearAuthCredentials={clearAuthCredentials}
           isSignedIn={true}
           loansUrl="loans"
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          updateBook={updateBook}
+          setPreference={setPreference}
         />
       );
     });
@@ -622,6 +803,10 @@ describe("Root", () => {
           collectionData={collectionData}
           bookData={bookData}
           fetchSearchDescription={(url: string) => {}}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          updateBook={updateBook}
+          setPreference={setPreference}
         />
       );
     });
@@ -657,6 +842,10 @@ describe("Root", () => {
           collectionData={collectionData}
           bookData={bookData}
           setCollectionAndBook={mockSetCollectionAndBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          updateBook={updateBook}
+          setPreference={setPreference}
         />,
         { context }
       ) as any;
@@ -677,6 +866,10 @@ describe("Root", () => {
           collectionData={collectionData}
           bookData={bookData}
           setCollectionAndBook={mockSetCollectionAndBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          updateBook={updateBook}
+          setPreference={setPreference}
         />,
         { context }
       ) as any;
@@ -713,6 +906,10 @@ describe("Root", () => {
           collectionData={collectionData}
           bookData={bookData}
           setCollectionAndBook={mockSetCollectionAndBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          updateBook={updateBook}
+          setPreference={setPreference}
         />,
         { context }
       ) as any;
@@ -732,6 +929,10 @@ describe("Root", () => {
           collectionData={collectionData}
           bookData={bookData}
           setCollectionAndBook={mockSetCollectionAndBook}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          updateBook={updateBook}
+          setPreference={setPreference}
         />,
         { context }
       ) as any;
@@ -773,8 +974,12 @@ describe("Root", () => {
       wrapper = mount(
         <Root
           collectionData={collectionData}
-          bookData={null}
+          bookData={undefined}
           history={history}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          updateBook={updateBook}
+          setPreference={setPreference}
         />,
         { context, childContextTypes }
       ) as any;
@@ -842,6 +1047,10 @@ describe("Root", () => {
             history={history}
             collectionUrl="/test"
             setCollectionAndBook={mockSetCollectionAndBook}
+            fulfillBook={fulfillBook}
+            indirectFulfillBook={indirectFulfillBook}
+            updateBook={updateBook}
+            setPreference={setPreference}
           />
         );
 
@@ -855,6 +1064,10 @@ describe("Root", () => {
             history={history}
             collectionUrl="/test"
             setCollectionAndBook={mockSetCollectionAndBook}
+            fulfillBook={fulfillBook}
+            indirectFulfillBook={indirectFulfillBook}
+            updateBook={updateBook}
+            setPreference={setPreference}
           />
         );
 
@@ -872,6 +1085,10 @@ describe("Root", () => {
             history={history}
             collectionUrl="/test"
             setCollectionAndBook={mockSetCollectionAndBook}
+            fulfillBook={fulfillBook}
+            indirectFulfillBook={indirectFulfillBook}
+            updateBook={updateBook}
+            setPreference={setPreference}
           />
         );
 
@@ -921,6 +1138,10 @@ describe("Root", () => {
           collectionUrl="/test"
           setCollectionAndBook={mockSetCollectionAndBook}
           CollectionContainer={Tabs}
+          fulfillBook={fulfillBook}
+          indirectFulfillBook={indirectFulfillBook}
+          updateBook={updateBook}
+          setPreference={setPreference}
         />
       );
 

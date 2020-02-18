@@ -8,7 +8,10 @@ export interface BreadcrumbsProps extends React.Props<{}> {
 }
 
 export interface ComputeBreadcrumbs {
-  (collection: CollectionData, history: LinkData[]): LinkData[];
+  (
+    collection: CollectionData | null | undefined,
+    history: LinkData[] | null | undefined
+  ): LinkData[];
 }
 
 /**
@@ -69,7 +72,7 @@ export function hierarchyComputeBreadcrumbs(
   history: LinkData[],
   comparator?: (url1: string, url2: string) => boolean
 ): LinkData[] {
-  let links = [];
+  let links: LinkData[] = [];
 
   if (!collection) {
     return [];

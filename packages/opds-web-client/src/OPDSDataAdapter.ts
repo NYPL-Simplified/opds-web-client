@@ -173,17 +173,21 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
   };
 }
 
-function entryToLink(entry: OPDSEntry, feedUrl: string): LinkData {
-  let href: string;
+function entryToLink(entry: OPDSEntry, feedUrl: string): LinkData | null {
   let links = entry.links;
   if (links.length > 0) {
-    href = resolve(feedUrl, links[0].href);
+    const href = resolve(feedUrl, links[0].href);
+    return {
+      id: entry.id,
+      text: entry.title,
+      url: href
+    };
   }
-  return <LinkData>{
-    id: entry.id,
-    text: entry.title,
-    url: href
-  };
+  console.error(
+    "Attempting to create Link with undefined url. entry is: ",
+    entry
+  );
+  return null;
 }
 
 function dedupeBooks(books: BookData[]): BookData[] {
@@ -221,7 +225,7 @@ function formatDate(inputDate: string): string {
   return `${month} ${day}, ${year}`;
 }
 
-function OPDSLinkToLinkData(feedUrl, link: OPDSLink = null) {
+function OPDSLinkToLinkData(feedUrl, link: OPDSLink = null): LinkData | null {
   if (!link || !link.href) {
     return null;
   }
@@ -245,20 +249,24 @@ export function feedToCollection(
   let books: BookData[] = [];
   let navigationLinks: LinkData[] = [];
   let lanes: LaneData[] = [];
-  let laneTitles = [];
-  let laneIndex = [];
+  let laneTitles: any[] = [];
+  let laneIndex: {
+    title: any;
+    url: string;
+    books: BookData[];
+  }[] = [];
   let facetGroups: FacetGroupData[] = [];
-  let search: SearchData;
-  let nextPageUrl: string;
+  let search: SearchData | undefined = undefined;
+  let nextPageUrl: string | undefined = undefined;
   let catalogRootLink: OPDSLink;
   let parentLink: OPDSLink;
-  let shelfUrl: string;
+  let shelfUrl: string | undefined = undefined;
   let links: OPDSLink[] = [];
 
   feed.entries.forEach(entry => {
     if (feed instanceof AcquisitionFeed) {
       let book = entryToBook(entry, feedUrl);
-      let collectionLink: OPDSCollectionLink = entry.links.find(
+      const collectionLink: OPDSCollectionLink = entry.links.find(
         link => link instanceof OPDSCollectionLink
       );
       if (collectionLink) {
@@ -280,7 +288,7 @@ export function feedToCollection(
       }
     } else {
       let link = entryToLink(entry, feedUrl);
-      navigationLinks.push(link);
+      if (link) navigationLinks.push(link);
     }
   });
 
@@ -291,7 +299,7 @@ export function feedToCollection(
     return result;
   }, lanes);
 
-  let facetLinks = [];
+  let facetLinks: OPDSFacetLink[] = [];
   if (feed.links) {
     facetLinks = feed.links.filter(link => {
       return link instanceof OPDSFacetLink;
@@ -331,7 +339,7 @@ export function feedToCollection(
     let href = resolve(feedUrl, link.href);
     let active = link.activeFacet;
     let facet = { label, href, active };
-    let newResult = [];
+    let newResult: any[] = [];
     let foundGroup = false;
     result.forEach(group => {
       if (group.label === groupLabel) {
@@ -358,7 +366,13 @@ export function feedToCollection(
   collection.catalogRootLink = OPDSLinkToLinkData(feedUrl, catalogRootLink);
   collection.parentLink = OPDSLinkToLinkData(feedUrl, parentLink);
   collection.shelfUrl = shelfUrl;
-  collection.links = links.map(link => OPDSLinkToLinkData(feedUrl, link));
+  function notNull<T>(value: T | null | undefined): value is T {
+    return value !== null && value !== undefined;
+  }
+  collection.links = links
+    .map(link => OPDSLinkToLinkData(feedUrl, link))
+    // we have to filter out the null values in order for typescript to accept this
+    .filter(notNull);
   collection.raw = feed.unparsed;
   Object.freeze(collection);
   return collection;

@@ -6,7 +6,7 @@ const Cookie = require("js-cookie");
 require("isomorphic-fetch");
 
 export interface RequestError {
-  status: number;
+  status: number | null;
   response: string;
   url: string;
   headers?: any;
@@ -30,8 +30,8 @@ export interface DataFetcherConfig {
 /** Handles requests to OPDS servers. */
 export default class DataFetcher {
   public authKey: string;
-  private proxyUrl: string;
-  private adapter: (data: OPDSFeed | OPDSEntry, url: string) => any;
+  private proxyUrl?: string;
+  private adapter?: (data: OPDSFeed | OPDSEntry, url: string) => any;
 
   constructor(config: DataFetcherConfig = {}) {
     this.proxyUrl = config.proxyUrl;
@@ -68,7 +68,7 @@ export default class DataFetcher {
               parser
                 .parse(text)
                 .then((parsedData: OPDSFeed | OPDSEntry) => {
-                  resolve(this.adapter(parsedData, url));
+                  resolve(this.adapter?.(parsedData, url));
                 })
                 .catch(err => {
                   reject({
@@ -142,13 +142,13 @@ export default class DataFetcher {
     return fetch(url, options);
   }
 
-  setAuthCredentials(credentials: AuthCredentials): void {
+  setAuthCredentials(credentials?: AuthCredentials): void {
     if (credentials) {
       Cookie.set(this.authKey, JSON.stringify(credentials));
     }
   }
 
-  getAuthCredentials(): AuthCredentials {
+  getAuthCredentials(): AuthCredentials | undefined {
     let credentials = Cookie.get(this.authKey);
     if (credentials) {
       return JSON.parse(credentials);

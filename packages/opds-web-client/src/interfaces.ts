@@ -1,11 +1,21 @@
 import AuthPlugin from "./AuthPlugin";
 
-export type OpenAccessLinkType =
+export type MediaType =
   | "application/epub+zip"
+  | "application/kepub+zip"
   | "application/pdf"
   | "application/vnd.adobe.adept+xml"
   | "application/x-mobipocket-ebook"
   | "application/x-mobi8-ebook";
+
+export interface MediaLink {
+  url: string;
+  type: MediaType;
+}
+
+export interface FulfillmentLink extends MediaLink {
+  indirectType: string;
+}
 
 export interface BookData {
   id: string;
@@ -13,22 +23,15 @@ export interface BookData {
   series?: {
     name: string;
     position?: number;
-  };
+  } | null;
   authors?: string[];
   contributors?: string[];
   subtitle?: string;
   summary?: string;
   imageUrl?: string;
-  openAccessLinks?: {
-    url: string;
-    type: OpenAccessLinkType;
-  }[];
+  openAccessLinks?: MediaLink[];
   borrowUrl?: string;
-  fulfillmentLinks?: {
-    url: string;
-    type: string;
-    indirectType: string;
-  }[];
+  fulfillmentLinks?: FulfillmentLink[];
   availability?: {
     status: string;
     since?: string;
@@ -37,11 +40,11 @@ export interface BookData {
   holds?: {
     total: number;
     position?: number;
-  };
+  } | null;
   copies?: {
     total: number;
     available: number;
-  };
+  } | null;
   url?: string;
   publisher?: string;
   published?: string;
@@ -77,10 +80,10 @@ export interface CollectionData {
   facetGroups?: FacetGroupData[];
   search?: SearchData;
   nextPageUrl?: string;
-  catalogRootLink?: LinkData;
-  parentLink?: LinkData;
+  catalogRootLink?: LinkData | null;
+  parentLink?: LinkData | null;
   shelfUrl?: string;
-  links?: LinkData[];
+  links?: LinkData[] | null;
   raw?: any;
 }
 
@@ -94,9 +97,9 @@ export interface SearchData {
 }
 
 export interface LinkData {
-  text: string;
+  text?: string;
   url: string;
-  id?: string;
+  id?: string | null;
   type?: string;
 }
 
@@ -124,11 +127,11 @@ export interface StateProps {
 }
 
 export interface PathFor {
-  (collectionUrl?: string, bookUrl?: string): string;
+  (collectionUrl?: string | null, bookUrl?: string | null): string;
 }
 
 export interface FetchErrorData {
-  status: number;
+  status: number | null;
   response: string;
   url: string;
 }
@@ -174,13 +177,13 @@ export interface AuthMethod {
 
 export interface AuthData {
   showForm: boolean;
-  callback: AuthCallback;
-  cancel: () => void;
-  credentials: AuthCredentials;
-  title: string;
+  callback: AuthCallback | null;
+  cancel: (() => void) | null;
+  credentials: AuthCredentials | null;
+  title: string | null;
   error: string | null;
   attemptedProvider: string | null;
-  providers: AuthProvider<AuthMethod>[];
+  providers: AuthProvider<AuthMethod>[] | null;
 }
 
 export interface BasicAuthMethod extends AuthMethod {
@@ -189,3 +192,7 @@ export interface BasicAuthMethod extends AuthMethod {
     password: string;
   };
 }
+
+/** Utility to make keys K of type T both required (defined) and not null */
+export type RequiredKeys<T, K extends keyof T> = Omit<T, K> &
+  { [P in K]-?: NonNullable<T[P]> };

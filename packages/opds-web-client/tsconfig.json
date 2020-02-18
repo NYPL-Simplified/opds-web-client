@@ -8,7 +8,8 @@
     "rootDir": "src",
     "jsx": "react",
     "types": ["mocha", "node"],
-    "declaration": true
+    "declaration": true,
+    "strictNullChecks": true
   },
   "exclude": ["node_modules", "lib", "dist"],
   "typedocOptions": {

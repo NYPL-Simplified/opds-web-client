@@ -8,7 +8,7 @@ export default class BasicAuthButton extends React.Component<
   {}
 > {
   render() {
-    let label = this.props.provider.method.description
+    let label = this.props.provider?.method.description
       ? "Log in with " + this.props.provider.method.description
       : "Log in";
 

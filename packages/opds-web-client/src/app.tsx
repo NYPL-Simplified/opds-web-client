@@ -24,7 +24,7 @@ const OPDSCatalogRouterHandler = config => {
     };
 
     render() {
-      let { collectionUrl, bookUrl } = this.props.params;
+      let { collectionUrl, bookUrl } = this.props.params ?? {};
       let mergedProps: RootProps = {
         ...config,
         collectionUrl,
