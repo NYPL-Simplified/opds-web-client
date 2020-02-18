@@ -39,8 +39,6 @@ export default class CatalogLink extends React.Component<CatalogLinkProps, {}> {
 
   render(): JSX.Element {
     let { collectionUrl = null, bookUrl = null, ...props } = this.props;
-    // collectionUrl = collectionUrl || null;
-    // bookUrl = bookUrl || null;
 
     let location = this.context.pathFor(collectionUrl, bookUrl);
 
