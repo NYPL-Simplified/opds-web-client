@@ -24,11 +24,36 @@ function isIndirect(
 const STREAMING_MEDIA_LINK_TYPE: MediaType =
   "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media";
 
+type DownloadDetails = {
+  fulfill: () => Promise<void>;
+  isIndirect: boolean;
+  downloadLabel: string;
+  mimeType: MediaType;
+  fileExtension: string;
+};
+/**
+ * We use typescript function overloads to show that if you pass in a link
+ * you are guaranteed to get the download button details in an object. If
+ * you might pass in undefined, you might get null
+ */
 export default function useDownloadButton(
   link: MediaLink | FulfillmentLink,
   title: string
+): DownloadDetails;
+export default function useDownloadButton(
+  link: MediaLink | FulfillmentLink | undefined,
+  title: string
+): DownloadDetails | null;
+export default function useDownloadButton(
+  link: MediaLink | FulfillmentLink | undefined,
+  title: string
 ) {
   const { actions, dispatch } = useActions();
+
+  if (!link) {
+    return null;
+  }
+
   const mimeTypeValue = fixMimeType(link.type);
 
   // this ?? syntax is similar to x || y, except that it will only
@@ -62,7 +87,7 @@ export default function useDownloadButton(
 
   return {
     fulfill,
-    isIndirect,
+    isIndirect: isIndirect(link),
     downloadLabel,
     mimeType: mimeTypeValue,
     fileExtension
