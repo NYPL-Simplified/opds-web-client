@@ -1,5 +1,11 @@
 ## Changelog
 
+### v0.3.6
+
+- Extracts the logic that was previously in `DownloadButton` into `useDownloadButton` so it can be imported and used by circulation-patron-web.
+- Adds the new `MediaType`, `MediaLink` and `FulfillmentLink` interfaces with stricter typing.
+- Adds the streaming media and `application/atom+xml` types to the possible `MediaType`s received from the server.
+
 ### v0.3.5
 
 - Enables typescript `strictNullChecks`, which means that types cannot be `null` or `undefined` unless explicitly defined as such.
