@@ -11,8 +11,6 @@ import {
   bookIsReady,
   bookIsOpenAccess
 } from "../utils/book";
-import book from "../reducers/book";
-const download = require("downloadjs");
 
 export interface BookProps {
   book: BookData;
