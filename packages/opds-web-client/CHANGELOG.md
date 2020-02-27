@@ -1,5 +1,9 @@
 ## Changelog
 
+## v0.3.7
+
+- Allow store to be passed in to `StoreContext` so that it can be mocked in testing
+
 ### v0.3.6
 
 - Extracts the logic that was previously in `DownloadButton` into `useDownloadButton` so it can be imported and used by circulation-patron-web.

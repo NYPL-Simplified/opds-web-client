@@ -25,11 +25,13 @@ export default class OPDSStore extends React.Component<OPDSStoreProps> {
 
   constructor(props, pathFor) {
     super(props);
-    this.store = buildStore(
-      this.props.initialState || undefined,
-      this.props.authPlugins || [BasicAuthPlugin],
-      pathFor
-    );
+    this.store =
+      props.store ??
+      buildStore(
+        this.props.initialState || undefined,
+        this.props.authPlugins || [BasicAuthPlugin],
+        pathFor
+      );
   }
 
   render() {
