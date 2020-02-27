@@ -5,6 +5,7 @@
 - Extracts the logic that was previously in `DownloadButton` into `useDownloadButton` so it can be imported and used by circulation-patron-web.
 - Adds the new `MediaType`, `MediaLink` and `FulfillmentLink` interfaces with stricter typing.
 - Adds the streaming media and `application/atom+xml` types to the possible `MediaType`s received from the server.
+- Adds the `fetcher` to the context passed down by `ActionsContext`. This is because it is occasionally necessary to access and use directly.
 
 ### v0.3.5
 
