@@ -11,6 +11,9 @@ export type OPDSStoreProps = {
   initialState?: State;
   authPlugins?: AuthPlugin[];
   children: React.ReactNode;
+  // we allow custom redux store to be passed in
+  // so we can mock it during testing
+  store?: Redux.Store<State>;
 };
 /**
  * Builds the redux store and makes it available in context via new API.
