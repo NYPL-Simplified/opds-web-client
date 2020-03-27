@@ -1,20 +1,31 @@
-import { jsdom } from "jsdom";
+import { JSDOM } from "jsdom";
 import { configure } from "enzyme";
 import * as Adapter from "enzyme-adapter-react-16";
 
 configure({ adapter: new Adapter() });
 
-const doc = jsdom("<!doctype html><html><body></body></html>");
-const win = doc.defaultView;
+const jsdom = new JSDOM("<!doctype html><html><body></body></html>");
+const { window } = jsdom;
 
-global["document"] = doc;
-global["window"] = win;
+function copyProps(src, target) {
+  Object.defineProperties(target, {
+    ...Object.getOwnPropertyDescriptors(src),
+    ...Object.getOwnPropertyDescriptors(target)
+  });
+}
 
-Object.keys(window).forEach(key => {
-  if (!(key in global)) {
-    global[key] = window[key];
-  }
-});
+global["window"] = window;
+global["document"] = window.document;
+global["navigator"] = {
+  userAgent: "node.js"
+};
+global["requestAnimationFrame"] = function(callback) {
+  return setTimeout(callback, 0);
+};
+global["cancelAnimationFrame"] = function(id) {
+  clearTimeout(id);
+};
+copyProps(window, global);
 
 // Ignore imported stylesheets.
 let noop = () => {};
