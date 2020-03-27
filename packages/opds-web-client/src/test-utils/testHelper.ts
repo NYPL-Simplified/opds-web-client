@@ -4,7 +4,9 @@ import * as Adapter from "enzyme-adapter-react-16";
 
 configure({ adapter: new Adapter() });
 
-const jsdom = new JSDOM("<!doctype html><html><body></body></html>");
+const jsdom = new JSDOM("<!doctype html><html><body></body></html>", {
+  url: "http://localhost"
+});
 const { window } = jsdom;
 
 function copyProps(src, target) {

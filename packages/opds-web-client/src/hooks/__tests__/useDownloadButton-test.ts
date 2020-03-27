@@ -1,11 +1,12 @@
 import { STREAMING_MEDIA_LINK_TYPE } from "./../useDownloadButton";
 import { expect } from "chai";
-import { stub } from "sinon";
+import * as sinon from "sinon";
 import { renderHook } from "@testing-library/react-hooks";
 import useDownloadButton from "../useDownloadButton";
 import { MediaLink, MediaType, FulfillmentLink } from "./../../interfaces";
 import makeWrapper from "../../test-utils/makeWrapper";
 import { typeMap } from "../../utils/file";
+import * as download from "../../components/download";
 
 const pdfMediaLink: MediaLink = {
   url: "/media-url",
@@ -16,7 +17,7 @@ describe("useDownloadButton", () => {
   it("provides full details", () => {
     const { result } = renderHook(
       () => useDownloadButton(pdfMediaLink, "pdf-title"),
-      { wrapper: makeWrapper() }
+      { wrapper: makeWrapper().wrapper }
     );
 
     expect(result.current.downloadLabel).to.equal("Download PDF");
@@ -34,7 +35,7 @@ describe("useDownloadButton", () => {
     const { result } = renderHook(
       () => useDownloadButton(pdfMediaLink, "pdf-title"),
       {
-        wrapper: makeWrapper()
+        wrapper: makeWrapper().wrapper
       }
     );
 
@@ -50,7 +51,7 @@ describe("useDownloadButton", () => {
       (link: MediaLink | FulfillmentLink | undefined) =>
         useDownloadButton(link, "book-title"),
       {
-        wrapper: makeWrapper(),
+        wrapper: makeWrapper().wrapper,
         initialProps: undefined
       }
     );
@@ -89,7 +90,7 @@ describe("useDownloadButton", () => {
     };
 
     const { result } = renderHook(() => useDownloadButton(link, "pdf-title"), {
-      wrapper: makeWrapper()
+      wrapper: makeWrapper().wrapper
     });
 
     expect(result.current.downloadLabel).to.equal("Read Online");
@@ -105,19 +106,76 @@ describe("useDownloadButton", () => {
     const { result } = renderHook(
       () => useDownloadButton(undefined, "book-title"),
       {
-        wrapper: makeWrapper()
+        wrapper: makeWrapper().wrapper
       }
     );
     expect(result.current).to.equal(null);
   });
 
-  // it("fulfills direct links", () => {
-  //   const { result } = renderHook(
-  //     () => useDownloadButton(undefined, "book-title"),
-  //     {
-  //       wrapper: makeWrapper()
-  //     }
-  //   );
-  //   expect(result.current).to.equal(null);
-  // });
+  it("fulfills and downloads direct links", async () => {
+    const downloadStub = sinon.stub(download, "default");
+    const fulfillBookStub = sinon.stub();
+    const dispatchStub = sinon.stub();
+    const { wrapper, actions, store } = makeWrapper();
+    actions.fulfillBook = fulfillBookStub;
+    store.dispatch = dispatchStub;
+
+    const { result } = renderHook(
+      () => useDownloadButton(pdfMediaLink, "book-title"),
+      {
+        wrapper
+      }
+    );
+
+    // call fulfill
+    await result.current.fulfill();
+    expect(fulfillBookStub.callCount).to.equal(1);
+    sinon.assert.calledWith(fulfillBookStub, "/media-url");
+    expect(dispatchStub.callCount).to.equal(1);
+    expect(downloadStub.callCount).to.equal(1);
+    sinon.assert.calledWith(
+      downloadStub,
+      undefined,
+      "book-title.pdf",
+      "application/pdf"
+    );
+  });
+
+  it("fulfills and opens indirect links", async () => {
+    const indirectLink: FulfillmentLink = {
+      url: "/indirect-url",
+      type: "application/atom+xml;type=entry;profile=opds-catalog",
+      indirectType:
+        "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media"
+    };
+    const indirectFulfillStub = sinon.stub();
+    const dispatchStub = sinon.stub();
+    const { wrapper, actions, store } = makeWrapper();
+    actions.indirectFulfillBook = indirectFulfillStub;
+    store.dispatch = dispatchStub.returns(indirectLink.url);
+
+    const windowOpenStub = sinon.stub();
+    global["window"].open = windowOpenStub;
+
+    const { result } = renderHook(
+      () => useDownloadButton(indirectLink, "indirect-book-title"),
+      {
+        wrapper
+      }
+    );
+
+    // call fulfill
+    await result.current.fulfill();
+    sinon.assert.calledOnceWithExactly(
+      indirectFulfillStub,
+      "/indirect-url",
+      indirectLink.indirectType
+    );
+    sinon.assert.calledOnce(dispatchStub);
+    sinon.assert.calledOnceWithExactly(
+      windowOpenStub,
+      "/indirect-url",
+      "_blank"
+    );
+  });
 });
