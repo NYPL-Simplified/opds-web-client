@@ -330,6 +330,29 @@ describe("Collection", () => {
   });
 
   describe("collection with next page", () => {
+    /**
+     * Need to mock the scrollHeight and clientHeight because it
+     * is not settable in jsdom
+     */
+    Object.defineProperty(HTMLElement.prototype, "scrollHeight", {
+      configurable: true,
+      get: function() {
+        return this._scrollHeight || 0;
+      },
+      set(val) {
+        this._scrollHeight = val;
+      }
+    });
+    Object.defineProperty(HTMLElement.prototype, "clientHeight", {
+      configurable: true,
+      get: function() {
+        return this._clientHeight || 0;
+      },
+      set(val) {
+        this._clientHeight = val;
+      }
+    });
+
     const pause = (ms = 0): Promise<void> => {
       return new Promise<void>(resolve => setTimeout(resolve, ms));
     };
