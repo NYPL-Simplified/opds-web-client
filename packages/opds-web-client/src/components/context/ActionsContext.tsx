@@ -1,8 +1,7 @@
 import * as React from "react";
-import ActionsCreator from "../../actions";
 import useThunkDispatch from "../../hooks/useThunkDispatch";
 import DataFetcher from "../../DataFetcher";
-import { adapter } from "../../OPDSDataAdapter";
+import ActionsCreator from "../../actions";
 
 // The main context for this app's Actions.
 type ActionsContextType =
@@ -14,14 +13,13 @@ export const ActionsContext = React.createContext<ActionsContextType>(
 
 export function ActionsProvider({
   children,
-  proxyUrl
+  actions,
+  fetcher
 }: {
   children: React.ReactNode;
-  proxyUrl?: string;
+  actions: ActionsCreator;
+  fetcher: DataFetcher;
 }) {
-  const fetcher = new DataFetcher({ adapter, proxyUrl });
-  const actions = new ActionsCreator(fetcher);
-
   return (
     <ActionsContext.Provider value={{ actions, fetcher }}>
       {children}
