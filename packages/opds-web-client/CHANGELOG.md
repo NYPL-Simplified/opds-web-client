@@ -6,6 +6,8 @@
 - Adds the new `MediaType`, `MediaLink` and `FulfillmentLink` interfaces with stricter typing.
 - Adds the streaming media and `application/atom+xml` types to the possible `MediaType`s received from the server.
 - Adds the `fetcher` to the context passed down by `ActionsContext`. This is because it is occasionally necessary to access and use directly.
+- Updates the `jsdom`, `react`, `react-dom`, `mocha`, and `react-test-renderer` deps to latest versions. This required updating node to the latest stable release 13.11.0.
+- Fixes outdated test syntaxes caused by dep updates.
 
 ### v0.3.5
 
