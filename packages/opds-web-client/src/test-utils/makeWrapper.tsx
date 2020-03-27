@@ -6,6 +6,12 @@ import OPDSStore from "../components/context/StoreContext";
 import { PathFor } from "../interfaces";
 import { State } from "../state";
 import AuthPlugin from "../AuthPlugin";
+import ActionsCreator from "../actions";
+import DataFetcher from "../DataFetcher";
+import { adapter } from "../OPDSDataAdapter";
+import buildStore from "../store";
+import BasicAuthPlugin from "../BasicAuthPlugin";
+import * as Redux from "redux";
 
 type WrapperConfig = {
   pathFor?: PathFor;
@@ -19,11 +25,18 @@ const defaultPathFor = fake((collectionUrl?: string, bookUrl?: string) =>
 );
 
 /**
- * This creates the wrapper component that can then be passed
- * to renderHook
+ * This creates a wrapper component, and returns some global context
+ * which can be used to spy / mock actions, fetcher, etc
  */
-type MakeWrapper = (config?: WrapperConfig) => React.FC;
-const makeWrapper: MakeWrapper = (config = {}) => ({ children }) => {
+type MakeWrapper = (
+  config?: WrapperConfig
+) => {
+  wrapper: React.FC;
+  actions: ActionsCreator;
+  fetcher: DataFetcher;
+  store: Redux.Store<State>;
+};
+const makeWrapper: MakeWrapper = (config = {}) => {
   const {
     pathFor = defaultPathFor,
     proxyUrl,
@@ -31,15 +44,29 @@ const makeWrapper: MakeWrapper = (config = {}) => ({ children }) => {
     authPlugins
   } = config;
 
-  return (
-    <PathForProvider pathFor={pathFor}>
-      <ActionsProvider>
-        <OPDSStore initialState={initialState} authPlugins={authPlugins}>
-          {children}
-        </OPDSStore>
-      </ActionsProvider>
-    </PathForProvider>
+  const fetcher = new DataFetcher({ adapter, proxyUrl });
+  const actions = new ActionsCreator(fetcher);
+
+  const store = buildStore(
+    initialState || undefined,
+    authPlugins || [BasicAuthPlugin],
+    pathFor
   );
+
+  return {
+    store,
+    actions,
+    fetcher,
+    wrapper: ({ children }) => {
+      return (
+        <PathForProvider pathFor={pathFor}>
+          <ActionsProvider actions={actions} fetcher={fetcher}>
+            <OPDSStore store={store}>{children}</OPDSStore>
+          </ActionsProvider>
+        </PathForProvider>
+      );
+    }
+  };
 };
 
 export default makeWrapper;
