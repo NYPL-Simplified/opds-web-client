@@ -21,7 +21,7 @@ function isIndirect(
   );
 }
 
-const STREAMING_MEDIA_LINK_TYPE: MediaType =
+export const STREAMING_MEDIA_LINK_TYPE: MediaType =
   "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media";
 
 type DownloadDetails = {

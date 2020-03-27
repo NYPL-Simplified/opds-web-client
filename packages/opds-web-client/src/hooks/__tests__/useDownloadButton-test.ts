@@ -1,9 +1,11 @@
+import { STREAMING_MEDIA_LINK_TYPE } from "./../useDownloadButton";
 import { expect } from "chai";
 import { stub } from "sinon";
 import { renderHook } from "@testing-library/react-hooks";
 import useDownloadButton from "../useDownloadButton";
-import { MediaLink } from "./../../interfaces";
+import { MediaLink, MediaType, FulfillmentLink } from "./../../interfaces";
 import makeWrapper from "../../test-utils/makeWrapper";
+import { typeMap } from "../../utils/file";
 
 const pdfMediaLink: MediaLink = {
   url: "/media-url",
@@ -24,7 +26,11 @@ describe("useDownloadButton", () => {
     expect(typeof result.current.fulfill).to.equal("function");
   });
 
-  it("provides full details", () => {
+  it("fixes incorrect adobe mimeType", () => {
+    const pdfMediaLink: MediaLink = {
+      url: "/bad-mimetype-url",
+      type: "vnd.adobe/adept+xml"
+    };
     const { result } = renderHook(
       () => useDownloadButton(pdfMediaLink, "pdf-title"),
       {
@@ -32,10 +38,86 @@ describe("useDownloadButton", () => {
       }
     );
 
-    expect(result.current.downloadLabel).to.equal("Download PDF");
-    expect(result.current.fileExtension).to.equal(".pdf");
+    expect(result.current.downloadLabel).to.equal("Download ACSM");
+    expect(result.current.fileExtension).to.equal(".acsm");
     expect(result.current.isIndirect).to.equal(false);
-    expect(result.current.mimeType).to.equal("application/pdf");
+    expect(result.current.mimeType).to.equal("application/vnd.adobe.adept+xml");
     expect(typeof result.current.fulfill).to.equal("function");
   });
+
+  it("correctly maps all direct media types", () => {
+    const { result, rerender } = renderHook(
+      (link: MediaLink | FulfillmentLink | undefined) =>
+        useDownloadButton(link, "book-title"),
+      {
+        wrapper: makeWrapper(),
+        initialProps: undefined
+      }
+    );
+    expect(result.current).to.equal(null);
+
+    for (const mediaType in typeMap) {
+      // don't test this for the one indirect media type
+      if (mediaType === STREAMING_MEDIA_LINK_TYPE) return;
+      // also don't test for the one type we need to fix, test that separately
+      if (mediaType === "vnd.adobe/adept+xml") return;
+
+      const link: MediaLink = {
+        url: "/media-url",
+        type: mediaType as MediaType
+      };
+      rerender(link);
+
+      expect(result.current?.downloadLabel).to.equal(
+        `Download ${typeMap[mediaType].name}`
+      );
+      expect(result.current?.fileExtension).to.equal(
+        typeMap[mediaType].extension
+      );
+      expect(result.current?.isIndirect).to.equal(false);
+      expect(result.current?.mimeType).to.equal(mediaType);
+      expect(typeof result.current?.fulfill).to.equal("function");
+    }
+  });
+
+  it("provides currect details for streaming media type", () => {
+    const link: FulfillmentLink = {
+      url: "/media-url",
+      type: "application/atom+xml;type=entry;profile=opds-catalog",
+      indirectType:
+        "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media"
+    };
+
+    const { result } = renderHook(() => useDownloadButton(link, "pdf-title"), {
+      wrapper: makeWrapper()
+    });
+
+    expect(result.current.downloadLabel).to.equal("Read Online");
+    expect(result.current.fileExtension).to.equal("");
+    expect(result.current.isIndirect).to.equal(true);
+    expect(result.current.mimeType).to.equal(
+      "application/atom+xml;type=entry;profile=opds-catalog"
+    );
+    expect(typeof result.current.fulfill).to.equal("function");
+  });
+
+  it("returns null when link is undefined", () => {
+    const { result } = renderHook(
+      () => useDownloadButton(undefined, "book-title"),
+      {
+        wrapper: makeWrapper()
+      }
+    );
+    expect(result.current).to.equal(null);
+  });
+
+  // it("fulfills direct links", () => {
+  //   const { result } = renderHook(
+  //     () => useDownloadButton(undefined, "book-title"),
+  //     {
+  //       wrapper: makeWrapper()
+  //     }
+  //   );
+  //   expect(result.current).to.equal(null);
+  // });
 });
