@@ -136,7 +136,7 @@ describe("DownloadButton", () => {
   it("fulfills ACSM-based indirect links", async () => {
     const ascmLink: FulfillmentLink = {
       url: "download url",
-      type: "application/vnd.adobe.adept+xml",
+      type: "vnd.adobe/adept+xml",
       indirectType: "application/epub+zip"
     };
     let downloadButton = providerWrapper(

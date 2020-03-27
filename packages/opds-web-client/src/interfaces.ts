@@ -5,6 +5,7 @@ export type MediaType =
   | "application/kepub+zip"
   | "application/pdf"
   | "application/vnd.adobe.adept+xml"
+  | "vnd.adobe/adept+xml"
   | "application/x-mobipocket-ebook"
   | "application/x-mobi8-ebook"
   | "application/atom+xml;type=entry;profile=opds-catalog"

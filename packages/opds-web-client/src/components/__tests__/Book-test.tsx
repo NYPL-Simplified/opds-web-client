@@ -277,7 +277,6 @@ describe("Book", () => {
       let epubButton = buttons.at(0);
       let mobiButton = buttons.at(1);
 
-      console.log(epubButton.props().link.type);
       expect(epubButton.props().link.url).to.equal("secrets.epub");
       expect(epubButton.props().link.type).to.equal("application/epub+zip");
       expect(epubButton.props().isPlainLink).to.equal(true);

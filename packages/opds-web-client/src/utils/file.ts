@@ -25,6 +25,10 @@ export const typeMap: TypeMap = {
     extension: ".acsm",
     name: "ACSM"
   },
+  "vnd.adobe/adept+xml": {
+    extension: ".acsm",
+    name: "ACSM"
+  },
   "application/x-mobipocket-ebook": {
     extension: ".mobi",
     name: "MOBI"
