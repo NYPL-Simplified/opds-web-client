@@ -16,6 +16,9 @@ import DownloadButton from "../DownloadButton";
 import { mockRouterContext } from "../../__mocks__/routing";
 import { ActionsProvider } from "../context/ActionsContext";
 import buildStore from "../../store";
+import DataFetcher from "../../DataFetcher";
+import { adapter } from "../../OPDSDataAdapter";
+import ActionsCreator from "../../actions";
 
 let book: BookData = {
   id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
@@ -247,9 +250,12 @@ describe("Book", () => {
     it("shows summary, in book's language, with html stripped out and more link", () => {
       let context = mockRouterContext();
       let store = buildStore();
+      const fetcher = new DataFetcher({ adapter });
+      const actions = new ActionsCreator(fetcher);
+
       wrapper = mount(
         <Provider store={store}>
-          <ActionsProvider>
+          <ActionsProvider fetcher={fetcher} actions={actions}>
             <Book book={book} updateBook={updateBook} />
           </ActionsProvider>
         </Provider>,

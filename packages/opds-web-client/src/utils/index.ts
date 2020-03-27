@@ -33,6 +33,6 @@ export function collectionDataWithLoans(
   // loaned version. This currently only changes ungrouped books, not books in lanes,
   // since lanes don't need any loan-related information.
   return Object.assign({}, collectionData, {
-    books: collectionData?.books.map(book => loanedBookData(book, loans))
+    books: collectionData?.books?.map(book => loanedBookData(book, loans))
   });
 }
