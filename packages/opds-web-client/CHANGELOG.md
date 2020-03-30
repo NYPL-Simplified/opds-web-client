@@ -1,5 +1,15 @@
 ## Changelog
 
+### v0.3.6
+
+- Extracts the logic that was previously in `DownloadButton` into `useDownloadButton` so it can be imported and used by circulation-patron-web.
+- Adds the new `MediaType`, `MediaLink` and `FulfillmentLink` interfaces with stricter typing.
+- Adds the streaming media and `application/atom+xml` types to the possible `MediaType`s received from the server.
+- Adds the `fetcher` to the context passed down by `ActionsContext`. This is because it is occasionally necessary to access and use directly.
+- Updates the `jsdom`, `react`, `react-dom`, `mocha`, and `react-test-renderer` deps to latest versions. This required updating node to the latest stable release 13.11.0.
+- Fixes outdated test syntaxes caused by dep updates.
+- Allow store to be passed in to `StoreContext` so that it can be mocked in testing
+
 ### v0.3.5
 
 - Enables typescript `strictNullChecks`, which means that types cannot be `null` or `undefined` unless explicitly defined as such.

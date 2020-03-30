@@ -25,6 +25,10 @@ export const typeMap: TypeMap = {
     extension: ".acsm",
     name: "ACSM"
   },
+  "vnd.adobe/adept+xml": {
+    extension: ".acsm",
+    name: "ACSM"
+  },
   "application/x-mobipocket-ebook": {
     extension: ".mobi",
     name: "MOBI"
@@ -32,6 +36,14 @@ export const typeMap: TypeMap = {
   "application/x-mobi8-ebook": {
     extension: ".azw3",
     name: "Mobi8"
+  },
+  "application/atom+xml;type=entry;profile=opds-catalog": {
+    extension: "",
+    name: "atom"
+  },
+  "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media": {
+    extension: "",
+    name: "streaming-media"
   }
 };
 

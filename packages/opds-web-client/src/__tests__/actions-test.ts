@@ -541,7 +541,7 @@ describe("actions", () => {
     it("creates an action", () => {
       let callback = stub();
       let cancel = stub();
-      let providers = stub();
+      let providers = [];
       let action = actions.showAuthForm(callback, cancel, providers, "title");
       expect(action.type).to.equal(ActionCreator.SHOW_AUTH_FORM);
       expect(action.callback).to.equal(callback);

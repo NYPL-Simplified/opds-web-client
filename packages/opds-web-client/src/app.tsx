@@ -9,6 +9,9 @@ import AuthPlugin from "./AuthPlugin";
 import "./stylesheets/app.scss";
 import PathForProvider from "./components/context/PathForContext";
 import { ActionsProvider } from "./components/context/ActionsContext";
+import { adapter } from "./OPDSDataAdapter";
+import DataFetcher from "./DataFetcher";
+import ActionsCreator from "./actions";
 
 const OPDSCatalogRouterHandler = config => {
   interface OPDSCatalogParams {
@@ -30,9 +33,12 @@ const OPDSCatalogRouterHandler = config => {
         collectionUrl,
         bookUrl
       };
+
+      const fetcher = new DataFetcher({ adapter, proxyUrl: config.proxyUrl });
+      const actions = new ActionsCreator(fetcher);
       return (
         <PathForProvider pathFor={config.pathFor}>
-          <ActionsProvider>
+          <ActionsProvider actions={actions} fetcher={fetcher}>
             <OPDSCatalog {...mergedProps} />
           </ActionsProvider>
         </PathForProvider>

@@ -11,7 +11,6 @@ import {
   bookIsReady,
   bookIsOpenAccess
 } from "../utils/book";
-const download = require("downloadjs");
 
 export interface BookProps {
   book: BookData;
@@ -173,9 +172,9 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
         links.push(
           <DownloadButton
             key={`${link.url}-${index}`}
-            url={link.url}
-            mimeType={link.type}
             isPlainLink={true}
+            link={link}
+            title={this.props.book.title}
           />
         );
       });
@@ -203,11 +202,9 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
         links.push(
           <DownloadButton
             key={`${link.url}-${index}`}
-            url={link.url}
-            mimeType={link.type}
+            link={link}
             title={this.props.book.title}
             isPlainLink={isDirectStreaming || !this.props.isSignedIn}
-            indirectType={link.indirectType}
           />
         );
       });
@@ -226,11 +223,9 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
         links.push(
           <DownloadButton
             key={`${link.url}-${index}`}
-            url={link.url}
-            mimeType={link.type}
+            link={link}
             title={this.props.book.title}
             isPlainLink={!this.props.isSignedIn}
-            indirectType={link.indirectType}
           />
         );
       });

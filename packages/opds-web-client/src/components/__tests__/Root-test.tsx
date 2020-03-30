@@ -362,7 +362,9 @@ describe("Root", () => {
     };
 
     let wrapper = shallow(<Root {...propsWithAuthPlugin} />);
-    expect((plugin.lookForCredentials as typeof stub).callCount).to.equal(1);
+    expect(
+      (plugin.lookForCredentials as ReturnType<typeof stub>).callCount
+    ).to.equal(1);
     expect(propsWithAuthPlugin.saveAuthCredentials.callCount).to.equal(1);
     expect(propsWithAuthPlugin.saveAuthCredentials.args[0][0]).to.deep.equal(
       credentials

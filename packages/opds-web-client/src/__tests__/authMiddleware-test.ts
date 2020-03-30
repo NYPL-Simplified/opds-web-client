@@ -26,7 +26,7 @@ describe("authMiddleware", () => {
     hideAuthFormStub = stub(
       ActionCreator.prototype,
       "hideAuthForm"
-    ).callsFake(() => {});
+    ).callsFake(() => ({ type: "" }));
     clearAuthCredentialsStub = stub(
       DataFetcher.prototype,
       "clearAuthCredentials"
@@ -336,8 +336,8 @@ describe("authMiddleware", () => {
 
   it("makes cancel hide the form if url hasn't changed", async () => {
     store.getState.returns({ auth: {}, collection: {}, book: {} });
-    // blank is the value of window.location.pathname when running tests
-    pathFor.returns("blank");
+    // "/" is the value of window.location.pathname when running tests
+    pathFor.returns("/");
     let authentication = [{ type: "test", id: "a provider" }];
     let error = {
       status: 401,
