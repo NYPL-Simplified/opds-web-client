@@ -27,14 +27,16 @@ const createDOMPurify = require("dompurify");
 if (typeof window === "undefined") {
   // sanitization needs to work server-side,
   // so we use jsdom to build it a window object
-  const jsdom = require("jsdom");
-  const window = jsdom.jsdom("", {
-    features: {
-      FetchExternalResources: false, // disables resource loading over HTTP / filesystem
-      ProcessExternalResources: false // do not execute JS within script blocks
-    }
-  }).defaultView;
-  sanitizeHtml = createDOMPurify(window).sanitize;
+  const JSDOM = require("jsdom");
+  const jsdom = new JSDOM("<!doctype html><html><body></body></html>", {
+    url: "http://localhost",
+    FetchExternalResources: false,
+    ProcessExternalResources: false
+  });
+  const { window } = jsdom;
+  const { defaultView } = window;
+
+  sanitizeHtml = createDOMPurify(defaultView).sanitize;
 } else {
   sanitizeHtml = createDOMPurify(window).sanitize;
 }
