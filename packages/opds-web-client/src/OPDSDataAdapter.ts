@@ -27,7 +27,7 @@ const createDOMPurify = require("dompurify");
 if (typeof window === "undefined") {
   // sanitization needs to work server-side,
   // so we use jsdom to build it a window object
-  const JSDOM = require("jsdom");
+  const { JSDOM } = require("jsdom");
   const jsdom = new JSDOM("<!doctype html><html><body></body></html>", {
     url: "http://localhost",
     FetchExternalResources: false,
