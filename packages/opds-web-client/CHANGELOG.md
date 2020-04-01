@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.3.7
+
+- Updates to new `jsdom` api in our use of it for server rendering.
+
 ### v0.3.6
 
 - Extracts the logic that was previously in `DownloadButton` into `useDownloadButton` so it can be imported and used by circulation-patron-web.
