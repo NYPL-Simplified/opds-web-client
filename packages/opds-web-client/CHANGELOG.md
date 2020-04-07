@@ -1,6 +1,6 @@
 ## Changelog
 
-### v0.3.8
+### v0.4.0
 
 - Extracts the `getMedium` and `getMediumSVG` methods previously on the `Book` component into external functions so they can be imported and used in `circulation-patron-web`.
 
