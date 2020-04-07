@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.3.8
+
+- Extracts the `getMedium` and `getMediumSVG` methods previously on the `Book` component into external functions so they can be imported and used in `circulation-patron-web`.
+
 ### v0.3.7
 
 - Updates to new `jsdom` api in our use of it for server rendering.
