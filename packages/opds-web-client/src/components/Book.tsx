@@ -3,13 +3,15 @@ import CatalogLink from "./CatalogLink";
 import BookCover from "./BookCover";
 import BorrowButton from "./BorrowButton";
 import DownloadButton from "./DownloadButton";
-import { BookData, FulfillmentLink } from "../interfaces";
+import { BookData, FulfillmentLink, BookMedium } from "../interfaces";
 import { AudioHeadphoneIcon, BookIcon } from "@nypl/dgx-svg-icons";
 import {
   bookIsBorrowed,
   bookIsReserved,
   bookIsReady,
-  bookIsOpenAccess
+  bookIsOpenAccess,
+  getMedium,
+  getMediumSVG
 } from "../utils/book";
 
 export interface BookProps {
@@ -34,7 +36,7 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
     let summary =
       (book && book.summary && book.summary.replace(/<\/?[^>]+(>|$)/g, " ")) ||
       "";
-    const bookMedium = this.getMedium(book);
+    const bookMedium = getMedium(book);
     const showMediaIconClass = bookMedium ? "show-media" : "";
     const hasAuthors = !!(book.authors && book.authors.length);
     const hasContributors = !!(book.contributors && book.contributors.length);
@@ -54,7 +56,7 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
         >
           <BookCover book={book} />
           <div className={`compact-info ${showMediaIconClass}`}>
-            {this.getMediumSVG(bookMedium, false)}
+            {getMediumSVG(bookMedium, false)}
             <div className="empty"></div>
             <div className="item-details">
               <div className="title">{book.title}</div>
@@ -92,7 +94,7 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
           </div>
           <div className="details">
             <div className="fields" lang="en">
-              {bookMedium && <span>{this.getMediumSVG(bookMedium)}</span>}
+              {bookMedium && <span>{getMediumSVG(bookMedium)}</span>}
               {this.fields().map((field, key) =>
                 field.value ? (
                   <div
@@ -252,48 +254,6 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
     }
 
     return links;
-  }
-
-  getMedium(book) {
-    if (
-      !book.raw ||
-      !book.raw["$"] ||
-      !book.raw["$"]["schema:additionalType"]
-    ) {
-      return "";
-    }
-
-    return book.raw["$"]["schema:additionalType"].value
-      ? book.raw["$"]["schema:additionalType"].value
-      : "";
-  }
-
-  getMediumSVG(medium, displayLabel = true) {
-    if (!medium) {
-      return null;
-    }
-
-    const svgMediumTypes = {
-      "http://bib.schema.org/Audiobook": {
-        element: <AudioHeadphoneIcon ariaHidden title="Audio/Headphone Icon" />,
-        label: "Audio"
-      },
-      "http://schema.org/EBook": {
-        element: <BookIcon ariaHidden title="eBook Icon" />,
-        label: "eBook"
-      },
-      "http://schema.org/Book": {
-        element: <BookIcon ariaHidden title="eBook Icon" />,
-        label: "eBook"
-      }
-    };
-    const svgElm = svgMediumTypes[medium];
-
-    return svgElm ? (
-      <div className="item-icon">
-        {svgElm.element} {displayLabel ? svgElm.label : null}
-      </div>
-    ) : null;
   }
 
   borrow(): Promise<BookData> {
