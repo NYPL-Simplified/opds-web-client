@@ -72,56 +72,6 @@ describe("Book", () => {
     expect(bookElement.props().lang).to.equal("de");
   });
 
-  describe("getMedium function", () => {
-    it("returns value with data or an empty string", () => {
-      let wrapper = shallow(<Book book={book} updateBook={updateBook} />);
-
-      let instance = wrapper.instance() as any;
-      let getMedium = instance.getMedium;
-
-      expect(getMedium({})).to.equal("");
-      expect(getMedium({ raw: {} })).to.equal("");
-      expect(getMedium({ raw: { $: {} } })).to.equal("");
-      expect(
-        getMedium({ raw: { $: { "schema:additionalType": {} } } })
-      ).to.equal("");
-      expect(getMedium(book)).to.equal("http://bib.schema.org/Audiobook");
-    });
-  });
-
-  describe("getMediumSVG function", () => {
-    let wrapper;
-    let instance;
-    let getMediumSVG;
-
-    beforeEach(() => {
-      wrapper = shallow(<Book book={book} updateBook={updateBook} />);
-
-      instance = wrapper.instance() as any;
-      getMediumSVG = instance.getMediumSVG;
-    });
-
-    it("returns null with no input", () => {
-      expect(getMediumSVG()).to.equal(null);
-    });
-
-    it("returns null with bad medium input", () => {
-      expect(getMediumSVG("video")).to.equal(null);
-    });
-
-    it("returns a component with the appropriate svg and label for the medium input", () => {
-      expect(
-        mount(getMediumSVG("http://bib.schema.org/Audiobook")).text()
-      ).to.equal("Audio/Headphone Icon Audio");
-    });
-
-    it("returns a component with the appropriate svg but no label for the medium input", () => {
-      expect(
-        mount(getMediumSVG("http://bib.schema.org/Audiobook", false)).text()
-      ).to.equal("Audio/Headphone Icon ");
-    });
-  });
-
   describe("compact info", () => {
     it("shows book info", () => {
       let wrapper = shallow(<Book book={book} updateBook={updateBook} />);

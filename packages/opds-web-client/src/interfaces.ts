@@ -20,6 +20,10 @@ export interface FulfillmentLink extends MediaLink {
   indirectType: string;
 }
 
+export type BookMedium =
+  | "http://bib.schema.org/Audiobook"
+  | "http://schema.org/EBook"
+  | "http://schema.org/Book";
 export interface BookData {
   id: string;
   title: string;

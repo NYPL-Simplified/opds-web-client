@@ -5,7 +5,9 @@ import Book, { BookProps } from "./Book";
 import {
   bookIsReserved,
   bookIsBorrowed,
-  bookIsOpenAccess
+  bookIsOpenAccess,
+  getMedium,
+  getMediumSVG
 } from "../utils/book";
 
 export interface BookDetailsProps extends BookProps {}
@@ -14,7 +16,7 @@ export interface BookDetailsProps extends BookProps {}
 export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
   render(): JSX.Element {
     let fields = this.fields();
-    const medium = this.getMedium(this.props.book);
+    const medium = getMedium(this.props.book);
 
     return (
       <div className="book-details">
@@ -52,9 +54,7 @@ export default class BookDetails<P extends BookDetailsProps> extends Book<P> {
                   )
               )}
               {medium && (
-                <li className="item-icon-container">
-                  {this.getMediumSVG(medium)}
-                </li>
+                <li className="item-icon-container">{getMediumSVG(medium)}</li>
               )}
             </ul>
           </div>
