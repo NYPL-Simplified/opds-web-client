@@ -4,7 +4,6 @@ import BookCover from "./BookCover";
 import BorrowButton from "./BorrowButton";
 import DownloadButton from "./DownloadButton";
 import { BookData, FulfillmentLink, BookMedium } from "../interfaces";
-import { AudioHeadphoneIcon, BookIcon } from "@nypl/dgx-svg-icons";
 import {
   bookIsBorrowed,
   bookIsReserved,
