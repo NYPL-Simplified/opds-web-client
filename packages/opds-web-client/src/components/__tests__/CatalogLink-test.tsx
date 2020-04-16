@@ -26,7 +26,6 @@ describe("CatalogLink", () => {
     let requiredRouterKeys = [
       "push",
       "createHref",
-      "isActive",
       "replace",
       "go",
       "goBack",

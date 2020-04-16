@@ -151,10 +151,6 @@ export interface Location {
 export interface Router {
   push: (location: string | Location) => any;
   createHref: (location: string | Location) => string;
-  isActive: (
-    location: string | Location,
-    onlyActiveOnIndex?: boolean
-  ) => boolean;
 }
 
 export interface NavigateContext {

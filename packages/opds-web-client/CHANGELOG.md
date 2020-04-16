@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.4.1
+
+- Removes the unused `isActive` property from the `router` context.
+
 ### v0.4.0
 
 - Extracts the `getMedium` and `getMediumSVG` methods previously on the `Book` component into external functions so they can be imported and used in `circulation-patron-web`.
