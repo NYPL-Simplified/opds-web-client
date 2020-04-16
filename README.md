@@ -1,7 +1,9 @@
 # opds-web-client
+
 JavaScript OPDS web client
 
 ## Standalone App
+
 OPDS Web Client can be run as a standalone app mounted in a DOM element:
 
 ```javascript
@@ -10,7 +12,7 @@ new OPDSWebClient(config, elementId);
 
 For an example of OPDS Web Client in use as a standalone app, see the [demo server template](https://github.com/NYPL-Simplified/opds-web-client/blob/master/packages/server/views/index.html.ejs) included in this repository.
 
-*NOTE*: The web reader has been taken out of the demo server template for now as it is causing build issues. If you want to install it locally and use it for testing, uncomment line 17 in `/packages/server/index.js`, and install it in the `/packages/server` directory:
+_NOTE_: The web reader has been taken out of the demo server template for now as it is causing build issues. If you want to install it locally and use it for testing, uncomment line 17 in `/packages/server/index.js`, and install it in the `/packages/server` directory:
 
 ```bash
  $ npm install --save nypl-simplified-webpub-viewer
@@ -32,6 +34,7 @@ For an example of OPDS Web Client in use as a standalone app, see the [demo serv
 - `allLanguageSearch`: optional string to specify if searches in the catalog should not use the browser's language header in requests. Default: `false`
 
 ## React Component
+
 The application is also available as a reusable React component:
 
 ```jsx
@@ -44,7 +47,7 @@ ReactDOM.render(
     pageTitleTemplate={this.pageTitleTemplate}
     BookDetailsContainer={BookDetailsContainer}
     Header={Header}
-    />
+  />
 );
 ```
 
@@ -65,7 +68,7 @@ For an example of the application in use as a React component, see [NYPL-Simplif
 
 The OPDSCatalog React component should be rendered within a [React context](https://facebook.github.io/react/docs/context.html) that includes two items:
 
-- `router`: any object that implements the `push`, `createHref`, and `isActive` methods of react-router's [context.router](https://reacttraining.com/react-router/core/api/contextrouter)
+- `router`: any object that implements the `push` and `createHref` methods of react-router's [context.router](https://reacttraining.com/react-router/core/api/contextrouter)
 - `pathFor(collectionUrl: string, bookUrl: string) => string`: a function that accepts a collection URL and book URL and returns a string that will become the web browser's relative URL upon navigating to a new collection or book
 
 ## Accessibility
