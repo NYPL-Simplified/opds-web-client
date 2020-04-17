@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.4.2
+
+- Update `typeMap` and `MediaType` to add audiobook support.
+
 ### v0.4.1
 
 - Removes the unused `isActive` property from the `router` context.
