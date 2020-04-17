@@ -44,6 +44,10 @@ export const typeMap: TypeMap = {
   "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media": {
     extension: "",
     name: "streaming-media"
+  },
+  "application/audiobook+json": {
+    extension: ".audiobook",
+    name: "Audiobook"
   }
 };
 
