@@ -9,7 +9,8 @@ export type MediaType =
   | "application/x-mobipocket-ebook"
   | "application/x-mobi8-ebook"
   | "application/atom+xml;type=entry;profile=opds-catalog"
-  | "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media";
+  | "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media"
+  | "application/audiobook+json";
 
 export interface MediaLink {
   url: string;
