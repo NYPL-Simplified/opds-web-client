@@ -109,7 +109,7 @@ describe("loans reducer", () => {
 
   it("adds newly reserved book on UPDATE_BOOK_LOAD", () => {
     let oldState = { ...initState, books: loansData.books };
-    let newBookData = {
+    let newBookData: BookData = {
       id: "new book id",
       url: "new book url",
       title: "new book title",
