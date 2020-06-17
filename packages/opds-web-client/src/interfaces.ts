@@ -25,6 +25,12 @@ export type BookMedium =
   | "http://bib.schema.org/Audiobook"
   | "http://schema.org/EBook"
   | "http://schema.org/Book";
+
+export type BookAvailability =
+  | "available"
+  | "unavailable"
+  | "reserved"
+  | "ready";
 export interface BookData {
   id: string;
   title: string;
@@ -41,7 +47,7 @@ export interface BookData {
   borrowUrl?: string;
   fulfillmentLinks?: FulfillmentLink[];
   availability?: {
-    status: string;
+    status: BookAvailability;
     since?: string;
     until?: string;
   };
