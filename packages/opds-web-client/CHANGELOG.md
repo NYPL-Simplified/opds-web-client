@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.4.3
+
+- add `BookAvailability` enum type and use it to tighten `BookData` interface.
+
 ### v0.4.2
 
 - Update `typeMap` and `MediaType` to add audiobook support.
