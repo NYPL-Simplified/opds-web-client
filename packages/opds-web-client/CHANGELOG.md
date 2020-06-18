@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.4.4
+
+- add `isStreaming` flag to returned object from `useDownloadButton`.
+
 ### v0.4.3
 
 - add `BookAvailability` enum type and use it to tighten `BookData` interface.
