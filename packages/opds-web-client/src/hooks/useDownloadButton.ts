@@ -1,4 +1,3 @@
-import * as React from "react";
 import { MediaLink, FulfillmentLink, MediaType } from "./../interfaces";
 import { useActions } from "../components/context/ActionsContext";
 import download from "../components/download";
@@ -30,6 +29,7 @@ type DownloadDetails = {
   downloadLabel: string;
   mimeType: MediaType;
   fileExtension: string;
+  isStreaming: boolean;
 };
 /**
  * We use typescript function overloads to show that if you pass in a link
@@ -79,15 +79,17 @@ export default function useDownloadButton(
     }
   };
 
+  const isStreaming =
+    isIndirect(link) && link.indirectType === STREAMING_MEDIA_LINK_TYPE;
   const typeName = typeMap[mimeTypeValue]?.name;
-  const downloadLabel =
-    isIndirect(link) && link.indirectType === STREAMING_MEDIA_LINK_TYPE
-      ? "Read Online"
-      : `Download${typeName ? " " + typeName : ""}`;
+  const downloadLabel = isStreaming
+    ? "Read Online"
+    : `Download${typeName ? " " + typeName : ""}`;
 
   return {
     fulfill,
     isIndirect: isIndirect(link),
+    isStreaming,
     downloadLabel,
     mimeType: mimeTypeValue,
     fileExtension
