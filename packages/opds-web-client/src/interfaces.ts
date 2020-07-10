@@ -1,5 +1,7 @@
 import AuthPlugin from "./AuthPlugin";
 
+// the source of truth for media types is located at:
+// https://github.com/NYPL-Simplified/server_core/blob/master/model/constants.py#L237
 export type MediaType =
   | "application/epub+zip"
   | "application/kepub+zip"
