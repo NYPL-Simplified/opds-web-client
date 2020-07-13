@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.4.5
+
+- send empty `Authentication` header when no credentials are present to prevent sending of cached credentials.
+
 ### v0.4.4
 
 - add `isStreaming` flag to returned object from `useDownloadButton`.
