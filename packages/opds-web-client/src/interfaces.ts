@@ -15,7 +15,8 @@ export type MediaType =
   | "application/audiobook+json"
   | "application/vnd.overdrive.circulation.api+json;profile=audiobook"
   | "application/vnd.overdrive.circulation.api+json;profile=ebook"
-  | "application/vnd.librarysimplified.web-epub";
+  | "application/vnd.librarysimplified.web-epub"
+  | "application/vnd.librarysimplified.axisnow+json";
 
 export interface MediaLink {
   url: string;
