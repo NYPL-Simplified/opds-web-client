@@ -166,9 +166,7 @@ export default class DataFetcher {
     headers["X-Requested-With"] = "XMLHttpRequest";
 
     let credentials = this.getAuthCredentials();
-    if (credentials) {
-      headers["Authorization"] = credentials.credentials;
-    }
+    headers["Authorization"] = credentials?.credentials ?? "";
 
     return headers;
   }

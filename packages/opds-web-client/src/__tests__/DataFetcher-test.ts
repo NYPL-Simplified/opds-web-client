@@ -30,7 +30,7 @@ describe("DataFetcher", () => {
       expect(fetchArgs[0][0]).to.equal("/test-url");
       expect(fetchArgs[0][1]).to.deep.equal({
         ...options,
-        headers: { "X-Requested-With": "XMLHttpRequest" }
+        headers: { "X-Requested-With": "XMLHttpRequest", Authorization: "" }
       });
     });
 
@@ -48,7 +48,8 @@ describe("DataFetcher", () => {
       expect(fetchArgs[0][1]).to.deep.equal({
         credentials: "same-origin",
         headers: {
-          "X-Requested-With": "XMLHttpRequest"
+          "X-Requested-With": "XMLHttpRequest",
+          Authorization: ""
         },
         ...options
       });
