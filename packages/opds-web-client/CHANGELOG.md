@@ -2,7 +2,8 @@
 
 ### v0.4.5
 
-- send empty `Authentication` header when no credentials are present to prevent sending of cached credentials.
+- Send empty `Authentication` header when no credentials are present to prevent sending of cached credentials.
+- Add overdrive media type
 
 ### v0.4.4
 
