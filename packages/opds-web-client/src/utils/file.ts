@@ -1,13 +1,14 @@
 import { MediaType } from "./../interfaces";
 
-type TypeMap = {
-  [key in MediaType]: {
-    extension: string;
-    name: string;
-  };
-};
-
-export const typeMap: TypeMap = {
+export const typeMap: Record<MediaType, { extension: string; name: string }> = {
+  "application/vnd.overdrive.circulation.api+json;profile=audiobook": {
+    extension: "",
+    name: "Overdrive Audiobook"
+  },
+  "application/vnd.overdrive.circulation.api+json;profile=ebook": {
+    extension: "",
+    name: "Overdrive eBook"
+  },
   "application/epub+zip": {
     extension: ".epub",
     name: "EPUB"

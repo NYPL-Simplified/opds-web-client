@@ -1,5 +1,7 @@
 import AuthPlugin from "./AuthPlugin";
 
+// the source of truth for media types is located at:
+// https://github.com/NYPL-Simplified/server_core/blob/master/model/constants.py
 export type MediaType =
   | "application/epub+zip"
   | "application/kepub+zip"
@@ -10,7 +12,9 @@ export type MediaType =
   | "application/x-mobi8-ebook"
   | "application/atom+xml;type=entry;profile=opds-catalog"
   | "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media"
-  | "application/audiobook+json";
+  | "application/audiobook+json"
+  | "application/vnd.overdrive.circulation.api+json;profile=audiobook"
+  | "application/vnd.overdrive.circulation.api+json;profile=ebook";
 
 export interface MediaLink {
   url: string;
