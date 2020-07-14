@@ -14,7 +14,8 @@ export type MediaType =
   | "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media"
   | "application/audiobook+json"
   | "application/vnd.overdrive.circulation.api+json;profile=audiobook"
-  | "application/vnd.overdrive.circulation.api+json;profile=ebook";
+  | "application/vnd.overdrive.circulation.api+json;profile=ebook"
+  | "application/vnd.librarysimplified.axisnow+json";
 
 export interface MediaLink {
   url: string;
