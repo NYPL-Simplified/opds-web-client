@@ -15,7 +15,7 @@ export const typeMap: Record<MediaType, { extension: string; name: string }> = {
   },
   "application/vnd.librarysimplified.axisnow+json": {
     extension: ".json",
-    name: "AxisNow Document"
+    name: "AxisNow eBook"
   },
   "application/kepub+zip": {
     // got this from here: https://wiki.mobileread.com/wiki/Kepub
