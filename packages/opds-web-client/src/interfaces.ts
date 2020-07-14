@@ -235,7 +235,7 @@ export type SamlIdp = {
  * We will flatten that out before placing into redux state.
  */
 export interface ServerSamlMethod extends AuthMethod {
-  links: [SamlIdp];
+  links: SamlIdp[];
 }
 export interface ClientSamlMethod extends AuthMethod {
   href: string;

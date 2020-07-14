@@ -5,7 +5,7 @@ import {
   ServerSamlMethod
 } from "./../interfaces";
 
-export const SAML_AUTH_ID = "http://librarysimplified.org/authtype/SAML-2.0";
+export const SAML_AUTH_TYPE = "http://librarysimplified.org/authtype/SAML-2.0";
 
 export function generateCredentials(username: string, password: string) {
   const btoaStr = btoa(`${username}:${password}`);
@@ -41,4 +41,4 @@ export const getEnglishValue = (arr: [{ language: string; value: string }]) =>
 export const isServerSamlProvider = (
   provider: AuthProvider<AuthMethod>
 ): provider is AuthProvider<ServerSamlMethod> =>
-  provider.id === SAML_AUTH_ID && "links" in provider.method;
+  provider.id === SAML_AUTH_TYPE && "links" in provider.method;

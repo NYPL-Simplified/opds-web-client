@@ -307,6 +307,7 @@ export default class ActionCreator {
     attemptedProvider?: string | null
   ) {
     const flattenedProviders = flattenSamlProviders(providers);
+    console.log("SHOW AUTH FORM", flattenedProviders);
     return {
       type: ActionCreator.SHOW_AUTH_FORM,
       callback,
