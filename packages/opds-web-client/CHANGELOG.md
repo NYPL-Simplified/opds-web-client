@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.4.7
+
+- Display "Read online" instead of "Download..." in download buttons for AxisNow media type
+
 ### v0.4.6
 
 - Add AxisNow media type
