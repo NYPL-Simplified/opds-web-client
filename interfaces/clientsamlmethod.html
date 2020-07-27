@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AuthProviderSelectionFormState | opds-web-client</title>
+	<title>ClientSamlMethod | opds-web-client</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="authproviderselectionformstate.html">AuthProviderSelectionFormState</a>
+					<a href="clientsamlmethod.html">ClientSamlMethod</a>
 				</li>
 			</ul>
-			<h1>Interface AuthProviderSelectionFormState</h1>
+			<h1>Interface ClientSamlMethod</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,12 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">AuthProviderSelectionFormState</span>
+						<a href="authmethod.html" class="tsd-signature-type">AuthMethod</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">ClientSamlMethod</span>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
@@ -81,7 +86,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="authproviderselectionformstate.html#selectedprovider" class="tsd-kind-icon">selected<wbr>Provider</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="clientsamlmethod.html#description" class="tsd-kind-icon">description</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="clientsamlmethod.html#href" class="tsd-kind-icon">href</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="clientsamlmethod.html#type" class="tsd-kind-icon">type</a></li>
 							</ul>
 						</section>
 					</div>
@@ -89,13 +96,35 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="description" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> description</h3>
+					<div class="tsd-signature tsd-kind-icon">description<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="authmethod.html">AuthMethod</a>.<a href="authmethod.html#description">description</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/6e7cc75/packages/opds-web-client/src/interfaces.ts#L190">src/interfaces.ts:190</a></li>
+						</ul>
+					</aside>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="selectedprovider" class="tsd-anchor"></a>
-					<h3>selected<wbr>Provider</h3>
-					<div class="tsd-signature tsd-kind-icon">selected<wbr>Provider<span class="tsd-signature-symbol">:</span> <a href="authprovider.html" class="tsd-signature-type">AuthProvider</a><span class="tsd-signature-symbol">&lt;</span><a href="authmethod.html" class="tsd-signature-type">AuthMethod</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></div>
+					<a name="href" class="tsd-anchor"></a>
+					<h3>href</h3>
+					<div class="tsd-signature tsd-kind-icon">href<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/6e7cc75/packages/opds-web-client/src/components/AuthProviderSelectionForm.tsx#L35">src/components/AuthProviderSelectionForm.tsx:35</a></li>
+							<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/6e7cc75/packages/opds-web-client/src/interfaces.ts#L242">src/interfaces.ts:242</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="type" class="tsd-anchor"></a>
+					<h3>type</h3>
+					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="authmethod.html">AuthMethod</a>.<a href="authmethod.html#type">type</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/6e7cc75/packages/opds-web-client/src/interfaces.ts#L189">src/interfaces.ts:189</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -114,10 +143,16 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="authproviderselectionformstate.html" class="tsd-kind-icon">Auth<wbr>Provider<wbr>Selection<wbr>Form<wbr>State</a>
+						<a href="clientsamlmethod.html" class="tsd-kind-icon">Client<wbr>Saml<wbr>Method</a>
 						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="clientsamlmethod.html#description" class="tsd-kind-icon">description</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="authproviderselectionformstate.html#selectedprovider" class="tsd-kind-icon">selected<wbr>Provider</a>
+								<a href="clientsamlmethod.html#href" class="tsd-kind-icon">href</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="clientsamlmethod.html#type" class="tsd-kind-icon">type</a>
 							</li>
 						</ul>
 					</li>
