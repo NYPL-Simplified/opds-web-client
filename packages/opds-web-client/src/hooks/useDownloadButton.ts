@@ -80,7 +80,9 @@ export default function useDownloadButton(
   };
 
   const isStreaming =
-    isIndirect(link) && link.indirectType === STREAMING_MEDIA_LINK_TYPE;
+    (isIndirect(link) && link.indirectType === STREAMING_MEDIA_LINK_TYPE) ||
+    link.type === "application/vnd.librarysimplified.axisnow+json";
+
   const typeName = typeMap[mimeTypeValue]?.name;
   const downloadLabel = isStreaming
     ? "Read Online"

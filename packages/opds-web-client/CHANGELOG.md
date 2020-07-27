@@ -1,5 +1,13 @@
 ## Changelog
 
+### v0.4.7
+
+- Display "Read online" instead of "Download..." in download buttons for AxisNow media type
+
+### v0.4.6
+
+- Add AxisNow media type
+
 ### v0.4.5
 
 - Send empty `Authentication` header when no credentials are present to prevent sending of cached credentials.
