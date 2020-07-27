@@ -10,6 +10,7 @@ import {
   AuthProvider,
   AuthMethod
 } from "./interfaces";
+import { flattenSamlProviders } from "./utils/auth";
 
 export interface LoadAction<T> {
   type: string;
@@ -305,11 +306,12 @@ export default class ActionCreator {
     error?: string,
     attemptedProvider?: string | null
   ) {
+    const flattenedProviders = flattenSamlProviders(providers);
     return {
       type: ActionCreator.SHOW_AUTH_FORM,
       callback,
       cancel,
-      providers,
+      providers: flattenedProviders,
       title,
       error,
       attemptedProvider

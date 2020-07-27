@@ -1,7 +1,13 @@
 import { expect } from "chai";
 import { stub } from "sinon";
 
-import { CollectionData } from "../interfaces";
+import { SAML_AUTH_TYPE } from "./../utils/auth";
+import {
+  CollectionData,
+  AuthProvider,
+  ServerSamlMethod,
+  ClientSamlMethod
+} from "../interfaces";
 const fetchMock = require("fetch-mock");
 import ActionCreator from "../actions";
 import MockDataFetcher from "../__mocks__/DataFetcher";
@@ -546,7 +552,71 @@ describe("actions", () => {
       expect(action.type).to.equal(ActionCreator.SHOW_AUTH_FORM);
       expect(action.callback).to.equal(callback);
       expect(action.cancel).to.equal(cancel);
-      expect(action.providers).to.equal(providers);
+      expect(action.providers).to.deep.equal(providers);
+    });
+
+    it("flattens server saml providers", () => {
+      let callback = stub();
+      let cancel = stub();
+      const samlPlugin = {
+        type: "saml-type",
+        lookForCredentials: stub(),
+        buttonComponent: () => null
+      };
+      let serverSamlProvider: AuthProvider<ServerSamlMethod> = {
+        id: SAML_AUTH_TYPE,
+        plugin: samlPlugin,
+        method: {
+          type: SAML_AUTH_TYPE,
+          links: [
+            {
+              privacy_statement_urls: [],
+              logo_urls: [],
+              display_names: [{ language: "en", value: "Saml Idp 1" }],
+              href: "/saml-href-1",
+              rel: "authenticate",
+              descriptions: [{ language: "en", value: "Some description" }],
+              information_urls: []
+            },
+            {
+              privacy_statement_urls: [],
+              logo_urls: [],
+              display_names: [{ language: "en", value: "Saml Idp 2" }],
+              href: "/saml-href-2",
+              rel: "authenticate",
+              descriptions: [{ language: "en", value: "Some description" }],
+              information_urls: []
+            }
+          ]
+        }
+      };
+      let providers = [serverSamlProvider];
+      let action = actions.showAuthForm(callback, cancel, providers, "title");
+      expect(action.type).to.equal(ActionCreator.SHOW_AUTH_FORM);
+      expect(action.callback).to.equal(callback);
+      expect(action.cancel).to.equal(cancel);
+      const expectedProviders: AuthProvider<ClientSamlMethod>[] = [
+        {
+          id: "/saml-href-1",
+          plugin: samlPlugin,
+          method: {
+            href: "/saml-href-1",
+            description: "Saml Idp 1",
+            type: SAML_AUTH_TYPE
+          }
+        },
+        {
+          id: "/saml-href-2",
+          plugin: samlPlugin,
+          method: {
+            href: "/saml-href-2",
+            description: "Saml Idp 2",
+            type: SAML_AUTH_TYPE
+          }
+        }
+      ];
+      console.log(action.providers);
+      expect(action.providers).to.deep.equal(expectedProviders);
     });
   });
 
