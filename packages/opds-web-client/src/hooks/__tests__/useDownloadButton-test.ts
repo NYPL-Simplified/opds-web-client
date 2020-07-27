@@ -63,6 +63,9 @@ describe("useDownloadButton", () => {
       // also don't test for the one type we need to fix, test that separately
       if (mediaType === "vnd.adobe/adept+xml") return;
 
+      if (mediaType === "application/vnd.librarysimplified.axisnow+json")
+        return;
+
       const link: MediaLink = {
         url: "/media-url",
         type: mediaType as MediaType
@@ -81,7 +84,7 @@ describe("useDownloadButton", () => {
     }
   });
 
-  it("provides currect details for streaming media type", () => {
+  it("provides correct details for streaming media type", () => {
     const link: FulfillmentLink = {
       url: "/media-url",
       type: "application/atom+xml;type=entry;profile=opds-catalog",
@@ -98,6 +101,26 @@ describe("useDownloadButton", () => {
     expect(result.current.isIndirect).to.equal(true);
     expect(result.current.mimeType).to.equal(
       "application/atom+xml;type=entry;profile=opds-catalog"
+    );
+    expect(typeof result.current.fulfill).to.equal("function");
+  });
+
+  it("provides correct details for AxisNow type", () => {
+    const link: FulfillmentLink = {
+      url: "/media-url",
+      type: "application/vnd.librarysimplified.axisnow+json",
+      indirectType: ""
+    };
+
+    const { result } = renderHook(() => useDownloadButton(link, "pdf-title"), {
+      wrapper: makeWrapper().wrapper
+    });
+
+    expect(result.current.downloadLabel).to.equal("Read Online");
+    expect(result.current.fileExtension).to.equal(".json");
+    expect(result.current.isIndirect).to.equal(false);
+    expect(result.current.mimeType).to.equal(
+      "application/vnd.librarysimplified.axisnow+json"
     );
     expect(typeof result.current.fulfill).to.equal("function");
   });
