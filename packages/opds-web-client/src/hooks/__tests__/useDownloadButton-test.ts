@@ -1,9 +1,13 @@
-import { STREAMING_MEDIA_LINK_TYPE } from "./../useDownloadButton";
 import { expect } from "chai";
 import * as sinon from "sinon";
 import { renderHook } from "@testing-library/react-hooks";
 import useDownloadButton from "../useDownloadButton";
-import { MediaLink, MediaType, FulfillmentLink } from "./../../interfaces";
+import {
+  MediaLink,
+  MediaType,
+  FulfillmentLink,
+  STREAMING_MEDIA_LINK_TYPE
+} from "./../../interfaces";
 import makeWrapper from "../../test-utils/makeWrapper";
 import { typeMap } from "../../utils/file";
 import * as download from "../../components/download";
@@ -22,7 +26,6 @@ describe("useDownloadButton", () => {
 
     expect(result.current.downloadLabel).to.equal("Download PDF");
     expect(result.current.fileExtension).to.equal(".pdf");
-    expect(result.current.isIndirect).to.equal(false);
     expect(result.current.mimeType).to.equal("application/pdf");
     expect(typeof result.current.fulfill).to.equal("function");
   });
@@ -41,7 +44,6 @@ describe("useDownloadButton", () => {
 
     expect(result.current.downloadLabel).to.equal("Download ACSM");
     expect(result.current.fileExtension).to.equal(".acsm");
-    expect(result.current.isIndirect).to.equal(false);
     expect(result.current.mimeType).to.equal("application/vnd.adobe.adept+xml");
     expect(typeof result.current.fulfill).to.equal("function");
   });
@@ -78,7 +80,6 @@ describe("useDownloadButton", () => {
       expect(result.current?.fileExtension).to.equal(
         typeMap[mediaType].extension
       );
-      expect(result.current?.isIndirect).to.equal(false);
       expect(result.current?.mimeType).to.equal(mediaType);
       expect(typeof result.current?.fulfill).to.equal("function");
     }
@@ -98,7 +99,6 @@ describe("useDownloadButton", () => {
 
     expect(result.current.downloadLabel).to.equal("Read Online");
     expect(result.current.fileExtension).to.equal("");
-    expect(result.current.isIndirect).to.equal(true);
     expect(result.current.mimeType).to.equal(
       "application/atom+xml;type=entry;profile=opds-catalog"
     );
