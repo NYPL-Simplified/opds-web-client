@@ -6,7 +6,8 @@ import {
   MediaLink,
   MediaType,
   FulfillmentLink,
-  STREAMING_MEDIA_LINK_TYPE
+  ATOM_MEDIA_TYPE,
+  AXIS_NOW_WEBPUB_MEDIA_TYPE
 } from "./../../interfaces";
 import makeWrapper from "../../test-utils/makeWrapper";
 import { typeMap } from "../../utils/file";
@@ -60,8 +61,12 @@ describe("useDownloadButton", () => {
     expect(result.current).to.equal(null);
 
     for (const mediaType in typeMap) {
-      // don't test this for the one indirect media type
-      if (mediaType === STREAMING_MEDIA_LINK_TYPE) return;
+      // don't test this for the read online media types
+      if (
+        mediaType === AXIS_NOW_WEBPUB_MEDIA_TYPE ||
+        mediaType === ATOM_MEDIA_TYPE
+      )
+        return;
       // also don't test for the one type we need to fix, test that separately
       if (mediaType === "vnd.adobe/adept+xml") return;
 
@@ -85,12 +90,12 @@ describe("useDownloadButton", () => {
     }
   });
 
-  it("provides correct details for streaming media type", () => {
+  it("provides correct details for ATOM type", () => {
     const link: FulfillmentLink = {
       url: "/media-url",
       type: "application/atom+xml;type=entry;profile=opds-catalog",
       indirectType:
-        "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media"
+        'text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media"'
     };
 
     const { result } = renderHook(() => useDownloadButton(link, "pdf-title"), {
@@ -118,7 +123,6 @@ describe("useDownloadButton", () => {
 
     expect(result.current.downloadLabel).to.equal("Read Online");
     expect(result.current.fileExtension).to.equal(".json");
-    expect(result.current.isIndirect).to.equal(false);
     expect(result.current.mimeType).to.equal(
       "application/vnd.librarysimplified.axisnow+json"
     );
