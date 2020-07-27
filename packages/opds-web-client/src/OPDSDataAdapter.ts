@@ -20,7 +20,8 @@ import {
   FacetGroupData,
   SearchData
 } from "./interfaces";
-import { resolve } from "url";
+
+const resolve = (base, relative) => new URL(relative, base).toString();
 
 let sanitizeHtml;
 const createDOMPurify = require("dompurify");
