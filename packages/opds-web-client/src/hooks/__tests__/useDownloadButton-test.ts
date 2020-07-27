@@ -173,7 +173,7 @@ describe("useDownloadButton", () => {
       url: "/indirect-url",
       type: "application/atom+xml;type=entry;profile=opds-catalog",
       indirectType:
-        "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media"
+        'text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media"'
     };
     const indirectFulfillStub = sinon.stub();
     const dispatchStub = sinon.stub();
