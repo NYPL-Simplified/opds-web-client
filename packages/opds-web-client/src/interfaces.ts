@@ -14,7 +14,8 @@ export type MediaType =
   | "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media"
   | "application/audiobook+json"
   | "application/vnd.overdrive.circulation.api+json;profile=audiobook"
-  | "application/vnd.overdrive.circulation.api+json;profile=ebook";
+  | "application/vnd.overdrive.circulation.api+json;profile=ebook"
+  | "application/vnd.librarysimplified.axisnow+json";
 
 export interface MediaLink {
   url: string;
@@ -210,3 +211,33 @@ export interface BasicAuthMethod extends AuthMethod {
 /** Utility to make keys K of type T both required (defined) and not null */
 export type RequiredKeys<T, K extends keyof T> = Omit<T, K> &
   { [P in K]-?: NonNullable<T[P]> };
+
+export type SamlIdp = {
+  privacy_statement_urls: [];
+  logo_urls: [];
+  display_names: [
+    {
+      language: string;
+      value: string;
+    }
+  ];
+  href: string;
+  descriptions: [
+    {
+      language: string;
+      value: string;
+    }
+  ];
+  rel: "authenticate";
+  information_urls: [];
+};
+/**
+ * The server representation has multiple IDPs nested into the one.
+ * We will flatten that out before placing into redux state.
+ */
+export interface ServerSamlMethod extends AuthMethod {
+  links: SamlIdp[];
+}
+export interface ClientSamlMethod extends AuthMethod {
+  href: string;
+}
