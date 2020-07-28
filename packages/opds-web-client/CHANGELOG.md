@@ -4,6 +4,10 @@
 
 - Fix: Use `new URL()` instead of `url.resolve` when parsing OPDS links. `resolve` is legacy and was causing bugs when on `https` but trying to resolve a link with a nested `http` segment.
 
+### v0.5.0
+
+- Add: SAML Auth support.
+
 ### v0.4.7
 
 - Display "Read online" instead of "Download..." in download buttons for AxisNow media type
