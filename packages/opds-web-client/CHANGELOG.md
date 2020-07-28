@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.4.6
+
+- Fix: Use `new URL()` instead of `url.resolve` when parsing OPDS links. `resolve` is legacy and was causing bugs when on `https` but trying to resolve a link with a nested `http` segment.
+
 ### v0.4.5
 
 - Send empty `Authentication` header when no credentials are present to prevent sending of cached credentials.
