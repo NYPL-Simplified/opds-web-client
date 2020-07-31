@@ -120,7 +120,7 @@ describe("DownloadButton", () => {
       ...fulfillmentLink,
       type: "application/atom+xml;type=entry;profile=opds-catalog",
       indirectType:
-        "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media"
+        'text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media"'
     };
     let downloadButton = providerWrapper(
       <DownloadButton style={style} title="title" link={streamingLink} />
@@ -154,7 +154,8 @@ describe("DownloadButton", () => {
     const indirectLink: FulfillmentLink = {
       type: "application/atom+xml;type=entry;profile=opds-catalog",
       url: "web reader url",
-      indirectType: "some/type"
+      indirectType:
+        'text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media"'
     };
     let downloadButton = providerWrapper(
       <DownloadButton style={style} title="title" link={indirectLink} />
