@@ -1,5 +1,13 @@
 import * as React from "react";
-import { BookData, LinkData, RequiredKeys, BookMedium } from "../interfaces";
+import {
+  BookData,
+  LinkData,
+  RequiredKeys,
+  BookMedium,
+  MediaLink,
+  FulfillmentLink,
+  MediaType
+} from "../interfaces";
 import { AudioHeadphoneIcon, BookIcon } from "@nypl/dgx-svg-icons";
 
 /**
@@ -30,6 +38,19 @@ export function bookIsBorrowable(
   book: BookData
 ): book is RequiredKeys<BookData, "borrowUrl"> {
   return typeof book.borrowUrl === "string";
+}
+
+export function fixMimeType(mimeType: MediaType): MediaType {
+  return mimeType === "vnd.adobe/adept+xml"
+    ? "application/vnd.adobe.adept+xml"
+    : mimeType;
+}
+
+const isMac = navigator.platform.indexOf("Mac") > -1;
+export function linkIsPlatformCompatible(link: MediaLink | FulfillmentLink) {
+  if (isMac && fixMimeType(link.type) === "application/vnd.adobe.adept+xml")
+    return false;
+  return true;
 }
 
 export function getMedium(book: BookData): BookMedium | "" {

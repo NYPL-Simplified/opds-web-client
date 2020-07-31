@@ -2,7 +2,7 @@
 
 ### v0.5.2
 
-- Add: Add a `isPlatformCompatible` flag to `useDownloadButton` to indicate whether a link is platform compatible.
+- Add: Add a `linkIsPlatformCompatible` util.
 
 ### v0.5.1
 
