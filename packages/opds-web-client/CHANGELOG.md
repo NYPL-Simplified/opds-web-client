@@ -3,6 +3,7 @@
 ### v0.5.2
 
 - Patch: Add redux devtools extension compatibility.
+- Fix: Show "Read Online" label for atom media types.
 
 ### v0.5.1
 

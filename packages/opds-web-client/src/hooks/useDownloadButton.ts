@@ -1,4 +1,10 @@
-import { MediaLink, FulfillmentLink, MediaType } from "./../interfaces";
+import {
+  MediaLink,
+  FulfillmentLink,
+  MediaType,
+  ATOM_MEDIA_TYPE,
+  AXIS_NOW_WEBPUB_MEDIA_TYPE
+} from "./../interfaces";
 import { useActions } from "../components/context/ActionsContext";
 import download from "../components/download";
 import { generateFilename, typeMap } from "../utils/file";
@@ -11,25 +17,22 @@ export function fixMimeType(
     : mimeType;
 }
 
-function isIndirect(
+function isReadOnlineLink(
   link: MediaLink | FulfillmentLink
 ): link is FulfillmentLink {
-  return !!(
-    (link as FulfillmentLink).indirectType &&
-    link.type === "application/atom+xml;type=entry;profile=opds-catalog"
+  return (
+    (link.type === "application/atom+xml;type=entry;profile=opds-catalog" &&
+      (link as FulfillmentLink).indirectType === ATOM_MEDIA_TYPE) ||
+    link.type === AXIS_NOW_WEBPUB_MEDIA_TYPE
   );
 }
 
-export const STREAMING_MEDIA_LINK_TYPE: MediaType =
-  "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media";
-
 type DownloadDetails = {
   fulfill: () => Promise<void>;
-  isIndirect: boolean;
   downloadLabel: string;
   mimeType: MediaType;
   fileExtension: string;
-  isStreaming: boolean;
+  isReadOnline: boolean;
 };
 /**
  * We use typescript function overloads to show that if you pass in a link
@@ -62,7 +65,7 @@ export default function useDownloadButton(
   const fileExtension = typeMap[mimeTypeValue]?.extension ?? "";
 
   const fulfill = async () => {
-    if (isIndirect(link)) {
+    if (isReadOnlineLink(link)) {
       const action = actions.indirectFulfillBook(link.url, link.indirectType);
       const url = await dispatch(action);
       window.open(url, "_blank");
@@ -79,19 +82,15 @@ export default function useDownloadButton(
     }
   };
 
-  const isStreaming =
-    (isIndirect(link) && link.indirectType === STREAMING_MEDIA_LINK_TYPE) ||
-    link.type === "application/vnd.librarysimplified.axisnow+json";
-
+  const isReadOnline = isReadOnlineLink(link);
   const typeName = typeMap[mimeTypeValue]?.name;
-  const downloadLabel = isStreaming
+  const downloadLabel = isReadOnline
     ? "Read Online"
     : `Download${typeName ? " " + typeName : ""}`;
 
   return {
     fulfill,
-    isIndirect: isIndirect(link),
-    isStreaming,
+    isReadOnline,
     downloadLabel,
     mimeType: mimeTypeValue,
     fileExtension
