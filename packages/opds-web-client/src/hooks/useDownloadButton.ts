@@ -3,9 +3,7 @@ import { useActions } from "../components/context/ActionsContext";
 import download from "../components/download";
 import { generateFilename, typeMap } from "../utils/file";
 
-export function fixMimeType(
-  mimeType: MediaType | "vnd.adobe/adept+xml"
-): MediaType {
+export function fixMimeType(mimeType: MediaType): MediaType {
   return mimeType === "vnd.adobe/adept+xml"
     ? "application/vnd.adobe.adept+xml"
     : mimeType;
@@ -23,12 +21,20 @@ function isIndirect(
 export const STREAMING_MEDIA_LINK_TYPE: MediaType =
   "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media";
 
+const isMac = navigator.platform.indexOf("Mac") > -1;
+function isPlatformCompatible(link: MediaLink | FulfillmentLink) {
+  if (isMac && fixMimeType(link.type) === "application/vnd.adobe.adept+xml")
+    return false;
+  return true;
+}
+
 type DownloadDetails = {
   fulfill: () => Promise<void>;
   isIndirect: boolean;
   downloadLabel: string;
   mimeType: MediaType;
   fileExtension: string;
+  isPlatformCompatible: boolean;
   isStreaming: boolean;
 };
 /**
@@ -94,6 +100,7 @@ export default function useDownloadButton(
     isStreaming,
     downloadLabel,
     mimeType: mimeTypeValue,
-    fileExtension
+    fileExtension,
+    isPlatformCompatible: isPlatformCompatible(link)
   };
 }
