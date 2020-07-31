@@ -1,0 +1,31 @@
+@import "popup";
+
+.auth-form {
+  @include popup(300px, 300px);
+  > div {
+    background-color: $pagecolor;
+  }
+
+  h3, li {
+    max-width: 300px;
+    margin: 0 auto 20px;
+  }
+
+  form {
+    max-width: 300px;
+    margin: 0 auto 10px auto;
+
+    label {
+      display: flex;
+    }
+  }
+
+  .auth-error {
+    padding: 0.5em;
+    color: #F00;
+  }
+
+  .btn {
+    margin: 10px;
+  }
+}

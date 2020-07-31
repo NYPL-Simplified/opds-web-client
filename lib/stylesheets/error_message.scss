@@ -1,0 +1,22 @@
+@import "popup";
+
+.error {
+  @include popup(400px);
+  > div {
+    background-color: $pagecolor;
+  }
+
+  h1 {
+    margin-top: 0;
+  }
+
+  .message {
+    overflow: auto;
+    padding-bottom: 10px;
+    white-space: pre;
+  }
+
+  .btn {
+    font-size: 1.2em;
+  }
+}

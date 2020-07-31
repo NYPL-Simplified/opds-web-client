@@ -1,0 +1,73 @@
+.lane {
+  h2 {
+    clear: both;
+    cursor: pointer;
+
+    a {
+      display: block;
+      &:visited {
+        color: $linkcolor;
+      }
+      &:hover {
+        color: $linkhovercolor;
+      }
+    }
+  }
+
+  .lane-books-container {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .scroll-button {
+    background-color: $linkcolor;
+    color: $pagecolor;
+    position: absolute;
+    top: 0;
+    padding: 0 1rem;
+    z-index: 1;
+    height: 100%;
+    font-size: 2em;
+    line-height: 10;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: "Hiragino Sans", $fontfamily;
+
+    &:hover {
+      color: $linkcolor;
+      background-color: $pagecolorlight;
+    }
+
+    &.left {
+      left: 0;
+    }
+
+    &.right {
+      right: 0;
+    }
+
+    @include min-screen($xtrasmall-breakpoint) {
+      line-height: 7;
+    }
+  }
+
+  .lane-books {
+    display: block;
+    height: $bookHeight + $padding + 120px;
+    white-space: nowrap;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+
+    li {
+      display: inline-block;
+      vertical-align: top;
+    }
+
+    @include min-screen($xtrasmall-breakpoint) {
+      height: $bookHeight + $padding;
+    }
+  }
+}

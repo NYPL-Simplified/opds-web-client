@@ -1,0 +1,196 @@
+@import "variables";
+
+html {
+  background-color: $pagecolor;
+  font-family: $fontfamily;
+  font-size: $basefont;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: $fontfamily;
+  font-size: $basefont;
+}
+
+html, body, body > div {
+  height: 100%;
+}
+
+@each $tag in a, input, select {
+  #{$tag} {
+    border-radius: 0;
+  }
+
+  #{$tag}:focus {
+    outline-color: $focuscolor;
+    outline-style: solid;
+    outline-width: $focus-width;
+    outline-offset: -$focus-width;
+  }
+}
+
+input[type=text],
+input[type=button],
+input[type=submit],
+input[type=password],
+input[type=reset],
+button,
+button.btn {
+  &:focus {
+    box-shadow: inset 0 0 0 $focus-width $focuscolor;
+    outline: none;
+  }
+}
+
+input[type=text]::-webkit-input-placeholder {
+  color: $pagetextcolor;
+}
+input[type=text]::-moz-placeholder {
+  color: $pagetextcolor;
+  opacity: 1;
+}
+input[type=text]:-ms-input-placeholder {
+  color: $pagetextcolor;
+}
+input[type=text]:-moz-placeholder {
+  color: $pagetextcolor;
+  opacity: 1;
+}
+
+a {
+  &:link {
+    color: $linkcolor;
+  }
+
+  &:visited {
+    color: $linkvisitedcolor;
+  }
+
+  &:visited:hover, &:hover {
+    color: $linkhovercolor;
+    text-decoration: none;
+  }
+}
+
+.catalog {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: $pagecolor;
+  color: $pagetextcolor;
+
+  .navbar-brand {
+    font-size: 1.8em;
+    color: white;
+
+    &:hover {
+      color: white;
+    }
+  }
+
+  .breadcrumbs-or-search-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: $pagecolorlight;
+    z-index: 100;
+
+    .search {
+      padding: 5px;
+
+      label {
+        display: block;
+      }
+    }
+
+    @include min-screen($xtrasmall-breakpoint) {
+      justify-content: space-between;
+    }
+  }
+
+  .main {
+    flex: 1;
+    position: relative;
+    overflow-y: hidden;
+    padding-bottom: $padding;
+
+    .body {
+      height: 100%;
+      width: 100%;
+      // position is necessary to use 100% of flex item parent's height in safari
+      position: absolute;
+    }
+
+    .book-details-wrapper {
+      height: 100%;
+      overflow-y: scroll;
+      background-color: $pagecolor;
+      z-index: 100;
+      transform: translateZ(0);
+
+      .without-container {
+        padding: 40px;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+    }
+  }
+
+  footer {
+    padding: $padding;
+    background-color: $footercolor;
+    border-top: 1px solid #CCC;
+    z-index: 200;
+  }
+}
+
+// override bootstrap
+.navbar-default, .navbar-collapse {
+  background-color: $dark;
+  border: none;
+  color: white;
+  margin-bottom: 0;
+
+  .navbar-nav {
+    margin: 0;
+  }
+
+  .navbar-nav > li {
+    & > a,
+    & > button {
+      color: white;
+      text-decoration: underline;
+      padding-top: 15px;
+      padding-bottom: 15px;
+
+      &:hover, &:focus {
+        color: white;
+        text-decoration: none;
+      }
+    }
+
+    & > button {
+      background: transparent;
+      border: none;
+      padding-top: 14px;
+    }
+  }
+}
+
+.form-control {
+  font-size: 1rem;
+  color: $pagetextcolor;
+  background-color: $pagecolor;
+  border: 1px solid $pagetextcolor;
+  border-radius: 0;
+}
+
+.btn-default {
+  font-size: 1rem;
+  color: $pagecolor;
+  background-color: $linkcolor;
+  border: none;
+  border-radius: 0;
+}
