@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.5.2
+
+- Fix: Show "Read Online" label for atom media types.
+
 ### v0.5.1
 
 - Fix: Use `new URL()` instead of `url.resolve` when parsing OPDS links. `resolve` is legacy and was causing bugs when on `https` but trying to resolve a link with a nested `http` segment.

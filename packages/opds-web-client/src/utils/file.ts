@@ -46,7 +46,7 @@ export const typeMap: Record<MediaType, { extension: string; name: string }> = {
     extension: "",
     name: "atom"
   },
-  "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media": {
+  'text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media"': {
     extension: "",
     name: "streaming-media"
   },
