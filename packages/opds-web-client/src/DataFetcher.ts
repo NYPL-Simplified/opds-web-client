@@ -1,4 +1,3 @@
-import { feedToCollection, entryToBook } from "./OPDSDataAdapter";
 import OPDSParser, { OPDSFeed, OPDSEntry } from "opds-feed-parser";
 import OpenSearchDescriptionParser from "./OpenSearchDescriptionParser";
 import { AuthCredentials } from "./interfaces";
