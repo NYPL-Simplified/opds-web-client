@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.5.3
+
+- Add: BookData interface now has optional allBorrowLinks prop
+
 ### v0.5.2
 
 - Patch: Add redux devtools extension compatibility.
