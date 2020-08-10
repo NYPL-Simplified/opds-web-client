@@ -102,6 +102,7 @@ describe("OPDSDataAdapter", () => {
     expect(collection.raw).to.equal("unparsed data");
 
     let book = collection.lanes[0].books[0];
+
     expect(book.id).to.equal(entry.id);
     expect(book.title).to.equal(entry.title);
     expect(book.authors?.length).to.equal(2);
@@ -127,6 +128,7 @@ describe("OPDSDataAdapter", () => {
     expect(book.language).to.equal("en");
     expect(book.openAccessLinks?.[0].url).to.equal(openAccessLink.href);
     expect(book.borrowUrl).to.equal(borrowLink.href);
+    expect(book.allBorrowLinks?.[0].url).to.equal(borrowLink.href);
     expect(book.fulfillmentLinks?.[0].url).to.equal(fulfillmentLink.href);
     expect(book.fulfillmentLinks?.[0].type).to.equal(fulfillmentLink.type);
     expect(book.fulfillmentLinks?.[0].indirectType).to.equal(
