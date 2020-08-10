@@ -60,6 +60,7 @@ export interface BookData {
   openAccessLinks?: MediaLink[];
   borrowUrl?: string;
   fulfillmentLinks?: FulfillmentLink[];
+  allBorrowLinks?: FulfillmentLink[];
   availability?: {
     status: BookAvailability;
     since?: string;

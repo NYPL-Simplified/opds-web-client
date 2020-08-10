@@ -18,7 +18,8 @@ import {
   BookData,
   LinkData,
   FacetGroupData,
-  SearchData
+  SearchData,
+  FulfillmentLink
 } from "./interfaces";
 
 const resolve = (base, relative) => new URL(relative, base).toString();
@@ -118,7 +119,27 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
     borrowUrl = resolve(feedUrl, borrowLink.href);
   }
 
-  let fulfillmentUrls;
+  let allBorrowLinks: FulfillmentLink[] = entry.links
+    .filter(link => {
+      return (
+        link instanceof OPDSAcquisitionLink &&
+        link.rel === OPDSAcquisitionLink.BORROW_REL
+      );
+    })
+    .map(link => {
+      let indirectType;
+      let indirects = (link as OPDSAcquisitionLink).indirectAcquisitions;
+
+      if (indirects && indirects.length > 0) {
+        indirectType = indirects[0].type;
+      }
+      return {
+        url: resolve(feedUrl, link.href),
+        type: link.type,
+        indirectType
+      };
+    });
+
   let fulfillmentType;
   let fulfillmentLinks = entry.links
     .filter(link => {
@@ -134,7 +155,6 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
       if (indirects && indirects.length > 0) {
         indirectType = indirects[0].type;
       }
-
       return {
         url: resolve(feedUrl, link.href),
         type: link.type,
@@ -163,6 +183,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
     imageUrl: imageUrl,
     openAccessLinks: openAccessLinks,
     borrowUrl: borrowUrl,
+    allBorrowLinks: allBorrowLinks,
     fulfillmentLinks: fulfillmentLinks,
     availability: availability,
     holds: holds,
