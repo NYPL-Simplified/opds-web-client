@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.5.4
+
+- Add optional AuthLink to AuthMethod type to support authentication and logo links
+
 ### v0.5.3
 
 - Add: BookData interface now has optional allBorrowLinks prop

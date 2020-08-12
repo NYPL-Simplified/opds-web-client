@@ -195,9 +195,14 @@ export interface AuthProvider<T extends AuthMethod> {
   method: T;
 }
 
+export interface AuthLink {
+  rel: string;
+  href: string;
+}
 export interface AuthMethod {
   type: string;
   description?: string;
+  links?: AuthLink[];
 }
 
 export interface AuthData {
