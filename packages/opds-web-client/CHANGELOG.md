@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.4.7
+
+- Add optional AuthLink to AuthMethod type to support authentication and logo links
+
 ### v0.4.6
 
 - Add AxisNow media type
