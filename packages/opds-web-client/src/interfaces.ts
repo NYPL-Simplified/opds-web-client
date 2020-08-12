@@ -1,5 +1,15 @@
 import AuthPlugin from "./AuthPlugin";
 
+export const ATOM_MEDIA_TYPE =
+  'text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media"';
+
+export const AXIS_NOW_WEBPUB_MEDIA_TYPE =
+  "application/vnd.librarysimplified.axisnow+json";
+
+export type ReadOnlineMediaType =
+  | typeof ATOM_MEDIA_TYPE
+  | typeof AXIS_NOW_WEBPUB_MEDIA_TYPE;
+
 // the source of truth for media types is located at:
 // https://github.com/NYPL-Simplified/server_core/blob/master/model/constants.py
 export type MediaType =
@@ -11,11 +21,10 @@ export type MediaType =
   | "application/x-mobipocket-ebook"
   | "application/x-mobi8-ebook"
   | "application/atom+xml;type=entry;profile=opds-catalog"
-  | "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media"
   | "application/audiobook+json"
   | "application/vnd.overdrive.circulation.api+json;profile=audiobook"
   | "application/vnd.overdrive.circulation.api+json;profile=ebook"
-  | "application/vnd.librarysimplified.axisnow+json";
+  | ReadOnlineMediaType;
 
 export interface MediaLink {
   url: string;
@@ -51,6 +60,7 @@ export interface BookData {
   openAccessLinks?: MediaLink[];
   borrowUrl?: string;
   fulfillmentLinks?: FulfillmentLink[];
+  allBorrowLinks?: FulfillmentLink[];
   availability?: {
     status: BookAvailability;
     since?: string;
@@ -216,3 +226,33 @@ export interface BasicAuthMethod extends AuthMethod {
 /** Utility to make keys K of type T both required (defined) and not null */
 export type RequiredKeys<T, K extends keyof T> = Omit<T, K> &
   { [P in K]-?: NonNullable<T[P]> };
+
+export type SamlIdp = {
+  privacy_statement_urls: [];
+  logo_urls: [];
+  display_names: [
+    {
+      language: string;
+      value: string;
+    }
+  ];
+  href: string;
+  descriptions: [
+    {
+      language: string;
+      value: string;
+    }
+  ];
+  rel: "authenticate";
+  information_urls: [];
+};
+/**
+ * The server representation has multiple IDPs nested into the one.
+ * We will flatten that out before placing into redux state.
+ */
+export interface ServerSamlMethod extends AuthMethod {
+  links: SamlIdp[];
+}
+export interface ClientSamlMethod extends AuthMethod {
+  href: string;
+}

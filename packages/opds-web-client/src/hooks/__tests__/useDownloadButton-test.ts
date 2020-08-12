@@ -1,9 +1,14 @@
-import { STREAMING_MEDIA_LINK_TYPE } from "./../useDownloadButton";
 import { expect } from "chai";
 import * as sinon from "sinon";
 import { renderHook } from "@testing-library/react-hooks";
 import useDownloadButton from "../useDownloadButton";
-import { MediaLink, MediaType, FulfillmentLink } from "./../../interfaces";
+import {
+  MediaLink,
+  MediaType,
+  FulfillmentLink,
+  ATOM_MEDIA_TYPE,
+  AXIS_NOW_WEBPUB_MEDIA_TYPE
+} from "./../../interfaces";
 import makeWrapper from "../../test-utils/makeWrapper";
 import { typeMap } from "../../utils/file";
 import * as download from "../../components/download";
@@ -22,7 +27,6 @@ describe("useDownloadButton", () => {
 
     expect(result.current.downloadLabel).to.equal("Download PDF");
     expect(result.current.fileExtension).to.equal(".pdf");
-    expect(result.current.isIndirect).to.equal(false);
     expect(result.current.mimeType).to.equal("application/pdf");
     expect(typeof result.current.fulfill).to.equal("function");
   });
@@ -41,7 +45,6 @@ describe("useDownloadButton", () => {
 
     expect(result.current.downloadLabel).to.equal("Download ACSM");
     expect(result.current.fileExtension).to.equal(".acsm");
-    expect(result.current.isIndirect).to.equal(false);
     expect(result.current.mimeType).to.equal("application/vnd.adobe.adept+xml");
     expect(typeof result.current.fulfill).to.equal("function");
   });
@@ -58,10 +61,17 @@ describe("useDownloadButton", () => {
     expect(result.current).to.equal(null);
 
     for (const mediaType in typeMap) {
-      // don't test this for the one indirect media type
-      if (mediaType === STREAMING_MEDIA_LINK_TYPE) return;
+      // don't test this for the read online media types
+      if (
+        mediaType === AXIS_NOW_WEBPUB_MEDIA_TYPE ||
+        mediaType === ATOM_MEDIA_TYPE
+      )
+        return;
       // also don't test for the one type we need to fix, test that separately
       if (mediaType === "vnd.adobe/adept+xml") return;
+
+      if (mediaType === "application/vnd.librarysimplified.axisnow+json")
+        return;
 
       const link: MediaLink = {
         url: "/media-url",
@@ -75,18 +85,17 @@ describe("useDownloadButton", () => {
       expect(result.current?.fileExtension).to.equal(
         typeMap[mediaType].extension
       );
-      expect(result.current?.isIndirect).to.equal(false);
       expect(result.current?.mimeType).to.equal(mediaType);
       expect(typeof result.current?.fulfill).to.equal("function");
     }
   });
 
-  it("provides currect details for streaming media type", () => {
+  it("provides correct details for ATOM type", () => {
     const link: FulfillmentLink = {
       url: "/media-url",
       type: "application/atom+xml;type=entry;profile=opds-catalog",
       indirectType:
-        "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media"
+        'text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media"'
     };
 
     const { result } = renderHook(() => useDownloadButton(link, "pdf-title"), {
@@ -95,9 +104,27 @@ describe("useDownloadButton", () => {
 
     expect(result.current.downloadLabel).to.equal("Read Online");
     expect(result.current.fileExtension).to.equal("");
-    expect(result.current.isIndirect).to.equal(true);
     expect(result.current.mimeType).to.equal(
       "application/atom+xml;type=entry;profile=opds-catalog"
+    );
+    expect(typeof result.current.fulfill).to.equal("function");
+  });
+
+  it("provides correct details for AxisNow type", () => {
+    const link: FulfillmentLink = {
+      url: "/media-url",
+      type: "application/vnd.librarysimplified.axisnow+json",
+      indirectType: ""
+    };
+
+    const { result } = renderHook(() => useDownloadButton(link, "pdf-title"), {
+      wrapper: makeWrapper().wrapper
+    });
+
+    expect(result.current.downloadLabel).to.equal("Read Online");
+    expect(result.current.fileExtension).to.equal(".json");
+    expect(result.current.mimeType).to.equal(
+      "application/vnd.librarysimplified.axisnow+json"
     );
     expect(typeof result.current.fulfill).to.equal("function");
   });
@@ -146,7 +173,7 @@ describe("useDownloadButton", () => {
       url: "/indirect-url",
       type: "application/atom+xml;type=entry;profile=opds-catalog",
       indirectType:
-        "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media"
+        'text/html;profile="http://librarysimplified.org/terms/profiles/streaming-media"'
     };
     const indirectFulfillStub = sinon.stub();
     const dispatchStub = sinon.stub();

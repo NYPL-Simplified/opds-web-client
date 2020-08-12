@@ -1,8 +1,29 @@
 ## Changelog
 
-### v0.4.7
+### v0.5.4
 
 - Add optional AuthLink to AuthMethod type to support authentication and logo links
+
+### v0.5.3
+
+- Add: BookData interface now has optional allBorrowLinks prop
+
+### v0.5.2
+
+- Patch: Add redux devtools extension compatibility.
+- Fix: Show "Read Online" label for atom media types.
+
+### v0.5.1
+
+- Fix: Use `new URL()` instead of `url.resolve` when parsing OPDS links. `resolve` is legacy and was causing bugs when on `https` but trying to resolve a link with a nested `http` segment.
+
+### v0.5.0
+
+- Add: SAML Auth support.
+
+### v0.4.7
+
+- Display "Read online" instead of "Download..." in download buttons for AxisNow media type
 
 ### v0.4.6
 

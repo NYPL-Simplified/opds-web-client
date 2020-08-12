@@ -1,10 +1,12 @@
-import { compose, createStore, applyMiddleware, Store } from "redux";
+import { createStore, applyMiddleware, Store } from "redux";
 import reducers from "./reducers/index";
 import { State } from "./state";
 const thunk = require("redux-thunk").default;
 import createAuthMiddleware from "./authMiddleware";
 import AuthPlugin from "./AuthPlugin";
 import { PathFor } from "./interfaces";
+import { composeWithDevTools } from "redux-devtools-extension";
+
 let persistState: any = null;
 
 try {
@@ -31,5 +33,9 @@ export default function buildStore(
   if (persistState) {
     composeArgs.push(persistState("preferences"));
   }
-  return createStore(reducers, initialState, compose.apply(this, composeArgs));
+  return createStore(
+    reducers,
+    initialState,
+    composeWithDevTools.apply(this, composeArgs)
+  );
 }
