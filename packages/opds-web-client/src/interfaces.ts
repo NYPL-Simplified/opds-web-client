@@ -185,9 +185,14 @@ export interface AuthProvider<T extends AuthMethod> {
   method: T;
 }
 
+export interface AuthLink {
+  rel: string;
+  href: string;
+}
 export interface AuthMethod {
   type: string;
   description?: string;
+  links?: AuthLink[];
 }
 
 export interface AuthData {
@@ -201,16 +206,11 @@ export interface AuthData {
   providers: AuthProvider<AuthMethod>[] | null;
 }
 
-export interface AuthLink {
-  rel: string;
-  href: string;
-}
 export interface BasicAuthMethod extends AuthMethod {
   labels: {
     login: string;
     password: string;
   };
-  links?: AuthLink[];
 }
 
 /** Utility to make keys K of type T both required (defined) and not null */
