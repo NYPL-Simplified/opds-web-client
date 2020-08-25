@@ -53,6 +53,10 @@ export const typeMap: Record<MediaType, { extension: string; name: string }> = {
   "application/audiobook+json": {
     extension: ".audiobook",
     name: "Audiobook"
+  },
+  "application/vnd.readium.lcp.license.v1.0+json": {
+    extension: ".lcpl",
+    name: "LCP license"
   }
 };
 
