@@ -74,15 +74,11 @@ export default function useDownloadButton(
       // OPDS entries
       const action = actions.fulfillBook(link.url);
       const blob = await dispatch(action);
-      if (blob)
-        download(
-          blob,
-          generateFilename(title ?? "untitled", fileExtension),
-          mimeTypeValue
-        );
-      else {
-        throw new Error("Fetched book download did not return any content");
-      }
+      download(
+        blob,
+        generateFilename(title ?? "untitled", fileExtension),
+        mimeTypeValue
+      );
     }
   };
 

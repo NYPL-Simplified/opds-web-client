@@ -83,31 +83,38 @@ export default class ActionCreator {
   }
 
   fetchBlob(type: string, url: string) {
-    return (dispatch): Promise<Blob> => {
+    return async (dispatch): Promise<Blob> => {
       dispatch(this.request(type, url));
-      return new Promise<Blob>((resolve, reject) => {
-        this.fetcher
-          .fetch(url)
-          .then(response => {
-            if (response.ok) {
-              return response.blob();
-            } else {
-              throw {
-                status: response.status,
-                response: "Request failed",
-                url: url
-              };
-            }
-          })
-          .then(blob => {
-            dispatch(this.success(type));
-            resolve(blob);
-          })
-          .catch(err => {
-            dispatch(this.failure(type, err));
-            reject(err);
+      try {
+        const response = await this.fetcher.fetch(url);
+        if (response.ok) return await response.blob();
+        /**
+         * If this the response errored after a redirect, try again
+         * without the Authorization header, as it causes errors when
+         * redirected to Amazon S3
+         */
+        if (response.redirected) {
+          const newResp = await this.fetcher.fetch(response.url, {
+            headers: { Authorization: "" }
           });
-      });
+          const blob = await newResp.blob();
+          if (newResp.ok) {
+            return blob;
+          }
+          console.error("Original Response ", response);
+          console.error("New Response ", newResp);
+          throw new Error(`Retried fetch after redirect did not succeed.`);
+        }
+        console.error("Response: ", response);
+        throw new Error(
+          `Response was not okay and was not retried (wasn't the result of a redirect). Response:\n${JSON.stringify(
+            response
+          )}`
+        );
+      } catch (e) {
+        dispatch(this.failure(type, e));
+        throw e;
+      }
     };
   }
 
