@@ -1,0 +1,281 @@
+.book {
+  white-space: normal;
+  margin-right: $padding;
+  height: $bookHeight;
+  overflow: hidden;
+  position: relative;
+
+  &.show-media {
+    height: $bookHeight + 110px;
+  }
+
+  .title {
+    font-size: 1.1em;
+    font-weight: bold;
+  }
+
+  .authors {
+    font-size: 1em;
+  }
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
+
+  .item-icon {
+    svg {
+      margin: 0 0 -10px;
+      height: 30px;
+      width: 30px;
+    }
+  }
+
+  @include min-screen($xtrasmall-breakpoint) {
+    &.show-media {
+      height: $bookHeight;
+    }
+  }
+}
+
+.circulation-links {
+  a, button, .btn-default {
+    border-radius: 5px;
+    border: 1px solid $linkcolor;
+    background-color: transparent;
+    color: $linkcolor;
+    padding: 5px;
+    margin: 5px;
+    transition: all 0.2s;
+
+    &:hover {
+      border-color: $linkhovercolor;
+      color: $linkhovercolor;
+    }
+
+    &:focus {
+      @include basic-focus;
+    }
+  }
+}
+
+.grid-view .book, .lane .book {
+  margin-bottom: $padding;
+
+  .compact-info {
+    display: flex;
+    flex-direction: column;
+    color: $linkcolor;
+    bottom: 0;
+    box-shadow: inset 0px -5px 6px -7px black;
+    height: $bookHeight * 0.0;
+    width: 150px;
+    position: absolute;
+    text-align: left;
+    transition: all 0.2s cubic-bezier(0.63, -0.02, 0.55, 1);
+    display: flex;
+    flex-flow: row wrap;
+
+    .item-icon {
+      background: $pagecolor;
+      padding: 3px 5px 5px;
+      border-top: 2px solid $pagetextcolor;
+      border-left: 1px solid $pagetextcolor;
+      width: 42px;
+      flex: 1 0 0;
+    }
+
+    @include min-screen($xtrasmall-breakpoint) {
+      .item-icon {
+        border-bottom: 1px solid $pagetextcolor;
+      }
+    }
+
+    .empty {
+      border-left: 1px solid transparent;
+      border-bottom: 1px solid $pagetextcolor;
+      height: 42px;
+      flex: 4 0 0;
+    }
+
+    .item-details {
+      background: $pagecolor;
+      padding-top: 10px;
+      height: 79%;
+      width: 100%;
+      overflow: hidden;
+      border: 1px solid $pagetextcolor;
+      border-top: none;
+    }
+
+    @include min-screen($xtrasmall-breakpoint) {
+      .item-details {
+        height: 100%;
+      }
+    }
+
+    svg {
+      fill: $linkcolor;
+    }
+
+    .title,
+    .authors {
+      padding: 0px 5px 5px 10px;
+    }
+
+    &.show-media {
+      height: $bookHeight * 0.76;
+
+      .empty {
+        border-left: 1px solid $pagetextcolor;
+      }
+
+      .item-details {
+        height: 86%;
+      }
+    }
+    @include min-screen($xtrasmall-breakpoint) {
+      &.show-media {
+        height: $bookHeight * 0.21;
+      }
+    }
+  }
+
+  .expanded-info {
+    display: none;
+  }
+
+  a:focus .compact-info, a:hover .compact-info {
+    height: 100%;
+    width: 150px;
+
+    .item-icon {
+      border-bottom: none;
+    }
+
+    @include min-screen($xtrasmall-breakpoint) {
+      .item-details {
+        height: 158px;
+      }
+    }
+  }
+
+  a:focus .compact-info {
+    outline-color: $focuscolor;
+    outline-style: solid;
+    outline-width: $focus-width;
+    outline-offset: -$focus-width;
+
+    .empty {
+      border: 1px solid $focuscolor;
+      border-top: none;
+    }
+  }
+
+  .series {
+    display: none;
+  }
+}
+
+.list-view .book {
+  display: flex;
+  flex-direction: row;
+  height: $bookHeight;
+  width: 100%;
+
+  .compact-info {
+    display: none;
+  }
+
+  .expanded-info {
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+    height: $bookHeight;
+    margin: 10px;
+    text-align: left;
+    max-width: 1200px;
+
+    .header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      @media only screen and (max-width: 1200px) {
+        max-width: 550px;
+      }
+    }
+
+    .details {
+      display: flex;
+      flex-direction: row;
+      font-size: 0.9em;
+      margin-top: 2em;
+    }
+
+    .fields {
+      margin-right: 2em;
+      flex: 1;
+
+      @media only screen and (max-width: 1200px) {
+        display: none;
+      }
+    }
+
+    .summary {
+      /* Truncation based on http://dev.mobify.com/blog/multiline-ellipsis-in-pure-css/ */
+
+      max-width: 550px;
+      line-height: 1.3em;
+      height: 6.3em;
+      overflow: hidden;
+      position: relative;
+
+      &::before {
+        content: " ";
+        height: 6.3em;
+        width: 6em;
+        float: left;
+      }
+
+      span {
+        float: right;
+        width: 100%;
+        margin-left: -6em;
+      }
+
+      a {
+        float: right;
+        width: 6em;
+        position: relative;
+        top: -1.3em;
+        left: calc(100% - 6em);
+        text-align: right;
+        background: linear-gradient(to right, transparent, $pagecolor 40%, $pagecolor);
+      }
+    }
+
+    .circulation-links {
+      flex: 1;
+      text-align: right;
+
+      * {
+        display: none;
+      }
+
+      *:first-child {
+        display: inline-block;
+      }
+    }
+
+    .item-icon {
+      display: inline-block;
+      margin-left: -5px;
+    }
+  }
+}
+
+.list-view li:nth-child(odd) .book .expanded-info .summary a {
+  background: linear-gradient(to right, transparent, $pagecolorlight 40%, $pagecolorlight);
+}

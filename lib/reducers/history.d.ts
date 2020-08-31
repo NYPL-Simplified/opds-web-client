@@ -1,0 +1,13 @@
+import { RequiredKeys } from "./../interfaces";
+import { CollectionState } from "./collection";
+import { LoadAction } from "../actions";
+import { CollectionData, LinkData } from "../interfaces";
+export declare function shouldClear(newCollection: CollectionData, oldCollection: CollectionData | undefined | null): boolean;
+export declare function addLink(history: LinkData[], link: LinkData): LinkData[];
+export declare function addCollection(history: LinkData[], collection: CollectionData): LinkData[];
+export declare function shorten(history: LinkData[], newUrl: string): LinkData[];
+declare type CollectionWithRootLink = RequiredKeys<CollectionData, "catalogRootLink">;
+export declare function shouldAddRoot(newCollection: CollectionData): newCollection is CollectionWithRootLink;
+export declare function onlyRoot(newCollection: CollectionWithRootLink): LinkData[];
+declare const _default: (state: CollectionState, action: LoadAction<CollectionData>) => LinkData[];
+export default _default;

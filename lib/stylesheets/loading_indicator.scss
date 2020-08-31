@@ -1,0 +1,21 @@
+@import "popup";
+
+.loading {
+  @include popup(300px);
+
+  > h1 {
+    background-size: $stripeWidth $stripeWidth;
+    background-image: linear-gradient(
+      45deg,
+      $pagecolorlight  25%,
+      $pagecolor      25%,
+      $pagecolor      50%,
+      $pagecolorlight  50%,
+      $pagecolorlight  75%,
+      $pagecolor      75%,
+      $pagecolor
+    );
+    -webkit-animation: barberpole 2s linear infinite;
+    animation: barberpole 2s linear infinite;
+  }
+}

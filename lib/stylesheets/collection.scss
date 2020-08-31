@@ -1,0 +1,109 @@
+@import "variables";
+
+.collection {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+
+  .facet-groups {
+    height: 100%;
+    width: $leftPanelWidth;
+    overflow-y: scroll;
+  }
+
+  .collection-container {
+    width: 100%;
+    height: 100%;
+    padding: $padding;
+    flex: 1;
+  }
+
+  .view-toggle {
+    margin-left: 7px;
+    padding: 3px;
+
+    button {
+      border: 1px solid $pagetextcolor;
+      background-color: transparent;
+      color: $pagetextcolor;
+      padding: 5px 10px;
+      transition: all 0.2s;
+
+      &:disabled {
+        background-color: $pagecolorlight;
+      }
+
+      &:hover:enabled {
+        border-color: $pagetextcolorlight;
+        color: $pagetextcolorlight;
+      }
+    }
+  }
+
+  .collection-main {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+  }
+
+  .empty-collection-message {
+    padding: 1em;
+    text-align: center;
+    color: $pagetextcolor;
+    font-size: 3em;
+  }
+
+  .books.grid-view li {
+    display: inline-block;
+  }
+
+  .books.list-view {
+    max-width: 1200px;
+  }
+
+  .books.list-view li:nth-child(odd) {
+    background-color: $pagecolorlight;
+  }
+
+  .books {
+    padding-bottom: $padding * 3;
+  }
+
+  .navigation-links a {
+    display: block;
+    margin: 25px;
+    text-align: center;
+    background-color: #DDD;
+    padding: 10px;
+    overflow: hidden;
+    font-size: 500%;
+  }
+
+  .loading-next-page {
+    clear: both;
+    text-align: center;
+    height: 20px;
+    padding: 10px 10px $bookHeight 10px;
+
+    background-size: $stripeWidth $stripeWidth;
+    background-image: linear-gradient(
+      45deg,
+      $pagecolorlight  25%,
+      $pagecolor      25%,
+      $pagecolor      50%,
+      $pagecolorlight  50%,
+      $pagecolorlight  75%,
+      $pagecolor      75%,
+      $pagecolor
+    );
+    -webkit-animation: barberpole 2s linear infinite;
+    animation: barberpole 2s linear infinite;
+
+    h3 {
+      line-height: 5;
+    }
+  }
+}

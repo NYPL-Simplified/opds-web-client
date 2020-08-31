@@ -1,0 +1,88 @@
+.book-details {
+  .top {
+    display: table-row;
+    text-align: left;
+  }
+
+  .cover {
+    display: table-cell;
+    padding-right: 20px;
+    vertical-align: top;
+  }
+
+  .details {
+    display: table-cell;
+    vertical-align: top;
+    text-align: left;
+    max-width: 500px;
+
+    h1 {
+      margin: 0px;
+    }
+
+    .subtitle,
+    .series {
+      margin-top: 0.5em;
+      font-size: 1.5em;
+    }
+
+    .authors,
+    .contributors {
+      margin-top: 0.5em;
+      font-size: 1.2em;
+    }
+
+    .fields {
+      margin-top: 1em;
+      color: $pagetextcolor;
+      font-size: 1em;
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .item-icon-container {
+      .item-icon {
+        display: inline-block;
+        margin-left: -5px;
+      }
+
+      svg {
+        margin: 0 0 -10px;
+        height: 30px;
+        width: 30px;
+        fill: $pagetextcolor;
+      }
+    }
+  }
+
+  .divider {
+    clear: both;
+    margin-top: 1em;
+  }
+
+  .main {
+    padding-top: 2em;
+    border-top: 1px solid #CCC;
+
+    .top {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .circulation-links {
+      margin-bottom: 5px;
+
+      a, button {
+        display: inline-block;
+
+        &.borrowed-button {
+          display: none;
+        }
+      }
+    }
+
+    .right-column-links {
+      text-align: right;
+    }
+  }
+}

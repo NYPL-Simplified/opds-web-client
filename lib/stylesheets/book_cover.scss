@@ -1,0 +1,35 @@
+.book-cover {
+  display: block;
+  width: 150px;
+  height: 200px;
+  border: 1px solid #CCC;
+}
+
+.auto-book-cover {
+  display: block;
+  float: left;
+  width: 150px;
+  height: 200px;
+  border: 1px solid #888;
+  font-weight: normal;
+  font-family: Georgia, serif;
+  position: relative;
+  text-align: left;
+
+  .title {
+    display: table-cell;
+    height: 120px;
+    width: 150px;
+    vertical-align: bottom;
+    color: #444;
+    background-color: #EEE;
+    font-weight: normal;
+    padding: 10px;
+    line-height: 1em;
+  }
+
+  .authors {
+    color: #FFF;
+    padding: 10px;
+  }
+}
