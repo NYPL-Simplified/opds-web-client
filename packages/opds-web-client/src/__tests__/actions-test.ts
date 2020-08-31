@@ -81,7 +81,7 @@ describe("actions", () => {
         );
         const expectedError = {
           status: 500,
-          response: "Request failed",
+          response: `Response was not okay and was not retried (wasn't the result of a redirect).`,
           url: url
         };
         expect(dispatch.args[1][0].error).to.deep.equal(expectedError);

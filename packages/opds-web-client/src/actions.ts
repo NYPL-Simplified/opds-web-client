@@ -87,7 +87,11 @@ export default class ActionCreator {
       dispatch(this.request(type, url));
       try {
         const response = await this.fetcher.fetch(url);
-        if (response.ok) return await response.blob();
+        if (response.ok) {
+          const blob = await response.blob();
+          dispatch(this.success(type));
+          return blob;
+        }
         /**
          * If this the response errored after a redirect, try again
          * without the Authorization header, as it causes errors when
@@ -99,18 +103,23 @@ export default class ActionCreator {
           });
           const blob = await newResp.blob();
           if (newResp.ok) {
+            dispatch(this.success(type));
             return blob;
           }
           console.error("Original Response ", response);
           console.error("New Response ", newResp);
-          throw new Error(`Retried fetch after redirect did not succeed.`);
+          throw {
+            status: 500,
+            response: `Retried fetch after redirect. The retry did not succeed.`,
+            url
+          };
         }
         console.error("Response: ", response);
-        throw new Error(
-          `Response was not okay and was not retried (wasn't the result of a redirect). Response:\n${JSON.stringify(
-            response
-          )}`
-        );
+        throw {
+          status: 500,
+          url,
+          response: `Response was not okay and was not retried (wasn't the result of a redirect).`
+        };
       } catch (e) {
         dispatch(this.failure(type, e));
         throw e;
