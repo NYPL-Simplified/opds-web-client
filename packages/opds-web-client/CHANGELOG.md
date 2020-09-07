@@ -1,5 +1,9 @@
 ## Changelog
 
+## v0.5.5
+
+- Various type fixes to allow typescript strict mode in circulation-patron-web.
+
 ### v0.5.4
 
 - Add optional AuthLink to AuthMethod type to support authentication and logo links
