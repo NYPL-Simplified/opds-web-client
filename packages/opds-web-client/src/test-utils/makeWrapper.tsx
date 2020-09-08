@@ -3,7 +3,7 @@ import { fake } from "sinon";
 import PathForProvider from "../components/context/PathForContext";
 import { ActionsProvider } from "../components/context/ActionsContext";
 import OPDSStore from "../components/context/StoreContext";
-import { PathFor } from "../interfaces";
+import { PathFor, AuthMethod } from "../interfaces";
 import { State } from "../state";
 import AuthPlugin from "../AuthPlugin";
 import ActionsCreator from "../actions";
@@ -17,7 +17,7 @@ type WrapperConfig = {
   pathFor?: PathFor;
   proxyUrl?: string;
   initialState?: State;
-  authPlugins?: AuthPlugin[];
+  authPlugins?: AuthPlugin<AuthMethod>[];
 };
 
 const defaultPathFor = fake((collectionUrl?: string, bookUrl?: string) =>
