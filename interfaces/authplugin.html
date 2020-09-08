@@ -59,7 +59,7 @@
 					<a href="authplugin.html">AuthPlugin</a>
 				</li>
 			</ul>
-			<h1>Interface AuthPlugin</h1>
+			<h1>Interface AuthPlugin&lt;T&gt;</h1>
 		</div>
 	</div>
 </header>
@@ -74,6 +74,14 @@
 						<code>OPDSCatalog</code> component.</p>
 					</div>
 				</div>
+			</section>
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>T<span class="tsd-signature-symbol">: </span><a href="authmethod.html" class="tsd-signature-type">AuthMethod</a></h4>
+					</li>
+				</ul>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
@@ -104,20 +112,20 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="buttoncomponent" class="tsd-anchor"></a>
 					<h3>button<wbr>Component</h3>
-					<div class="tsd-signature tsd-kind-icon">button<wbr>Component<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">React.ComponentType</span><span class="tsd-signature-symbol">&lt;</span><a href="authbuttonprops.html" class="tsd-signature-type">AuthButtonProps</a><span class="tsd-signature-symbol">&lt;</span><a href="authmethod.html" class="tsd-signature-type">AuthMethod</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">button<wbr>Component<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">React.ComponentType</span><span class="tsd-signature-symbol">&lt;</span><a href="authbuttonprops.html" class="tsd-signature-type">AuthButtonProps</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/d258b92/packages/opds-web-client/src/AuthPlugin.ts#L18">src/AuthPlugin.ts:18</a></li>
+							<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/10df0d4/packages/opds-web-client/src/AuthPlugin.ts#L18">src/AuthPlugin.ts:18</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="formcomponent" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> form<wbr>Component</h3>
-					<div class="tsd-signature tsd-kind-icon">form<wbr>Component<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">React.ComponentType</span><span class="tsd-signature-symbol">&lt;</span><a href="authformprops.html" class="tsd-signature-type">AuthFormProps</a><span class="tsd-signature-symbol">&lt;</span><a href="authmethod.html" class="tsd-signature-type">AuthMethod</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">form<wbr>Component<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">React.ComponentType</span><span class="tsd-signature-symbol">&lt;</span><a href="authformprops.html" class="tsd-signature-type">AuthFormProps</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/d258b92/packages/opds-web-client/src/AuthPlugin.ts#L16">src/AuthPlugin.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/10df0d4/packages/opds-web-client/src/AuthPlugin.ts#L16">src/AuthPlugin.ts:16</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -127,7 +135,7 @@
 					<div class="tsd-signature tsd-kind-icon">look<wbr>For<wbr>Credentials<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/d258b92/packages/opds-web-client/src/AuthPlugin.ts#L12">src/AuthPlugin.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/10df0d4/packages/opds-web-client/src/AuthPlugin.ts#L12">src/AuthPlugin.ts:12</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -157,7 +165,7 @@
 					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/d258b92/packages/opds-web-client/src/AuthPlugin.ts#L11">src/AuthPlugin.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/10df0d4/packages/opds-web-client/src/AuthPlugin.ts#L11">src/AuthPlugin.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -175,7 +183,7 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface">
+					<li class="current tsd-kind-interface tsd-has-type-parameter">
 						<a href="authplugin.html" class="tsd-kind-icon">Auth<wbr>Plugin</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">

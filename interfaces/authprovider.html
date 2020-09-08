@@ -59,18 +59,30 @@
 					<a href="authprovider.html">AuthProvider</a>
 				</li>
 			</ul>
-			<h1>Interface AuthProvider&lt;T&gt;</h1>
+			<h1>Interface AuthProvider&lt;T, P&gt;</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>The provider has a method T, and the plugin might have a different
+							method, as is the case with SAML Auth where the plugin takes
+						a ClientSamlMethod but the original provider takes a ServerSamlMethod</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-type-parameters">
 				<h3>Type parameters</h3>
 				<ul class="tsd-type-parameters">
 					<li>
 						<h4>T<span class="tsd-signature-symbol">: </span><a href="authmethod.html" class="tsd-signature-type">AuthMethod</a></h4>
+					</li>
+					<li>
+						<h4>P<span class="tsd-signature-symbol">: </span><a href="authmethod.html" class="tsd-signature-type">AuthMethod</a></h4>
 					</li>
 				</ul>
 			</section>
@@ -105,7 +117,7 @@
 					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/d258b92/packages/opds-web-client/src/interfaces.ts#L193">src/interfaces.ts:193</a></li>
+							<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/10df0d4/packages/opds-web-client/src/interfaces.ts#L198">src/interfaces.ts:198</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -115,17 +127,17 @@
 					<div class="tsd-signature tsd-kind-icon">method<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">T</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/d258b92/packages/opds-web-client/src/interfaces.ts#L195">src/interfaces.ts:195</a></li>
+							<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/10df0d4/packages/opds-web-client/src/interfaces.ts#L200">src/interfaces.ts:200</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="plugin" class="tsd-anchor"></a>
 					<h3>plugin</h3>
-					<div class="tsd-signature tsd-kind-icon">plugin<span class="tsd-signature-symbol">:</span> <a href="authplugin.html" class="tsd-signature-type">AuthPlugin</a></div>
+					<div class="tsd-signature tsd-kind-icon">plugin<span class="tsd-signature-symbol">:</span> <a href="authplugin.html" class="tsd-signature-type">AuthPlugin</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">P</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/d258b92/packages/opds-web-client/src/interfaces.ts#L194">src/interfaces.ts:194</a></li>
+							<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/10df0d4/packages/opds-web-client/src/interfaces.ts#L199">src/interfaces.ts:199</a></li>
 						</ul>
 					</aside>
 				</section>
