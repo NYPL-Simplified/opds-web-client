@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.5.6
+
+- Fix the `fetchBlob` script to retry on failure if the failure is after a redirect. This is because Amazon S3 will fail if we send it out `Authorization` header.
+
 ## v0.5.5
 
 - Various type fixes to allow typescript strict mode in circulation-patron-web.

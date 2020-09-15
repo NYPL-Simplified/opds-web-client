@@ -159,15 +159,17 @@ export default class DataFetcher {
   }
 
   prepareAuthHeaders(headers: any = {}): any {
-    // server needs to know request came from JS in order to omit
-    // 'Www-Authenticate: Basic' header, which triggers browser's
-    // ugly basic auth popup
-    headers["X-Requested-With"] = "XMLHttpRequest";
-
-    let credentials = this.getAuthCredentials();
-    headers["Authorization"] = credentials?.credentials ?? "";
-
-    return headers;
+    const credentials = this.getAuthCredentials();
+    return {
+      Authorization: credentials?.credentials ?? "",
+      // server needs to know request came from JS in order to omit
+      // 'Www-Authenticate: Basic' header, which triggers browser's
+      // ugly basic auth popup
+      "X-Requested-With": "XMLHttpRequest",
+      // if we set an Authorization header already
+      // it should overwrite the one from this function
+      ...headers
+    };
   }
 
   isErrorCode(status: number) {
