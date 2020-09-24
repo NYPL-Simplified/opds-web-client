@@ -22,7 +22,7 @@ export function flattenSamlProviders(providers: AuthProvider<AuthMethod>[]) {
 }
 
 function serverToClientSamlProviders(
-  provider: AuthProvider<ServerSamlMethod>
+  provider: AuthProvider<ServerSamlMethod, ClientSamlMethod>
 ): AuthProvider<ClientSamlMethod>[] {
   return provider.method.links.map(idp => ({
     method: {
@@ -40,5 +40,5 @@ export const getEnglishValue = (arr: [{ language: string; value: string }]) =>
 
 export const isServerSamlProvider = (
   provider: AuthProvider<AuthMethod>
-): provider is AuthProvider<ServerSamlMethod> =>
+): provider is AuthProvider<ServerSamlMethod, ClientSamlMethod> =>
   provider.id === SAML_AUTH_TYPE && "links" in provider.method;

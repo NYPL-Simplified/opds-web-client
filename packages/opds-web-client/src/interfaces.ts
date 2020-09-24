@@ -190,9 +190,14 @@ export interface AuthCallback {
   (): any;
 }
 
-export interface AuthProvider<T extends AuthMethod> {
+/**
+ * The provider has a method T, and the plugin might have a different
+ * method, as is the case with SAML Auth where the plugin takes
+ * a ClientSamlMethod but the original provider takes a ServerSamlMethod
+ */
+export interface AuthProvider<T extends AuthMethod, P extends AuthMethod = T> {
   id: string;
-  plugin: AuthPlugin;
+  plugin: AuthPlugin<P>;
   method: T;
 }
 
