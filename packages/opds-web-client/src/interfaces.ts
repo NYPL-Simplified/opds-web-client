@@ -24,6 +24,7 @@ export type MediaType =
   | "application/audiobook+json"
   | "application/vnd.overdrive.circulation.api+json;profile=audiobook"
   | "application/vnd.overdrive.circulation.api+json;profile=ebook"
+  | "application/vnd.readium.lcp.license.v1.0+json"
   | ReadOnlineMediaType;
 
 export interface MediaLink {
