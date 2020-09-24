@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.5.7
+
+- Add a button labeled "LCP License" to the UI and allow patrons to download LCP licenses as .lcpl files.
+
 ### v0.5.6
 
 - Fix the `fetchBlob` script to retry on failure if the failure is after a redirect. This is because Amazon S3 will fail if we send it out `Authorization` header.
