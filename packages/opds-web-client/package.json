@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@nypl/dgx-svg-icons": "^0.3.4",
-    "dompurify": "^0.8.1",
+    "dompurify": "^2.0.17",
     "downloadjs": "^1.4.4",
     "font-awesome": "^4.7.0",
     "isomorphic-fetch": "^2.2.1",
