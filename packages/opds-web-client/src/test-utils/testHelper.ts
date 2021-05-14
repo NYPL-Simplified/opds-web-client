@@ -1,4 +1,4 @@
-import { JSDOM } from "jsdom";
+import { DOMWindow, JSDOM } from "jsdom";
 import { configure } from "enzyme";
 import * as Adapter from "enzyme-adapter-react-16";
 
@@ -16,13 +16,14 @@ function copyProps(src, target) {
   });
 }
 
-global["window"] = window;
+global["window"] = window as DOMWindow & typeof globalThis;
 global["document"] = window.document;
 global["navigator"] = {
   userAgent: "node.js"
-};
+} as Navigator;
 global["requestAnimationFrame"] = function(callback) {
-  return setTimeout(callback, 0);
+  setTimeout(callback, 0);
+  return 0;
 };
 global["cancelAnimationFrame"] = function(id) {
   clearTimeout(id);

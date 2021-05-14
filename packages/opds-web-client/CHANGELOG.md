@@ -1,5 +1,8 @@
 ## Changelog
 
+### v0.6.0
+
+- Updated npm packages to fix security issues.
 ### v0.5.7
 
 - Add a button labeled "LCP License" to the UI and allow patrons to download LCP licenses as .lcpl files.
