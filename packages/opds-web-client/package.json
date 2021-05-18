@@ -17,7 +17,7 @@
     "dev": "webpack-dev-server --progress --history-api-fallback --hot --content-base build --port 8090 --config webpack.dev.config",
     "prod": "webpack -p --progress --display-modules --config webpack.prod.config && rm -rf dist/lib",
     "prepublish": "rm -rf lib && tsc && cp -r src/stylesheets lib && npm run prod",
-    "build-docs": "typedoc --tsconfig tsconfig.json"
+    "build-docs": "typedoc --tsconfig tsconfig.json src/"
   },
   "dependencies": {
     "@nypl/dgx-svg-icons": "^0.3.4",
