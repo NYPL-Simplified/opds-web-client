@@ -57,106 +57,125 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<div class="tsd-panel tsd-typography">
-				<a href="#opds-web-client" id="opds-web-client" style="color: inherit; text-decoration: none;">
-					<h1>opds-web-client</h1>
-				</a>
-				<p>JavaScript OPDS web client</p>
-				<a href="#standalone-app" id="standalone-app" style="color: inherit; text-decoration: none;">
-					<h2>Standalone App</h2>
-				</a>
-				<p>OPDS Web Client can be run as a standalone app mounted in a DOM element:</p>
-				<pre><code class="language-javascript"><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">OPDSWebClient</span><span style="color: #000000">(</span><span style="color: #001080">config</span><span style="color: #000000">, </span><span style="color: #001080">elementId</span><span style="color: #000000">);</span>
-</code></pre>
-				<p>For an example of OPDS Web Client in use as a standalone app, see the <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/master/packages/server/views/index.html.ejs">demo server template</a> included in this repository.</p>
-				<p><em>NOTE</em>: The web reader has been taken out of the demo server template for now as it is causing build issues. If you want to install it locally and use it for testing, uncomment line 17 in <code>/packages/server/index.js</code>, and install it in the <code>/packages/server</code> directory:</p>
-				<pre><code class="language-bash"><span style="color: #000000"> $ npm install --save nypl-simplified-webpub-viewer</span>
-</code></pre>
-				<a href="#standalone-config-options" id="standalone-config-options" style="color: inherit; text-decoration: none;">
-					<h3>Standalone Config Options</h3>
-				</a>
-				<ul>
-					<li><code>pathFor(collectionUrl: string, bookUrl: string) =&gt; string</code>: required function that accepts a collection URL and book URL and returns a string that will become the web browser&#39;s relative URL upon navigating to a new collection or book</li>
-					<li><code>pathPattern</code>: a react-router <a href="https://reacttraining.com/react-router/core/api/Route/path-string-string">path pattern</a> representing how to map a web browser URL to a collectionUrl and bookUrl. Default: <code>/(collection/:collectionUrl/)(book/:bookUrl/)</code></li>
-					<li><code>collectionUrl</code>: optional initial URL of an OPDS feed to load. Default: <code>null</code> (allow user to enter URL)</li>
-					<li><code>bookUrl</code>: optional initial URL of an OPDS Entry to load. Default: <code>null</code></li>
-					<li><code>proxyUrl</code>: optional local proxy path to which all remote URLs will be posted. Default: <code>undefined</code></li>
-					<li><code>pageTitleTemplate(collectionTitle: string, bookTitle: string) =&gt; string</code>: optional function that accepts a collection and book title and returns an HTML page title. Default: <code>undefined</code></li>
-					<li><code>authPlugins</code>: optional list of objects that implement the <a href="http://nypl-simplified.github.io/opds-web-client/interfaces/authplugin.html"><code>AuthPlugin</code> interface</a>. Default: <a href="http://nypl-simplified.github.io/opds-web-client/globals.html#basicauthplugin"><code>BasicAuthPlugin</code></a></li>
-					<li><code>computeBreadcrumbs</code>: optional function for customizing breadcrumbs. It defaults to <code>defaultComputeBreadcrumbs</code> in the <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/master/packages/opds-web-client/src/components/Breadcrumbs.tsx">Breadcrumbs</a> module, and <code>hierarchyComputeBreacrumbs</code> is also available. It should return an array of link objects, each with <code>url</code> and <code>text</code> properties. Its accepts two arguments:<ul>
-							<li><code>collection</code>: object representing the current collection data (see <code>CollectionData</code> in the <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/master/packages/opds-web-client/src/interfaces.ts">interfaces file</a>)</li>
-							<li><code>history</code>: an array of link objects (each with <code>url</code> and <code>text</code> properties) that is appended every time the user navigates to a new collection</li>
-						</ul>
-					</li>
-					<li><code>epubReaderUrlTemplate(epubUrl: string) =&gt; string</code>: optional function that returns a URL where you can read an EPUB file.</li>
-					<li><code>allLanguageSearch</code>: optional string to specify if searches in the catalog should not use the browser&#39;s language header in requests. Default: <code>false</code></li>
-				</ul>
-				<a href="#react-component" id="react-component" style="color: inherit; text-decoration: none;">
-					<h2>React Component</h2>
-				</a>
-				<p>The application is also available as a reusable React component:</p>
-				<pre><code class="language-jsx"><span style="color: #000000">import OPDSCatalog from &quot;opds-web-client&quot;;</span>
-
-<span style="color: #000000">ReactDOM.render(</span>
-<span style="color: #000000">  &lt;OPDSCatalog</span>
-<span style="color: #000000">    collectionUrl={this.props.collectionUrl}</span>
-<span style="color: #000000">    bookUrl={this.props.bookUrl}</span>
-<span style="color: #000000">    pageTitleTemplate={this.pageTitleTemplate}</span>
-<span style="color: #000000">    BookDetailsContainer={BookDetailsContainer}</span>
-<span style="color: #000000">    Header={Header}</span>
-<span style="color: #000000">  /&gt;</span>
-<span style="color: #000000">);</span>
-</code></pre>
-				<p>For an example of the application in use as a React component, see <a href="https://github.com/NYPL-Simplified/circulation-web">NYPL-Simplified/circulation-web</a>.</p>
-				<a href="#react-component-props" id="react-component-props" style="color: inherit; text-decoration: none;">
-					<h3>React Component Props</h3>
-				</a>
-				<ul>
-					<li><code>collectionUrl</code>: optional URL of an OPDS Acquisition or Navigation feed to load. Default: <code>null</code></li>
-					<li><code>bookUrl</code>: optional URL of an OPDS Entry to load. Default: <code>null</code></li>
-					<li><code>pageTitleTemplate(collectionTitle: string, bookTitle: string) =&gt; string</code>: optional function that accepts a collection and book title and returns an HTML page title. Default: <code>undefined</code></li>
-					<li><code>Header</code>: optional custom React component class to render in place of the client&#39;s default header. This <code>Header</code> will receive three props, <code>collectionTitle</code>, <code>bookTitle</code>, and a <code>CatalogLink</code> which should be used for links to collections or books that the client should load, and one child, a <code>Search</code> component that will only be present when the loaded collection links to an Open Search Description document. Default: <code>undefined</code></li>
-					<li><code>BookDetailsContainer</code>: optional custom React component class to render in place of the client&#39;s default <code>BookDetails</code> component. This <code>BookDetailsContainer</code> will receive three props: the current <code>collectionUrl</code> and <code>bookUrl</code>, and <code>refreshCatalog</code>, a function that can be called to refresh the collection and/or book. <code>BookDetailsContainer</code> will also receive the default rendered <code>BookDetails</code> component as a child. Default: <code>undefined</code></li>
-					<li><code>authPlugins</code>: same as in &quot;Standalone Config Options&quot; above</li>
-					<li><code>computeBreadcrumbs</code>: same as in &quot;Standalone Config Options&quot; above</li>
-					<li><code>epubReaderUrlTemplate</code>: same as in &quot;Standalone Config Options&quot; above</li>
-				</ul>
-				<a href="#react-component-context" id="react-component-context" style="color: inherit; text-decoration: none;">
-					<h3>React Component Context</h3>
-				</a>
-				<p>The OPDSCatalog React component should be rendered within a <a href="https://facebook.github.io/react/docs/context.html">React context</a> that includes two items:</p>
-				<ul>
-					<li><code>router</code>: any object that implements the <code>push</code> and <code>createHref</code> methods of react-router&#39;s <a href="https://reacttraining.com/react-router/core/api/contextrouter">context.router</a></li>
-					<li><code>pathFor(collectionUrl: string, bookUrl: string) =&gt; string</code>: a function that accepts a collection URL and book URL and returns a string that will become the web browser&#39;s relative URL upon navigating to a new collection or book</li>
-				</ul>
-				<a href="#accessibility" id="accessibility" style="color: inherit; text-decoration: none;">
-					<h2>Accessibility</h2>
-				</a>
-				<p>In order to develop user interfaces that are accessible to everyone, there are tools added to the workflow. Besides the Typescript <code>tslint-react-a11y</code> plugin (in <code>/packages/opds-web-client/tslint.json</code>), <code>react-axe</code> is also installed for local development. Using that module while running the app uses a lot of resources so it should be only when specifically testing for accessibility and not while actively developing new features or fixing bugs.</p>
-				<p>In order to run the app with <code>react-axe</code>, run <code>npm run dev-test-axe</code>. This will add a local global variable <code>process.env.TEST_AXE</code> (through webpack) that will trigger <code>react-axe</code> in <code>/packages/opds-web-client/src/app.tsx</code>. The output will be seen in the <em>browser&#39;s</em> console terminal.</p>
-				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
-					<h2>License</h2>
-				</a>
-				<pre><code><span style="color: #001080">Copyright</span><span style="color: #000000"> © </span><span style="color: #098658">2015</span><span style="color: #000000"> </span><span style="color: #001080">The</span><span style="color: #000000"> </span><span style="color: #001080">New</span><span style="color: #000000"> </span><span style="color: #001080">York</span><span style="color: #000000"> </span><span style="color: #001080">Public</span><span style="color: #000000"> </span><span style="color: #001080">Library</span><span style="color: #000000">, </span><span style="color: #001080">Astor</span><span style="color: #000000">, </span><span style="color: #001080">Lenox</span><span style="color: #000000">, </span><span style="color: #001080">and</span><span style="color: #000000"> </span><span style="color: #001080">Tilden</span><span style="color: #000000"> </span><span style="color: #001080">Foundations</span>
-
-<span style="color: #001080">Licensed</span><span style="color: #000000"> </span><span style="color: #001080">under</span><span style="color: #000000"> </span><span style="color: #001080">the</span><span style="color: #000000"> </span><span style="color: #001080">Apache</span><span style="color: #000000"> </span><span style="color: #001080">License</span><span style="color: #000000">, </span><span style="color: #001080">Version</span><span style="color: #000000"> </span><span style="color: #098658">2.0</span><span style="color: #000000"> (</span><span style="color: #001080">the</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;License&quot;</span><span style="color: #000000">);</span>
-<span style="color: #001080">you</span><span style="color: #000000"> </span><span style="color: #001080">may</span><span style="color: #000000"> </span><span style="color: #001080">not</span><span style="color: #000000"> </span><span style="color: #001080">use</span><span style="color: #000000"> </span><span style="color: #0000FF">this</span><span style="color: #000000"> </span><span style="color: #001080">file</span><span style="color: #000000"> </span><span style="color: #001080">except</span><span style="color: #000000"> </span><span style="color: #0000FF">in</span><span style="color: #000000"> </span><span style="color: #001080">compliance</span><span style="color: #000000"> </span><span style="color: #AF00DB">with</span><span style="color: #000000"> </span><span style="color: #001080">the</span><span style="color: #000000"> </span><span style="color: #001080">License</span><span style="color: #000000">.</span>
-<span style="color: #001080">You</span><span style="color: #000000"> </span><span style="color: #001080">may</span><span style="color: #000000"> </span><span style="color: #001080">obtain</span><span style="color: #000000"> </span><span style="color: #001080">a</span><span style="color: #000000"> </span><span style="color: #001080">copy</span><span style="color: #000000"> </span><span style="color: #0000FF">of</span><span style="color: #000000"> </span><span style="color: #001080">the</span><span style="color: #000000"> </span><span style="color: #001080">License</span><span style="color: #000000"> </span><span style="color: #001080">at</span>
-
-<span style="color: #000000">   http:</span><span style="color: #008000">//www.apache.org/licenses/LICENSE-2.0</span>
-
-<span style="color: #001080">Unless</span><span style="color: #000000"> </span><span style="color: #001080">required</span><span style="color: #000000"> </span><span style="color: #001080">by</span><span style="color: #000000"> </span><span style="color: #001080">applicable</span><span style="color: #000000"> </span><span style="color: #001080">law</span><span style="color: #000000"> </span><span style="color: #001080">or</span><span style="color: #000000"> </span><span style="color: #001080">agreed</span><span style="color: #000000"> </span><span style="color: #001080">to</span><span style="color: #000000"> </span><span style="color: #0000FF">in</span><span style="color: #000000"> </span><span style="color: #001080">writing</span><span style="color: #000000">, </span><span style="color: #001080">software</span>
-<span style="color: #001080">distributed</span><span style="color: #000000"> </span><span style="color: #001080">under</span><span style="color: #000000"> </span><span style="color: #001080">the</span><span style="color: #000000"> </span><span style="color: #001080">License</span><span style="color: #000000"> </span><span style="color: #001080">is</span><span style="color: #000000"> </span><span style="color: #001080">distributed</span><span style="color: #000000"> </span><span style="color: #001080">on</span><span style="color: #000000"> </span><span style="color: #001080">an</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;AS IS&quot;</span><span style="color: #000000"> </span><span style="color: #0070C1">BASIS</span><span style="color: #000000">,</span>
-<span style="color: #0070C1">WITHOUT</span><span style="color: #000000"> </span><span style="color: #0070C1">WARRANTIES</span><span style="color: #000000"> </span><span style="color: #0070C1">OR</span><span style="color: #000000"> </span><span style="color: #0070C1">CONDITIONS</span><span style="color: #000000"> </span><span style="color: #0070C1">OF</span><span style="color: #000000"> </span><span style="color: #0070C1">ANY</span><span style="color: #000000"> </span><span style="color: #0070C1">KIND</span><span style="color: #000000">, </span><span style="color: #001080">either</span><span style="color: #000000"> </span><span style="color: #001080">express</span><span style="color: #000000"> </span><span style="color: #001080">or</span><span style="color: #000000"> </span><span style="color: #001080">implied</span><span style="color: #000000">.</span>
-<span style="color: #001080">See</span><span style="color: #000000"> </span><span style="color: #001080">the</span><span style="color: #000000"> </span><span style="color: #001080">License</span><span style="color: #000000"> </span><span style="color: #001080">for</span><span style="color: #000000"> </span><span style="color: #001080">the</span><span style="color: #000000"> </span><span style="color: #001080">specific</span><span style="color: #000000"> </span><span style="color: #001080">language</span><span style="color: #000000"> </span><span style="color: #001080">governing</span><span style="color: #000000"> </span><span style="color: #001080">permissions</span><span style="color: #000000"> </span><span style="color: #001080">and</span>
-<span style="color: #001080">limitations</span><span style="color: #000000"> </span><span style="color: #001080">under</span><span style="color: #000000"> </span><span style="color: #001080">the</span><span style="color: #000000"> </span><span style="color: #001080">License</span><span style="color: #000000">.</span>
-</code></pre>
-			</div>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Modules</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-module"><a href="modules/authplugin.html" class="tsd-kind-icon">Auth<wbr>Plugin</a></li>
+								<li class="tsd-kind-module"><a href="modules/basicauthplugin.html" class="tsd-kind-icon">Basic<wbr>Auth<wbr>Plugin</a></li>
+								<li class="tsd-kind-module"><a href="modules/datafetcher.html" class="tsd-kind-icon">Data<wbr>Fetcher</a></li>
+								<li class="tsd-kind-module"><a href="modules/opdsdataadapter.html" class="tsd-kind-icon">OPDSData<wbr>Adapter</a></li>
+								<li class="tsd-kind-module"><a href="modules/opensearchdescriptionparser.html" class="tsd-kind-icon">Open<wbr>Search<wbr>Description<wbr>Parser</a></li>
+								<li class="tsd-kind-module"><a href="modules/__mocks___datafetcher.html" class="tsd-kind-icon">__mocks__/<wbr>Data<wbr>Fetcher</a></li>
+								<li class="tsd-kind-module"><a href="modules/__mocks___downloadjs.html" class="tsd-kind-icon">__mocks__/downloadjs</a></li>
+								<li class="tsd-kind-module"><a href="modules/__mocks___routing.html" class="tsd-kind-icon">__mocks__/routing</a></li>
+								<li class="tsd-kind-module"><a href="modules/__tests___datafetcher_test.html" class="tsd-kind-icon">__tests__/<wbr>Data<wbr>Fetcher-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/__tests___opdsdataadaptor_test.html" class="tsd-kind-icon">__tests__/OPDSData<wbr>Adaptor-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/__tests___opdsfactory.html" class="tsd-kind-icon">__tests__/OPDSFactory</a></li>
+								<li class="tsd-kind-module"><a href="modules/__tests___opensearchdescriptionparser_test.html" class="tsd-kind-icon">__tests__/<wbr>Open<wbr>Search<wbr>Description<wbr>Parser-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/__tests___actions_test.html" class="tsd-kind-icon">__tests__/actions-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/__tests___authmiddleware_test.html" class="tsd-kind-icon">__tests__/auth<wbr>Middleware-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/__tests___state_test.html" class="tsd-kind-icon">__tests__/state-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/actions.html" class="tsd-kind-icon">actions</a></li>
+								<li class="tsd-kind-module"><a href="modules/app.html" class="tsd-kind-icon">app</a></li>
+								<li class="tsd-kind-module"><a href="modules/authmiddleware.html" class="tsd-kind-icon">auth<wbr>Middleware</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_authproviderselectionform.html" class="tsd-kind-icon">components/<wbr>Auth<wbr>Provider<wbr>Selection<wbr>Form</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_basicauthbutton.html" class="tsd-kind-icon">components/<wbr>Basic<wbr>Auth<wbr>Button</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_basicauthform.html" class="tsd-kind-icon">components/<wbr>Basic<wbr>Auth<wbr>Form</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_book.html" class="tsd-kind-icon">components/<wbr>Book</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_bookcover.html" class="tsd-kind-icon">components/<wbr>Book<wbr>Cover</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_bookdetails.html" class="tsd-kind-icon">components/<wbr>Book<wbr>Details</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_borrowbutton.html" class="tsd-kind-icon">components/<wbr>Borrow<wbr>Button</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_breadcrumbs.html" class="tsd-kind-icon">components/<wbr>Breadcrumbs</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_cataloglink.html" class="tsd-kind-icon">components/<wbr>Catalog<wbr>Link</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_collection.html" class="tsd-kind-icon">components/<wbr>Collection</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_downloadbutton.html" class="tsd-kind-icon">components/<wbr>Download<wbr>Button</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_errormessage.html" class="tsd-kind-icon">components/<wbr>Error<wbr>Message</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_facetgroup.html" class="tsd-kind-icon">components/<wbr>Facet<wbr>Group</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_lane.html" class="tsd-kind-icon">components/<wbr>Lane</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_lanemorelink.html" class="tsd-kind-icon">components/<wbr>Lane<wbr>More<wbr>Link</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_lanes.html" class="tsd-kind-icon">components/<wbr>Lanes</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_loadingindicator.html" class="tsd-kind-icon">components/<wbr>Loading<wbr>Indicator</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_opdscatalog.html" class="tsd-kind-icon">components/OPDSCatalog</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_root.html" class="tsd-kind-icon">components/<wbr>Root</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_search.html" class="tsd-kind-icon">components/<wbr>Search</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_skipnavigationlink.html" class="tsd-kind-icon">components/<wbr>Skip<wbr>Navigation<wbr>Link</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_urlform.html" class="tsd-kind-icon">components/<wbr>Url<wbr>Form</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___authproviderselectionform_test.html" class="tsd-kind-icon">components/__tests__/<wbr>Auth<wbr>Provider<wbr>Selection<wbr>Form-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___basicauthbutton_test.html" class="tsd-kind-icon">components/__tests__/<wbr>Basic<wbr>Auth<wbr>Button-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___basicauthform_test.html" class="tsd-kind-icon">components/__tests__/<wbr>Basic<wbr>Auth<wbr>Form-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___book_test.html" class="tsd-kind-icon">components/__tests__/<wbr>Book-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___bookcover_test.html" class="tsd-kind-icon">components/__tests__/<wbr>Book<wbr>Cover-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___bookdetails_test.html" class="tsd-kind-icon">components/__tests__/<wbr>Book<wbr>Details-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___borrowbutton_test.html" class="tsd-kind-icon">components/__tests__/<wbr>Borrow<wbr>Button-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___breadcrumbs_test.html" class="tsd-kind-icon">components/__tests__/<wbr>Breadcrumbs-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___cataloglink_test.html" class="tsd-kind-icon">components/__tests__/<wbr>Catalog<wbr>Link-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___collection_test.html" class="tsd-kind-icon">components/__tests__/<wbr>Collection-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___downloadbutton_test.html" class="tsd-kind-icon">components/__tests__/<wbr>Download<wbr>Button-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___errormessage_test.html" class="tsd-kind-icon">components/__tests__/<wbr>Error<wbr>Message-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___facetgroup_test.html" class="tsd-kind-icon">components/__tests__/<wbr>Facet<wbr>Group-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___lane_test.html" class="tsd-kind-icon">components/__tests__/<wbr>Lane-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___lanemorelink_test.html" class="tsd-kind-icon">components/__tests__/<wbr>Lane<wbr>More<wbr>Link-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___lanes_test.html" class="tsd-kind-icon">components/__tests__/<wbr>Lanes-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___opdscatalog_test.html" class="tsd-kind-icon">components/__tests__/OPDSCatalog-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___root_test.html" class="tsd-kind-icon">components/__tests__/<wbr>Root-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___search_test.html" class="tsd-kind-icon">components/__tests__/<wbr>Search-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___skipnavigationlink_test.html" class="tsd-kind-icon">components/__tests__/<wbr>Skip<wbr>Navigation<wbr>Link-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___urlform_test.html" class="tsd-kind-icon">components/__tests__/<wbr>Url<wbr>Form-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___collectiondata.html" class="tsd-kind-icon">components/__tests__/collection<wbr>Data</a></li>
+								<li class="tsd-kind-module"><a href="modules/components___tests___mergerootprops_test.html" class="tsd-kind-icon">components/__tests__/merge<wbr>Root<wbr>Props-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_context_actionscontext.html" class="tsd-kind-icon">components/context/<wbr>Actions<wbr>Context</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_context_pathforcontext.html" class="tsd-kind-icon">components/context/<wbr>Path<wbr>For<wbr>Context</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_context_routercontext.html" class="tsd-kind-icon">components/context/<wbr>Router<wbr>Context</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_context_storecontext.html" class="tsd-kind-icon">components/context/<wbr>Store<wbr>Context</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_context___tests___pathforcontext_test.html" class="tsd-kind-icon">components/context/__tests__/<wbr>Path<wbr>For<wbr>Context-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_context___tests___routercontext_test.html" class="tsd-kind-icon">components/context/__tests__/<wbr>Router<wbr>Context-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_context___tests___storecontext_test.html" class="tsd-kind-icon">components/context/__tests__/<wbr>Store<wbr>Context-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_download.html" class="tsd-kind-icon">components/download</a></li>
+								<li class="tsd-kind-module"><a href="modules/components_mergerootprops.html" class="tsd-kind-icon">components/merge<wbr>Root<wbr>Props</a></li>
+								<li class="tsd-kind-module"><a href="modules/hooks___tests___usedownloadbutton_test.html" class="tsd-kind-icon">hooks/__tests__/use<wbr>Download<wbr>Button-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/hooks_usedownloadbutton.html" class="tsd-kind-icon">hooks/use<wbr>Download<wbr>Button</a></li>
+								<li class="tsd-kind-module"><a href="modules/hooks_usethunkdispatch.html" class="tsd-kind-icon">hooks/use<wbr>Thunk<wbr>Dispatch</a></li>
+								<li class="tsd-kind-module"><a href="modules/hooks_usetypedselector.html" class="tsd-kind-icon">hooks/use<wbr>Typed<wbr>Selector</a></li>
+								<li class="tsd-kind-module"><a href="modules/images_spinner.html" class="tsd-kind-icon">images/spinner</a></li>
+								<li class="tsd-kind-module"><a href="modules/index.html" class="tsd-kind-icon">index</a></li>
+								<li class="tsd-kind-module"><a href="modules/interfaces.html" class="tsd-kind-icon">interfaces</a></li>
+								<li class="tsd-kind-module"><a href="modules/reducers.html" class="tsd-kind-icon">reducers</a></li>
+								<li class="tsd-kind-module"><a href="modules/reducers___tests___auth_test.html" class="tsd-kind-icon">reducers/__tests__/auth-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/reducers___tests___book_test.html" class="tsd-kind-icon">reducers/__tests__/book-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/reducers___tests___collection_test.html" class="tsd-kind-icon">reducers/__tests__/collection-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/reducers___tests___history_test.html" class="tsd-kind-icon">reducers/__tests__/history-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/reducers___tests___loans_test.html" class="tsd-kind-icon">reducers/__tests__/loans-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/reducers___tests___preferences_test.html" class="tsd-kind-icon">reducers/__tests__/preferences-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/reducers_auth.html" class="tsd-kind-icon">reducers/auth</a></li>
+								<li class="tsd-kind-module"><a href="modules/reducers_book.html" class="tsd-kind-icon">reducers/book</a></li>
+								<li class="tsd-kind-module"><a href="modules/reducers_collection.html" class="tsd-kind-icon">reducers/collection</a></li>
+								<li class="tsd-kind-module"><a href="modules/reducers_history.html" class="tsd-kind-icon">reducers/history</a></li>
+								<li class="tsd-kind-module"><a href="modules/reducers_loans.html" class="tsd-kind-icon">reducers/loans</a></li>
+								<li class="tsd-kind-module"><a href="modules/reducers_preferences.html" class="tsd-kind-icon">reducers/preferences</a></li>
+								<li class="tsd-kind-module"><a href="modules/state.html" class="tsd-kind-icon">state</a></li>
+								<li class="tsd-kind-module"><a href="modules/store.html" class="tsd-kind-icon">store</a></li>
+								<li class="tsd-kind-module"><a href="modules/test_utils_makewrapper.html" class="tsd-kind-icon">test-<wbr>utils/make<wbr>Wrapper</a></li>
+								<li class="tsd-kind-module"><a href="modules/test_utils_testhelper.html" class="tsd-kind-icon">test-<wbr>utils/test<wbr>Helper</a></li>
+								<li class="tsd-kind-module"><a href="modules/utils.html" class="tsd-kind-icon">utils</a></li>
+								<li class="tsd-kind-module"><a href="modules/utils___tests___book_test.html" class="tsd-kind-icon">utils/__tests__/book-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/utils___tests___file_test.html" class="tsd-kind-icon">utils/__tests__/file-<wbr>test</a></li>
+								<li class="tsd-kind-module"><a href="modules/utils_auth.html" class="tsd-kind-icon">utils/auth</a></li>
+								<li class="tsd-kind-module"><a href="modules/utils_book.html" class="tsd-kind-icon">utils/book</a></li>
+								<li class="tsd-kind-module"><a href="modules/utils_file.html" class="tsd-kind-icon">utils/file</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class=" ">
+					<li class="current ">
 						<a href="modules.html">Exports</a>
 					</li>
 					<li class=" tsd-kind-module">

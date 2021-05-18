@@ -1,0 +1,758 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>components/mergeRootProps | opds-web-client</title>
+	<meta name="description" content="Documentation for opds-web-client">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">opds-web-client</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../modules.html">opds-web-client</a>
+				</li>
+				<li>
+					<a href="components_mergerootprops.html">components/mergeRootProps</a>
+				</li>
+			</ul>
+			<h1>Module components/mergeRootProps</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Functions</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="components_mergerootprops.html#createfetchcollectionandbook" class="tsd-kind-icon">create<wbr>Fetch<wbr>Collection<wbr>And<wbr>Book</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="components_mergerootprops.html#fetchcollectionandbook" class="tsd-kind-icon">fetch<wbr>Collection<wbr>And<wbr>Book</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="components_mergerootprops.html#findbookincollection" class="tsd-kind-icon">find<wbr>Book<wbr>InCollection</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="components_mergerootprops.html#mapdispatchtoprops" class="tsd-kind-icon">map<wbr>Dispatch<wbr>ToProps</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="components_mergerootprops.html#mapstatetoprops" class="tsd-kind-icon">map<wbr>State<wbr>ToProps</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="components_mergerootprops.html#mergerootprops" class="tsd-kind-icon">merge<wbr>Root<wbr>Props</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="createfetchcollectionandbook" class="tsd-anchor"></a>
+					<h3>create<wbr>Fetch<wbr>Collection<wbr>And<wbr>Book</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Fetch<wbr>Collection<wbr>And<wbr>Book<span class="tsd-signature-symbol">(</span>dispatch<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>collectionUrl<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, bookUrl<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>bookData<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/interfaces.bookdata.html" class="tsd-signature-type" data-tsd-kind="Interface">BookData</a><span class="tsd-signature-symbol">; </span>collectionData<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/interfaces.collectiondata.html" class="tsd-signature-type" data-tsd-kind="Interface">CollectionData</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/dd6098c/packages/opds-web-client/src/components/mergeRootProps.ts#L88">src/components/mergeRootProps.ts:88</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>dispatch: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">(</span>collectionUrl<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, bookUrl<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>bookData<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/interfaces.bookdata.html" class="tsd-signature-type" data-tsd-kind="Interface">BookData</a><span class="tsd-signature-symbol">; </span>collectionData<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/interfaces.collectiondata.html" class="tsd-signature-type" data-tsd-kind="Interface">CollectionData</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter-signature">
+									<ul class="tsd-signatures tsd-kind-type-literal">
+										<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>collectionUrl<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span>, bookUrl<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>bookData<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/interfaces.bookdata.html" class="tsd-signature-type" data-tsd-kind="Interface">BookData</a><span class="tsd-signature-symbol">; </span>collectionData<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/interfaces.collectiondata.html" class="tsd-signature-type" data-tsd-kind="Interface">CollectionData</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li>
+									</ul>
+									<ul class="tsd-descriptions">
+										<li class="tsd-description">
+											<h4 class="tsd-parameters-title">Parameters</h4>
+											<ul class="tsd-parameters">
+												<li>
+													<h5>collectionUrl: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+												</li>
+												<li>
+													<h5><span class="tsd-flag ts-flagOptional">Optional</span> bookUrl: <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+												</li>
+											</ul>
+											<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>bookData<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/interfaces.bookdata.html" class="tsd-signature-type" data-tsd-kind="Interface">BookData</a><span class="tsd-signature-symbol">; </span>collectionData<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/interfaces.collectiondata.html" class="tsd-signature-type" data-tsd-kind="Interface">CollectionData</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="fetchcollectionandbook" class="tsd-anchor"></a>
+					<h3>fetch<wbr>Collection<wbr>And<wbr>Book</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">fetch<wbr>Collection<wbr>And<wbr>Book<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>bookData<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.bookdata.html" class="tsd-signature-type" data-tsd-kind="Interface">BookData</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>collectionData<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.collectiondata.html" class="tsd-signature-type" data-tsd-kind="Interface">CollectionData</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/dd6098c/packages/opds-web-client/src/components/mergeRootProps.ts#L108">src/components/mergeRootProps.ts:108</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>__namedParameters: <span class="tsd-signature-type">Object</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>bookData<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.bookdata.html" class="tsd-signature-type" data-tsd-kind="Interface">BookData</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>collectionData<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.collectiondata.html" class="tsd-signature-type" data-tsd-kind="Interface">CollectionData</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="findbookincollection" class="tsd-anchor"></a>
+					<h3>find<wbr>Book<wbr>InCollection</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">find<wbr>Book<wbr>InCollection<span class="tsd-signature-symbol">(</span>collection<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.collectiondata.html" class="tsd-signature-type" data-tsd-kind="Interface">CollectionData</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span>, book<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/interfaces.bookdata.html" class="tsd-signature-type" data-tsd-kind="Interface">BookData</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/dd6098c/packages/opds-web-client/src/components/mergeRootProps.ts#L11">src/components/mergeRootProps.ts:11</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>collection: <a href="../interfaces/interfaces.collectiondata.html" class="tsd-signature-type" data-tsd-kind="Interface">CollectionData</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h5>
+								</li>
+								<li>
+									<h5>book: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/interfaces.bookdata.html" class="tsd-signature-type" data-tsd-kind="Interface">BookData</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="mapdispatchtoprops" class="tsd-anchor"></a>
+					<h3>map<wbr>Dispatch<wbr>ToProps</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">map<wbr>Dispatch<wbr>ToProps<span class="tsd-signature-symbol">(</span>dispatch<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>createDispatchProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>fetcher<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-symbol">{ </span>clearAuthCredentials<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>clearBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>clearCollection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>closeError<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>closeErrorAndHideAuthForm<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchCollection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchLoans<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchPage<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchSearchDescription<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fulfillBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>indirectFulfillBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>loadBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>book<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.bookdata.html" class="tsd-signature-type" data-tsd-kind="Interface">BookData</a>, url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>saveAuthCredentials<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>credentials<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.authcredentials.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthCredentials</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>setPreference<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>showAuthForm<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.authcallback.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthCallback</a>, cancel<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span>, providers<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>updateBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> }</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/dd6098c/packages/opds-web-client/src/components/mergeRootProps.ts#L47">src/components/mergeRootProps.ts:47</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>dispatch: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{ </span>createDispatchProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>fetcher<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-symbol">{ </span>clearAuthCredentials<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>clearBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>clearCollection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>closeError<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>closeErrorAndHideAuthForm<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchCollection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchLoans<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchPage<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchSearchDescription<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fulfillBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>indirectFulfillBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>loadBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>book<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.bookdata.html" class="tsd-signature-type" data-tsd-kind="Interface">BookData</a>, url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>saveAuthCredentials<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>credentials<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.authcredentials.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthCredentials</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>setPreference<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>showAuthForm<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.authcallback.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthCallback</a>, cancel<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span>, providers<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>updateBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> }</span></h4>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter">
+									<h5>create<wbr>Dispatch<wbr>Props<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>fetcher<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-symbol">{ </span>clearAuthCredentials<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>clearBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>clearCollection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>closeError<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>closeErrorAndHideAuthForm<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchCollection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchLoans<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchPage<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchSearchDescription<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fulfillBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>indirectFulfillBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>loadBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>book<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.bookdata.html" class="tsd-signature-type" data-tsd-kind="Interface">BookData</a>, url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>saveAuthCredentials<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>credentials<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.authcredentials.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthCredentials</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>setPreference<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>showAuthForm<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.authcallback.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthCallback</a>, cancel<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span>, providers<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>updateBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-signature">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>fetcher<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>clearAuthCredentials<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>clearBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>clearCollection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>closeError<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>closeErrorAndHideAuthForm<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchCollection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchLoans<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchPage<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchSearchDescription<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fulfillBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>indirectFulfillBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>loadBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>book<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.bookdata.html" class="tsd-signature-type" data-tsd-kind="Interface">BookData</a>, url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>saveAuthCredentials<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>credentials<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.authcredentials.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthCredentials</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>setPreference<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>showAuthForm<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.authcallback.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthCallback</a>, cancel<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span>, providers<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>updateBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>fetcher: <span class="tsd-signature-type">any</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{ </span>clearAuthCredentials<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>clearBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>clearCollection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>closeError<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>closeErrorAndHideAuthForm<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchCollection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchLoans<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchPage<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fetchSearchDescription<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>fulfillBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>indirectFulfillBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>loadBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>book<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.bookdata.html" class="tsd-signature-type" data-tsd-kind="Interface">BookData</a>, url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>saveAuthCredentials<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>credentials<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.authcredentials.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthCredentials</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>setPreference<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>showAuthForm<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.authcallback.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthCallback</a>, cancel<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span>, providers<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>updateBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span></h4>
+													<ul class="tsd-parameters">
+														<li class="tsd-parameter">
+															<h5>clear<wbr>Auth<wbr>Credentials<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span></h5>
+															<ul class="tsd-parameters">
+																<li class="tsd-parameter-signature">
+																	<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-literal">
+																		<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+																	</ul>
+																	<ul class="tsd-descriptions">
+																		<li class="tsd-description">
+																			<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+																		</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li class="tsd-parameter">
+															<h5>clear<wbr>Book<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span></h5>
+															<ul class="tsd-parameters">
+																<li class="tsd-parameter-signature">
+																	<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-literal">
+																		<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+																	</ul>
+																	<ul class="tsd-descriptions">
+																		<li class="tsd-description">
+																			<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+																		</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li class="tsd-parameter">
+															<h5>clear<wbr>Collection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span></h5>
+															<ul class="tsd-parameters">
+																<li class="tsd-parameter-signature">
+																	<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-literal">
+																		<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+																	</ul>
+																	<ul class="tsd-descriptions">
+																		<li class="tsd-description">
+																			<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+																		</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li class="tsd-parameter">
+															<h5>close<wbr>Error<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span></h5>
+															<ul class="tsd-parameters">
+																<li class="tsd-parameter-signature">
+																	<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-literal">
+																		<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+																	</ul>
+																	<ul class="tsd-descriptions">
+																		<li class="tsd-description">
+																			<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+																		</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li class="tsd-parameter">
+															<h5>close<wbr>Error<wbr>And<wbr>Hide<wbr>Auth<wbr>Form<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span></h5>
+															<ul class="tsd-parameters">
+																<li class="tsd-parameter-signature">
+																	<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-literal">
+																		<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+																	</ul>
+																	<ul class="tsd-descriptions">
+																		<li class="tsd-description">
+																			<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+																		</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li class="tsd-parameter">
+															<h5>fetch<wbr>Book<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span></h5>
+															<ul class="tsd-parameters">
+																<li class="tsd-parameter-signature">
+																	<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-literal">
+																		<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+																	</ul>
+																	<ul class="tsd-descriptions">
+																		<li class="tsd-description">
+																			<h4 class="tsd-parameters-title">Parameters</h4>
+																			<ul class="tsd-parameters">
+																				<li>
+																					<h5>url: <span class="tsd-signature-type">string</span></h5>
+																				</li>
+																			</ul>
+																			<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+																		</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li class="tsd-parameter">
+															<h5>fetch<wbr>Collection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span></h5>
+															<ul class="tsd-parameters">
+																<li class="tsd-parameter-signature">
+																	<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-literal">
+																		<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+																	</ul>
+																	<ul class="tsd-descriptions">
+																		<li class="tsd-description">
+																			<h4 class="tsd-parameters-title">Parameters</h4>
+																			<ul class="tsd-parameters">
+																				<li>
+																					<h5>url: <span class="tsd-signature-type">string</span></h5>
+																				</li>
+																			</ul>
+																			<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+																		</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li class="tsd-parameter">
+															<h5>fetch<wbr>Loans<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span></h5>
+															<ul class="tsd-parameters">
+																<li class="tsd-parameter-signature">
+																	<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-literal">
+																		<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+																	</ul>
+																	<ul class="tsd-descriptions">
+																		<li class="tsd-description">
+																			<h4 class="tsd-parameters-title">Parameters</h4>
+																			<ul class="tsd-parameters">
+																				<li>
+																					<h5>url: <span class="tsd-signature-type">string</span></h5>
+																				</li>
+																			</ul>
+																			<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+																		</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li class="tsd-parameter">
+															<h5>fetch<wbr>Page<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span></h5>
+															<ul class="tsd-parameters">
+																<li class="tsd-parameter-signature">
+																	<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-literal">
+																		<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+																	</ul>
+																	<ul class="tsd-descriptions">
+																		<li class="tsd-description">
+																			<h4 class="tsd-parameters-title">Parameters</h4>
+																			<ul class="tsd-parameters">
+																				<li>
+																					<h5>url: <span class="tsd-signature-type">string</span></h5>
+																				</li>
+																			</ul>
+																			<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+																		</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li class="tsd-parameter">
+															<h5>fetch<wbr>Search<wbr>Description<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span></h5>
+															<ul class="tsd-parameters">
+																<li class="tsd-parameter-signature">
+																	<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-literal">
+																		<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+																	</ul>
+																	<ul class="tsd-descriptions">
+																		<li class="tsd-description">
+																			<h4 class="tsd-parameters-title">Parameters</h4>
+																			<ul class="tsd-parameters">
+																				<li>
+																					<h5>url: <span class="tsd-signature-type">string</span></h5>
+																				</li>
+																			</ul>
+																			<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+																		</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li class="tsd-parameter">
+															<h5>fulfill<wbr>Book<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span></h5>
+															<ul class="tsd-parameters">
+																<li class="tsd-parameter-signature">
+																	<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-literal">
+																		<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+																	</ul>
+																	<ul class="tsd-descriptions">
+																		<li class="tsd-description">
+																			<h4 class="tsd-parameters-title">Parameters</h4>
+																			<ul class="tsd-parameters">
+																				<li>
+																					<h5>url: <span class="tsd-signature-type">string</span></h5>
+																				</li>
+																			</ul>
+																			<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+																		</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li class="tsd-parameter">
+															<h5>indirect<wbr>Fulfill<wbr>Book<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span></h5>
+															<ul class="tsd-parameters">
+																<li class="tsd-parameter-signature">
+																	<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-literal">
+																		<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+																	</ul>
+																	<ul class="tsd-descriptions">
+																		<li class="tsd-description">
+																			<h4 class="tsd-parameters-title">Parameters</h4>
+																			<ul class="tsd-parameters">
+																				<li>
+																					<h5>url: <span class="tsd-signature-type">string</span></h5>
+																				</li>
+																				<li>
+																					<h5>type: <span class="tsd-signature-type">string</span></h5>
+																				</li>
+																			</ul>
+																			<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+																		</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li class="tsd-parameter">
+															<h5>load<wbr>Book<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>book<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.bookdata.html" class="tsd-signature-type" data-tsd-kind="Interface">BookData</a>, url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span></h5>
+															<ul class="tsd-parameters">
+																<li class="tsd-parameter-signature">
+																	<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-literal">
+																		<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>book<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.bookdata.html" class="tsd-signature-type" data-tsd-kind="Interface">BookData</a>, url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+																	</ul>
+																	<ul class="tsd-descriptions">
+																		<li class="tsd-description">
+																			<h4 class="tsd-parameters-title">Parameters</h4>
+																			<ul class="tsd-parameters">
+																				<li>
+																					<h5>book: <a href="../interfaces/interfaces.bookdata.html" class="tsd-signature-type" data-tsd-kind="Interface">BookData</a></h5>
+																				</li>
+																				<li>
+																					<h5>url: <span class="tsd-signature-type">string</span></h5>
+																				</li>
+																			</ul>
+																			<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+																		</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li class="tsd-parameter">
+															<h5>save<wbr>Auth<wbr>Credentials<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>credentials<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.authcredentials.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthCredentials</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span></h5>
+															<ul class="tsd-parameters">
+																<li class="tsd-parameter-signature">
+																	<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-literal">
+																		<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>credentials<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.authcredentials.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthCredentials</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+																	</ul>
+																	<ul class="tsd-descriptions">
+																		<li class="tsd-description">
+																			<h4 class="tsd-parameters-title">Parameters</h4>
+																			<ul class="tsd-parameters">
+																				<li>
+																					<h5>credentials: <a href="../interfaces/interfaces.authcredentials.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthCredentials</a></h5>
+																				</li>
+																			</ul>
+																			<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+																		</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li class="tsd-parameter">
+															<h5>set<wbr>Preference<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span></h5>
+															<ul class="tsd-parameters">
+																<li class="tsd-parameter-signature">
+																	<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-literal">
+																		<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+																	</ul>
+																	<ul class="tsd-descriptions">
+																		<li class="tsd-description">
+																			<h4 class="tsd-parameters-title">Parameters</h4>
+																			<ul class="tsd-parameters">
+																				<li>
+																					<h5>key: <span class="tsd-signature-type">string</span></h5>
+																				</li>
+																				<li>
+																					<h5>value: <span class="tsd-signature-type">string</span></h5>
+																				</li>
+																			</ul>
+																			<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+																		</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li class="tsd-parameter">
+															<h5>show<wbr>Auth<wbr>Form<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.authcallback.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthCallback</a>, cancel<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span>, providers<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span></h5>
+															<ul class="tsd-parameters">
+																<li class="tsd-parameter-signature">
+																	<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-literal">
+																		<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>callback<span class="tsd-signature-symbol">: </span><a href="../interfaces/interfaces.authcallback.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthCallback</a>, cancel<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span>, providers<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+																	</ul>
+																	<ul class="tsd-descriptions">
+																		<li class="tsd-description">
+																			<h4 class="tsd-parameters-title">Parameters</h4>
+																			<ul class="tsd-parameters">
+																				<li>
+																					<h5>callback: <a href="../interfaces/interfaces.authcallback.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthCallback</a></h5>
+																				</li>
+																				<li>
+																					<h5>cancel: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
+																					<ul class="tsd-parameters">
+																						<li class="tsd-parameter-signature">
+																							<ul class="tsd-signatures tsd-kind-type-literal">
+																								<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+																							</ul>
+																							<ul class="tsd-descriptions">
+																								<li class="tsd-description">
+																									<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+																								</li>
+																							</ul>
+																						</li>
+																					</ul>
+																				</li>
+																				<li>
+																					<h5>providers: <span class="tsd-signature-type">any</span></h5>
+																				</li>
+																				<li>
+																					<h5>title: <span class="tsd-signature-type">string</span></h5>
+																				</li>
+																			</ul>
+																			<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+																		</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li class="tsd-parameter">
+															<h5>update<wbr>Book<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">any</span></h5>
+															<ul class="tsd-parameters">
+																<li class="tsd-parameter-signature">
+																	<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-type-literal">
+																		<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+																	</ul>
+																	<ul class="tsd-descriptions">
+																		<li class="tsd-description">
+																			<h4 class="tsd-parameters-title">Parameters</h4>
+																			<ul class="tsd-parameters">
+																				<li>
+																					<h5>url: <span class="tsd-signature-type">string</span></h5>
+																				</li>
+																			</ul>
+																			<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+																		</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+													</ul>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="mapstatetoprops" class="tsd-anchor"></a>
+					<h3>map<wbr>State<wbr>ToProps</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">map<wbr>State<wbr>ToProps<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, ownProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>auth<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>bookData<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>bookUrl<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>collectionData<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>collectionUrl<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>error<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>history<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>isFetchingBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>isFetchingCollection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>isFetchingPage<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>isSignedIn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>loadedBookUrl<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>loadedCollectionUrl<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>loans<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>loansUrl<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>preferences<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/dd6098c/packages/opds-web-client/src/components/mergeRootProps.ts#L26">src/components/mergeRootProps.ts:26</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>state: <span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li>
+									<h5>ownProps: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">{ </span>auth<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>bookData<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>bookUrl<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>collectionData<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>collectionUrl<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>error<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>history<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>isFetchingBook<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>isFetchingCollection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>isFetchingPage<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>isSignedIn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span>loadedBookUrl<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>loadedCollectionUrl<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>loans<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>loansUrl<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>preferences<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> }</span></h4>
+							<ul class="tsd-parameters">
+								<li class="tsd-parameter">
+									<h5>auth<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>book<wbr>Data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>book<wbr>Url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>collection<wbr>Data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>collection<wbr>Url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>error<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>history<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>is<wbr>Fetching<wbr>Book<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>is<wbr>Fetching<wbr>Collection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>is<wbr>Fetching<wbr>Page<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>is<wbr>Signed<wbr>In<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>loaded<wbr>Book<wbr>Url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>loaded<wbr>Collection<wbr>Url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>loans<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>loans<wbr>Url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li class="tsd-parameter">
+									<h5>preferences<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="mergerootprops" class="tsd-anchor"></a>
+					<h3>merge<wbr>Root<wbr>Props</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">merge<wbr>Root<wbr>Props<span class="tsd-signature-symbol">(</span>stateProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, createDispatchProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, componentProps<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/NYPL-Simplified/opds-web-client/blob/dd6098c/packages/opds-web-client/src/components/mergeRootProps.ts#L144">src/components/mergeRootProps.ts:144</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>stateProps: <span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li>
+									<h5>createDispatchProps: <span class="tsd-signature-type">any</span></h5>
+								</li>
+								<li>
+									<h5>componentProps: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
+					</li>
+					<li class="current tsd-kind-module">
+						<a href="components_mergerootprops.html">components/merge<wbr>Root<wbr>Props</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="components_mergerootprops.html#createfetchcollectionandbook" class="tsd-kind-icon">create<wbr>Fetch<wbr>Collection<wbr>And<wbr>Book</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="components_mergerootprops.html#fetchcollectionandbook" class="tsd-kind-icon">fetch<wbr>Collection<wbr>And<wbr>Book</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="components_mergerootprops.html#findbookincollection" class="tsd-kind-icon">find<wbr>Book<wbr>InCollection</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="components_mergerootprops.html#mapdispatchtoprops" class="tsd-kind-icon">map<wbr>Dispatch<wbr>ToProps</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="components_mergerootprops.html#mapstatetoprops" class="tsd-kind-icon">map<wbr>State<wbr>ToProps</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="components_mergerootprops.html#mergerootprops" class="tsd-kind-icon">merge<wbr>Root<wbr>Props</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-namespace"><span class="tsd-kind-icon">Namespace</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>
