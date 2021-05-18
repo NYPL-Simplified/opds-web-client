@@ -98,7 +98,7 @@ describe("hierarchyComputeBreadcrumbs", () => {
   it("provides default catalog root title", () => {
     let catalogRootLink = {
       url: "new root url",
-      text: null
+      text: undefined
     };
     let data = Object.assign({}, collection, { catalogRootLink });
     expect(hierarchyComputeBreadcrumbs(data, history)).to.deep.equal([

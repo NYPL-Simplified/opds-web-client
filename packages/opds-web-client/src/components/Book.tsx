@@ -98,7 +98,7 @@ export default class Book<P extends BookProps> extends React.Component<P, {}> {
                 field.value ? (
                   <div
                     className={field.name.toLowerCase().replace(" ", "-")}
-                    key={`${field.name}`}
+                    key={`${field.name}-${key}`}
                   >
                     {field.name}: {field.value}
                   </div>
