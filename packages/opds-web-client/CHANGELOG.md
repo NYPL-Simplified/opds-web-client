@@ -1,5 +1,8 @@
 ## Changelog
 
+### v0.6.1
+
+- Updated npm packages to fix security issues.
 ### v0.6.0
 
 - Updated npm packages to fix security issues.
