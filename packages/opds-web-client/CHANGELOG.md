@@ -1,5 +1,9 @@
 ## Changelog
 
+### v0.6.2
+
+- Updated class `.collection .collection-container` to give more space to the bottom.
+
 ### v0.6.1
 
 - Updated npm packages to fix security issues.
