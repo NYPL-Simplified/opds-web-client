@@ -49,9 +49,14 @@ export function adapter(
   url: string
 ): CollectionData | BookData {
   if (data instanceof OPDSFeed) {
+    console.log('in adapter - OPDSFeed')
+    console.log('url -->', url)
+    console.log('data -->', data) 
     let collectionData = feedToCollection(data, url);
+    console.log('collectionData -->', collectionData)
     return collectionData;
   } else if (data instanceof OPDSEntry) {
+    console.log('in adapter - OPDSEntry')
     let bookData = entryToBook(data, url);
     return bookData;
   } else {
@@ -333,7 +338,11 @@ export function feedToCollection(
       return link instanceof SearchLink;
     });
     if (searchLink) {
+      console.log('searchLink is true!')
       search = { url: resolve(feedUrl, searchLink.href) };
+      console.log('feedUrl -->', feedUrl)
+      console.log('searchLink.href -->', searchLink.href)
+      console.log('resolved URL -->', resolve(feedUrl, searchLink.href))
     }
 
     let nextPageLink = feed.links.find(link => {
