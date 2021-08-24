@@ -2,7 +2,7 @@
 
 ### v0.6.3-test
 
-- The resolve function in OPDSDataAdapter is causing bugs in the List Manager of CM Admin. This version removed the function in order to test it.
+- The resolve function in OPDSDataAdapter is causing bugs in the List Manager of CM Admin. This version removes the function in order to test it.
 ### v0.6.2
 
 - Updated class `.collection .collection-container` to give more space to the bottom.
