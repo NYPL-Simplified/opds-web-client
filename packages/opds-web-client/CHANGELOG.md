@@ -1,5 +1,8 @@
 ## Changelog
 
+### v0.6.3
+
+- Removed console.logs and other comments from previous version following successful testing.
 ### v0.6.3-test
 
 - The resolve function in OPDSDataAdapter is causing bugs in the List Manager of CM Admin. This version removes the function in order to test it.

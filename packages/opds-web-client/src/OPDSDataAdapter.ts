@@ -21,9 +21,6 @@ import {
   SearchData,
   FulfillmentLink
 } from "./interfaces";
-// import { resolve } from "url";
-
-// const resolve = (base, relative) => new URL(relative, base).toString();
 
 let sanitizeHtml;
 const createDOMPurify = require("dompurify");
@@ -50,14 +47,9 @@ export function adapter(
   url: string
 ): CollectionData | BookData {
   if (data instanceof OPDSFeed) {
-    console.log('in adapter - OPDSFeed')
-    console.log('url -->', url)
-    console.log('data -->', data) 
     let collectionData = feedToCollection(data, url);
-    console.log('collectionData -->', collectionData)
     return collectionData;
   } else if (data instanceof OPDSEntry) {
-    console.log('in adapter - OPDSEntry')
     let bookData = entryToBook(data, url);
     return bookData;
   } else {
@@ -66,20 +58,16 @@ export function adapter(
 }
 
 export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
-  console.log('in entryToBook function')
   let authors = entry.authors.map(author => {
-    console.log('in authors loop')
     return author.name;
   });
 
   let contributors = entry.contributors.map(contributor => {
-    console.log('in contributors loop')
     return contributor.name;
   });
 
   let imageUrl, imageThumbLink;
   let artworkLinks = entry.links.filter(link => {
-    console.log('in artworkLinks loop')
     return link instanceof OPDSArtworkLink;
   });
   if (artworkLinks.length > 0) {
@@ -87,26 +75,17 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
       link => link.rel === "http://opds-spec.org/image/thumbnail"
     );
     if (imageThumbLink) {
-      console.log('in if statement before first resolve in entryToBook')
-      console.log('feedUrl -->', feedUrl)
-      console.log('imageThumLink.href -->', imageThumbLink.href)
-      // imageUrl = resolve(feedUrl, imageThumbLink.href); // feedUrl = /OWL..., imageThumb = https:// --> new URL(https://, /OWL)
-      imageUrl = imageThumbLink.href
+      imageUrl = imageThumbLink.href;
     } else {
       console.log("WARNING: using possibly large image for " + entry.title);
-      // imageUrl = resolve(feedUrl, artworkLinks[0].href);
-      imageUrl = artworkLinks[0].href
+      imageUrl = artworkLinks[0].href;
     }
   }
 
   let detailUrl;
   let detailLink = entry.links.find(link => link instanceof CompleteEntryLink);
   if (detailLink) {
-    console.log('in if detailLink statement')
-    console.log('detailLink.href -->', detailLink.href)
-    console.log('feedUrl --->', feedUrl)
-    // detailUrl = resolve(feedUrl, detailLink.href);
-    detailUrl = detailLink.href
+    detailUrl = detailLink.href;
   }
 
   let categories = entry.categories
@@ -115,17 +94,13 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
 
   let openAccessLinks = entry.links
     .filter(link => {
-      console.log('in openAccessLinks')
       return (
         link instanceof OPDSAcquisitionLink &&
         link.rel === OPDSAcquisitionLink.OPEN_ACCESS_REL
       );
     })
     .map(link => {
-      console.log('link.href -->', link.href)
-      console.log('feedUrl -->', feedUrl)
       return {
-        // url: resolve(feedUrl, link.href),
         url: link.href,
         type: link.type
       };
@@ -139,10 +114,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
     );
   });
   if (borrowLink) {
-    console.log('in borrowLink if statement')
-    console.log('borrowLink.href -->', borrowLink.href)
-    // borrowUrl = resolve(feedUrl, borrowLink.href);
-    borrowUrl = borrowLink.href
+    borrowUrl = borrowLink.href;
   }
 
   let allBorrowLinks: FulfillmentLink[] = entry.links
@@ -160,7 +132,6 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
         indirectType = indirects[0].type;
       }
       return {
-        // url: resolve(feedUrl, link.href),
         url: link.href,
         type: link.type,
         indirectType
@@ -184,7 +155,6 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
       }
       return {
         url: link.href,
-        // url: resolve(feedUrl, link.href),
         type: link.type,
         indirectType
       };
@@ -228,8 +198,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
 function entryToLink(entry: OPDSEntry, feedUrl: string): LinkData | null {
   let links = entry.links;
   if (links.length > 0) {
-    // const href = resolve(feedUrl, links[0].href);
-    const href = links[0].href
+    const href = links[0].href;
     return {
       id: entry.id,
       text: entry.title,
@@ -282,9 +251,7 @@ function OPDSLinkToLinkData(feedUrl, link: OPDSLink = null): LinkData | null {
   if (!link || !link.href) {
     return null;
   }
-console.log('in OPDSLinkToLinkData')  
   return {
-    // url: resolve(feedUrl, link.href),
     url: link.href,
     text: link.title,
     type: link.rel
@@ -295,7 +262,6 @@ export function feedToCollection(
   feed: OPDSFeed,
   feedUrl: string
 ): CollectionData {
-  console.log('in feedToCollection function!')
   let collection = <CollectionData>{
     id: feed.id,
     title: feed.title,
@@ -319,28 +285,19 @@ export function feedToCollection(
   let links: OPDSLink[] = [];
 
   feed.entries.forEach(entry => {
-    console.log('in feed.entries loop')
     if (feed instanceof AcquisitionFeed) {
-      console.log('in first if statement')
       let book = entryToBook(entry, feedUrl);
       const collectionLink: OPDSCollectionLink = entry.links.find(
         link => link instanceof OPDSCollectionLink
       );
       if (collectionLink) {
-        console.log('in second if statement')
         let { title, href } = collectionLink;
-        console.log('collectionLink -->', collectionLink)
-        console.log('href from collectionLink --->', href)
 
         if (laneIndex[title]) {
-          console.log('in third if statement')
           laneIndex[title].books.push(book);
         } else {
-          console.log('in else statement')
-          console.log('feedUrl --->', feedUrl)
           laneIndex[title] = {
             title,
-            // url: resolve(feedUrl, href),
             url: href,
             books: [book]
           };
@@ -356,10 +313,7 @@ export function feedToCollection(
     }
   });
 
-  console.log('finished feed.entries loop')
-
   lanes = laneTitles.reduce((result, title) => {
-    console.log('in laneTitles loop')
     let lane = laneIndex[title];
     lane.books = dedupeBooks(lane.books);
     result.push(lane);
@@ -368,7 +322,6 @@ export function feedToCollection(
 
   let facetLinks: OPDSFacetLink[] = [];
   if (feed.links) {
-    console.log('in feed.links if statement')
     facetLinks = feed.links.filter(link => {
       return link instanceof OPDSFacetLink;
     });
@@ -377,21 +330,14 @@ export function feedToCollection(
       return link instanceof SearchLink;
     });
     if (searchLink) {
-      console.log('searchLink is true!')
-      console.log('feedUrl -->', feedUrl)
-      console.log('searchLink.href -->', searchLink.href)
-      // search = { url: resolve(feedUrl, searchLink.href) };
-      search = {url: searchLink.href}
+      search = { url: searchLink.href };
     }
 
     let nextPageLink = feed.links.find(link => {
       return link.rel === "next";
     });
     if (nextPageLink) {
-      console.log('in nextPageLink')
-      // nextPageUrl = resolve(feedUrl, nextPageLink.href);
-      nextPageUrl = nextPageLink.href
-      console.log(nextPageUrl)
+      nextPageUrl = nextPageLink.href;
     }
 
     catalogRootLink = feed.links.find(link => {
@@ -411,8 +357,7 @@ export function feedToCollection(
   facetGroups = facetLinks.reduce((result, link) => {
     let groupLabel = link.facetGroup;
     let label = link.title;
-    let href = link.href
-    // let href = resolve(feedUrl, link.href);
+    let href = link.href;
     let active = link.activeFacet;
     let facet = { label, href, active };
     let newResult: any[] = [];

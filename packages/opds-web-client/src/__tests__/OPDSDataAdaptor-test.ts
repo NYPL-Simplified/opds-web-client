@@ -96,9 +96,7 @@ describe("OPDSDataAdapter", () => {
     let collection = feedToCollection(acquisitionFeed, "http://test-url.com");
     expect(collection.books.length).to.equal(0);
     expect(collection.lanes.length).to.equal(1);
-    expect(collection.lanes[0].url).to.equal(
-      `http://test-url.com/${collectionLink.href}`
-    );
+    expect(collection.lanes[0].url).to.equal(collectionLink.href);
     expect(collection.raw).to.equal("unparsed data");
 
     let book = collection.lanes[0].books[0];
@@ -160,7 +158,7 @@ describe("OPDSDataAdapter", () => {
     let link = collection.navigationLinks[0];
     expect(link.id).to.equal(linkEntry.id);
     expect(link.text).to.equal(linkEntry.title);
-    expect(link.url).to.equal(`http://test-url.com/${navigationLink.href}`);
+    expect(link.url).to.equal(navigationLink.href);
   });
 
   it("extracts facet groups", () => {
@@ -204,17 +202,17 @@ describe("OPDSDataAdapter", () => {
     let facet1 = groupA?.facets[0];
     expect(facet1?.label).to.equal("title 1");
     expect(facet1?.active).to.be.ok;
-    expect(facet1?.href).to.equal("http://test-url.com/href1");
+    expect(facet1?.href).to.equal("href1");
 
     let facet2 = groupB?.facets[0];
     expect(facet2?.label).to.equal("title 2");
     expect(facet2?.active).not.to.be.ok;
-    expect(facet2?.href).to.equal("http://test-url.com/href2");
+    expect(facet2?.href).to.equal("href2");
 
     let facet3 = groupA?.facets[1];
     expect(facet3?.label).to.equal("title 3");
     expect(facet3?.active).not.to.be.ok;
-    expect(facet3?.href).to.equal("http://test-url.com/href3");
+    expect(facet3?.href).to.equal("href3");
   });
 
   it("extracts search link", () => {
@@ -230,9 +228,7 @@ describe("OPDSDataAdapter", () => {
 
     let collection = feedToCollection(navigationFeed, "http://test-url.com");
     expect(collection.search).to.be.ok;
-    expect(collection.search?.url).to.equal(
-      `http://test-url.com/${searchLink.href}`
-    );
+    expect(collection.search?.url).to.equal(searchLink.href);
   });
 
   it("extracts next page url", () => {
@@ -249,7 +245,7 @@ describe("OPDSDataAdapter", () => {
 
     let collection = feedToCollection(acquisitionFeed, "http://test-url.com");
     expect(collection.nextPageUrl).to.be.ok;
-    expect(collection.nextPageUrl).to.equal("http://test-url.com/href");
+    expect(collection.nextPageUrl).to.equal("href");
   });
 
   it("extracts shelf url", () => {
@@ -288,10 +284,7 @@ describe("OPDSDataAdapter", () => {
     expect(collection.links?.length).to.equal(2);
     let urls = collection.links?.map(link => link.url).sort();
     let types = collection.links?.map(link => link.type).sort();
-    expect(urls).to.deep.equal([
-      "http://test-url.com/about",
-      "http://test-url.com/terms"
-    ]);
+    expect(urls).to.deep.equal(["about", "terms"]);
     expect(types).to.deep.equal(["about", "terms-of-service"]);
   });
 });
