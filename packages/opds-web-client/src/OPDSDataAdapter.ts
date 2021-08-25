@@ -75,17 +75,17 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
       link => link.rel === "http://opds-spec.org/image/thumbnail"
     );
     if (imageThumbLink) {
-      imageUrl = imageThumbLink.href
+      imageUrl = imageThumbLink.href;
     } else {
       console.log("WARNING: using possibly large image for " + entry.title);
-      imageUrl = artworkLinks[0].href
+      imageUrl = artworkLinks[0].href;
     }
   }
 
   let detailUrl;
   let detailLink = entry.links.find(link => link instanceof CompleteEntryLink);
   if (detailLink) {
-    detailUrl = detailLink.href
+    detailUrl = detailLink.href;
   }
 
   let categories = entry.categories
@@ -114,7 +114,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
     );
   });
   if (borrowLink) {
-    borrowUrl = borrowLink.href
+    borrowUrl = borrowLink.href;
   }
 
   let allBorrowLinks: FulfillmentLink[] = entry.links
@@ -198,7 +198,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
 function entryToLink(entry: OPDSEntry, feedUrl: string): LinkData | null {
   let links = entry.links;
   if (links.length > 0) {
-    const href = links[0].href
+    const href = links[0].href;
     return {
       id: entry.id,
       text: entry.title,
@@ -330,14 +330,14 @@ export function feedToCollection(
       return link instanceof SearchLink;
     });
     if (searchLink) {
-      search = {url: searchLink.href}
+      search = { url: searchLink.href };
     }
 
     let nextPageLink = feed.links.find(link => {
       return link.rel === "next";
     });
     if (nextPageLink) {
-      nextPageUrl = nextPageLink.href
+      nextPageUrl = nextPageLink.href;
     }
 
     catalogRootLink = feed.links.find(link => {
@@ -357,7 +357,7 @@ export function feedToCollection(
   facetGroups = facetLinks.reduce((result, link) => {
     let groupLabel = link.facetGroup;
     let label = link.title;
-    let href = link.href
+    let href = link.href;
     let active = link.activeFacet;
     let facet = { label, href, active };
     let newResult: any[] = [];

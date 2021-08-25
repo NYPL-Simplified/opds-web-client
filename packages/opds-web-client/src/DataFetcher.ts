@@ -40,7 +40,7 @@ export default class DataFetcher {
 
   fetchOPDSData(url: string) {
     let parser = new OPDSParser();
-    console.log('in fetchOPDSData')
+    console.log("in fetchOPDSData");
 
     if (!this.adapter) {
       return Promise.reject({
