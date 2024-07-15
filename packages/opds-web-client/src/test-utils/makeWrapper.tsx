@@ -28,9 +28,7 @@ const defaultPathFor = fake((collectionUrl?: string, bookUrl?: string) =>
  * This creates a wrapper component, and returns some global context
  * which can be used to spy / mock actions, fetcher, etc
  */
-type MakeWrapper = (
-  config?: WrapperConfig
-) => {
+type MakeWrapper = (config?: WrapperConfig) => {
   wrapper: React.FC;
   actions: ActionsCreator;
   fetcher: DataFetcher;

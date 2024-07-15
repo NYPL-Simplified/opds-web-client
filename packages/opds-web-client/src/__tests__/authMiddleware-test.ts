@@ -23,10 +23,9 @@ describe("authMiddleware", () => {
     showAuthFormStub = stub(ActionCreator.prototype, "showAuthForm").callsArg(
       0
     );
-    hideAuthFormStub = stub(
-      ActionCreator.prototype,
-      "hideAuthForm"
-    ).callsFake(() => ({ type: "" }));
+    hideAuthFormStub = stub(ActionCreator.prototype, "hideAuthForm").callsFake(
+      () => ({ type: "" })
+    );
     clearAuthCredentialsStub = stub(
       DataFetcher.prototype,
       "clearAuthCredentials"

@@ -57,7 +57,9 @@ describe("findBookInCollection", () => {
 describe("createFetchCollectionAndBook", () => {
   let collectionUrl = "collection url";
   let bookUrl = "book url";
-  let dispatch = stub().returns(new Promise((resolve, reject) => resolve()));
+  let dispatch = stub().returns(
+    new Promise<void>((resolve, reject) => resolve())
+  );
   let actionFetchCollectionStub;
   let actionBookCollectionStub;
 

@@ -40,8 +40,7 @@ describe("OPDSDataAdapter", () => {
       type: "application/atom+xml;type=entry;profile=opds-catalog",
       indirectAcquisitions: [
         {
-          type:
-            "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media"
+          type: "text/html;profile=http://librarysimplified.org/terms/profiles/streaming-media"
         }
       ]
     });

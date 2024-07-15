@@ -9,13 +9,14 @@ var config = merge(common, {
   mode: "production",
   // devtool: "source-map",
   entry: {
-    app: ["./src/app.tsx"]
+    "opds-web-client": ["./src/app.tsx"]
   },
   output: {
-    path: path.resolve(__dirname, "./dist"),
-    filename: "opds-web-client.js",
+    path: path.resolve(__dirname, "dist"),
+    filename: "[name].js",
     library: "OPDSWebClient",
-    libraryTarget: "umd"
+    libraryTarget: "umd",
+    publicPath: "dist/",
   },
   plugins: [
     // jsdom is needed for server rendering, but causes errors
@@ -34,7 +35,7 @@ var config = merge(common, {
       {
         test: /\.tsx?$/,
         exclude: [/node_modules/],
-        loaders: ["ts-loader"]
+        use: ["ts-loader"]
       }
     ]
   }

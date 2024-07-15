@@ -53,12 +53,7 @@ describe("Lane", () => {
 
     it("shows the lane title in a CatalogLink", () => {
       let titleLink = wrapper.find(CatalogLink);
-      expect(
-        titleLink
-          .first()
-          .children()
-          .text()
-      ).to.equal(laneData.title);
+      expect(titleLink.first().children().text()).to.equal(laneData.title);
     });
 
     it("shows Books", () => {

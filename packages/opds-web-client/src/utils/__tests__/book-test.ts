@@ -42,7 +42,7 @@ describe("book utils", () => {
 
   describe("getMediumSVG function", () => {
     it("returns null with no input", () => {
-      expect(getMediumSVG((undefined as unknown) as BookMedium)).to.equal(null);
+      expect(getMediumSVG(undefined as unknown as BookMedium)).to.equal(null);
     });
 
     it("returns null with bad medium input", () => {

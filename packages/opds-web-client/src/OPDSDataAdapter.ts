@@ -136,7 +136,7 @@ export function entryToBook(entry: OPDSEntry, feedUrl: string): BookData {
         type: link.type,
         indirectType
       };
-    });
+    }) as FulfillmentLink[];
 
   let fulfillmentType;
   let fulfillmentLinks = entry.links
@@ -247,7 +247,10 @@ function formatDate(inputDate: string): string {
   return `${month} ${day}, ${year}`;
 }
 
-function OPDSLinkToLinkData(feedUrl, link: OPDSLink = null): LinkData | null {
+function OPDSLinkToLinkData(
+  feedUrl,
+  link: OPDSLink = {} as any
+): LinkData | null {
   if (!link || !link.href) {
     return null;
   }
@@ -279,15 +282,15 @@ export function feedToCollection(
   let facetGroups: FacetGroupData[] = [];
   let search: SearchData | undefined = undefined;
   let nextPageUrl: string | undefined = undefined;
-  let catalogRootLink: OPDSLink;
-  let parentLink: OPDSLink;
+  let catalogRootLink: OPDSLink = undefined as any;
+  let parentLink: OPDSLink = undefined as any;
   let shelfUrl: string | undefined = undefined;
   let links: OPDSLink[] = [];
 
   feed.entries.forEach(entry => {
     if (feed instanceof AcquisitionFeed) {
       let book = entryToBook(entry, feedUrl);
-      const collectionLink: OPDSCollectionLink = entry.links.find(
+      const collectionLink: OPDSCollectionLink | undefined = entry.links.find(
         link => link instanceof OPDSCollectionLink
       );
       if (collectionLink) {
@@ -320,7 +323,7 @@ export function feedToCollection(
     return result;
   }, lanes);
 
-  let facetLinks: OPDSFacetLink[] = [];
+  let facetLinks: OPDSFacetLink[] | any = [];
   if (feed.links) {
     facetLinks = feed.links.filter(link => {
       return link instanceof OPDSFacetLink;
@@ -342,9 +345,9 @@ export function feedToCollection(
 
     catalogRootLink = feed.links.find(link => {
       return link instanceof OPDSCatalogRootLink;
-    });
+    }) as OPDSCatalogRootLink;
 
-    parentLink = feed.links.find(link => link.rel === "up");
+    parentLink = feed.links.find(link => link.rel === "up") as OPDSLink;
 
     let shelfLink = feed.links.find(link => link instanceof OPDSShelfLink);
     if (shelfLink) {
@@ -354,7 +357,7 @@ export function feedToCollection(
     links = feed.links;
   }
 
-  facetGroups = facetLinks.reduce((result, link) => {
+  facetGroups = facetLinks.reduce((result: any, link) => {
     let groupLabel = link.facetGroup;
     let label = link.title;
     let href = link.href;

@@ -15,7 +15,7 @@ export default (authPlugins: AuthPlugin[], pathFor?: PathFor) => {
     let actions = new ActionCreator(fetcher);
 
     if (typeof action === "function") {
-      return new Promise((resolve, reject) => {
+      return new Promise<void>((resolve, reject) => {
         next(actions.hideAuthForm());
         let result = next(action);
 

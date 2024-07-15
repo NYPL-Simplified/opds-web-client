@@ -9,7 +9,7 @@ import { mockRouterContext } from "../../__mocks__/routing";
 
 describe("CatalogLink", () => {
   it("renders Link with location and props and context", () => {
-    let props = {
+    let props: any = {
       className: "test-class",
       id: "test-id",
       target: "_blank",

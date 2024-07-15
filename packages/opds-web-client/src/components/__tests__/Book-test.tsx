@@ -57,10 +57,7 @@ describe("Book", () => {
     let wrapper = shallow(<Book book={book} updateBook={updateBook} />);
 
     let links = wrapper.find(CatalogLink);
-    let cover = links
-      .at(0)
-      .children()
-      .at(0);
+    let cover = links.at(0).children().at(0);
     expect(cover.type()).to.equal(BookCover);
     expect(cover.props().book).to.equal(book);
   });
@@ -77,10 +74,7 @@ describe("Book", () => {
       let wrapper = shallow(<Book book={book} updateBook={updateBook} />);
 
       let links = wrapper.find(CatalogLink);
-      let bookInfo = links
-        .at(0)
-        .children()
-        .at(1);
+      let bookInfo = links.at(0).children().at(1);
       let title = bookInfo.find(".title");
       let authors = bookInfo.find(".authors");
 
@@ -96,10 +90,7 @@ describe("Book", () => {
       let wrapper = shallow(<Book book={bookCopy} updateBook={updateBook} />);
 
       let links = wrapper.find(CatalogLink);
-      let bookInfo = links
-        .at(0)
-        .children()
-        .at(1);
+      let bookInfo = links.at(0).children().at(1);
       let authors = bookInfo.find(".authors");
       expect(authors.text()).to.equal(`By ${bookCopy.contributors[0]}`);
     });
@@ -111,12 +102,9 @@ describe("Book", () => {
       let svg = itemIcon.find(AudioHeadphoneIcon);
 
       expect(svg.length).to.equal(2);
-      expect(
-        itemIcon
-          .first()
-          .render()
-          .text()
-      ).to.equal("Audio/Headphone Icon ");
+      expect(itemIcon.first().render().text()).to.equal(
+        "Audio/Headphone Icon "
+      );
     });
   });
 

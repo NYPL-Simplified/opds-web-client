@@ -1,6 +1,5 @@
 {
   "extends": [
-    "tslint-react-a11y",
     "tslint-config-prettier",
     "tslint-plugin-prettier"
   ],

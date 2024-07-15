@@ -1117,14 +1117,12 @@ describe("Root", () => {
           facets: [
             {
               label: "eBooks",
-              href:
-                "http://circulation.librarysimplified.org/groups/?entrypoint=Book",
+              href: "http://circulation.librarysimplified.org/groups/?entrypoint=Book",
               active: false
             },
             {
               label: "Audiobooks",
-              href:
-                "http://circulation.librarysimplified.org/groups/?entrypoint=Audio",
+              href: "http://circulation.librarysimplified.org/groups/?entrypoint=Audio",
               active: false
             }
           ],

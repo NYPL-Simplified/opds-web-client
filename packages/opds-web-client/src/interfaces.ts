@@ -230,8 +230,9 @@ export interface BasicAuthMethod extends AuthMethod {
 }
 
 /** Utility to make keys K of type T both required (defined) and not null */
-export type RequiredKeys<T, K extends keyof T> = Omit<T, K> &
-  { [P in K]-?: NonNullable<T[P]> };
+export type RequiredKeys<T, K extends keyof T> = Omit<T, K> & {
+  [P in K]-?: NonNullable<T[P]>;
+};
 
 export type SamlIdp = {
   privacy_statement_urls: [];

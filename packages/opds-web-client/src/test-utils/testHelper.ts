@@ -4,10 +4,10 @@ import * as Adapter from "enzyme-adapter-react-16";
 
 configure({ adapter: new Adapter() });
 
-const jsdom = new JSDOM("<!doctype html><html><body></body></html>", {
+const dom = new JSDOM("<!doctype html><html><body></body></html>", {
   url: "http://localhost"
 });
-const { window } = jsdom;
+const { window } = dom;
 
 function copyProps(src, target) {
   Object.defineProperties(target, {
@@ -21,11 +21,11 @@ global["document"] = window.document;
 global["navigator"] = {
   userAgent: "node.js"
 } as Navigator;
-global["requestAnimationFrame"] = function(callback) {
+global["requestAnimationFrame"] = function (callback) {
   setTimeout(callback, 0);
   return 0;
 };
-global["cancelAnimationFrame"] = function(id) {
+global["cancelAnimationFrame"] = function (id) {
   clearTimeout(id);
 };
 copyProps(window, global);

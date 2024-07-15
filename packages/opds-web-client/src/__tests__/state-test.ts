@@ -6,8 +6,8 @@ import buildInitialState, { State } from "../state";
 // standard redux dispatch returns the action you pass in
 let dispatch: Redux.Dispatch = action => action;
 // we have to cast the string states to type State
-let initialState = ("initial state" as unknown) as State;
-let alteredState = ("state with collection and book" as unknown) as State;
+let initialState = "initial state" as unknown as State;
+let alteredState = "state with collection and book" as unknown as State;
 let testState = initialState;
 import * as mergeRootProps from "../components/mergeRootProps";
 import * as store from "../store";
