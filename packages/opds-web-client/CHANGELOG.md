@@ -22,9 +22,9 @@ This release includes the minimum updates required for working on Node 20 and pa
 #### Removed
 
 - Removed `font-awesome` from main `app.scss` file. This package breaks the webpack build and doesn't seem to be needed. An updated icon font package should be used if this is picked up again.
-- Removed `tslint-react-a11y` from tslint config. This app is in maintenance mode and this update broke this plugin. An updated react accessibility linter should be added later.
+- Removed the tslint config file. This app is in maintenance mode and this update broke this plugin. `eslint` is the recommended by `tslint` but is out of scope of this update.
 - Removed npm packages:
-  `node-sass`
+  `node-sass`, `tslint`, `tslint-config-prettier`, `tslint-plugin-prettier`, `tslint-react-a11y`
 
 ### v0.6.3
 
