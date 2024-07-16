@@ -1,0 +1,12 @@
+# Changelog
+
+## v0.1.0
+
+NYPL Remediation Team update
+
+This release includes the minimum updates required for working on Node 20 and patching npm security vulnerablities.
+
+### Updated
+
+- Updated the version for npm packages:
+  `ejs`, `express`, `multer`, `request`, `requirejs`

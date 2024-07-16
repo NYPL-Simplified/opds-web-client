@@ -1,5 +1,31 @@
 ## Changelog
 
+### v0.7.0
+
+NYPL Remediation Team update
+
+This release includes the minimum updates required for working on Node 20 and patching npm security vulnerablities.
+
+#### Added
+
+- Added npm packages:
+  `@types/chai`, `sass`
+
+#### Updated
+
+- Minor updates to the webpack dev and production configuration files.
+- Updated types to conform with updated Typescript version (v4).
+- Updated the `prod` scripts to include `NODE_OPTIONS=--openssl-legacy-provider`.
+- Updated the version for npm packages:
+  `@nypl/dxg-svg-icons`, `@testing-library/react-hooks`, `@types/jsdom`, `@types/mocha`, `@types/node`, `@types/prop-types`, `@types/react`, `@types/react-redux`, `@types/sinon`, `chai`, `clean-webpack-plugin`, `downloadjs`, `enzyme`, `enzyme-adapter-react-16`, `fetch-mock`, `file-loader`, `font-awesome`, `isomorphic-fetch`, `js-cookie`, `jsdom`, `mini-css-extract-plugin`, `mocha`, `moment`, `opds-feed-parser`, `prop-types`, `react-axe`, `react-hot-loader`, `react-test-renderer`, `react-redux`, `react-router`, `redux-devtools-extension`, `redux-localstorage`, `redux-thunk`, `sass-loader`, `seedrandom`, `sinon`, `source-map-loader`, `style-loader`, `ts-loader`, `tslint-config-prettier`, `tslint-plugin-prettier`, `tslint-react-a11y`, `typedoc`, `typescript`, `url-loader`, `webpack`, `webpack-cli`, `webpack-dev-server`, `webpack-merge`, `xml2js`
+
+#### Removed
+
+- Removed `font-awesome` from main `app.scss` file. This package breaks the webpack build and doesn't seem to be needed. An updated icon font package should be used if this is picked up again.
+- Removed `tslint-react-a11y` from tslint config. This app is in maintenance mode and this update broke this plugin. An updated react accessibility linter should be added later.
+- Removed npm packages:
+  `node-sass`
+
 ### v0.6.3
 
 - Removed console.logs and other comments from previous version following successful testing.

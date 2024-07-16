@@ -1,0 +1,13 @@
+# Changelog
+
+## v0.1.0
+
+NYPL Remediation Team update
+
+This release includes the minimum updates required for working on Node 20 and patching npm security vulnerablities.
+
+### Updated
+
+- Updated the `prepublish` and `prod` scripts to include `NODE_OPTIONS=--openssl-legacy-provider`.
+- Updated the version for npm packages:
+  `lint-staged`, `prettier`
