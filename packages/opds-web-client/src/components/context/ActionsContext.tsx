@@ -7,9 +7,8 @@ import ActionsCreator from "../../actions";
 type ActionsContextType =
   | { fetcher: DataFetcher; actions: ActionsCreator }
   | undefined;
-export const ActionsContext = React.createContext<ActionsContextType>(
-  undefined
-);
+export const ActionsContext =
+  React.createContext<ActionsContextType>(undefined);
 
 export function ActionsProvider({
   children,

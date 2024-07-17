@@ -8,8 +8,7 @@ let groupedCollectionData: CollectionData = {
   lanes: [
     {
       title: "Best Sellers",
-      url:
-        "http://circulation.librarysimplified.org/feed/eng/English%20-%20Best%20Sellers?order=author",
+      url: "http://circulation.librarysimplified.org/feed/eng/English%20-%20Best%20Sellers?order=author",
       books: [
         {
           id: "urn:librarysimplified.org/terms/id/3M%20ID/crrmnr9",
@@ -26,10 +25,8 @@ let groupedCollectionData: CollectionData = {
           }
         },
         {
-          id:
-            "urn:librarysimplified.org/terms/id/Overdrive%20ID/97ecd436-6416-4317-835c-aea13836ea5b",
-          url:
-            "http://circulation.librarysimplified.org/works/Overdrive/97ecd436-6416-4317-835c-aea13836ea5b",
+          id: "urn:librarysimplified.org/terms/id/Overdrive%20ID/97ecd436-6416-4317-835c-aea13836ea5b",
+          url: "http://circulation.librarysimplified.org/works/Overdrive/97ecd436-6416-4317-835c-aea13836ea5b",
           title: "So B. It",
           authors: ["Sarah Weeks"],
           summary:
@@ -43,10 +40,8 @@ let groupedCollectionData: CollectionData = {
           }
         },
         {
-          id:
-            "urn:librarysimplified.org/terms/id/Overdrive%20ID/59c938ed-9e93-42a9-a0a6-70ea8b7e28e4",
-          url:
-            "http://circulation.librarysimplified.org/works/Overdrive/59c938ed-9e93-42a9-a0a6-70ea8b7e28e4",
+          id: "urn:librarysimplified.org/terms/id/Overdrive%20ID/59c938ed-9e93-42a9-a0a6-70ea8b7e28e4",
+          url: "http://circulation.librarysimplified.org/works/Overdrive/59c938ed-9e93-42a9-a0a6-70ea8b7e28e4",
           title: "A Spy Among Friends",
           authors: ["Ben Macintyre"],
           summary:

@@ -1,6 +1,6 @@
 {
   "name": "opds-web-client-build",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Build scripts for the OPDS web client",
   "repository": {
     "type": "git",
@@ -9,21 +9,21 @@
   "author": "NYPL",
   "license": "Apache-2.0",
   "scripts": {
-    "prepublish": "cd packages/opds-web-client && npm install && cd ../server && npm install",
+    "prepublish": "NODE_OPTIONS=--openssl-legacy-provider cd packages/opds-web-client && npm install && cd ../server && npm install",
     "test": "cd packages/opds-web-client && npm test",
     "dev-serve": "cd packages/server && npm run dev",
     "dev-build": "cd packages/opds-web-client && npm run dev",
     "dev": "npm run dev-build | npm run dev-serve",
     "dev-test-axe": "TEST_AXE=true npm run dev",
-    "prod": "cd packages/opds-web-client && npm run prod && cd ../server && npm run start",
+    "prod": "NODE_OPTIONS=--openssl-legacy-provider cd packages/opds-web-client && npm run prod && cd ../server && npm run start",
     "start": "cd packages/server && npm run start",
     "release": "cd packages/opds-web-client && npm publish",
     "build-docs": "cd packages/opds-web-client && npm run build-docs"
   },
   "devDependencies": {
     "husky": "^6.0.0",
-    "lint-staged": "^9.4.3",
-    "prettier": "1.19.1"
+    "lint-staged": "15.2.7",
+    "prettier": "2.1.2"
   },
   "husky": {
     "hooks": {

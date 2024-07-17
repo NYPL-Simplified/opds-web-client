@@ -17,12 +17,12 @@ var config = merge(common, {
     rules: [
       {
         test: /\.scss$/,
-        loaders: ["style-loader", "css-loader", "sass-loader"]
+        use: ["style-loader", "css-loader", "sass-loader"]
       },
       {
         test: /\.tsx?$/,
         exclude: [/node_modules/],
-        loaders: ["react-hot-loader/webpack", "ts-loader"]
+        use: ["ts-loader"]
       }
     ]
   }

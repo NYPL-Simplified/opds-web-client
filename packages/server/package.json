@@ -1,6 +1,6 @@
 {
   "name": "opds-web-client-demo",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Demo server using the OPDS web client",
   "repository": {
     "type": "git",
@@ -14,11 +14,11 @@
     "start": "NODE_ENV=production node index.js"
   },
   "dependencies": {
-    "ejs": "^2.4.1",
-    "express": "^4.13.4",
-    "multer": "^1.1.0",
+    "ejs": "2.4.1",
+    "express": "4.19.2",
+    "multer": "1.1.0",
     "r2-streamer-js": "0.0.1-alpha13",
-    "request": "^2.69.0",
-    "requirejs": "^2.3.2"
+    "request": "2.88.0",
+    "requirejs": "2.3.2"
   }
 }

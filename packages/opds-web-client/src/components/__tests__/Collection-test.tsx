@@ -336,7 +336,7 @@ describe("Collection", () => {
      */
     Object.defineProperty(HTMLElement.prototype, "scrollHeight", {
       configurable: true,
-      get: function() {
+      get: function () {
         return this._scrollHeight || 0;
       },
       set(val) {
@@ -345,7 +345,7 @@ describe("Collection", () => {
     });
     Object.defineProperty(HTMLElement.prototype, "clientHeight", {
       configurable: true,
-      get: function() {
+      get: function () {
         return this._clientHeight || 0;
       },
       set(val) {

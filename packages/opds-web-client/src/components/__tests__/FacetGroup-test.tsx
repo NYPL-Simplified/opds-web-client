@@ -41,13 +41,8 @@ describe("FacetGroup", () => {
 
     let links = wrapper.find(CatalogLink);
     expect(links.length).to.equal(2);
-    expect(
-      links.map(facet =>
-        facet
-          .children()
-          .at(0)
-          .text()
-      )
-    ).to.deep.equal(facetGroup.facets.map(facet => facet.label));
+    expect(links.map(facet => facet.children().at(0).text())).to.deep.equal(
+      facetGroup.facets.map(facet => facet.label)
+    );
   });
 });

@@ -99,7 +99,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    createDispatchProps: function(fetcher) {
+    createDispatchProps: function (fetcher) {
       let actions = new ActionsCreator(fetcher);
 
       return {

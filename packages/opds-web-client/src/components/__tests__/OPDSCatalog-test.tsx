@@ -41,11 +41,7 @@ describe("OPDSCatalog", () => {
      * This is painfully fragile, but must be done to make
      * enzyme render the child function beneath ReactReduxContext.Consumer
      */
-    const root = wrapper
-      .dive()
-      .dive()
-      .dive()
-      .dive();
+    const root = wrapper.dive().dive().dive().dive();
 
     // test that all of the props we passed in are present there
     Object.keys(props).forEach(key => {

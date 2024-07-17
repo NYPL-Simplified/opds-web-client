@@ -255,9 +255,7 @@ describe("BookDetails", () => {
   });
 
   it("shows circulation info for borrowed book", () => {
-    let tomorrow = moment()
-      .add(1, "day")
-      .format();
+    let tomorrow = moment().add(1, "day").format();
     let bookCopy = Object.assign({}, book, {
       openAccessLinks: [],
       fulfillmentLinks: ["http://fulfill"],
