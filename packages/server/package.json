@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "ejs": "2.4.1",
-    "express": "4.19.2",
+    "express": "4.20.0",
     "multer": "1.1.0",
     "r2-streamer-js": "0.0.1-alpha13",
     "request": "2.88.0",
